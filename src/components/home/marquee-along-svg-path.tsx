@@ -1,4 +1,5 @@
-import React, { RefObject, useCallback, useEffect, useRef } from "react"
+import React, { useCallback, useEffect, useRef } from "react"
+import type { RefObject } from "react"
 import {
   motion,
   useAnimationFrame,
@@ -10,6 +11,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import MarqueeTextContent from "./marquee-text-content"
 
 type SpringOptions = {
   damping?: number
@@ -88,7 +90,7 @@ interface MarqueeAlongSvgPathProps {
   cssVariableInterpolation?: CSSVariableInterpolation[]
 }
 
-const MarqueeAlongSvgPathBase = ({
+export const MarqueeAlongSvgPathBase = ({
   children,
   className,
 
@@ -424,9 +426,19 @@ const imgs = [
   },
 ]
 
-export default function MarqueeAlongSvgPath() {
+/**
+ * Componente del fondo con marquee (reutilizable en otras vistas)
+ * Puede usarse independientemente del componente principal
+ */
+export function MarqueeBackground({
+  className,
+  children,
+}: {
+  className?: string
+  children?: React.ReactNode
+}) {
   return (
-    <div className="w-dvw h-dvh bg-stone-900 relative overflow-hidden">
+    <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase
         path={path}
         baseVelocity={8}
@@ -441,20 +453,34 @@ export default function MarqueeAlongSvgPath() {
         className="absolute inset-0 w-full h-full"
         grabCursor
       >
-        {imgs.map((img, i) => (
-          <div
-            key={i}
-            className="w-14 h-20 hover:scale-150 duration-300 ease-in-out"
-          >
-            <img
-              src={img.src}
-              alt={`Example ${i}`}
-              className="w-full h-full object-cover rounded-lg"
-              draggable={false}
-            />
-          </div>
-        ))}
+        {children ||
+          imgs.map((img, i) => (
+            <div
+              key={i}
+              className="w-14 h-20 hover:scale-150 duration-300 ease-in-out"
+            >
+              <img
+                src={img.src}
+                alt={`Example ${i}`}
+                className="w-full h-full object-cover rounded-lg"
+                draggable={false}
+              />
+            </div>
+          ))}
       </MarqueeAlongSvgPathBase>
+    </div>
+  )
+}
+
+export default function MarqueeAlongSvgPath({
+  showText = false,
+}: {
+  showText?: boolean
+} = {}) {
+  return (
+    <div className="w-full h-full relative overflow-hidden">
+      <MarqueeBackground />
+      {showText && <MarqueeTextContent />}
     </div>
   )
 }
