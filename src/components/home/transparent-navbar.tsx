@@ -1,3 +1,5 @@
+import MainButton from "@/components/ui/main-button"
+
 export default function TransparentNavbar() {
   return (
     <header className="bg-transparent w-full text-neutral-800 font-jetbrains-mono">
@@ -21,12 +23,9 @@ export default function TransparentNavbar() {
         </nav>
 
         <div className="flex items-center">
-          <button
-            className="border-2 border-neutral-800 px-5 py-1 text-[10px] sm:text-xs tracking-[0.3em] uppercase bg-transparent hover:bg-neutral-800 transition-colors hover:text-neutral-200"
-            type="button"
-          >
+          <MainButton variant="compact" size="sm" type="button">
             SIGN IN
-          </button>
+          </MainButton>
         </div>
       </div>
     </header>

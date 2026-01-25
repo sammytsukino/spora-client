@@ -6,6 +6,9 @@ import Navbar from '../components/home/navbar'
 import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
 import ImageTrail from '../components/home/image-trail'
 import VideoTextSection from '../components/home/video-text-section'
+import SimpleMarquee from '../components/home/simple-marquee'
+import MainButton from '../components/ui/main-button'
+
 
 export default function Home() {
   return (
@@ -40,17 +43,29 @@ export default function Home() {
 
 
 
-      {/* Ejemplo: Sección grande (150vh) */}
-      <section className="component-section-large">
-        <div className="flex items-center justify-center h-full">
-          <p className="text-neutral-800 font-jetbrains-mono">Sección grande (150vh)</p>
+      {/* Sección con marquee y header personalizado */}
+      <section className="component-section-medium">
+        <div className="w-full h-full flex flex-col">
+          {/* Header personalizado - se renderiza fuera del componente */}
+          <div className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 mt-8">
+            <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
+              Featured Floras →
+            </h2>
+            <MainButton variant="compact" size="sm" type="button">
+              VIEW ALL
+            </MainButton>
+          </div>
+          
+          {/* El marquee simple - solo se enfoca en el contenido */}
+          <div className="flex-1 overflow-hidden">
+            <SimpleMarquee />
+          </div>
         </div>
       </section>
 
-      {/* Ejemplo: Sección extra grande (200vh) */}
-      <section className="component-section-xlarge">
-        <div className="flex items-center justify-center h-full">
-          <p className="text-neutral-800 font-jetbrains-mono">Sección extra grande (200vh)</p>
+      <section className="component-section-small">
+        <div className="bg-neutral-800 flex items-center justify-center h-full">
+          <p className="text-neutral-200 font-jetbrains-mono">SECCIÓN EN LA QUE IRÁ UN EJEMPLO DE ARTWORK GENERADO POR LA APP</p>
         </div>
       </section>
 
