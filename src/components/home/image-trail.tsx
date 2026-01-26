@@ -271,7 +271,7 @@ export default function ImageTrail() {
       </ImageTrailBase>
       
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-20 pointer-events-none z-10">
-        <p className="font-bizud-mincho text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
+        <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
           not revolutionary
         </p>
 
@@ -297,7 +297,7 @@ export default function ImageTrail() {
           cycleDuration={0.20}
         />
 
-        <p className="font-bizud-mincho text-lg sm:text-xl md:text-2xl tracking-wide mt-2">
+        <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mt-2">
           but evolutionary
         </p>
       </div>

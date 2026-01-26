@@ -13,7 +13,7 @@ export default function VideoTextSection() {
           disableRemotePlayback
         >
           {/* Aquí puedes agregar las fuentes del video */}
-          <source src="" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4" type="video/mp4" />
           Tu navegador no soporta el elemento de video.
         </video>
       </div>
@@ -21,28 +21,28 @@ export default function VideoTextSection() {
       {/* Sección derecha: Texto */}
       <div className="w-1/2 h-full flex flex-col justify-center items-start px-8 md:px-12 lg:px-16 py-12">
         <div className="space-y-6 md:space-y-8">
-          <p className="text-neutral-200 font-bizud-mincho text-base md:text-lg lg:text-xl leading-relaxed">
+          <p className="text-neutral-200 font-bizud-mincho-bold text-base md:text-lg lg:text-xl leading-relaxed">
             <span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span>
           </p>
 
           <div className="space-y-4 md:space-y-6 text-justify">
-            <p className="text-neutral-200 font-bizud-mincho text-sm md:text-base lg:text-lg leading-relaxed">
+            <p className="text-neutral-200 font-jetbrains-mono text-sm md:text-base lg:text-lg leading-relaxed">
               <span className="font-bold">1.</span> The collective plant life of a particular region, habitat, or geological period. "the flora of the rainforest includes thousands of species"
             </p>
 
-            <p className="text-neutral-200 font-bizud-mincho text-sm md:text-base lg:text-lg leading-relaxed">
+            <p className="text-neutral-200 font-jetbrains-mono text-sm md:text-base lg:text-lg leading-relaxed">
               <span className="font-bold">2.</span> A systematic treatise or catalog describing the plants of a region.
             </p>
 
-            <p className="text-neutral-200 font-bizud-mincho text-sm md:text-base lg:text-lg leading-relaxed">
+            <p className="text-neutral-200 font-jetbrains-mono text-sm md:text-base lg:text-lg leading-relaxed">
               <span className="font-bold">3.</span> [SPORA] A digital work born from text; a unique visual organism generated through algorithmic transformation of written language.
             </p>
 
-            <p className="text-neutral-200 font-bizud-mincho text-sm md:text-base lg:text-lg leading-relaxed mt-4">
+            <p className="text-neutral-200 font-jetbrains-mono text-sm md:text-base lg:text-lg leading-relaxed mt-4">
               Each flora contains the complete textual DNA of its lineage and blooms into an unrepeatable visual form.
             </p>
 
-            <p className="text-neutral-200 font-bizud-mincho text-sm md:text-base lg:text-lg leading-relaxed italic">
+            <p className="text-neutral-200 font-bizud-mincho-bold text-lg md:text-base lg:text-lg leading-relaxed italic">
               "her flora evolved through three generations of cuttings"
             </p>
           </div>

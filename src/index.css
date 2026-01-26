@@ -112,6 +112,11 @@ body {
   font-weight: 400;
 }
 
+.font-bizud-mincho-bold {
+  font-family: 'BIZ UDPMincho', serif;
+  font-weight: 700;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

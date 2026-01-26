@@ -40,7 +40,7 @@ export default function MarqueeTextContent({
           <p className="font-jetbrains-mono text-xs md:text-sm lg:text-sm text-neutral-800 mb-2">
             ({item.number}) {item.title}
           </p>
-          <p className="font-bizud-mincho text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-700 leading-tight">
+          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-neutral-700 leading-tight">
             {item.description}
           </p>
         </div>

@@ -3,7 +3,7 @@ import MainButton from "@/components/ui/main-button"
 export default function TransparentNavbar() {
   return (
     <header className="bg-transparent w-full text-neutral-800 font-jetbrains-mono">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 md:px-10 md:py-4">
+      <div className="mx-auto flex items-center justify-between px-6 py-3 md:px-10 md:py-4">
         <div className="flex items-center">
           <img
             src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
