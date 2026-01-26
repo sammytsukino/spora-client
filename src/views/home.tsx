@@ -13,7 +13,7 @@ import PixelTrail from '../components/home/pixel-trail'
 import GooeySvgFilter from '../components/home/gooey-svg-filter'
 import useDetectBrowser from '../hooks/use-detect-browser'
 import useScreenSize from '../hooks/use-screen-size'
-
+import SectionWithHighlight from '../components/home/section-with-highlight'
 
 export default function Home() {
   const screenSize = useScreenSize()
@@ -95,9 +95,9 @@ export default function Home() {
       </section>
 
       <section className="component-section-small">
-        <div className="bg-neutral-800 flex items-center justify-center h-full">
+        <SectionWithHighlight>
           <p className="text-neutral-200 font-jetbrains-mono">SECCIÓN EN LA QUE IRÁ UN EJEMPLO DE ARTWORK GENERADO POR LA APP</p>
-        </div>
+        </SectionWithHighlight>
       </section>
 
 

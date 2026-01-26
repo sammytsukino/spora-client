@@ -1,3 +1,5 @@
+import { TextHighlighter } from "../fancy/text/text-highlighter";
+
 export default function VideoTextSection() {
   return (
     <div className="w-full h-full bg-neutral-800 flex flex-row">
@@ -21,9 +23,11 @@ export default function VideoTextSection() {
       {/* Sección derecha: Texto */}
       <div className="w-1/2 h-full flex flex-col justify-center items-start px-8 md:px-12 lg:px-16 py-12">
         <div className="space-y-6 md:space-y-8">
-          <p className="text-neutral-200 font-bizud-mincho-bold text-base md:text-lg lg:text-xl leading-relaxed">
-            <span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span>
+          <p className="text-neutral-200 font-bizud-mincho-bold text-base md:text-xl lg:text-2x1 leading-relaxed">
+            <TextHighlighter highlightColor="#f140b4"><span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span></TextHighlighter>
           </p>
+
+          
 
           <div className="space-y-4 md:space-y-6 text-justify">
             <p className="text-neutral-200 font-jetbrains-mono text-sm md:text-base lg:text-lg leading-relaxed">
