@@ -85,11 +85,11 @@ const ImageTrailBase = ({
   className,
   as = "div",
   children,
-  threshold = 100,
-  intensity = 0.3,
+  threshold = 50,
+  intensity = 0.1,
   keyframes,
   keyframesOptions,
-  repeatChildren = 3,
+  repeatChildren = 1,
   trailElementAnimationKeyframes = {
     x: { duration: 1, type: "tween", ease: "easeOut" },
     y: { duration: 1, type: "tween", ease: "easeOut" },
@@ -238,15 +238,24 @@ export const ImageTrailItem = ({
 }
 
 const images = [
-  "https://cdn.cosmos.so/7dc46d69-ad3b-4942-ab84-511ae786892e?format=jpeg",
-  "https://cdn.cosmos.so/cb5c5995-4ba7-4519-a0e8-aa6427cc0a90?format=jpeg",
-  "https://cdn.cosmos.so/264d0ae9-f2e9-4deb-843c-229e70bbe4cc?format=jpeg",
-  "https://cdn.cosmos.so/223c2fad-7dcb-46e0-9f00-826edcf8d7b1?format=jpeg",
-  "https://cdn.cosmos.so/48e640ee-75e1-4390-a34a-b790785f033a?format=jpeg",
-  "https://cdn.cosmos.so/d9c19f7c-d605-4257-8546-dafe0daa250f.?format=jpeg",
-  "https://cdn.cosmos.so/5ff27be0-bed8-4779-b520-6896e68e7e4d?format=jpeg",
-  "https://cdn.cosmos.so/9098d86e-b3f7-425f-be96-40df45c82342?format=jpeg",
-  "https://cdn.cosmos.so/6a1d9c63-5b32-4a22-b03e-5dc63164ad8a?format=jpeg",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-21_dzwlna.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-20_fww5yp.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-19_haco8y.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532656/img-18_djc6db.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-17_e6uarr.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-16_gf9k7x.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-15_wpwz9h.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-14_gbx118.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-13_qncmyd.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532651/img-12_swbm8v.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-11_la2ekj.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-10_kb18zx.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-9_szhd9n.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-8_hwuplt.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532647/img-7_ib8m6b.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532645/img-6_qmsbif.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
 ]
 
 export default function ImageTrail() {
@@ -255,9 +264,9 @@ export default function ImageTrail() {
       <ImageTrailBase
         threshold={100}
         intensity={1}
-        keyframes={{ scale: [1, 2] }}
+        keyframes={{ scale: [1, 1] }}
         keyframesOptions={{
-          scale: { duration: 1, times: [1, 1] },
+          scale: { duration: 1, times: [3, 1] },
         }}
         repeatChildren={1}
       >
@@ -270,7 +279,7 @@ export default function ImageTrail() {
         ))}
       </ImageTrailBase>
       
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-20 pointer-events-none z-10">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-20 pointer-events-none z-50">
         <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
           not revolutionary
         </p>

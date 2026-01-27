@@ -82,7 +82,7 @@ export const TextHighlighter = forwardRef<
       children,
       as = "span",
       triggerType = "inView",
-      transition = { type: "spring", duration: 1, delay: 0, bounce: 0 },
+      transition = { type: "spring", duration: 3, delay: 0, bounce: 0 },
       useInViewOptions = {
         once: true,
         initial: false,

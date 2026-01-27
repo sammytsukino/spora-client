@@ -1,3 +1,5 @@
+import MainButton from "../ui/main-button"
+
 export default function Navbar() {
   return (
     <header className="w-full bg-neutral-800 text-stone-300 font-jetbrains-mono">
@@ -21,12 +23,9 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center">
-          <button
-            className="border-2 border-neutral-300 px-5 py-1 text-[10px] sm:text-xs tracking-[0.3em] uppercase bg-transparent hover:bg-neutral-200 transition-colors  hover:text-neutral-800"
-            type="button"
-          >
+          <MainButton variant="navbar" size="sm" type="button">
             SIGN IN
-          </button>
+          </MainButton>
         </div>
       </div>
     </header>
