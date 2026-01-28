@@ -88,6 +88,9 @@ interface MarqueeAlongSvgPathProps {
   zIndexRange?: number
 
   cssVariableInterpolation?: CSSVariableInterpolation[]
+
+  // Responsive behaviour flag (currently optional / future use)
+  responsive?: boolean
 }
 
 export const MarqueeAlongSvgPathBase = ({
@@ -128,6 +131,9 @@ export const MarqueeAlongSvgPathBase = ({
   zIndexRange = 10,
 
   cssVariableInterpolation = [],
+
+  // Currently unused, but accepted to keep API parity
+  responsive,
 }: MarqueeAlongSvgPathProps) => {
   const container = useRef<HTMLDivElement>(null)
   const baseOffset = useMotionValue(0)
@@ -369,7 +375,7 @@ export const MarqueeAlongSvgPathBase = ({
 }
 
 const path =
-  "M0,628.302 C175.7616,767.805 1163.778,977.814 1447.749,628.302C1802.715,191.4153 1576.548,-129.6633 1281.996,59.8839C987.4485,249.4308 1058.706,728.169 1545.123,801.906C1934.256,860.898 2830.68,545.82 2985,469.5"
+  "M-200,628.302 C-24.2384,767.805 963.778,977.814 1247.749,628.302C1602.715,191.4153 1376.548,-129.6633 1081.996,59.8839C787.4485,249.4308 858.706,728.169 1345.123,801.906C1734.256,860.898 2630.68,545.82 3185,469.5"
 
 const imgs = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
@@ -403,17 +409,18 @@ export function MarqueeBackground({
     <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase
         path={path}
-        baseVelocity={8}
+        baseVelocity={3}
         slowdownOnHover={true}
         draggable={true}
         repeat={5}
         dragSensitivity={0.1}
-        viewBox="0 -150 3000 1000"
+        viewBox="-200 -200 3385 1200"
         width="100%"
         height="100%"
         preserveAspectRatio="none"
         className="absolute inset-0 w-full h-full"
         grabCursor
+        responsive={true}
       >
         {children ||
           imgs.map((src, i) => (
