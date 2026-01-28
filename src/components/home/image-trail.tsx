@@ -4,7 +4,6 @@ import type { DOMKeyframesDefinition, AnimationOptions } from "motion"
 import { useAnimate } from "motion/react"
 
 import { cn } from "@/lib/utils"
-import CyclingLogo from "./cycling-logo"
 
 interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -255,12 +254,12 @@ const images = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-8_hwuplt.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532647/img-7_ib8m6b.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532645/img-6_qmsbif.png",
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png",
 ]
 
 export default function ImageTrail() {
   return (
-    <div className="w-full h-full relative text-foreground dark:text-muted overflow-hidden" style={{ backgroundColor: '#E9E9E9' }}>
+    <div className="w-full h-full relative z-0 text-foreground dark:text-muted overflow-hidden" style={{ backgroundColor: "#E9E9E9" }}>
       <ImageTrailBase
         threshold={100}
         intensity={1}
@@ -269,6 +268,7 @@ export default function ImageTrail() {
           scale: { duration: 1, times: [3, 1] },
         }}
         repeatChildren={1}
+        baseZIndex={-10}
       >
         {images.map((url, index) => (
           <ImageTrailItem key={index}>
@@ -278,38 +278,6 @@ export default function ImageTrail() {
           </ImageTrailItem>
         ))}
       </ImageTrailBase>
-      
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-20 pointer-events-none z-50">
-        <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
-          not revolutionary
-        </p>
-
-        <CyclingLogo
-          logos={[
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903352/4_wxvxkj.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903351/3_yni4c2.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903330/0_b471dn.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903331/2_gnhbhj.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903330/1_riof7w.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/11_gjupa0.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/12_nizkdg.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/13_z6rhv6.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/10_cgfww1.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/8_lvrwmb.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/9_ntwap1.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/7_pi1uzh.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/5_nmjyqc.svg",
-            "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/6_hi73sd.svg",
-          ]}
-          width="50vw"
-          height="10vw"
-          cycleDuration={0.20}
-        />
-
-        <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mt-2">
-          but evolutionary
-        </p>
-      </div>
     </div>
   )
 }

@@ -16,6 +16,7 @@ import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
+import CyclingLogo from '../components/home/cycling-logo'
 
 
 export default function Home() {
@@ -27,10 +28,49 @@ export default function Home() {
     <div className="w-full overflow-x-hidden">
       <Navbar />
 
-      {/* HERO - pantalla completa con ImageTrail */}
-      <Section variant="hero" containerized={false} className="items-stretch">
-        <ImageTrail />
-        
+      {/* HERO - pantalla completa con ImageTrail como background y contenido encima */}
+      <Section
+        variant="hero"
+        containerized={false}
+        className="relative overflow-hidden items-stretch"
+      >
+        {/* Capa de background: ImageTrail ocupa toda la sección */}
+        <div className="absolute inset-0">
+          <ImageTrail />
+        </div>
+
+        {/* Capa de contenido: tipografía + CyclingLogo, siguiendo patrón del footer */}
+        <div className="relative z-10 flex flex-col items-center justify-center gap-20 w-full h-full pointer-events-none">
+          <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
+            not revolutionary
+          </p>
+
+          <CyclingLogo
+            logos={[
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903352/4_wxvxkj.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903351/3_yni4c2.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903330/0_b471dn.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903331/2_gnhbhj.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903330/1_riof7w.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/11_gjupa0.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/12_nizkdg.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/13_z6rhv6.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/10_cgfww1.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/8_lvrwmb.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/9_ntwap1.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/7_pi1uzh.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/5_nmjyqc.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/6_hi73sd.svg",
+            ]}
+            width="50vw"
+            height="10vw"
+            cycleDuration={0.2}
+          />
+
+          <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mt-2">
+            but evolutionary
+          </p>
+        </div>
       </Section>
 
       {/* Sección con texto declarativo y PixelTrail de fondo */}

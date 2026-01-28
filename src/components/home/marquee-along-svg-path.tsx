@@ -424,7 +424,7 @@ export function MarqueeBackground({
               <img
                 src={src}
                 alt={`Example ${i}`}
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-cover"
                 draggable={false}
               />
             </div>
