@@ -1,0 +1,51 @@
+import { createBrowserRouter } from "react-router-dom";
+import Home from "../views/home";
+import Game from "../views/Game";
+import Garden from "../views/Garden";
+import Greenhouse from "../views/Greenhouse";
+import Laboratory from "../views/Laboratory";
+import Team from "../views/Team";
+import Research from "../views/Research";
+import Contact from "../views/Contact";
+import SignIn from "../views/SignIn";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/game",
+    element: <Game />,
+  },
+  {
+    path: "/garden",
+    element: <Garden />,
+  },
+  {
+    path: "/greenhouse",
+    element: <Greenhouse />,
+  },
+  {
+    path: "/laboratory",
+    element: <Laboratory />,
+  },
+  {
+    path: "/team",
+    element: <Team />,
+  },
+  {
+    path: "/research",
+    element: <Research />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
+  },
+  {
+    path: "/signin",
+    element: <SignIn />,
+  },
+
+]);
+

@@ -1,5 +1,4 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
 import Navbar from '../components/home/navbar'
@@ -20,6 +19,7 @@ import CyclingLogo from '../components/home/cycling-logo'
 
 
 export default function Home() {
+  const navigate = useNavigate()
   const screenSize = useScreenSize()
   const browserName = useDetectBrowser()
   const isSafari = browserName === "Safari"
@@ -134,7 +134,12 @@ export default function Home() {
             <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
               Featured Floras →
             </h2>
-            <MainButton variant="compact" size="sm" type="button">
+            <MainButton
+              variant="compact"
+              size="sm"
+              type="button"
+              onClick={() => navigate('/garden')}
+            >
               VIEW ALL
             </MainButton>
           </div>
@@ -179,7 +184,12 @@ export default function Home() {
 
             {/* Main Button debajo del texto */}
             <div className="mt-12 pointer-events-auto">
-              <MainButton variant="navbar" size="sm" type="button">
+              <MainButton
+                variant="navbar"
+                size="sm"
+                type="button"
+                onClick={() => navigate('/laboratory')}
+              >
                 CREATE YOUR OWN
               </MainButton>
             </div>
@@ -207,9 +217,3 @@ export default function Home() {
     </div>
   )
 }
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Home />
-  </StrictMode>,
-)

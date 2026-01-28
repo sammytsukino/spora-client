@@ -1,6 +1,9 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function FooterMain() {
+  const navigate = useNavigate()
+
   return (
     <footer className="w-full h-full px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-between text-neutral-900">
       {/* Top labels */}
@@ -41,22 +44,46 @@ export default function FooterMain() {
         {/* Right navigation */}
         <div className="flex-1 flex justify-end">
           <div className="grid grid-cols-2 gap-x-8 gap-y-1 justify-items-end text-right text-lg">
-          <button type="button" className="hover:underline">
+          <button
+            type="button"
+            className="hover:underline cursor-pointer"
+            onClick={() => navigate("/team")}
+          >
             Team
           </button>
-          <button type="button" className="hover:underline">
+          <button
+            type="button"
+            className="hover:underline cursor-pointer"
+            onClick={() => navigate("/garden")}
+          >
             Garden
           </button>
-          <button type="button" className="hover:underline">
+          <button
+            type="button"
+            className="hover:underline cursor-pointer"
+            onClick={() => navigate("/research")}
+          >
             Research
           </button>
-          <button type="button" className="hover:underline">
+          <button
+            type="button"
+            className="hover:underline cursor-pointer"
+            onClick={() => navigate("/greenhouse")}
+          >
             Greenhouse
           </button>
-          <button type="button" className="hover:underline">
+          <button
+            type="button"
+            className="hover:underline cursor-pointer"
+            onClick={() => navigate("/contact")}
+          >
             Contact
           </button>
-          <button type="button" className="hover:underline">
+          <button
+            type="button"
+            className="hover:underline cursor-pointer"
+            onClick={() => navigate("/laboratory")}
+          >
             Laboratory
           </button>
           </div>

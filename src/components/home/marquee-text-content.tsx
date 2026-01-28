@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { useNavigate } from "react-router-dom"
 
 interface MarqueeTextContentProps {
   /**
@@ -28,6 +29,24 @@ const textItems = [
 export default function MarqueeTextContent({
   className,
 }: MarqueeTextContentProps) {
+  const navigate = useNavigate()
+
+  const handleClick = (item: (typeof textItems)[number]) => {
+    switch (item.title) {
+      case "GARDEN":
+        navigate("/garden")
+        break
+      case "GREENHOUSE":
+        navigate("/greenhouse")
+        break
+      case "LABORATORY":
+        navigate("/laboratory")
+        break
+      default:
+        break
+    }
+  }
+
   return (
     <div
       className={cn(
@@ -36,14 +55,19 @@ export default function MarqueeTextContent({
       )}
     >
       {textItems.map((item, index) => (
-        <div key={index} className="flex flex-col w-[18%]">
-          <p className="font-jetbrains-mono text-xs md:text-sm lg:text-sm text-neutral-800 mb-2">
+        <button
+          key={index}
+          type="button"
+          className="flex flex-col w-[18%] text-left cursor-pointer"
+          onClick={() => handleClick(item)}
+        >
+          <p className="font-jetbrains-mono text-xs md:text-sm lg:text-sm text-neutral-800 mb-2 hover:underline">
             ({item.number}) {item.title}
           </p>
-          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-neutral-700 leading-tight">
+          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-neutral-700 leading-tight hover:underline">
             {item.description}
           </p>
-        </div>
+        </button>
       ))}
     </div>
   )
