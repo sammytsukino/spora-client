@@ -15,7 +15,6 @@ import useDetectBrowser from '../hooks/use-detect-browser'
 import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
-import Iridescence from '@/components/Iridescence'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 
 
@@ -80,7 +79,7 @@ export default function Home() {
 
       {/* Sección de video + texto (sin padding vertical de Section) */}
       <Section
-        variant="flush"
+        variant="medium"
         containerized={false}
         className="bg-neutral-800 items-stretch"
       >

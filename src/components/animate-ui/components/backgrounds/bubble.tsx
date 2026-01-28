@@ -37,7 +37,7 @@ function BubbleBackground({
     third: '0,220,255',
     fourth: '200,50,50',
     fifth: '180,180,50',
-    sixth: '140,100,255',
+    sixth: '255,100,255',
   },
   ...props
 }: BubbleBackgroundProps) {
@@ -78,8 +78,7 @@ function BubbleBackground({
   React.useEffect(() => {
     if (!interactive) return;
 
-    const el = containerRef.current;
-    if (!el) return;
+    const INTENSITY = 2; // amplify mouse displacement effect
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = rectRef.current;
@@ -89,16 +88,16 @@ function BubbleBackground({
 
       if (rafIdRef.current != null) cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = requestAnimationFrame(() => {
-        mouseX.set(e.clientX - centerX);
-        mouseY.set(e.clientY - centerY);
+        mouseX.set((e.clientX - centerX) * INTENSITY);
+        mouseY.set((e.clientY - centerY) * INTENSITY);
       });
     };
 
-    el.addEventListener('mousemove', handleMouseMove as EventListener, {
+    window.addEventListener('mousemove', handleMouseMove as EventListener, {
       passive: true,
     });
     return () => {
-      el.removeEventListener('mousemove', handleMouseMove as EventListener);
+      window.removeEventListener('mousemove', handleMouseMove as EventListener);
       if (rafIdRef.current != null) cancelAnimationFrame(rafIdRef.current);
     };
   }, [interactive, mouseX, mouseY]);
@@ -200,7 +199,7 @@ function BubbleBackground({
 
         {interactive && (
           <motion.div
-            className="absolute rounded-full size-full mix-blend-hard-light bg-[radial-gradient(circle_at_center,rgba(var(--sixth-color),0.8)_0%,rgba(var(--sixth-color),0)_50%)] opacity-70"
+            className="absolute rounded-full size-[120%] mix-blend-hard-light bg-[radial-gradient(circle_at_center,rgba(var(--sixth-color),0.9)_0%,rgba(var(--sixth-color),0)_40%)] opacity-90"
             style={{
               x: springX,
               y: springY,
