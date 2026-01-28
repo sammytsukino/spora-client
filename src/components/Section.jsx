@@ -10,7 +10,8 @@ const Section = ({
     large: 'h-[80vh]',
     medium: 'h-[60vh]',
     default: 'py-20 md:py-32',
-    compact: 'py-12 md:py-16'
+    compact: 'py-12 md:py-16',
+    flush: '',
   };
 
   const content = containerized ? (

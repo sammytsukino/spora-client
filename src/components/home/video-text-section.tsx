@@ -2,9 +2,9 @@ import { TextHighlighter } from "../fancy/text/text-highlighter";
 
 export default function VideoTextSection() {
   return (
-    <div className="w-full bg-neutral-800 flex flex-col lg:flex-row">
+    <div className="w-full h-full flex flex-col lg:flex-row">
       {/* Sección izquierda: Video */}
-      <div className="w-full lg:w-1/2 aspect-video lg:aspect-auto lg:h-full relative overflow-hidden">
+      <div className="w-full lg:w-1/2 aspect-video lg:aspect-auto relative overflow-hidden">
         <video
           className="w-full h-full object-cover pointer-events-none"
           autoPlay

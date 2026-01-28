@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export type SectionVariant = 'hero' | 'full' | 'large' | 'medium' | 'default' | 'compact';
+export type SectionVariant = 'hero' | 'full' | 'large' | 'medium' | 'default' | 'compact' | 'flush';
 
 export interface SectionProps {
   variant?: SectionVariant;

@@ -4,7 +4,7 @@ export default function FooterMain() {
   return (
     <footer className="w-full h-full px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-between text-neutral-900">
       {/* Top labels */}
-      <div className="flex items-start justify-between text-2xl sm:text-2xl font-jetbrains-mono">
+      <div className="flex items-start justify-between text-2xl sm:text-2xl font-jetbrains-mono mb-50">
         <p className="whitespace-pre leading-tight">
           Not{"\n"}
           revolutionary

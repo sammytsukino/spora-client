@@ -15,6 +15,8 @@ import useDetectBrowser from '../hooks/use-detect-browser'
 import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
+import Iridescence from '@/components/Iridescence'
+
 
 export default function Home() {
   const screenSize = useScreenSize()
@@ -28,6 +30,7 @@ export default function Home() {
       {/* HERO - pantalla completa con ImageTrail */}
       <Section variant="hero" containerized={false} className="items-stretch">
         <ImageTrail />
+        
       </Section>
 
       {/* Sección con texto declarativo y PixelTrail de fondo */}
@@ -52,6 +55,8 @@ export default function Home() {
               pixelClassName="[background:radial-gradient(circle,#c6ff00_0%,#ff00f0_100%)]"
               className="w-full h-full"
             />
+
+            
           </div>
 
           {/* Texto declarativo por encima - pointer-events-none para que el mouse pase a través */}
@@ -72,11 +77,11 @@ export default function Home() {
         <MarqueeAlongSvgPath showText={true} />
       </Section>
 
-      {/* Sección de video + texto (altura flexible) */}
+      {/* Sección de video + texto (sin padding vertical de Section) */}
       <Section
-        variant="default"
+        variant="flush"
         containerized={false}
-        className="bg-neutral-800 py-16"
+        className="bg-neutral-800 items-stretch"
       >
         <VideoTextSection />
       </Section>
@@ -127,10 +132,11 @@ export default function Home() {
 
           {/* Texto declarativo y botón alineados con el grid principal */}
           <div className="relative z-10 h-full flex flex-col items-end justify-start pt-8 px-4 sm:px-6 md:px-8">
+            
             <DeclarativeText className="max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none -mr-15">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
             </DeclarativeText>
-            
+
             {/* Main Button debajo del texto */}
             <div className="mt-12 pointer-events-auto">
               <MainButton variant="navbar" size="sm" type="button">
@@ -141,10 +147,24 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Footer principal */}
-      <Section variant="compact" containerized={false}>
-        <FooterMain />
+      {/* Footer principal con fondo Iridescence */}
+      <Section
+        variant="compact"
+        containerized={false}
+        className="relative overflow-hidden"
+      >
+        <Iridescence
+          className="absolute inset-0 -z-10"
+          color={[1, 1, 1]}
+          mouseReact
+          amplitude={0.5}
+          speed={1}
+        />
+        <div className="relative z-10">
+          <FooterMain />
+        </div>
       </Section>
+
 
     </div>
   )
