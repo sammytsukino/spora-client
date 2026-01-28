@@ -14,6 +14,7 @@ import GooeySvgFilter from '../components/home/gooey-svg-filter'
 import useDetectBrowser from '../hooks/use-detect-browser'
 import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
+import Section from '../components/Section'
 
 export default function Home() {
   const screenSize = useScreenSize()
@@ -21,29 +22,28 @@ export default function Home() {
   const isSafari = browserName === "Safari"
 
   return (
-    <div className="components-container">
+    <div className="w-full overflow-x-hidden">
       <Navbar />
 
-
-      {/*<section className="component-section">
-        <GooeySvgFilterPixelTrail />
-      </section>*/}
-
-      {/* Sección tamaño completo (100vh) */}
-      <section className="component-section">
+      {/* HERO - pantalla completa con ImageTrail */}
+      <Section variant="hero" containerized={false} className="items-stretch">
         <ImageTrail />
-      </section>
+      </Section>
 
-      {/* Sección con texto declarativo */}
-      <section className="component-section">
-        <div className="relative w-full h-full bg-neutral-800 overflow-hidden">
+      {/* Sección con texto declarativo y PixelTrail de fondo */}
+      <Section
+        variant="large"
+        containerized={false}
+        className="bg-neutral-800 items-stretch justify-start"
+      >
+        <div className="relative w-full h-full overflow-hidden">
           {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
           {/* Pixel Trail como fondo - con filtro gooey pero sin fade */}
           <div
             className="absolute inset-0 z-0"
-            style={{ filter: isSafari ? "none" : "url(#gooey-filter-declarative)" }}
+            style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-declarative)' }}
           >
             <PixelTrail
               pixelSize={screenSize.lessThan(`md`) ? 24 : 60}
@@ -61,21 +61,28 @@ export default function Home() {
             </DeclarativeText>
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Sección con marquee y texto a la izquierda */}
-      <section className="component-section-medium">
+      <Section
+        variant="medium"
+        containerized={false}
+        className="items-stretch"
+      >
         <MarqueeAlongSvgPath showText={true} />
-      </section>
+      </Section>
 
-      <section className="component-section-medium">
+      {/* Sección de video + texto (altura flexible) */}
+      <Section
+        variant="default"
+        containerized={false}
+        className="bg-neutral-800 py-16"
+      >
         <VideoTextSection />
-      </section>
-
-
+      </Section>
 
       {/* Sección con marquee y header personalizado */}
-      <section className="component-section-small">
+      <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
           {/* Header personalizado - se renderiza fuera del componente */}
           <div className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 mt-8">
@@ -92,17 +99,22 @@ export default function Home() {
             <SimpleMarquee />
           </div>
         </div>
-      </section>
+      </Section>
 
-      <section className="component-section-small">
-        <div className="relative w-full h-full bg-neutral-800 overflow-hidden">
+      {/* Sección con PixelTrail + quote + botón */}
+      <Section
+        variant="medium"
+        containerized={false}
+        className="bg-neutral-800 items-stretch justify-start"
+      >
+        <div className="relative w-full h-full overflow-hidden">
           {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
           {/* Pixel Trail como fondo - con filtro gooey pero sin fade */}
           <div
             className="absolute inset-0 z-0"
-            style={{ filter: isSafari ? "none" : "url(#gooey-filter-declarative)" }}
+            style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-declarative)' }}
           >
             <PixelTrail
               pixelSize={screenSize.lessThan(`md`) ? 24 : 60}
@@ -127,12 +139,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Footer principal */}
-      <section className="component-section-small">
+      <Section variant="compact" containerized={false}>
         <FooterMain />
-      </section>
+      </Section>
 
     </div>
   )

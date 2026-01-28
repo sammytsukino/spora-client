@@ -2,9 +2,9 @@ import { TextHighlighter } from "../fancy/text/text-highlighter";
 
 export default function VideoTextSection() {
   return (
-    <div className="w-full h-full bg-neutral-800 flex flex-row">
+    <div className="w-full bg-neutral-800 flex flex-col lg:flex-row">
       {/* Sección izquierda: Video */}
-      <div className="w-1/2 h-full relative overflow-hidden">
+      <div className="w-full lg:w-1/2 aspect-video lg:aspect-auto lg:h-full relative overflow-hidden">
         <video
           className="w-full h-full object-cover pointer-events-none"
           autoPlay
@@ -21,7 +21,7 @@ export default function VideoTextSection() {
       </div>
 
       {/* Sección derecha: Texto */}
-      <div className="w-1/2 h-full flex flex-col justify-center items-start px-8 md:px-12 lg:px-16 py-12">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-start px-6 md:px-10 lg:px-16 py-8 md:py-12 space-y-6">
         <div className="space-y-6 md:space-y-8">
           <p className="text-neutral-200 font-bizud-mincho-bold text-base md:text-xl lg:text-2x1 leading-relaxed">
             <TextHighlighter highlightColor="#f140b4"><span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span></TextHighlighter>
@@ -29,7 +29,7 @@ export default function VideoTextSection() {
 
           
 
-          <div className="space-y-4 md:space-y-6 text-justify">
+          <div className="space-y-4 md:space-y-6 text-justify break-words">
             <p className="text-neutral-200 font-jetbrains-mono text-sm md:text-base lg:text-lg leading-relaxed">
               <span className="font-bold">1.</span> The collective plant life of a particular region, habitat, or geological period. "the flora of the rainforest includes thousands of species"
             </p>
