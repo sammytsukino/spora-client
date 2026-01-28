@@ -16,6 +16,7 @@ import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
 import Iridescence from '@/components/Iridescence'
+import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 
 
 export default function Home() {
@@ -153,13 +154,11 @@ export default function Home() {
         containerized={false}
         className="relative overflow-hidden"
       >
-        <Iridescence
-          className="absolute inset-0 -z-10"
-          color={[1, 1, 1]}
-          mouseReact
-          amplitude={0.5}
-          speed={1}
-        />
+            <BubbleBackground
+              interactive
+              className="absolute inset-0 flex items-center justify-center rounded-xl"
+            />
+
         <div className="relative z-10">
           <FooterMain />
         </div>
