@@ -14,6 +14,7 @@ import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
+import ColorBends from '../components/ColorBends'
 import CyclingLogo from '../components/home/cycling-logo'
 
 
@@ -98,7 +99,7 @@ export default function Home() {
 
           {/* Texto declarativo por encima */}
           <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-            <p className="font-bizud-mincho text-neutral-200 -ml-20 text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-8xl leading-tight pointer-events-none">
+            <p className="font-bizud-mincho text-neutral-200 -ml-23 text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
               SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil.
             </p>
           </div>
