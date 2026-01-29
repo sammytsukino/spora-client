@@ -7,7 +7,6 @@ import ImageTrail from '../components/home/image-trail'
 import VideoTextSection from '../components/home/video-text-section'
 import SimpleMarquee from '../components/home/simple-marquee'
 import MainButton from '../components/ui/main-button'
-import DeclarativeText from '../components/home/declarative-text'
 import PixelTrail from '../components/home/pixel-trail'
 import GooeySvgFilter from '../components/home/gooey-svg-filter'
 import useDetectBrowser from '../hooks/use-detect-browser'
@@ -77,9 +76,9 @@ export default function Home() {
       <Section
         variant="large"
         containerized={false}
-        className="bg-neutral-800 items-stretch justify-start"
+        className="items-stretch justify-start"
       >
-        <div className="relative w-full h-full overflow-hidden">
+        <div className="relative w-full h-full overflow-hidden bg-neutral-800">
           {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
@@ -95,15 +94,13 @@ export default function Home() {
               pixelClassName="[background:radial-gradient(circle,#c6ff00_0%,#ff00f0_100%)]"
               className="w-full h-full"
             />
-
-            
           </div>
 
-          {/* Texto declarativo por encima - pointer-events-none para que el mouse pase a través */}
+          {/* Texto declarativo por encima */}
           <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-            <DeclarativeText className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+            <p className="font-bizud-mincho text-neutral-200 -ml-20 text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-8xl leading-tight pointer-events-none">
               SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil.
-            </DeclarativeText>
+            </p>
           </div>
         </div>
       </Section>
@@ -155,32 +152,17 @@ export default function Home() {
       <Section
         variant="medium"
         containerized={false}
-        className="bg-neutral-800 items-stretch justify-start"
+        className="items-stretch justify-start"
       >
-        <div className="relative w-full h-full overflow-hidden">
-          {/* Gooey SVG Filter */}
-          <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
-
-          {/* Pixel Trail como fondo - con filtro gooey pero sin fade */}
-          <div
-            className="absolute inset-0 z-0"
-            style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-declarative)' }}
-          >
-            <PixelTrail
-              pixelSize={screenSize.lessThan(`md`) ? 24 : 60}
-              fadeDuration={0}
-              delay={2000}
-              pixelClassName="[background:radial-gradient(circle,#c6ff00_0%,#ff00f0_100%)]"
-              className="w-full h-full"
-            />
-          </div>
+        <div className="relative w-full h-full overflow-hidden bg-neutral-800">
+          {/* Bubble Background artístico */}
 
           {/* Texto declarativo y botón alineados con el grid principal */}
           <div className="relative z-10 h-full flex flex-col items-end justify-start pt-8 px-4 sm:px-6 md:px-8">
             
-            <DeclarativeText className="max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none -mr-15">
+            <p className="font-bizud-mincho text-neutral-200 max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
-            </DeclarativeText>
+            </p>
 
             {/* Main Button debajo del texto */}
             <div className="mt-12 pointer-events-auto">
