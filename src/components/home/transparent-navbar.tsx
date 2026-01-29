@@ -5,7 +5,7 @@ export default function TransparentNavbar() {
   const navigate = useNavigate();
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-transparent text-neutral-800 font-jetbrains-mono">
+    <header className="fixed w-full z-50 bg-transparent text-neutral-800 font-jetbrains-mono">
       <div className="mx-auto flex items-center justify-between px-6 py-3 md:px-10 md:py-4">
         <div className="flex items-center">
           <img
@@ -56,9 +56,10 @@ export default function TransparentNavbar() {
             size="sm"
             type="button"
             onClick={() => navigate("/signin")}
+            className="bg-stone-200"
           >
             SIGN IN
-          </MainButton>
+          </MainButton >
         </div>
       </div>
     </header>

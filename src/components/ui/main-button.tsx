@@ -21,7 +21,7 @@ export default function MainButton({
 
   // estilos por variante
   const variantStyles: Record<NonNullable<MainButtonProps["variant"]>, string> = {
-    default: "border border-black text-neutral-900 hover:bg-black hover:text-white",
+    default: "border border-black text-neutral-900 hover:bg-neutral-800 hover:text-white",
     compact: "border-2 border-neutral-800 text-neutral-900 hover:bg-neutral-800 hover:text-neutral-200",
     navbar:
       "border-2 border-neutral-300 text-neutral-300 hover:bg-neutral-200 hover:text-neutral-800",

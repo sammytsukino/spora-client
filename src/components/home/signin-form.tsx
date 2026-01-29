@@ -14,12 +14,12 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full px-4">
-      <div className="w-full max-w-md">
-        <h1 className="text-4xl font-bold text-center mb-2 font-jetbrains-mono">
+    <div className="flex items-center justify-center min-h-screen w-full px-5">
+      <div className="w-full max-w-md p-20 bg-stone-200 border-2 border-neutral-800">
+        <h1 className="text-4xl text-neutral-800 font-bold text-center mb-2 font-bizud-mincho-bold">
           Enter SPORA
         </h1>
-        <p className="text-center text-neutral-600 mb-12 font-jetbrains-mono">
+        <p className="text-center text-neutral-800 mb-12 font-jetbrains-mono">
           Welcome back, cultivator
         </p>
 
@@ -57,7 +57,7 @@ export default function SignInForm() {
           {/* Login Button */}
           <MainButton
             type="submit"
-            className="w-full h-12"
+            className="w-full h-12 border-2 border-neutral-800"
           >
             LOGIN
           </MainButton>
