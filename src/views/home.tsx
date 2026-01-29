@@ -205,7 +205,7 @@ export default function Home() {
       >
             <BubbleBackground
               interactive
-              className="absolute inset-0 flex items-center justify-center rounded-xl"
+              className="absolute inset-0 flex items-center justify-center"
             />
 
         <div className="relative z-10">

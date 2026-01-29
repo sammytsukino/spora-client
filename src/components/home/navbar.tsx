@@ -5,13 +5,14 @@ export default function Navbar() {
   const navigate = useNavigate()
 
   return (
-    <header className="w-full bg-neutral-800 text-stone-300 font-jetbrains-mono">
+    <header className="fixed top-0 left-0 w-full z-50 bg-neutral-800 text-stone-300 font-jetbrains-mono">
       <div className="mx-auto flex items-center justify-between px-6 py-3 md:px-10 md:py-4">
         <div className="flex items-center">
           <img
             src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg"
             alt="Spora logo"
-            className="h-9 w-auto"
+            className="h-9 w-auto cursor-pointer"
+            onClick={() => navigate("/")}
           />
         </div>
 
