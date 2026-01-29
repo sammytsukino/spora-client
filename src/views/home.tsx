@@ -28,18 +28,15 @@ export default function Home() {
     <div className="w-full overflow-x-hidden">
       <Navbar />
 
-      {/* HERO - pantalla completa con ImageTrail como background y contenido encima */}
       <Section
         variant="hero"
         containerized={false}
         className="relative overflow-hidden items-stretch"
       >
-        {/* Capa de background: ImageTrail ocupa toda la sección */}
         <div className="absolute inset-0">
           <ImageTrail />
         </div>
 
-        {/* Capa de contenido: tipografía + CyclingLogo, siguiendo patrón del footer */}
         <div className="relative z-10 flex flex-col items-center justify-center gap-20 w-full h-full pointer-events-none">
           <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
             not revolutionary
@@ -73,17 +70,14 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Sección con texto declarativo y PixelTrail de fondo */}
       <Section
         variant="large"
         containerized={false}
         className="bg-neutral-800 items-stretch justify-start"
       >
         <div className="relative w-full h-full overflow-hidden">
-          {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
-          {/* Pixel Trail como fondo - con filtro gooey pero sin fade */}
           <div
             className="absolute inset-0 z-0"
             style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-declarative)' }}
@@ -95,11 +89,8 @@ export default function Home() {
               pixelClassName="[background:radial-gradient(circle,#c6ff00_0%,#ff00f0_100%)]"
               className="w-full h-full"
             />
-
-            
           </div>
 
-          {/* Texto declarativo por encima - pointer-events-none para que el mouse pase a través */}
           <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
             <DeclarativeText className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
               SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil.
@@ -108,7 +99,6 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Sección con marquee y texto a la izquierda */}
       <Section
         variant="medium"
         containerized={false}
@@ -117,7 +107,6 @@ export default function Home() {
         <MarqueeAlongSvgPath showText={true} />
       </Section>
 
-      {/* Sección de video + texto (sin padding vertical de Section) */}
       <Section
         variant="medium"
         containerized={false}
@@ -126,10 +115,8 @@ export default function Home() {
         <VideoTextSection />
       </Section>
 
-      {/* Sección con marquee y header personalizado */}
       <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
-          {/* Header personalizado - se renderiza fuera del componente */}
           <div className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 mt-8">
             <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
               Featured Floras →
@@ -144,24 +131,20 @@ export default function Home() {
             </MainButton>
           </div>
 
-          {/* El marquee simple - solo se enfoca en el contenido */}
           <div className="flex-1 overflow-hidden">
             <SimpleMarquee />
           </div>
         </div>
       </Section>
 
-      {/* Sección con PixelTrail + quote + botón */}
       <Section
         variant="medium"
         containerized={false}
         className="bg-neutral-800 items-stretch justify-start"
       >
         <div className="relative w-full h-full overflow-hidden">
-          {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
-          {/* Pixel Trail como fondo - con filtro gooey pero sin fade */}
           <div
             className="absolute inset-0 z-0"
             style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-declarative)' }}
@@ -175,14 +158,11 @@ export default function Home() {
             />
           </div>
 
-          {/* Texto declarativo y botón alineados con el grid principal */}
           <div className="relative z-10 h-full flex flex-col items-end justify-start pt-8 px-4 sm:px-6 md:px-8">
-            
             <DeclarativeText className="max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none -mr-15">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
             </DeclarativeText>
 
-            {/* Main Button debajo del texto */}
             <div className="mt-12 pointer-events-auto">
               <MainButton
                 variant="navbar"
@@ -197,7 +177,6 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Footer principal con fondo Iridescence */}
       <Section
         variant="compact"
         containerized={false}

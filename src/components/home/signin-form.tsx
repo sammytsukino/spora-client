@@ -9,7 +9,6 @@ export default function SignInForm() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle login logic here
     console.log("Login:", { email, password })
   }
 
@@ -24,7 +23,6 @@ export default function SignInForm() {
         </p>
 
         <form onSubmit={handleLogin} className="space-y-6">
-          {/* Email Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Email
@@ -39,7 +37,6 @@ export default function SignInForm() {
             />
           </div>
 
-          {/* Password Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Password
@@ -54,7 +51,6 @@ export default function SignInForm() {
             />
           </div>
 
-          {/* Login Button */}
           <MainButton
             type="submit"
             className="w-full h-12"
@@ -63,7 +59,6 @@ export default function SignInForm() {
           </MainButton>
         </form>
 
-        {/* Sign Up Link */}
         <p className="text-center mt-8 font-jetbrains-mono text-sm">
           Don't have account?{" "}
           <button

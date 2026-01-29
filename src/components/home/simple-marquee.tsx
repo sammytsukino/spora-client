@@ -14,7 +14,6 @@ type SpringOptions = {
   stiffness?: number
 }
 
-// Custom wrap function
 const wrap = (min: number, max: number, value: number): number => {
   const range = max - min
   return ((((value - min) % range) + range) % range) + min
@@ -37,7 +36,6 @@ const MarqueeItem = ({ children }: { children: React.ReactNode }) => (
   </div>
 )
 
-// Componente interno de marquee
 const MarqueeRow = ({
   children,
   direction = "right",
@@ -123,7 +121,6 @@ export default function SimpleMarquee({
   slowDownFactor = 0.1,
   slowDownSpringConfig = { damping: 60, stiffness: 300 },
 }: SimpleMarqueeProps) {
-  // Si no hay items, usar imágenes de ejemplo
   const defaultImages = [
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-21_dzwlna.png",
@@ -182,7 +179,6 @@ export default function SimpleMarquee({
         </MarqueeItem>
       ))
 
-  // Dividir items en tres grupos para crear múltiples filas
   const firstThird = displayItems.slice(0, Math.floor(displayItems.length / 3))
   const secondThird = displayItems.slice(
     Math.floor(displayItems.length / 3),

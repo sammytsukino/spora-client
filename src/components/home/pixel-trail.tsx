@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 import { useDimensions } from "@/hooks/use-dimensions"
 
 interface PixelTrailProps {
-  pixelSize: number // px
-  fadeDuration?: number // ms
-  delay?: number // ms
+  pixelSize: number
+  fadeDuration?: number
+  delay?: number
   className?: string
   pixelClassName?: string
 }
@@ -100,7 +100,6 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
       })
     }, [])
 
-    // Attach the animatePixel function to the DOM element
     const ref = useCallback(
       (node: HTMLDivElement | null) => {
         if (node) {
