@@ -15,7 +15,7 @@ export default function SignInForm() {
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full px-5">
-      <div className="w-full max-w-md p-20 bg-stone-200 border-2 border-neutral-800">
+      <div className="w-full max-w-[600px] p-20 pt-30 pb-30 bg-stone-200 border-2 border-neutral-800">
         <h1 className="text-4xl text-neutral-800 font-bold text-center mb-2 font-bizud-mincho-bold">
           Enter SPORA
         </h1>

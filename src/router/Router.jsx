@@ -7,6 +7,7 @@ import Team from "../views/Team";
 import Research from "../views/Research";
 import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
+import SignUp from "../views/SignUp";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignIn />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
   },
 ]);
 

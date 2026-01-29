@@ -21,7 +21,7 @@ export default function FooterMain() {
 
       {/* Top image row */}
       <div className="flex items-start justify-end">
-        <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg" alt="Spora logo" className="max-w-[500px] w-1/5 object-contain" />
+        <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg" alt="Spora logo" className="max-w-[800px]  object-contain" />
       </div>
 
       {/* Middle graphic row */}
