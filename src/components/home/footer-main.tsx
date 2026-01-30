@@ -6,7 +6,7 @@ export default function FooterMain() {
   const navigate = useNavigate()
 
   return (
-    <footer className="w-full h-full px-4 sm:px-6 md:px-8 py-8 flex flex-col justify-between text-neutral-900">
+    <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-neutral-900">
       {/* Top labels */}
       <div className="flex items-start justify-between text-2xl sm:text-2xl font-jetbrains-mono mb-12">
         <p className="whitespace-pre leading-tight">

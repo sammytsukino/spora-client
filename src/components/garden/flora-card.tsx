@@ -7,6 +7,7 @@ interface FloraCardProps {
   subtitle: string;
   author: string;
   generation: string;
+  flexible?: boolean;
   className?: string;
 }
 
@@ -16,12 +17,20 @@ export default function FloraCard({
   subtitle,
   author,
   generation,
+  flexible = false,
   className,
 }: FloraCardProps) {
   return (
-    <div className={cn("flex flex-col border-2 border-neutral-800 bg-neutral-100", className)}>
+    <div className={cn(
+      "flex flex-col border-2 border-neutral-800 bg-neutral-200",
+      flexible && "min-h-0",
+      className
+    )}>
       {/* Image Area */}
-      <div className="relative aspect-[16/10] overflow-hidden border-b-2 border-neutral-800">
+      <div className={cn(
+        "relative overflow-hidden border-b-2 border-neutral-800",
+        flexible ? "flex-1 min-h-0" : "aspect-[16/10]"
+      )}>
         <img
           src={image}
           alt={title}
@@ -30,7 +39,7 @@ export default function FloraCard({
       </div>
 
       {/* Content Area */}
-      <div className="p-4 flex flex-col justify-between flex-1 relative min-h-[160px]">
+      <div className="p-4 flex flex-col justify-between shrink-0 relative">
         {/* Search Icon (Top Right) */}
         <div className="absolute top-4 right-4">
           <svg width="30" height="30" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
