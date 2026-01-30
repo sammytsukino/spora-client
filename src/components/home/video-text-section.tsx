@@ -24,7 +24,7 @@ export default function VideoTextSection() {
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start px-6 md:px-10 lg:px-16 py-8 md:py-12 space-y-6">
         <div className="space-y-6 md:space-y-8">
           <p className="text-neutral-200 font-bizud-mincho-bold text-base md:text-xl lg:text-2x1 leading-relaxed">
-            <TextHighlighter highlightColor="#f140b4"><span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span></TextHighlighter>
+            <span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span>
           </p>
 
           

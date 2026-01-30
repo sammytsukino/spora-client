@@ -6,19 +6,22 @@ type TransparentNavbarProps = {
   position?: "fixed" | "sticky";
   className?: string;
   showScrollProgress?: boolean;
+  showScrollBackground?: boolean;
 };
 
 export default function TransparentNavbar({
   position = "fixed",
   className = "",
   showScrollProgress = false,
+  showScrollBackground = false,
 }: TransparentNavbarProps) {
   const navigate = useNavigate();
   const positionClass = position === "sticky" ? "sticky top-0" : "fixed top-0";
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    if (!showScrollProgress) return;
+    if (!showScrollProgress && !showScrollBackground) return;
 
     const updateScrollProgress = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -27,6 +30,7 @@ export default function TransparentNavbar({
         document.documentElement.clientHeight;
       const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(Math.max(0, Math.min(100, progress)));
+      setHasScrolled(scrollTop > 10);
     };
 
     updateScrollProgress();
@@ -37,12 +41,23 @@ export default function TransparentNavbar({
       window.removeEventListener("scroll", updateScrollProgress);
       window.removeEventListener("resize", updateScrollProgress);
     };
-  }, [showScrollProgress]);
+  }, [showScrollProgress, showScrollBackground]);
 
   return (
     <header
-      className={`${positionClass} w-full z-50 bg-transparent text-neutral-800 font-jetbrains-mono ${className}`}
+      className={`${positionClass} w-full z-50 text-neutral-800 font-jetbrains-mono ${className}`}
     >
+      {/* Gradient background overlay */}
+      {showScrollBackground && (
+        <div
+          className="absolute inset-0 -z-10 transition-opacity duration-500 ease-in-out"
+          style={{
+            opacity: hasScrolled ? 1 : 0,
+            background: "oklch(89.7% 0.196 126.665)",
+            borderBottom: "2px solid #242424"
+          }}
+        />
+      )}
       {showScrollProgress && (
         <div className="w-full h-[2px] bg-transparent">
           <div
@@ -51,7 +66,7 @@ export default function TransparentNavbar({
           />
         </div>
       )}
-      <div className="mx-auto flex items-center justify-between px-6 py-3 md:px-10 md:py-4">
+      <div className="mx-auto flex items-center justify-between px-6 py-3 md:px-12 lg:px-16 md:py-4">
         <div className="flex items-center">
           <img
             src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
@@ -62,7 +77,7 @@ export default function TransparentNavbar({
         </div>
 
         <nav className="flex-1">
-          <ul className="flex items-center justify-center gap-8 text-[10px] sm:text-xs tracking-[0.3em] uppercase">
+          <ul className="flex items-center justify-center gap-8 text-[10px] sm:text-xs tracking-[0.3em] uppercase font-semibold">
             <li>
               <button
                 type="button"

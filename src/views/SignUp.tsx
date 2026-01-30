@@ -7,7 +7,7 @@ import Section from "@/components/Section";
 export default function SignUp() {
   return (
     <div className="w-full overflow-x-hidden">
-      <TransparentNavbar />
+      <TransparentNavbar showScrollBackground />
 
       <Section
         variant="full"

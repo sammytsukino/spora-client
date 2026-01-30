@@ -17,7 +17,7 @@ export default function MainButton({
 }: MainButtonProps) {
   // estilos base compartidos
   const baseStyles =
-    "inline-flex items-center justify-center bg-transparent transition-colors font-jetbrains-mono cursor-pointer"
+    "inline-flex items-center justify-center bg-transparent transition-colors font-jetbrains-mono font-bold cursor-pointer"
 
   // estilos por variante
   const variantStyles: Record<NonNullable<MainButtonProps["variant"]>, string> = {

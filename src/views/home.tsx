@@ -15,7 +15,6 @@ import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import CyclingLogo from '../components/home/cycling-logo'
-import TransparentNavbar from '@/components/home/transparent-navbar'
 import Navbar from '@/components/home/navbar'
 
 
@@ -168,7 +167,7 @@ export default function Home() {
       <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
           {/* Header personalizado - se renderiza fuera del componente */}
-          <div className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 mt-8">
+          <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
             <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
               Featured Floras →
             </h2>
@@ -199,14 +198,14 @@ export default function Home() {
           {/* Bubble Background artístico */}
 
           {/* Texto declarativo y botón alineados con el grid principal */}
-          <div className="relative z-10 h-full flex flex-col items-end justify-start pt-8 px-4 sm:px-6 md:px-8">
+          <div className="relative z-10 h-full flex flex-col items-end justify-start">
             
-            <p className="font-bizud-mincho text-neutral-200 max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+            <p className="font-bizud-mincho text-neutral-200 -mr-3 max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
             </p>
 
             {/* Main Button debajo del texto */}
-            <div className="mt-12 pointer-events-auto">
+            <div className="mt-12 pointer-events-auto pt-8 px-6 md:px-12 lg:px-16">
               <MainButton
                 variant="navbar"
                 size="sm"
