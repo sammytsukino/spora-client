@@ -16,6 +16,7 @@ import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import CyclingLogo from '../components/home/cycling-logo'
 import Navbar from '@/components/home/navbar'
+import Aurora from '@/components/Aurora'
 
 
 export default function Home() {
@@ -73,6 +74,8 @@ export default function Home() {
         </div>
         */}
 
+
+
         {/* Capa de background: ImageTrail ocupa toda la sección */}
         <div className="absolute inset-0 z-10">
           <ImageTrail />
@@ -119,6 +122,8 @@ export default function Home() {
         className="items-stretch justify-start"
       >
         <div className="relative w-full h-full overflow-hidden bg-neutral-800">
+
+          
           {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 

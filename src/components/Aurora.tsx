@@ -101,7 +101,8 @@ void main() {
   float midPoint = 0.20;
   float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
   
-  vec3 auroraColor = intensity * rampColor;
+  // Usar el color directamente sin multiplicar por intensity para evitar halos oscuros
+  vec3 auroraColor = rampColor;
   
   fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
 }

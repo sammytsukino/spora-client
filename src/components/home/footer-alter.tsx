@@ -1,17 +1,25 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import CyclingLogo from "./cycling-logo"
+import Aurora from "../Aurora"
 
 export default function FooterAlter() {
   const navigate = useNavigate()
 
   return (
-    <footer className="w-full h-full bg-transparent px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-neutral-900">
-      {/* Top labels */}
+    <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-neutral-900 overflow-hidden">
+      {/* Aurora background */}
+      {/* <div className="absolute inset-0 z-0">
+        <Aurora colorStops={["#c6ff00", "#00ff87", "#60efff"]} amplitude={1.2} blend={0.5} />
+      </div> */}
 
-      {/* Top horizontal line */}
-      <div className="flex justify-end">
-        <div className="w-1/2 border-t border-neutral-900 mb-10" />
+      {/* Content wrapper */}
+      <div className="relative z-10 flex flex-col justify-between h-full">
+        {/* Top labels */}
+
+        {/* Top horizontal line */}
+        <div className="flex justify-end">
+          <div className="w-1/2 border-t border-neutral-900 mb-10" />
       </div>
 
       {/* Middle graphic row */}
@@ -87,6 +95,7 @@ export default function FooterAlter() {
       <div className="mt-8 flex items-center justify-center text-[10px] sm:text-xs font-jetbrains-mono">
         {/* Centered copyright */}
         <span className="text-center whitespace-nowrap">© 2026, SPORA</span>
+      </div>
       </div>
     </footer>
   )
