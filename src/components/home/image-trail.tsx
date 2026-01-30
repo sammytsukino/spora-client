@@ -259,7 +259,7 @@ const images = [
 
 export default function ImageTrail() {
   return (
-    <div className="w-full h-full relative z-0 text-foreground dark:text-muted overflow-hidden" style={{ backgroundColor: "#E9E9E9" }}>
+    <div className="w-full h-full relative z-0 text-foreground dark:text-muted overflow-hidden" style={{ backgroundColor: "transparent" }}>
       <ImageTrailBase
         threshold={250}
         intensity={1}

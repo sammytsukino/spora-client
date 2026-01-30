@@ -1,25 +1,56 @@
 import MainButton from "../ui/main-button"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-// import { motion, useScroll } from "motion/react"
 
-export default function Navbar() {
+type NavbarProps = {
+  position?: "fixed" | "sticky"
+  className?: string
+  showScrollProgress?: boolean
+}
+
+export default function Navbar({
+  position = "fixed",
+  className = "",
+  showScrollProgress = false,
+}: NavbarProps) {
   const navigate = useNavigate()
-  // const { scrollYProgress } = useScroll()
+  const positionClass = position === "sticky" ? "sticky top-0" : "fixed top-0"
+  const [scrollProgress, setScrollProgress] = useState(0)
+
+  useEffect(() => {
+    if (!showScrollProgress) return
+
+    const updateScrollProgress = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
+      setScrollProgress(Math.max(0, Math.min(100, progress)))
+    }
+
+    updateScrollProgress()
+    window.addEventListener("scroll", updateScrollProgress, { passive: true })
+    window.addEventListener("resize", updateScrollProgress)
+
+    return () => {
+      window.removeEventListener("scroll", updateScrollProgress)
+      window.removeEventListener("resize", updateScrollProgress)
+    }
+  }, [showScrollProgress])
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-neutral-800 text-stone-300 font-jetbrains-mono overflow-hidden">
-      {/*
-      <motion.div
-        id="scroll-indicator"
-        aria-hidden="true"
-        className="absolute inset-0 z-0"
-        style={{
-          scaleX: scrollYProgress,
-          transformOrigin: "0% 50%",
-          backgroundColor: "#F434C0",
-        }}
-      />
-      */}
+    <header
+      className={`${positionClass} left-0 w-full z-50 bg-neutral-800 text-stone-300 font-jetbrains-mono overflow-hidden ${className}`}
+    >
+      {showScrollProgress && (
+        <div className="w-full h-[2px] bg-transparent">
+          <div
+            className="h-full"
+            style={{ width: `${scrollProgress}%`, backgroundColor: "oklch(65.6% 0.241 354.308)" }}
+          />
+        </div>
+      )}
       <div className="relative z-10 mx-auto flex items-center justify-between px-6 py-3 md:px-10 md:py-4">
         <div className="flex items-center">
           <img

@@ -1,7 +1,7 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
-import Navbar from '../components/home/navbar'
 import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
 import ImageTrail from '../components/home/image-trail'
 import VideoTextSection from '../components/home/video-text-section'
@@ -14,8 +14,9 @@ import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
-import ColorBends from '../components/ColorBends'
 import CyclingLogo from '../components/home/cycling-logo'
+import TransparentNavbar from '@/components/home/transparent-navbar'
+import Navbar from '@/components/home/navbar'
 
 
 export default function Home() {
@@ -24,23 +25,62 @@ export default function Home() {
   const browserName = useDetectBrowser()
   const isSafari = browserName === "Safari"
 
+  useEffect(() => {
+    document.body.classList.add('hide-scrollbar')
+    document.documentElement.classList.add('hide-scrollbar')
+
+    return () => {
+      document.body.classList.remove('hide-scrollbar')
+      document.documentElement.classList.remove('hide-scrollbar')
+    }
+  }, [])
+
   return (
     <div className="w-full overflow-x-hidden">
-      <Navbar />
+      <Navbar position="fixed" showScrollProgress />
 
-      {/* HERO - pantalla completa con ImageTrail como background y contenido encima */}
+      {/* HERO - pantalla completa con video de fondo + ImageTrail + contenido encima */}
       <Section
         variant="hero"
         containerized={false}
         className="relative overflow-hidden items-stretch"
       >
+        {/* Capa de background: BubbleBackground debajo del ImageTrail */}
+        {/*
+        <div className="absolute inset-0 z-0">
+          <BubbleBackground
+            interactive
+            className="absolute inset-0 flex items-center justify-center"
+          />
+        </div>
+        */}
+
+        {/* Capa de background: video en loop debajo del ImageTrail */}
+        {/*
+        <div className="absolute inset-0 z-0">
+          <video
+            className="w-full h-full object-cover grayscale"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+          >
+            <source
+              src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1769766231/img-7_nfkocz.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+        */}
+
         {/* Capa de background: ImageTrail ocupa toda la sección */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 z-10">
           <ImageTrail />
         </div>
 
         {/* Capa de contenido: tipografía + CyclingLogo, siguiendo patrón del footer */}
-        <div className="relative z-10 flex flex-col items-center justify-center gap-20 w-full h-full pointer-events-none">
+        <div className="relative z-20 flex flex-col items-center justify-center gap-20 w-full h-full pointer-events-none">
           <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
             not revolutionary
           </p>

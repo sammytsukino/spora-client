@@ -6,6 +6,18 @@ body {
   @apply bg-background text-foreground;
 }
 
+/* Ocultar scrollbar (mantener scroll) solo cuando se aplica la clase */
+html.hide-scrollbar,
+body.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html.hide-scrollbar::-webkit-scrollbar,
+body.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Fuente local BIZ UDPMincho (Regular y Bold) desde /src/assets */
 @font-face {
   font-family: "BIZ UDPMincho";
