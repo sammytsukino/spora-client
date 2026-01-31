@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import PageTitle from "@/components/ui/page-title";
-import FloraCard from "@/components/garden/flora-card";
 import FooterAlter from "@/components/home/footer-alter";
+import FloraCard from "@/components/garden/flora-card";
 
 const floraImages = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
@@ -11,28 +11,62 @@ const floraImages = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-19_haco8y.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532656/img-18_djc6db.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-17_e6uarr.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-16_gf9k7x.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-15_wpwz9h.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-14_gbx118.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-13_qncmyd.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532651/img-12_swbm8v.png",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-11_la2ekj.png",
 ];
 
-// Generate 36 cards by cycling through the available images
-const allCards = Array.from({ length: 36 }, (_, i) => ({
+const excerpts = [
+  'Lloro porque no siento nada, y ahora además de triste me siento un farsante',
+  'En el silencio encuentro voces que nunca existieron',
+  'Las palabras se desvanecen como humo entre mis dedos',
+  'Cada letra es una semilla que germina en la oscuridad',
+  'La soledad no es estar solo, es sentirse vacío',
+  'Mis pensamientos son fractales que se repiten infinitamente',
+  'El eco de tu ausencia resuena en cada rincón',
+  'Construyo mundos con palabras que nadie leerá',
+  'La melancolía tiene el color de la lluvia en noviembre',
+  'Soy un algoritmo buscando el sentido en el caos',
+  'Las heridas del alma no sangran, pero duelen igual',
+  'En cada verso planto un jardín de emociones muertas',
+];
+
+const allFloras = Array.from({ length: 48 }, (_, i) => ({
+  id: `FLR/${String(i + 1).padStart(3, '0')}`,
+  generation: i < 16 ? 'GEN_0' : i < 32 ? 'GEN_1' : 'GEN_2',
   image: floraImages[i % floraImages.length],
-  title: "Estoy solo",
-  subtitle: "Lloro porque no siento nada, y ahora...",
-  author: "@FranBarreno",
-  generation: "Gen0",
+  title: ['VOID ECHO', 'NEURAL FERN', 'PIXEL BLOOM', 'DATA MOSS', 'CODE SPORE', 'BYTE LOTUS'][i % 6],
+  excerpt: excerpts[i % excerpts.length],
+  author: '@' + ['FranBarreno', 'SporaLab', 'GenArtist', 'FloraGen'][i % 4],
+  seed: `#${Math.random().toString(16).substr(2, 6).toUpperCase()}`,
 }));
 
-const INITIAL_CARDS = 6;
-const CARDS_PER_LOAD = 3;
+const filters = ['All Units', 'GEN_0', 'GEN_1', 'GEN_2'];
+const ITEMS_PER_PAGE = 12;
 
 export default function Garden() {
-  const [visibleCards, setVisibleCards] = useState(INITIAL_CARDS);
+  const [activeFilter, setActiveFilter] = useState('All Units');
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
+  // Filtrar las floras según el filtro activo
+  const filteredFloras = activeFilter === 'All Units' 
+    ? allFloras 
+    : allFloras.filter(flora => flora.generation === activeFilter);
+
+  // Resetear el contador cuando cambia el filtro
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [activeFilter]);
+
+  // Cargar más cards al hacer scroll
   const loadMoreCards = useCallback(() => {
-    if (visibleCards < allCards.length) {
-      setVisibleCards((prev) => Math.min(prev + CARDS_PER_LOAD, allCards.length));
+    if (visibleCount < filteredFloras.length) {
+      setVisibleCount(prev => Math.min(prev + ITEMS_PER_PAGE, filteredFloras.length));
     }
-  }, [visibleCards]);
+  }, [visibleCount, filteredFloras.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,63 +74,92 @@ export default function Garden() {
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
 
-      // Load more when user is near the bottom (200px threshold)
-      if (scrollTop + windowHeight >= docHeight - 200) {
+      // Cargar más cuando el usuario está cerca del final (300px antes)
+      if (scrollTop + windowHeight >= docHeight - 300) {
         loadMoreCards();
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMoreCards]);
 
+  const handleCardClick = () => {
+    // Card click interaction
+  };
+
+  const visibleFloras = filteredFloras.slice(0, visibleCount);
+
   return (
-    <div className="w-full overflow-x-hidden bg-[#E9E9E9] flex flex-col">
+    <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
       <TransparentNavbar showScrollBackground />
 
-      {/* Hero Section - Full viewport with 3x2 grid */}
-      <section className="h-screen flex flex-col pt-20 pb-6 px-6 md:px-12 lg:px-16">
-        <PageTitle
-          supertitle="(01)GARDEN"
-          title={`Open Floras\nready to be\ncut`}
-          className="shrink-0"
-        />
-
-        <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-2 md:grid-rows-2 lg:grid-rows-2 gap-10">
-          {allCards.slice(0, INITIAL_CARDS).map((card, index) => (
-            <FloraCard
-              key={`initial-${index}`}
-              image={card.image}
-              title={card.title}
-              subtitle={card.subtitle}
-              author={card.author}
-              generation={card.generation}
-              flexible
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Gallery Section - Loads more on scroll */}
-      {visibleCards > INITIAL_CARDS && (
-        <section className="px-6 md:px-12 lg:px-16 pb-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" style={{ gridAutoRows: 'calc((100vh - 5rem - 12rem - 1rem - 1.5rem) / 2)' }}>
-            {allCards.slice(INITIAL_CARDS, visibleCards).map((card, index) => (
-              <FloraCard
-                key={`extra-${index}`}
-                image={card.image}
-                title={card.title}
-                subtitle={card.subtitle}
-                author={card.author}
-                generation={card.generation}
-                flexible
-              />
+      {/* Header Section */}
+      <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+          <PageTitle
+            supertitle="(01)GARDEN"
+            title={`Open Floras\nready to be\ncut`}
+          />
+          <div className="filter-tabs flex gap-2 mb-4">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                className={`font-jetbrains-mono text-[11px] px-3 py-1.5 border-2 border-black uppercase transition-colors ${
+                  activeFilter === filter
+                    ? 'bg-black text-lime-300'
+                    : 'bg-transparent text-black hover:bg-black/10'
+                }`}
+                onClick={() => setActiveFilter(filter)}
+              >
+                {filter}
+              </button>
             ))}
           </div>
-        </section>
-      )}
+        </div>
+
+        {/* Flora Grid with auto-fill and black border wrapper */}
+        <div className="border-l-2 border-t-2 border-black">
+          <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
+            {visibleFloras.map((flora) => (
+              <FloraCard
+                key={flora.id}
+                id={flora.id}
+                generation={flora.generation}
+                image={flora.image}
+                title={flora.title}
+                excerpt={flora.excerpt}
+                author={flora.author}
+                seed={flora.seed}
+                onClick={handleCardClick}
+              />
+            ))}
+          </main>
+        </div>
+
+        {/* Loading indicator */}
+        {visibleCount < filteredFloras.length && (
+          <div className="py-8 text-center">
+            <div className="inline-flex items-center gap-2 font-jetbrains-mono text-xs text-gray-500">
+              <div className="w-2 h-2 bg-lime-300 rounded-full animate-pulse" />
+              LOADING MORE... ({visibleCount} / {filteredFloras.length})
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Floating Action Button */}
+      <button
+        className="fixed bottom-8 right-8 w-16 h-16 bg-black text-lime-300 rounded-full flex items-center justify-center z-50 hover:scale-110 active:scale-95 transition-transform duration-200"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"></line>
+          <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+      </button>
 
       <FooterAlter />
     </div>
-  )
+  );
 }
