@@ -7,12 +7,16 @@ export default function Contact() {
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1">
-        {/* Content */}
+        {/* ========================================
+            CONTACT PAGE
+            - Contact form
+            - Contact information
+            - Social links
+            ======================================== */}
+        {/* TODO: Contact content */}
       </main>
 
-      <div className="relative z-10">
-        <FooterAlter />
-      </div>
+      <FooterAlter />
     </div>
   )
 }

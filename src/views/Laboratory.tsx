@@ -7,12 +7,17 @@ export default function Laboratory() {
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1">
-        {/* Content */}
+        {/* ========================================
+            LABORATORY PAGE
+            - Flora creation interface
+            - Text input
+            - Generative preview
+            - Minting/saving options
+            ======================================== */}
+        {/* TODO: Laboratory content */}
       </main>
 
-      <div className="relative z-10">
-        <FooterAlter />
-      </div>
+      <FooterAlter />
     </div>
   )
 }

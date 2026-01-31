@@ -7,12 +7,16 @@ export default function Research() {
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1">
-        {/* Content */}
+        {/* ========================================
+            RESEARCH PAGE
+            - Documentation
+            - Technical papers
+            - Algorithm explanations
+            ======================================== */}
+        {/* TODO: Research content */}
       </main>
 
-      <div className="relative z-10">
-        <FooterAlter />
-      </div>
+      <FooterAlter />
     </div>
   )
 }

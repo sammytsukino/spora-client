@@ -7,12 +7,16 @@ export default function Team() {
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1">
-        {/* Content */}
+        {/* ========================================
+            TEAM PAGE
+            - Team members
+            - Roles and bios
+            - Social links
+            ======================================== */}
+        {/* TODO: Team content */}
       </main>
 
-      <div className="relative z-10">
-        <FooterAlter />
-      </div>
+      <FooterAlter />
     </div>
   )
 }
