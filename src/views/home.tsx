@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import '../index.css'
 import useScreenSize from '../hooks/use-screen-size'
 import SpecimenCard from '../components/ui/specimen-card'
+import WebGLCanvas from '../components/ui/WebGLCanvas'
 
 // =============================================================================
 // DESIGN TOKENS
@@ -87,108 +88,32 @@ const Header = () => {
 }
 
 // =============================================================================
-// HERO SECTION
+// HERO SECTION (editorial, 3 divisiones)
 // =============================================================================
 const HeroSection = () => {
-  const heroRef = useRef<HTMLElement>(null)
-  const trailContainerRef = useRef<HTMLDivElement>(null)
-  const lastMouseRef = useRef({ x: 0, y: 0, time: Date.now() })
-  const isThrottledRef = useRef(false)
-  
-  const [logoText, setLogoText] = useState('SPORA')
-  const [velocity, setVelocity] = useState('0.00')
-
-  // Logo glitch effect
-  useEffect(() => {
-    let variantIdx = 0
-    const interval = setInterval(() => {
-      variantIdx = (variantIdx + 1) % LOGO_VARIANTS.length
-      setLogoText(LOGO_VARIANTS[variantIdx])
-    }, 800)
-    return () => clearInterval(interval)
-  }, [])
-
-  const spawnImage = useCallback((x: number, y: number) => {
-    if (!trailContainerRef.current) return
-    
-    const img = document.createElement('img')
-    img.src = TRAIL_IMAGES[Math.floor(Math.random() * TRAIL_IMAGES.length)]
-    img.className = 'trail-img'
-    img.style.left = `${x}px`
-    img.style.top = `${y}px`
-    
-    const rot = (Math.random() - 0.5) * 40
-    img.style.transform = `translate(-50%, -50%) scale(0.5) rotate(${rot}deg)`
-    
-    trailContainerRef.current.appendChild(img)
-    setTimeout(() => img.remove(), 800)
-  }, [])
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const now = Date.now()
-    const dt = now - lastMouseRef.current.time
-    const dx = e.clientX - lastMouseRef.current.x
-    const dy = e.clientY - lastMouseRef.current.y
-    const speed = Math.sqrt(dx * dx + dy * dy) / dt
-    
-    setVelocity(speed.toFixed(2))
-    lastMouseRef.current = { x: e.clientX, y: e.clientY, time: now }
-    
-    if (!isThrottledRef.current && speed > 0.5) {
-      spawnImage(e.clientX, e.clientY)
-      isThrottledRef.current = true
-      setTimeout(() => (isThrottledRef.current = false), 100)
-    }
-  }, [spawnImage])
-
   return (
-    <section
-      ref={heroRef}
-      className="h-[calc(100vh-60px)] relative overflow-hidden flex flex-col items-center justify-center border-b-grid cursor-crosshair"
-      onMouseMove={handleMouseMove}
-    >
-      <div ref={trailContainerRef} />
-      
-      {/* HUD Corners */}
-      <HUDCorner position="tl" />
-      <HUDCorner position="tr" />
-      <HUDCorner position="bl" />
-      <HUDCorner position="br" />
-
-      {/* HUD Data - Top Left */}
-      <div className="absolute top-12 left-12 font-tech text-xs opacity-60 z-30">
-        MOUSE_TRACKING: ACTIVE<br />
-        VELOCITY: {velocity}
+    <section className="h-[calc(100vh-60px)] border-b-grid grid grid-rows-[auto_auto_1fr]">
+      {/* Top: Título y subtítulo */}
+      <div className="max-w-[1600px] mx-auto border-x border-[#0A0A0A] w-full px-8 md:px-24 py-12 border-b-grid">
+        <h1 className="font-display font-black text-[clamp(3rem,8vw,10rem)] leading-[0.85] tracking-tighter uppercase mb-4">INFINITE<br />VELOCITY</h1>
+        <p className="font-serif italic text-2xl md:text-4xl text-[#0A0A0A]/70">not revolutionary, but evolutionary</p>
       </div>
-
-      {/* HUD Data - Top Right */}
-      <div className="absolute top-12 right-12 font-tech text-xs text-right opacity-60 z-30">
-        COORD: 34.41.24 N<br />
-        SYS: ONLINE
-      </div>
-
-      {/* Center Content */}
-      <div className="z-30 text-center relative pointer-events-none">
-        <p className="font-serif italic text-3xl md:text-5xl mb-8">not revolutionary</p>
-        <div 
-          className="font-display font-black text-[clamp(4rem,15vw,12rem)] leading-[0.8] tracking-tighter uppercase"
-          style={{ color: 'var(--c-acid)' }}
-        >
-          {logoText}
+      {/* Middle: Descripción y detalles */}
+      <div className="max-w-[1600px] mx-auto border-x border-[#0A0A0A] w-full grid grid-cols-12 border-b-grid">
+        <div className="col-span-12 md:col-span-8 border-r-grid py-8 md:py-16 px-8 md:px-16">
+          <p className="font-tech text-lg md:text-2xl max-w-[30ch]">SPORA is a generative design engine capable of producing thousands of unique digital specimens per minute. One scroll. Unlimited output.</p>
         </div>
-        <p className="font-serif italic text-3xl md:text-5xl mt-8">but evolutionary</p>
+        <div className="col-span-12 md:col-span-4 p-8 md:p-16 flex items-end justify-end pb-0 md:pb-0">
+          <span className="font-mono text-base md:text-lg tracking-tight">SYS. VER 4.0.2</span>
+        </div>
       </div>
-
-      {/* Crosshair Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
-        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-black" />
-        <div className="absolute top-0 left-1/2 w-[1px] h-full bg-black" />
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-6 right-6 font-tech text-xs text-right z-30">
-        SCROLL_DOWN<br />
-        [INIT_SEQUENCE]
+      {/* Bottom: Render/Canvas (ocupa todo el espacio restante) */}
+      <div className="max-w-[1600px] mx-auto border-x border-[#0A0A0A] w-full relative bg-[#f0f0f0] overflow-hidden p-0 m-0 flex h-full min-h-[220px]">
+        <WebGLCanvas />
+        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2">
+          <span className="inline-flex items-center justify-center bg-black text-white rounded-full w-6 h-6 text-xs font-bold mr-2">●</span>
+          <span className="font-tech text-xs">RENDERING INSTANCE CLOUD</span>
+        </div>
       </div>
     </section>
   )
