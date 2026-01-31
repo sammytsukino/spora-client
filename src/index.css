@@ -1,9 +1,123 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ============================================
+   SPORA DESIGN SYSTEM - Editorial/Brutalist
+   ============================================ */
+
+:root {
+  /* Core Colors */
+  --c-concrete: #D8D8D8;
+  --c-acid: #D9FF00;
+  --c-black: #0A0A0A;
+  --c-ink: #000000;
+  --c-white: #FFFFFF;
+  
+  /* Grid System */
+  --grid-line: 1px solid rgba(10, 10, 10, 1);
+  --grid-line-light: 1px solid rgba(10, 10, 10, 0.1);
+  
+  /* Typography */
+  --font-display: 'Inter', sans-serif;
+  --font-tech: 'JetBrains Mono', monospace;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-art: 'BIZ UDPMincho', serif;
+}
+
 body {
   @apply bg-background text-foreground;
+}
+
+/* Utility Classes for Design System */
+.bg-concrete { background-color: var(--c-concrete); }
+.bg-acid { background-color: var(--c-acid); }
+.bg-ink { background-color: var(--c-black); }
+.text-acid { color: var(--c-acid); }
+.text-concrete { color: var(--c-concrete); }
+.border-grid { border: var(--grid-line); }
+.border-b-grid { border-bottom: var(--grid-line); }
+.border-t-grid { border-top: var(--grid-line); }
+.border-l-grid { border-left: var(--grid-line); }
+.border-r-grid { border-right: var(--grid-line); }
+
+.font-display { font-family: var(--font-display); }
+.font-tech { font-family: var(--font-tech); }
+.font-serif { font-family: var(--font-serif); }
+.font-art { font-family: var(--font-art); }
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--c-concrete);
+  border-left: 1px solid black;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-black);
+}
+
+/* Interactive Animations */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+.animate-blink { animation: blink 1s infinite; }
+.animate-marquee { animation: marquee-scroll 30s linear infinite; }
+
+/* Trail Image Effect */
+.trail-img {
+  position: fixed;
+  pointer-events: none;
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  animation: fadeInOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 20;
+  filter: grayscale(100%) contrast(120%);
+  border: 1px solid var(--c-acid);
+}
+
+/* Gooey Filter Container */
+.gooey-container {
+  filter: url('#goo');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Hover Effects */
+.hover-invert {
+  transition: all 0.2s ease;
+}
+.hover-invert:hover {
+  background-color: var(--c-black);
+  color: var(--c-acid);
 }
 
 /* Ocultar scrollbar (mantener scroll) solo cuando se aplica la clase */
