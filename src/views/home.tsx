@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
 import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
-import ImageTrail from '../components/home/image-trail'
 import VideoTextSection from '../components/home/video-text-section'
 import SimpleMarquee from '../components/home/simple-marquee'
 import MainButton from '../components/ui/main-button'
@@ -12,11 +11,9 @@ import GooeySvgFilter from '../components/home/gooey-svg-filter'
 import useDetectBrowser from '../hooks/use-detect-browser'
 import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
-import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
-import CyclingLogo from '../components/home/cycling-logo'
 import Navbar from '@/components/home/navbar'
-import Aurora from '@/components/Aurora'
+import WebGLCanvas from '../components/home/webgl-canvas'
 
 
 export default function Home() {
@@ -39,91 +36,47 @@ export default function Home() {
     <div className="w-full overflow-x-hidden">
       <Navbar position="fixed" showScrollProgress />
 
-      {/* HERO - pantalla completa con video de fondo + ImageTrail + contenido encima */}
-      <Section
-        variant="hero"
-        containerized={false}
-        className="relative overflow-hidden items-stretch"
-      >
-        {/* Capa de background: BubbleBackground debajo del ImageTrail */}
-        {/*
-        <div className="absolute inset-0 z-0">
-          <BubbleBackground
-            interactive
-            className="absolute inset-0 flex items-center justify-center"
-          />
-        </div>
-        */}
-
-        {/* Capa de background: video en loop debajo del ImageTrail */}
-        {/*
-        <div className="absolute inset-0 z-0">
-          <video
-            className="w-full h-full object-cover grayscale"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-          >
-            <source
-              src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1769766231/img-7_nfkocz.mp4"
-              type="video/mp4"
-            />
-          </video>
-        </div>
-        */}
-
-
-
-        {/* Capa de background: ImageTrail ocupa toda la sección */}
-        <div className="absolute inset-0 z-10">
-          <ImageTrail />
-        </div>
-
-        {/* Capa de contenido: tipografía + CyclingLogo, siguiendo patrón del footer */}
-        <div className="relative z-20 flex flex-col items-center justify-center gap-20 w-full h-full pointer-events-none">
-          <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
-            not revolutionary
-          </p>
-
-          <CyclingLogo
-            logos={[
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903352/4_wxvxkj.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903351/3_yni4c2.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903330/0_b471dn.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903331/2_gnhbhj.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903330/1_riof7w.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/11_gjupa0.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/12_nizkdg.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/13_z6rhv6.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/10_cgfww1.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/8_lvrwmb.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/9_ntwap1.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/7_pi1uzh.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/5_nmjyqc.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/6_hi73sd.svg",
-            ]}
-            width="50vw"
-            height="10vw"
-            cycleDuration={0.2}
-          />
-
-          <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mt-2">
-            but evolutionary
+      {/* HERO SECTION (editorial, 3 divisiones) */}
+      <section className="w-full h-[calc(100vh-60px)] mt-[60px] border-b border-[#0A0A0A] grid grid-rows-[auto_auto_1fr]">
+        {/* Top: Título y subtítulo */}
+        <div className="border-x border-[#0A0A0A] w-full px-8 md:px-24 py-12 border-b border-[#0A0A0A]">
+          <h1 className="font-jetbrains-mono font-black text-[clamp(3rem,8vw,10rem)] leading-[0.85] tracking-tighter uppercase mb-4">
+            INFINITE<br />VELOCITY
+          </h1>
+          <p className="font-bizud-mincho italic text-2xl md:text-4xl text-[#0A0A0A]/70">
+            not revolutionary, but evolutionary
           </p>
         </div>
-      </Section>
+        
+        {/* Middle: Descripción y detalles */}
+        <div className="border-x border-[#0A0A0A] w-full grid grid-cols-12 border-b border-[#0A0A0A]">
+          <div className="col-span-12 md:col-span-8 border-r border-[#0A0A0A] py-8 md:py-16 px-8 md:px-16">
+            <p className="font-jetbrains-mono text-lg md:text-2xl max-w-[30ch]">
+              SPORA is a generative design engine capable of producing thousands of unique digital specimens per minute. One scroll. Unlimited output.
+            </p>
+          </div>
+          <div className="col-span-12 md:col-span-4 p-8 md:p-16 flex items-end justify-end pb-0 md:pb-0">
+            <span className="font-jetbrains-mono text-base md:text-lg tracking-tight">
+              SYS. VER 4.0.2
+            </span>
+          </div>
+        </div>
+        
+        {/* Bottom: Render/Canvas (ocupa todo el espacio restante) */}
+        <div className="border-x border-[#0A0A0A] w-full relative bg-[#f0f0f0] overflow-hidden p-0 m-0 flex h-full min-h-[220px]">
+          <WebGLCanvas />
+          <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2">
+            <span className="inline-flex items-center justify-center bg-black text-white rounded-full w-6 h-6 text-xs font-bold mr-2">
+              ●
+            </span>
+            <span className="font-jetbrains-mono text-xs">RENDERING INSTANCE CLOUD</span>
+          </div>
+        </div>
+      </section>
 
       {/* Sección con texto declarativo y PixelTrail de fondo */}
-      <Section
-        variant="large"
-        containerized={false}
-        className="items-stretch justify-start"
-      >
+      <section className="relative w-full h-[90vh] flex items-stretch justify-start border-b border-[#0A0A0A]">
         <div className="relative w-full h-full overflow-hidden bg-neutral-800">
-
-          
           {/* Gooey SVG Filter */}
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
@@ -142,37 +95,29 @@ export default function Home() {
           </div>
 
           {/* Texto declarativo por encima */}
-          <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-            <p className="font-bizud-mincho text-neutral-200 -ml-23 text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+          <div className="relative z-10 px-8 md:px-20 h-full flex items-start pt-16 md:pt-24 pointer-events-none">
+            <p className="font-bizud-mincho text-neutral-200 text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
               SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil.
             </p>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Sección con marquee y texto a la izquierda */}
-      <Section
-        variant="medium"
-        containerized={false}
-        className="items-stretch"
-      >
+      <section className="relative w-full h-[70vh] flex items-stretch border-b border-[#0A0A0A]">
         <MarqueeAlongSvgPath showText={true} />
-      </Section>
+      </section>
 
-      {/* Sección de video + texto (sin padding vertical de Section) */}
-      <Section
-        variant="medium"
-        containerized={false}
-        className="bg-neutral-800 items-stretch"
-      >
+      {/* Sección de video + texto */}
+      <section className="relative w-full h-[70vh] bg-neutral-800 flex items-stretch border-b border-[#0A0A0A]">
         <VideoTextSection />
-      </Section>
+      </section>
 
       {/* Sección con marquee y header personalizado */}
-      <Section variant="compact" containerized={false}>
+      <section className="relative w-full h-[60vh] flex border-b border-[#0A0A0A]">
         <div className="w-full h-full flex flex-col">
-          {/* Header personalizado - se renderiza fuera del componente */}
-          <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
+          {/* Header personalizado */}
+          <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8 flex-shrink-0">
             <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
               Featured Floras →
             </h2>
@@ -186,31 +131,24 @@ export default function Home() {
             </MainButton>
           </div>
 
-          {/* El marquee simple - solo se enfoca en el contenido */}
+          {/* El marquee simple */}
           <div className="flex-1 overflow-hidden">
             <SimpleMarquee />
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Sección con PixelTrail + quote + botón */}
-      <Section
-        variant="medium"
-        containerized={false}
-        className="items-stretch justify-start"
-      >
-        <div className="relative w-full h-full overflow-hidden bg-neutral-800">
-          {/* Bubble Background artístico */}
-
-          {/* Texto declarativo y botón alineados con el grid principal */}
-          <div className="relative z-10 h-full flex flex-col items-end justify-start">
-            
-            <p className="font-bizud-mincho text-neutral-200 -mr-3 max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+      {/* Sección con quote + botón */}
+      <section className="relative w-full h-[70vh] flex items-center justify-end border-b border-[#0A0A0A]">
+        <div className="relative w-full h-full overflow-hidden bg-neutral-800 flex items-center justify-end">
+          {/* Texto declarativo y botón */}
+          <div className="relative z-10 flex flex-col items-end justify-center py-16 px-8 md:px-16 lg:px-24">
+            <p className="font-bizud-mincho text-neutral-200 max-w-6xl text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
             </p>
 
             {/* Main Button debajo del texto */}
-            <div className="mt-12 pointer-events-auto pt-8 px-6 md:px-12 lg:px-16">
+            <div className="mt-12 pointer-events-auto">
               <MainButton
                 variant="navbar"
                 size="sm"
@@ -222,25 +160,19 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Footer principal con fondo Iridescence */}
-      <Section
-        variant="compact"
-        containerized={false}
-        className="relative overflow-hidden"
-      >
-            <BubbleBackground
-              interactive
-              className="absolute inset-0 flex items-center justify-center"
-            />
+      <section className="relative w-full h-auto flex overflow-hidden">
+        <BubbleBackground
+          interactive
+          className="absolute inset-0 flex items-center justify-center"
+        />
 
-        <div className="relative z-10">
+        <div className="relative z-10 w-full">
           <FooterMain />
         </div>
-      </Section>
-
-
+      </section>
     </div>
   )
 }
