@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import '../index.css'
 import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
 import VideoTextSection from '../components/home/video-text-section'
-import SimpleMarquee from '../components/home/simple-marquee'
 import MainButton from '../components/ui/main-button'
 import PixelTrail from '../components/home/pixel-trail'
 import GooeySvgFilter from '../components/home/gooey-svg-filter'
@@ -14,6 +13,7 @@ import FooterMain from '../components/home/footer-main'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import Navbar from '@/components/home/navbar'
 import WebGLCanvas from '../components/home/webgl-canvas'
+import FloraMarqueeEditorial from '../components/home/flora-marquee-editorial'
 
 
 export default function Home() {
@@ -113,29 +113,25 @@ export default function Home() {
         <VideoTextSection />
       </section>
 
-      {/* Sección con marquee y header personalizado */}
-      <section className="relative w-full h-[60vh] flex border-b border-[#0A0A0A]">
-        <div className="w-full h-full flex flex-col">
-          {/* Header personalizado */}
-          <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8 flex-shrink-0">
-            <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
-              Featured Floras →
-            </h2>
-            <MainButton
-              variant="compact"
-              size="sm"
-              type="button"
-              onClick={() => navigate('/garden')}
-            >
-              VIEW ALL
-            </MainButton>
-          </div>
-
-          {/* El marquee simple */}
-          <div className="flex-1 overflow-hidden">
-            <SimpleMarquee />
-          </div>
+      {/* Sección de Featured Floras */}
+      <section className="relative w-full border-b border-[#0A0A0A]">
+        {/* Header */}
+        <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-6 border-b border-[#0A0A0A]">
+          <h2 className="text-xl sm:text-lg md:text-2xl underline font-jetbrains-mono">
+            Featured Floras →
+          </h2>
+          <MainButton
+            variant="compact"
+            size="sm"
+            type="button"
+            onClick={() => navigate('/garden')}
+          >
+            VIEW ALL
+          </MainButton>
         </div>
+
+        {/* Marquee */}
+        <FloraMarqueeEditorial />
       </section>
 
       {/* Sección con quote + botón */}
