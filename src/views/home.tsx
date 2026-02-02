@@ -13,7 +13,7 @@ import useDetectBrowser from '../hooks/use-detect-browser'
 import useScreenSize from '../hooks/use-screen-size'
 import FooterMain from '../components/home/footer-main'
 import Section from '../components/Section'
-import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
+//import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import CyclingLogo from '../components/home/cycling-logo'
 import Navbar from '@/components/home/navbar'
 
@@ -171,7 +171,7 @@ export default function Home() {
         <div className="w-full h-full flex flex-col">
           {/* Header personalizado - se renderiza fuera del componente */}
           <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
-            <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
+            <h2 className="text-xl sm:text-lg md:text-2x1 font-jetbrains-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
               Featured Floras →
             </h2>
             <MainButton

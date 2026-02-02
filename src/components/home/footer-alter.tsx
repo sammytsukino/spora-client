@@ -17,10 +17,7 @@ export default function FooterAlter() {
       <div className="relative z-10 flex flex-col justify-between h-full">
         {/* Top labels */}
 
-        {/* Top horizontal line */}
-        <div className="flex justify-end">
-          <div className="w-1/2 border-t border-neutral-900 mb-10" />
-      </div>
+
 
       {/* Middle graphic row */}
       <div className="flex-1 flex items-end justify-between mt-8">
@@ -39,6 +36,9 @@ export default function FooterAlter() {
             cycleDuration={0.2}
           />
         </div>
+
+        <div className="w-2/3 border-t-2 border-neutral-800 mb-10" />
+
 
         {/* Right navigation */}
         <div className="flex items-start">

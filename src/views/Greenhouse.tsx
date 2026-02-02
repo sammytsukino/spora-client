@@ -141,8 +141,8 @@ export default function Greenhouse() {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   // Filtrar las floras según el filtro activo
-  const filteredFloras = activeFilter === 'All Units' 
-    ? allFloras 
+  const filteredFloras = activeFilter === 'All Units'
+    ? allFloras
     : allFloras.filter(flora => flora.generation === activeFilter);
 
   // Cargar más cards al hacer scroll
@@ -173,6 +173,16 @@ export default function Greenhouse() {
   const sideFloras = restFloras.slice(0, 2);
   const remainingFloras = restFloras.slice(2);
 
+  useEffect(() => {
+    document.body.classList.add('hide-scrollbar')
+    document.documentElement.classList.add('hide-scrollbar')
+
+    return () => {
+      document.body.classList.remove('hide-scrollbar')
+      document.documentElement.classList.remove('hide-scrollbar')
+    }
+  }, [])
+
   return (
     <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
       <TransparentNavbar showScrollBackground />
@@ -198,11 +208,10 @@ export default function Greenhouse() {
               {filters.map((filter) => (
                 <button
                   key={filter}
-                  className={`font-jetbrains-mono text-[11px] px-3 py-1 border-2 border-black uppercase transition-colors ${
-                    activeFilter === filter
+                  className={`font-jetbrains-mono text-[11px] px-3 py-1 border-2 border-black uppercase transition-colors ${activeFilter === filter
                       ? 'bg-black text-lime-300'
                       : 'bg-transparent text-black hover:bg-black/10'
-                  }`}
+                    }`}
                   onClick={() => setActiveFilter(filter)}
                 >
                   {filter}
@@ -250,16 +259,16 @@ export default function Greenhouse() {
         )}
       </section>
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button 
       <button
-        className="fixed bottom-8 right-8 w-16 h-16 bg-black text-lime-300 rounded-full flex items-center justify-center z-50 hover:scale-110 active:scale-95 transition-transform duration-200"
+        className="fixed bottom-10 right-10 w-10 h-10 bg-black text-lime-300  flex items-center justify-center z-50 hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="12" y1="19" x2="12" y2="5"></line>
           <polyline points="5 12 12 5 19 12"></polyline>
         </svg>
-      </button>
+      </button>*/}
 
       <FooterAlter />
     </div>
