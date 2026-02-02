@@ -56,11 +56,6 @@ export default function Garden() {
     ? allFloras 
     : allFloras.filter(flora => flora.generation === activeFilter);
 
-  // Resetear el contador cuando cambia el filtro
-  useEffect(() => {
-    setVisibleCount(ITEMS_PER_PAGE);
-  }, [activeFilter]);
-
   // Cargar más cards al hacer scroll
   const loadMoreCards = useCallback(() => {
     if (visibleCount < filteredFloras.length) {
@@ -96,29 +91,41 @@ export default function Garden() {
 
       {/* Header Section */}
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+        <div className="mb-6">
           <PageTitle
             supertitle="(01)GARDEN"
-            title={`Open Floras\nready to be\ncut`}
+            title={`OPEN FLORAS READY TO BE CUT`}
+            className="mb-2"
           />
-          <div className="filter-tabs flex gap-2 mb-4">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                className={`font-jetbrains-mono text-[11px] px-3 py-1.5 border-2 border-black uppercase transition-colors ${
-                  activeFilter === filter
-                    ? 'bg-black text-lime-300'
-                    : 'bg-transparent text-black hover:bg-black/10'
-                }`}
-                onClick={() => setActiveFilter(filter)}
-              >
-                {filter}
-              </button>
-            ))}
+        </div>
+
+        <div className="flex items-center justify-between gap-4 mb-6">
+          {/* Línea negra a todo el ancho hacia la izquierda */}
+          <div className="flex-1">
+            <div className="w-full border-b-2 border-black" />
+          </div>
+
+          {/* Botones de paginación / filtro */}
+          <div className="flex items-center justify-end">
+            <div className="filter-tabs flex gap-2">
+              {filters.map((filter) => (
+                <button
+                  key={filter}
+                  className={`font-jetbrains-mono text-[11px] px-3 py-1 border-2 border-black uppercase transition-colors ${
+                    activeFilter === filter
+                      ? 'bg-black text-lime-300'
+                      : 'bg-transparent text-black hover:bg-black/10'
+                  }`}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Flora Grid with auto-fill and black border wrapper */}
+        {/* Flora Grid con auto-fill y wrapper con borde negro */}
         <div className="border-l-2 border-t-2 border-black">
           <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
             {visibleFloras.map((flora) => (

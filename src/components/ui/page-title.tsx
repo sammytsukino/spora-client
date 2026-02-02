@@ -8,7 +8,7 @@ interface PageTitleProps {
 
 export default function PageTitle({ supertitle, title, className }: PageTitleProps) {
   return (
-    <div className={cn("flex flex-col gap-2 mb-16", className)}>
+    <div className={cn("w-full flex flex-col gap-2", className)}>
       <span className="font-jetbrains-mono text-xs sm:text-sm tracking-widest uppercase text-neutral-800">
         {supertitle}
       </span>
