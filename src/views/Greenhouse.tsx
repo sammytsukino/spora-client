@@ -83,7 +83,7 @@ function GreenhouseFloraCard({ flora }: { flora: FloraItem }) {
     <article className="group bg-[#E9E9E9] p-4 md:p-5 flex flex-col relative transition-colors duration-200 cursor-pointer hover:bg-lime-300 border-r-2 border-b-2 border-black">
       <div className="flex justify-between items-start mb-4">
         <span className="font-jetbrains-mono text-[10px]">{flora.id}</span>
-        <span className="font-jetbrains-mono text-[9px] border border-black px-1.5 py-0.5 uppercase">
+        <span className="font-jetbrains-mono text-[9px] border-2 border-black px-1.5 py-0.5 uppercase">
           {flora.generation}
         </span>
       </div>
