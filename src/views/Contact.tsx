@@ -7,7 +7,6 @@ export default function Contact() {
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1">
-        {/* Content */}
       </main>
 
       <div className="relative z-10">

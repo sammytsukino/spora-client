@@ -35,7 +35,6 @@ export default function SignUpForm() {
       return
     }
 
-    // Handle sign up logic here
     console.log("Sign up:", { username, name, email, password, confirmPassword })
   }
 
@@ -55,7 +54,6 @@ export default function SignUpForm() {
         ) : null}
 
         <form onSubmit={handleSignUp} className="space-y-5 sm:space-y-6">
-          {/* Username Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Username
@@ -73,7 +71,6 @@ export default function SignUpForm() {
             </p>
           </div>
 
-          {/* Name Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Name
@@ -88,7 +85,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Email Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Email
@@ -106,7 +102,6 @@ export default function SignUpForm() {
             </p>
           </div>
 
-          {/* Password Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Password
@@ -124,7 +119,6 @@ export default function SignUpForm() {
             </p>
           </div>
 
-          {/* Confirm Password Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Confirm password
@@ -142,7 +136,6 @@ export default function SignUpForm() {
             </p>
           </div>
 
-          {/* Sign Up Button */}
           <MainButton
             type="submit"
             className="w-full h-11 sm:h-12 border-2 border-neutral-800"
@@ -151,7 +144,6 @@ export default function SignUpForm() {
           </MainButton>
         </form>
 
-        {/* Sign In Link */}
         <p className="text-center mt-8 font-jetbrains-mono text-sm">
           Already have an account?{" "}
           <button

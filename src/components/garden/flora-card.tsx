@@ -25,7 +25,6 @@ export default function FloraCard({
       style={{ aspectRatio: '4/5' }}
       onClick={onClick}
     >
-      {/* Header */}
       <div className="flex justify-between items-start p-6 pb-4">
         <span className="font-jetbrains-mono text-xs font-medium">{id}</span>
         <span className="font-jetbrains-mono text-[10px] border-2 border-black px-2 py-0.5">
@@ -33,7 +32,6 @@ export default function FloraCard({
         </span>
       </div>
 
-      {/* Image Container */}
       <div className="flex-1 mx-6 mb-4 relative overflow-hidden border-2 border-black">
         <img
           src={image}
@@ -53,7 +51,6 @@ export default function FloraCard({
         />
       </div>
 
-      {/* Footer */}
       <div className="px-6 pb-6 flex flex-col gap-2">
         <h2 className="font-bizud-mincho-bold text-[28px] leading-none uppercase tracking-tight">
           {title}

@@ -13,10 +13,6 @@ import {
 import { cn } from "@/lib/utils"
 import MarqueeTextContent from "./marquee-text-content"
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
 type SpringOptions = {
   damping?: number
   stiffness?: number
@@ -53,120 +49,90 @@ interface MarqueeAlongSvgPathProps {
   children: React.ReactNode
   className?: string
 
-  // Path
   path: string
   pathId?: string
   showPath?: boolean
 
-  // SVG
   width?: string | number
   height?: string | number
   viewBox?: string
   preserveAspectRatio?: PreserveAspectRatio
 
-  // Animation
   baseVelocity?: number
   direction?: "normal" | "reverse"
   easing?: (value: number) => number
   repeat?: number
 
-  // Hover
   slowdownOnHover?: boolean
   slowDownFactor?: number
   slowDownSpringConfig?: SpringOptions
 
-  // Scroll
   useScrollVelocity?: boolean
   scrollAwareDirection?: boolean
   scrollSpringConfig?: SpringOptions
   scrollContainer?: RefObject<HTMLElement | null> | HTMLElement | null
 
-  // Drag
   draggable?: boolean
   dragSensitivity?: number
   dragVelocityDecay?: number
   dragAwareDirection?: boolean
   grabCursor?: boolean
 
-  // Z-index
   enableRollingZIndex?: boolean
   zIndexBase?: number
   zIndexRange?: number
 
-  // CSS Variables
   cssVariableInterpolation?: CSSVariableInterpolation[]
 
-  // Responsive (currently unused)
   responsive?: boolean
 }
-
-// ============================================================================
-// UTILITIES
-// ============================================================================
 
 const wrap = (min: number, max: number, value: number): number => {
   const range = max - min
   return ((((value - min) % range) + range) % range) + min
 }
 
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
-
 export const MarqueeAlongSvgPathBase = ({
   children,
   className,
 
-  // Path defaults
   path,
   pathId,
   showPath = false,
 
-  // SVG defaults
   width = "100%",
   height = "100%",
   viewBox = "0 0 100 100",
   preserveAspectRatio = "xMidYMid meet",
 
-  // Animation defaults
   baseVelocity = 5,
   direction = "normal",
   easing,
   repeat = 3,
 
-  // Hover defaults
   slowdownOnHover = false,
   slowDownFactor = 0.3,
   slowDownSpringConfig = { damping: 50, stiffness: 400 },
 
-  // Scroll defaults
   useScrollVelocity = false,
   scrollAwareDirection = false,
   scrollSpringConfig = { damping: 50, stiffness: 400 },
   scrollContainer,
 
-  // Drag defaults
   draggable = false,
   dragSensitivity = 0.2,
   dragVelocityDecay = 0.96,
   dragAwareDirection = false,
   grabCursor = false,
 
-  // Z-index defaults
   enableRollingZIndex = true,
   zIndexBase = 1,
   zIndexRange = 10,
 
-  // CSS variables
   cssVariableInterpolation = [],
 
-  // Responsive (unused)
-  responsive,
+  responsive: _responsive,
 }: MarqueeAlongSvgPathProps) => {
-  // ============================================================================
-  // REFS
-  // ============================================================================
-  
   const container = useRef<HTMLDivElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
@@ -177,18 +143,10 @@ export const MarqueeAlongSvgPathBase = ({
   const directionFactor = useRef(direction === "normal" ? 1 : -1)
   const lastPointerPosition = useRef({ x: 0, y: 0 })
 
-  // ============================================================================
-  // MOTION VALUES
-  // ============================================================================
-  
   const baseOffset = useMotionValue(0)
   const hoverFactorValue = useMotionValue(1)
   const defaultVelocity = useMotionValue(1)
 
-  // ============================================================================
-  // SCROLL
-  // ============================================================================
-  
   const { scrollY } = useScroll({
     container: (scrollContainer as RefObject<HTMLDivElement | null>) || container,
   })
@@ -204,10 +162,6 @@ export const MarqueeAlongSvgPathBase = ({
     { clamp: false }
   )
 
-  // ============================================================================
-  // ITEMS GENERATION
-  // ============================================================================
-  
   const items = React.useMemo(() => {
     const childrenArray = React.Children.toArray(children)
     return childrenArray.flatMap((child, childIndex) =>
@@ -221,10 +175,6 @@ export const MarqueeAlongSvgPathBase = ({
     )
   }, [children, repeat])
 
-  // ============================================================================
-  // Z-INDEX CALCULATION
-  // ============================================================================
-  
   const calculateZIndex = useCallback(
     (offsetDistance: number) => {
       if (!enableRollingZIndex) return undefined
@@ -234,18 +184,9 @@ export const MarqueeAlongSvgPathBase = ({
     [enableRollingZIndex, zIndexBase, zIndexRange]
   )
 
-  // ============================================================================
-  // PATH ID
-  // ============================================================================
-  
   const id = pathId || `marquee-path-${Math.random().toString(36).substring(7)}`
 
-  // ============================================================================
-  // ANIMATION FRAME
-  // ============================================================================
-  
   useAnimationFrame((_, delta) => {
-    // Handle dragging
     if (isDragging.current && draggable) {
       baseOffset.set(baseOffset.get() + dragVelocity.current)
       dragVelocity.current *= 0.9
@@ -255,29 +196,24 @@ export const MarqueeAlongSvgPathBase = ({
       return
     }
 
-    // Handle hover slowdown
     hoverFactorValue.set(
       isHovered.current && slowdownOnHover ? slowDownFactor : 1
     )
 
-    // Calculate base movement
     let moveBy =
       directionFactor.current *
       baseVelocity *
       (delta / 1000) *
       smoothHoverFactor.get()
 
-    // Scroll-aware direction
     if (scrollAwareDirection && !isDragging.current) {
       const vel = velocityFactor.get()
       if (vel < 0) directionFactor.current = -1
       else if (vel > 0) directionFactor.current = 1
     }
 
-    // Add scroll velocity effect
     moveBy += directionFactor.current * moveBy * velocityFactor.get()
 
-    // Handle drag velocity
     if (draggable) {
       moveBy += dragVelocity.current
 
@@ -295,10 +231,6 @@ export const MarqueeAlongSvgPathBase = ({
     baseOffset.set(baseOffset.get() + moveBy)
   })
 
-  // ============================================================================
-  // POINTER HANDLERS
-  // ============================================================================
-  
   const handlePointerDown = (e: React.PointerEvent) => {
     if (!draggable) return
     const target = e.currentTarget as HTMLElement
@@ -330,10 +262,6 @@ export const MarqueeAlongSvgPathBase = ({
     if (grabCursor) target.style.cursor = "grab"
   }
 
-  // ============================================================================
-  // RENDER
-  // ============================================================================
-  
   return (
     <div
       ref={container}
@@ -343,7 +271,6 @@ export const MarqueeAlongSvgPathBase = ({
       onPointerCancel={handlePointerUp}
       className={cn("relative", className)}
     >
-      {/* SVG Path Definition */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -361,7 +288,6 @@ export const MarqueeAlongSvgPathBase = ({
         />
       </svg>
 
-      {/* Animated Items */}
       {items.map(({ child, repeatIndex, itemIndex, key }) => {
         const itemOffset = useTransform(baseOffset, (v) => {
           const position = (itemIndex * 100) / items.length
@@ -417,10 +343,6 @@ export const MarqueeAlongSvgPathBase = ({
   )
 }
 
-// ============================================================================
-// CONFIGURATION
-// ============================================================================
-
 const path =
   "M.43,420.62c52.72,68.49,109.19,137.1,185.23,195.06,148.97,114.13,423.68,239.51,652.56,182.16,289.78-71.72,544.96-445.73,531.22-650.01-3.97-83.39-65.57-163.07-200.2-144.6-175.72,28.63-302.34,179.08-339.84,294.57-72.36,201.33,34.88,471.46,378.03,497.1,313.54,18.39,633.89-101.06,840.03-273.18,136.07-113.61,285.75-246.67,442.57-515.23"
 
@@ -440,10 +362,6 @@ const imgs = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-10_kb18zx.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-9_szhd9n.png",
 ]
-
-// ============================================================================
-// WRAPPER COMPONENTS
-// ============================================================================
 
 export function MarqueeBackground({
   className,

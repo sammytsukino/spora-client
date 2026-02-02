@@ -2,9 +2,6 @@ import { cn } from "@/lib/utils"
 import { useNavigate } from "react-router-dom"
 
 interface MarqueeTextContentProps {
-  /**
-   * Clases CSS adicionales
-   */
   className?: string
 }
 

@@ -6,7 +6,6 @@ body {
   @apply bg-background text-foreground;
 }
 
-/* Ocultar scrollbar (mantener scroll) solo cuando se aplica la clase */
 html.hide-scrollbar,
 body.hide-scrollbar {
   -ms-overflow-style: none;
@@ -18,7 +17,6 @@ body.hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Fuente local BIZ UDPMincho (Regular y Bold) desde /src/assets */
 @font-face {
   font-family: "BIZ UDPMincho";
   src: url("./assets/BIZUDMincho-Regular.ttf") format("truetype");
@@ -71,7 +69,6 @@ body {
   position: relative;
 }
 
-/* Variantes de tamaño para las secciones */
 .component-section-small {
   width: 100%;
   height: 50vh;
@@ -116,13 +113,11 @@ body {
   position: relative;
 }
 
-/* Fuente JetBrains Mono para el navbar y otros elementos técnicos */
 .font-jetbrains-mono {
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Fuente BIZ UDPMincho para los textos del componente ImageTrail */
 .font-bizud-mincho {
   font-family: 'BIZ UDPMincho', serif;
   font-weight: 400;

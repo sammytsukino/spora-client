@@ -100,7 +100,6 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
       })
     }, [])
 
-    // Attach the animatePixel function to the DOM element
     const ref = useCallback(
       (node: HTMLDivElement | null) => {
         if (node) {

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../views/home";
+import Home from "../views/Home";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
 import Laboratory from "../views/Laboratory";
@@ -17,6 +17,7 @@ export default function Router() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/garden" element={<Garden />} />
         <Route path="/greenhouse" element={<Greenhouse />} />
         <Route path="/laboratory" element={<Laboratory />} />

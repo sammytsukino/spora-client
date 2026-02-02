@@ -47,7 +47,6 @@ export default function TransparentNavbar({
     <header
       className={`${positionClass} w-full z-50 text-neutral-800 font-jetbrains-mono ${className}`}
     >
-      {/* Gradient background overlay */}
       {showScrollBackground && (
         <div
           className="absolute inset-0 -z-10 transition-opacity duration-500 ease-in-out"
