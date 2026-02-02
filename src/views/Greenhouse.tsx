@@ -179,13 +179,12 @@ export default function Greenhouse() {
 
       {/* Header Section */}
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
-        <div className="mb-6">
-          <PageTitle
-            supertitle="(02)GREENHOUSE"
-            title={`DISCOVER TIMELESS ARTWORKS`}
-            className="mb-2"
-          />
-        </div>
+        <PageTitle
+          supertitle="(02)GREENHOUSE"
+          title="DISCOVER TIMELESS ARTWORKS"
+          description="Explore our curated collection of sealed flora, each piece a unique digital organism."
+          className="mb-6"
+        />
 
         <div className="flex items-center justify-between gap-4 mb-6">
           {/* Línea negra a todo el ancho hacia la izquierda */}

@@ -52,8 +52,8 @@ export default function Garden() {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   // Filtrar las floras según el filtro activo
-  const filteredFloras = activeFilter === 'All Units' 
-    ? allFloras 
+  const filteredFloras = activeFilter === 'All Units'
+    ? allFloras
     : allFloras.filter(flora => flora.generation === activeFilter);
 
   // Cargar más cards al hacer scroll
@@ -94,8 +94,8 @@ export default function Garden() {
         <div className="mb-6">
           <PageTitle
             supertitle="(01)GARDEN"
-            title={`OPEN FLORAS READY TO BE CUT`}
-            className="mb-2"
+            title="OPEN FLORAS READY TO BE CUT"
+            description="Create your own versions of these flora. Tweak them to your liking and create new ones."
           />
         </div>
 
@@ -111,11 +111,10 @@ export default function Garden() {
               {filters.map((filter) => (
                 <button
                   key={filter}
-                  className={`font-jetbrains-mono text-[11px] px-3 py-1 border-2 border-black uppercase transition-colors ${
-                    activeFilter === filter
+                  className={`font-jetbrains-mono text-[11px] px-3 py-1 border-2 border-black uppercase transition-colors ${activeFilter === filter
                       ? 'bg-black text-lime-300'
                       : 'bg-transparent text-black hover:bg-black/10'
-                  }`}
+                    }`}
                   onClick={() => setActiveFilter(filter)}
                 >
                   {filter}
