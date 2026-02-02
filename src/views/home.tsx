@@ -222,16 +222,24 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Footer principal con fondo Iridescence */}
+      {/* Footer principal con fondo video */}
       <Section
         variant="compact"
         containerized={false}
         className="relative overflow-hidden"
       >
-            <BubbleBackground
-              interactive
-              className="absolute inset-0 flex items-center justify-center"
-            />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source
+            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770048737/BACKGROUND-COLORS_pm0nlf.mp4"
+            type="video/mp4"
+          />
+        </video>
 
         <div className="relative z-10">
           <FooterMain />

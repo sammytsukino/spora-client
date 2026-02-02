@@ -8,6 +8,7 @@ import Research from "../views/Research";
 import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
+import Background from "../views/Background";
 import ScrollToTop from "../components/scroll-to-top";
 
 export default function Router() {
@@ -24,6 +25,7 @@ export default function Router() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/background" element={<Background />} />
       </Routes>
     </BrowserRouter>
   );
