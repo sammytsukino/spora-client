@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 import { useDimensions } from "@/hooks/use-dimensions"
 
 interface PixelTrailProps {
-  pixelSize: number
-  fadeDuration?: number
-  delay?: number
+  pixelSize: number // px
+  fadeDuration?: number // ms
+  delay?: number // ms
   className?: string
   pixelClassName?: string
 }

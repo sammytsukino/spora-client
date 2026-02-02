@@ -11,42 +11,6 @@ import SignUp from "../views/SignUp";
 import Background from "../views/Background";
 import ScrollToTop from "../components/scroll-to-top";
 
-<<<<<<< HEAD
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/garden",
-    element: <Garden />,
-  },
-  {
-    path: "/greenhouse",
-    element: <Greenhouse />,
-  },
-  {
-    path: "/laboratory",
-    element: <Laboratory />,
-  },
-  {
-    path: "/team",
-    element: <Team />,
-  },
-  {
-    path: "/research",
-    element: <Research />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-  },
-  {
-    path: "/signin",
-    element: <SignIn />,
-  },
-]);
-=======
 export default function Router() {
   return (
     <BrowserRouter>
@@ -67,5 +31,4 @@ export default function Router() {
     </BrowserRouter>
   );
 }
->>>>>>> dev
 

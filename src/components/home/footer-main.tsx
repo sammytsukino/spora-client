@@ -38,25 +38,15 @@ export default function FooterMain() {
         </div>
 
         <div className="flex-1 flex flex-col items-end justify-center ml-4 sm:ml-8">
-<<<<<<< HEAD
-        <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg" alt="Spora logo" className="w-1/5 object-contain" />
-
-          <div className="w-1/2 mt-20  border-t border-neutral-900" />
-=======
           <div className="w-1/2 border-t border-neutral-900" />
->>>>>>> dev
         </div>
       </div>
 
       <div className="mt-8 flex items-end justify-between text-[10px] sm:text-xs font-jetbrains-mono">
         <span className="flex-1" />
-<<<<<<< HEAD
-        <span className="text-center whitespace-nowrap">© 2026, SPORA</span>
-=======
 
         <span className="text-center whitespace-nowrap">© 2026, SPORA</span>
 
->>>>>>> dev
         <div className="flex-1 flex justify-end">
           <div className="text-[10px] sm:text-xs font-jetbrains-mono">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">

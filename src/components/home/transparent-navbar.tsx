@@ -1,40 +1,7 @@
-import { useEffect, useState } from "react";
 import MainButton from "@/components/ui/main-button";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-<<<<<<< HEAD
-interface TransparentNavbarProps {
-  showScrollBackground?: boolean;
-  showScrollProgress?: boolean;
-  className?: string;
-}
-
-export default function TransparentNavbar({
-  showScrollBackground = false,
-  showScrollProgress = false,
-  className = "",
-}: TransparentNavbarProps = {}) {
-  const navigate = useNavigate();
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 10);
-      const winScroll = document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      setScrollProgress(height > 0 ? (winScroll / height) * 100 : 0);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 bg-transparent text-neutral-800 font-jetbrains-mono ${className}`}
-=======
 type TransparentNavbarProps = {
   position?: "fixed" | "sticky";
   className?: string;
@@ -79,7 +46,6 @@ export default function TransparentNavbar({
   return (
     <header
       className={`${positionClass} w-full z-50 text-neutral-800 font-jetbrains-mono ${className}`}
->>>>>>> dev
     >
       {showScrollBackground && (
         <div
