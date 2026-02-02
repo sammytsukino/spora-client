@@ -19,7 +19,7 @@ export default function SignUp() {
           className="fixed inset-0 pointer-events-none z-0 w-screen h-screen"
         />
 
-        <div className="relative z-10 flex-1">
+        <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 pt-24 pb-10">
           <SignUpForm />
         </div>
 

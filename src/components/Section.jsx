@@ -6,7 +6,7 @@ const Section = ({
 }) => {
   const variants = {
     hero: 'h-screen',
-    full: 'h-screen',
+    full: 'min-h-screen',
     large: 'h-[80vh]',
     medium: 'h-[60vh]',
     default: 'py-20 md:py-32',

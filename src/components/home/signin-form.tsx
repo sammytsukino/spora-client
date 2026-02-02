@@ -14,16 +14,15 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full px-5">
-      <div className="w-full max-w-[600px] p-20 pt-30 pb-30 bg-stone-200 border-2 border-neutral-800">
-        <h1 className="text-4xl text-neutral-800 font-bold text-center mb-2 font-bizud-mincho-bold">
+    <div className="w-full max-w-[520px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-stone-200 border-2 border-neutral-800">
+        <h1 className="text-2xl sm:text-3xl text-neutral-800 font-bold text-center mb-2 font-bizud-mincho-bold">
           Enter SPORA
         </h1>
-        <p className="text-center text-neutral-800 mb-12 font-jetbrains-mono">
+        <p className="text-center text-neutral-800 mb-8 font-jetbrains-mono text-sm sm:text-base">
           Welcome back, cultivator
         </p>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
           {/* Email Field */}
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
@@ -57,7 +56,7 @@ export default function SignInForm() {
           {/* Login Button */}
           <MainButton
             type="submit"
-            className="w-full h-12 border-2 border-neutral-800"
+            className="w-full h-11 sm:h-12 border-2 border-neutral-800"
           >
             LOGIN
           </MainButton>
@@ -75,6 +74,5 @@ export default function SignInForm() {
           </button>
         </p>
       </div>
-    </div>
   )
 }
