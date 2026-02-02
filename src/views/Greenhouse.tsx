@@ -68,7 +68,7 @@ export default function Greenhouse() {
 
         <div className="flex items-center justify-between gap-4 mb-6">
           <div className="flex-1">
-            <div className="w-full border-b-2 border-black" />
+            <div className="w-full border-b-2 border-[#262626]" />
           </div>
 
           <div className="flex items-center justify-end">
@@ -80,7 +80,7 @@ export default function Greenhouse() {
           </div>
         </div>
 
-        <div className="border-l-2 border-t-2 border-black">
+        <div className="border-l-2 border-t-2 border-[#262626]">
           <main>
             {featured && (
               <div className="grid lg:grid-cols-[2fr_1fr]">

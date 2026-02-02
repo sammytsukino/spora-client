@@ -41,7 +41,7 @@ export default function Navbar({
 
   return (
     <header
-      className={`${positionClass} left-0 w-full z-50 bg-neutral-800 text-stone-300 font-jetbrains-mono overflow-hidden ${className}`}
+      className={`${positionClass} left-0 w-full z-50 bg-[#262626] text-stone-200 font-supply-mono overflow-hidden ${className}`}
     >
 
       <div className="relative z-10 mx-auto flex items-center justify-between px-6 py-3 md:px-12 lg:px-16 md:py-4">

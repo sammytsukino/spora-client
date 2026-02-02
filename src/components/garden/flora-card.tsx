@@ -21,18 +21,18 @@ export default function FloraCard({
 }: FloraCardProps) {
   return (
     <article 
-      className="flora-card bg-[#E9E9E9] flex flex-col relative overflow-hidden transition-all duration-200 cursor-pointer hover:bg-lime-300 active:scale-[0.98] group border-r-2 border-b-2 border-black"
+      className="flora-card bg-[#E9E9E9] flex flex-col relative overflow-hidden transition-all duration-200 cursor-pointer hover:bg-lime-300 active:scale-[0.98] group border-r-2 border-b-2 border-[#262626]"
       style={{ aspectRatio: '4/5' }}
       onClick={onClick}
     >
       <div className="flex justify-between items-start p-6 pb-4">
-        <span className="font-jetbrains-mono text-xs font-medium">{id}</span>
-        <span className="font-jetbrains-mono text-[10px] border-2 border-black px-2 py-0.5">
+        <span className="font-supply-mono text-xs font-medium">{id}</span>
+        <span className="font-supply-mono text-[10px] border-2 border-[#262626] px-2 py-0.5">
           {generation}
         </span>
       </div>
 
-      <div className="flex-1 mx-6 mb-4 relative overflow-hidden border-2 border-black">
+      <div className="flex-1 mx-6 mb-4 relative overflow-hidden border-2 border-[#262626]">
         <img
           src={image}
           alt={title}
@@ -55,10 +55,10 @@ export default function FloraCard({
         <h2 className="font-bizud-mincho-bold text-[28px] leading-none uppercase tracking-tight">
           {title}
         </h2>
-        <p className="font-jetbrains-mono text-[11px] italic opacity-100 line-clamp-2">
+        <p className="font-supply-mono text-[11px] italic opacity-100 line-clamp-2">
           "{excerpt}..."
         </p>
-        <div className="flex justify-between font-jetbrains-mono text-[11px] opacity-100 mt-1">
+        <div className="flex justify-between font-supply-mono text-[11px] opacity-100 mt-1">
           <span>{author}</span>
           <span>SEED: {seed}</span>
         </div>

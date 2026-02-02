@@ -8,9 +8,9 @@ interface QuoteSectionProps {
 
 export default function QuoteSection({ quote, buttonText, onButtonClick }: QuoteSectionProps) {
   return (
-    <div className="relative w-full h-full overflow-hidden bg-neutral-800">
+    <div className="relative w-full h-full overflow-hidden bg-[#262626]">
       <div className="relative z-10 h-full flex flex-col items-end justify-start">
-        <p className="font-bizud-mincho text-neutral-200 -mr-3 max-w-6xl flex text-right text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
+        <p className="font-bizud-mincho text-stone-200 -mr-3 max-w-6xl flex text-right text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
           "{quote}"
         </p>
 

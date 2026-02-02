@@ -13,7 +13,7 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
   const isSafari = browserName === "Safari";
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-neutral-800">
+    <div className="relative w-full h-full overflow-hidden bg-[#262626]">
       <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
       <div
@@ -30,7 +30,7 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
       </div>
 
       <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-        <p className="font-bizud-mincho text-neutral-200 -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
+        <p className="font-bizud-mincho text-stone-200 -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
           {text}
         </p>
       </div>

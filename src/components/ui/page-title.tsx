@@ -16,16 +16,16 @@ export default function PageTitle({
   theme = 'light' 
 }: PageTitleProps) {
   const textColors = theme === 'dark' 
-    ? 'text-neutral-200' 
-    : 'text-neutral-800';
+    ? 'text-stone-200' 
+    : 'text-[#262626]';
   
   const descriptionColor = theme === 'dark'
-    ? 'text-neutral-300'
-    : 'text-neutral-700';
+    ? 'text-stone-200'
+    : 'text-[#262626]';
 
   return (
     <div className={cn("w-full", className)}>
-      <span className={cn("font-jetbrains-mono text-xs sm:text-sm tracking-widest uppercase block mb-2", textColors)}>
+      <span className={cn("font-supply-mono text-xs sm:text-sm tracking-widest uppercase block mb-2", textColors)}>
         {supertitle}
       </span>
       <div className={cn("flex items-center gap-8", description ? "justify-between" : "")}>

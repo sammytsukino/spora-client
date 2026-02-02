@@ -26,7 +26,7 @@ export default function FloraGenerator({ onGenerate }: FloraGeneratorProps) {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       <div className="space-y-2">
-        <label className="font-jetbrains-mono text-sm uppercase tracking-wider">
+        <label className="font-supply-mono text-sm uppercase tracking-wider">
           Input Text
         </label>
         <TextInput
@@ -48,7 +48,7 @@ export default function FloraGenerator({ onGenerate }: FloraGeneratorProps) {
         </MainButton>
       </div>
 
-      <div className="font-jetbrains-mono text-xs text-neutral-500 text-center space-y-1">
+      <div className="font-supply-mono text-xs text-neutral-500 text-center space-y-1">
         <p>• Your text will be analyzed for sentiment, rhythm, and structure</p>
         <p>• Each element influences the generated flora's morphology</p>
         <p>• The result is unique to your input</p>

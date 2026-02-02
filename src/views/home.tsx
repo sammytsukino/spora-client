@@ -59,7 +59,7 @@ export default function Home() {
       <Section
         variant="medium"
         containerized={false}
-        className="bg-neutral-800 items-stretch"
+        className="bg-[#262626] items-stretch"
       >
         <VideoTextSection />
       </Section>
@@ -67,7 +67,7 @@ export default function Home() {
       <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
           <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
-            <h2 className="text-xl sm:text-lg md:text-2x1 font-jetbrains-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
+            <h2 className="text-xl sm:text-lg md:text-2x1 font-supply-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
               Featured Floras →
             </h2>
             <MainButton

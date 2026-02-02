@@ -16,13 +16,13 @@ export default function MainButton({
   ...props
 }: MainButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center bg-transparent transition-colors font-jetbrains-mono font-bold cursor-pointer"
+    "inline-flex items-center justify-center bg-transparent transition-colors font-supply-mono font-bold cursor-pointer"
 
   const variantStyles: Record<NonNullable<MainButtonProps["variant"]>, string> = {
-    default: "border border-black text-neutral-900 hover:bg-neutral-800 hover:text-white",
-    compact: "border-2 border-neutral-800 text-neutral-900 hover:bg-neutral-800 hover:text-neutral-200",
+    default: "border border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-stone-200",
+    compact: "border-2 border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-stone-200",
     navbar:
-      "border-2 border-neutral-300 text-neutral-300 hover:bg-neutral-200 hover:text-neutral-800",
+      "border-2 border-stone-200 text-stone-200 hover:bg-stone-200 hover:text-[#262626]",
   }
 
   const sizeStyles: Record<NonNullable<MainButtonProps["size"]>, string> = {

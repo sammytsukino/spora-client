@@ -24,7 +24,7 @@ export default function Laboratory() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-neutral-900">
+    <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-[#262626]">
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16">
@@ -46,17 +46,17 @@ export default function Laboratory() {
                   <img
                     src={generatedFlora}
                     alt="Generated Flora"
-                    className="w-full max-w-md mx-auto border-2 border-black"
+                    className="w-full max-w-md mx-auto border-2 border-[#262626]"
                   />
                 </div>
-                <div className="flex-1 text-white">
+                <div className="flex-1 text-stone-200">
                   <h3 className="font-bizud-mincho-bold text-3xl mb-4">
                     Your Flora is Ready
                   </h3>
-                  <p className="font-jetbrains-mono text-sm mb-6">
+                  <p className="font-supply-mono text-sm mb-6">
                     This unique flora has been generated based on the sentiment, rhythm, and structure of your text.
                   </p>
-                  <div className="space-y-2 font-jetbrains-mono text-xs">
+                  <div className="space-y-2 font-supply-mono text-xs">
                     <p>• ID: FLR/DEMO</p>
                     <p>• GENERATION: GEN_0</p>
                     <p>• SEED: #{Math.random().toString(16).substr(2, 6).toUpperCase()}</p>

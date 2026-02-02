@@ -45,7 +45,7 @@ export default function TransparentNavbar({
 
   return (
     <header
-      className={`${positionClass} w-full z-50 text-neutral-800 font-jetbrains-mono ${className}`}
+      className={`${positionClass} w-full z-50 text-[#262626] font-supply-mono ${className}`}
     >
       {showScrollBackground && (
         <div

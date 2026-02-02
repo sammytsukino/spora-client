@@ -24,8 +24,8 @@ export default function ProfileSocial({
   const { followersCount, followingCount, recentInteractions } = social;
 
   return (
-    <section className="border-2 border-black bg-[#E9E9E9] p-6">
-      <h2 className="font-jetbrains-mono font-bold text-sm uppercase mb-4">
+    <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
+      <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
         Recent activity
       </h2>
       {showFollowCounts && (
@@ -33,7 +33,7 @@ export default function ProfileSocial({
           <button
             type="button"
             onClick={onFollowersClick}
-            className="font-jetbrains-mono text-sm border-2 border-black px-4 py-2 hover:bg-black hover:text-lime-300 transition-colors"
+            className="font-supply-mono text-sm border-2 border-[#262626] px-4 py-2 hover:bg-[#262626] hover:text-lime-300 transition-colors"
           >
             <span className="font-bold">{followersCount}</span>
             <span className="ml-2 opacity-90">followers</span>
@@ -41,7 +41,7 @@ export default function ProfileSocial({
           <button
             type="button"
             onClick={onFollowingClick}
-            className="font-jetbrains-mono text-sm border-2 border-black px-4 py-2 hover:bg-black hover:text-lime-300 transition-colors"
+            className="font-supply-mono text-sm border-2 border-[#262626] px-4 py-2 hover:bg-[#262626] hover:text-lime-300 transition-colors"
           >
             <span className="font-bold">{followingCount}</span>
             <span className="ml-2 opacity-90">following</span>
@@ -55,12 +55,12 @@ export default function ProfileSocial({
                 <button
                   type="button"
                   onClick={() => onInteractionClick?.(item)}
-                  className="flex items-center gap-3 w-full text-left font-jetbrains-mono text-[11px] p-2 border-2 border-black hover:bg-lime-300 transition-colors"
+                  className="flex items-center gap-3 w-full text-left font-supply-mono text-[11px] p-2 border-2 border-[#262626] hover:bg-lime-300 transition-colors"
                 >
                   <img
                     src={item.avatar}
                     alt=""
-                    className="w-8 h-8 rounded-full object-cover border-2 border-black shrink-0"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-[#262626] shrink-0"
                   />
                   <span>
                     <span className="font-medium">{item.username}</span>

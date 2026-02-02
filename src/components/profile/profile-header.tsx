@@ -33,17 +33,17 @@ export default function ProfileHeader({
     followersCount !== undefined && followingCount !== undefined;
 
   return (
-    <header className="border-2 border-black bg-[#E9E9E9] p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+    <header className="border-2 border-[#262626] bg-[#E9E9E9] p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
       <img
         src={avatar}
         alt={fullName}
-        className="w-24 h-24 rounded-full object-cover border-2 border-black shrink-0"
+        className="w-24 h-24 rounded-full object-cover border-2 border-[#262626] shrink-0"
       />
       <div className="flex-1 min-w-0">
-        <p className="font-jetbrains-mono text-lg font-bold">{username}</p>
-        <p className="font-jetbrains-mono text-sm text-black/80">{fullName}</p>
-        <p className="font-jetbrains-mono text-sm italic mt-1">{bio}</p>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 font-jetbrains-mono text-[11px] opacity-90">
+        <p className="font-supply-mono text-lg font-bold">{username}</p>
+        <p className="font-supply-mono text-sm text-[#262626]/80">{fullName}</p>
+        <p className="font-supply-mono text-sm italic mt-1">{bio}</p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 font-supply-mono text-[11px] opacity-90">
           <span>
             {florasCount} Floras · {originalsCount} originals · {cuttingsCount} cuttings
           </span>

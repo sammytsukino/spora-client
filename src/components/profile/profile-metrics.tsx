@@ -17,11 +17,11 @@ export default function ProfileMetrics({ metrics }: ProfileMetricsProps) {
 
   return (
     <section
-      className="border-2 border-black bg-[#E9E9E9] px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2"
+      className="border-2 border-[#262626] bg-[#E9E9E9] px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2"
       aria-label="Overview metrics"
     >
       {entries.map(({ key, value, label }) => (
-        <div key={key} className="flex items-baseline gap-2 font-jetbrains-mono">
+        <div key={key} className="flex items-baseline gap-2 font-supply-mono">
           <span className="text-lg font-bold">{value.toLocaleString()}</span>
           <span className="text-[11px] uppercase opacity-80">{label}</span>
         </div>

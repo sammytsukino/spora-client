@@ -34,15 +34,15 @@ export default function Team() {
           ))}
         </div>
 
-        <div className="mt-16 border-2 border-black p-8 bg-white">
+        <div className="mt-16 border-2 border-[#262626] p-8 bg-[#E9E9E9]">
           <h3 className="font-bizud-mincho-bold text-3xl mb-4">Join Our Community</h3>
-          <p className="font-jetbrains-mono text-sm mb-6">
+          <p className="font-supply-mono text-sm mb-6">
             SPORA is more than a platform—it's a movement. We're always looking for passionate artists, 
             developers, and thinkers to join our mission of redefining generative art.
           </p>
           <a 
             href="mailto:hello@spora.art" 
-            className="font-jetbrains-mono text-sm border-2 border-black px-6 py-2 inline-block hover:bg-lime-300 transition-colors"
+            className="font-supply-mono text-sm border-2 border-[#262626] px-6 py-2 inline-block hover:bg-lime-300 transition-colors"
           >
             GET IN TOUCH
           </a>

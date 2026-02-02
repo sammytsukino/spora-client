@@ -78,7 +78,7 @@ export default function Profile({
 
         <div className="mt-8">
           <div className="flex items-end justify-between gap-4 mb-4">
-            <h2 className="font-jetbrains-mono font-bold text-sm uppercase">
+            <h2 className="font-supply-mono font-bold text-sm uppercase">
               My Floras
             </h2>
             <FilterTabs
@@ -87,7 +87,7 @@ export default function Profile({
               onFilterChange={setActiveFilter}
             />
           </div>
-          <div className="border-l-2 border-t-2 border-black">
+          <div className="border-l-2 border-t-2 border-[#262626]">
             <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
               {filteredFloras.map((flora) => (
                 <FloraCard

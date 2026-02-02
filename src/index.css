@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -29,6 +28,14 @@ body.hide-scrollbar::-webkit-scrollbar {
   font-family: "BIZ UDPMincho";
   src: url("./assets/BIZUDMincho-Bold.ttf") format("truetype");
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Supply Mono";
+  src: url("./assets/supplyMono-Light.ttf") format("truetype");
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
@@ -113,18 +120,18 @@ body {
   position: relative;
 }
 
-.font-jetbrains-mono {
-  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+.font-supply-mono {
+  font-family: "Supply Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .font-bizud-mincho {
-  font-family: 'BIZ UDPMincho', serif;
+  font-family: "BIZ UDPMincho", serif;
   font-weight: 400;
 }
 
 .font-bizud-mincho-bold {
-  font-family: 'BIZ UDPMincho', serif;
+  font-family: "BIZ UDPMincho", serif;
   font-weight: 700;
 }
 

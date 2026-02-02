@@ -97,7 +97,7 @@ export default function AdminPanel({
 
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
         <div className="flex items-end justify-between gap-4 mb-6">
-          <h1 className="font-jetbrains-mono font-bold text-sm uppercase">
+          <h1 className="font-supply-mono font-bold text-sm uppercase">
             Admin panel
           </h1>
           <FilterTabs
