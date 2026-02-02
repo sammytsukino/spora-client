@@ -1,9 +1,111 @@
+import { useState, useEffect, useCallback } from "react";
 import TransparentNavbar from "@/components/home/transparent-navbar";
+import PageTitle from "@/components/ui/page-title";
+import FooterAlter from "@/components/home/footer-alter";
+import FloraCard from "@/components/garden/flora-card";
+import FilterTabs from "@/components/common/filter-tabs";
+import LoadingIndicator from "@/components/common/loading-indicator";
+import { generateFloraData, floraFilters, ITEMS_PER_PAGE } from "@/data/flora-data";
+
+const allFloras = generateFloraData(48);
 
 export default function Garden() {
+  const [activeFilter, setActiveFilter] = useState('All Units');
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+
+  const filteredFloras = activeFilter === 'All Units'
+    ? allFloras
+    : allFloras.filter(flora => flora.generation === activeFilter);
+
+  const loadMoreCards = useCallback(() => {
+    if (visibleCount < filteredFloras.length) {
+      setVisibleCount(prev => Math.min(prev + ITEMS_PER_PAGE, filteredFloras.length));
+    }
+  }, [visibleCount, filteredFloras.length]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      if (scrollTop + windowHeight >= docHeight - 300) {
+        loadMoreCards();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loadMoreCards]);
+
+  const handleCardClick = () => {};
+
+  const visibleFloras = filteredFloras.slice(0, visibleCount);
+
+  useEffect(() => {
+    document.body.classList.add('hide-scrollbar')
+    document.documentElement.classList.add('hide-scrollbar')
+
+    return () => {
+      document.body.classList.remove('hide-scrollbar')
+      document.documentElement.classList.remove('hide-scrollbar')
+    }
+  }, [])
+
   return (
-    <div className="w-full overflow-x-hidden">
-      <TransparentNavbar />
+    <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+      <TransparentNavbar showScrollBackground />
+
+      <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
+        <div className="mb-6">
+          <PageTitle
+            supertitle="(01)GARDEN"
+            title="OPEN FLORAS READY TO BE CUT"
+            description="Create your own versions of these flora. Tweak them to your liking and create new ones."
+          />
+        </div>
+
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <div className="flex-1">
+            <div className="w-full border-b-2 border-black" />
+          </div>
+
+          <div className="flex items-center justify-end">
+            <FilterTabs 
+              filters={floraFilters}
+              activeFilter={activeFilter}
+              onFilterChange={setActiveFilter}
+            />
+          </div>
+        </div>
+
+        <div className="border-l-2 border-t-2 border-black">
+          <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
+            {visibleFloras.map((flora) => (
+              <FloraCard
+                key={flora.id}
+                id={flora.id}
+                generation={flora.generation}
+                image={flora.image}
+                title={flora.title}
+                excerpt={flora.excerpt}
+                author={flora.author}
+                seed={flora.seed}
+                onClick={handleCardClick}
+              />
+            ))}
+          </main>
+        </div>
+
+        {visibleCount < filteredFloras.length && (
+          <LoadingIndicator 
+            current={visibleCount}
+            total={filteredFloras.length}
+          />
+        )}
+      </section>
+
+      <FooterAlter />
     </div>
-  )
+  );
 }

@@ -35,8 +35,8 @@ function BubbleBackground({
     first: '18,113,255',
     second: '221,74,255',
     third: '0,220,255',
-    fourth: '200,50,50',
-    fifth: '180,180,50',
+    fourth: '82,255,90',
+    fifth: '244,239,64',
     sixth: '255,100,255',
   },
   ...props
@@ -78,7 +78,7 @@ function BubbleBackground({
   React.useEffect(() => {
     if (!interactive) return;
 
-    const INTENSITY = 2; // amplify mouse displacement effect
+    const INTENSITY = 1; // amplify mouse displacement effect
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = rectRef.current;
@@ -189,7 +189,7 @@ function BubbleBackground({
         />
 
         <motion.div
-          className="absolute inset-0 flex justify-center items-center origin-[calc(50%_-_800px)_calc(50%_+_200px)]"
+          className="absolute inset-0 flex justify-center items-center origin-[calc(50%-800px)_calc(50%+200px)]"
           animate={{ rotate: 360 }}
           transition={{ duration: 20, ease: 'linear', repeat: Infinity }}
           style={{ transform: 'translateZ(0)', willChange: 'transform' }}

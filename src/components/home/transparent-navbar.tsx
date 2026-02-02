@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import MainButton from "@/components/ui/main-button";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
 interface TransparentNavbarProps {
   showScrollBackground?: boolean;
   showScrollProgress?: boolean;
@@ -32,6 +34,52 @@ export default function TransparentNavbar({
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 bg-transparent text-neutral-800 font-jetbrains-mono ${className}`}
+=======
+type TransparentNavbarProps = {
+  position?: "fixed" | "sticky";
+  className?: string;
+  showScrollProgress?: boolean;
+  showScrollBackground?: boolean;
+};
+
+export default function TransparentNavbar({
+  position = "fixed",
+  className = "",
+  showScrollProgress = false,
+  showScrollBackground = false,
+}: TransparentNavbarProps) {
+  const navigate = useNavigate();
+  const positionClass = position === "sticky" ? "sticky top-0" : "fixed top-0";
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!showScrollProgress && !showScrollBackground) return;
+
+    const updateScrollProgress = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setScrollProgress(Math.max(0, Math.min(100, progress)));
+      setHasScrolled(scrollTop > 10);
+    };
+
+    updateScrollProgress();
+    window.addEventListener("scroll", updateScrollProgress, { passive: true });
+    window.addEventListener("resize", updateScrollProgress);
+
+    return () => {
+      window.removeEventListener("scroll", updateScrollProgress);
+      window.removeEventListener("resize", updateScrollProgress);
+    };
+  }, [showScrollProgress, showScrollBackground]);
+
+  return (
+    <header
+      className={`${positionClass} w-full z-50 text-neutral-800 font-jetbrains-mono ${className}`}
+>>>>>>> dev
     >
       {showScrollBackground && (
         <div
@@ -62,7 +110,7 @@ export default function TransparentNavbar({
         </div>
 
         <nav className="flex-1">
-          <ul className="flex items-center justify-center gap-8 text-[10px] sm:text-xs tracking-[0.3em] uppercase">
+          <ul className="flex items-center justify-center gap-8 text-[10px] sm:text-xs tracking-[0.3em] uppercase font-semibold">
             <li>
               <button
                 type="button"
@@ -101,9 +149,10 @@ export default function TransparentNavbar({
             size="sm"
             type="button"
             onClick={() => navigate("/signin")}
+            className="bg-stone-200"
           >
             SIGN IN
-          </MainButton>
+          </MainButton >
         </div>
       </div>
     </header>

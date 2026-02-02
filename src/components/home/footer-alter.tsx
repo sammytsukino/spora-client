@@ -7,7 +7,13 @@ export default function FooterAlter() {
   return (
     <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-neutral-900 overflow-hidden">
       <div className="relative z-10 flex flex-col justify-between h-full">
+<<<<<<< HEAD
 
+=======
+
+
+
+>>>>>>> dev
       <div className="flex-1 flex items-end justify-between mt-8">
         <div className="flex items-end">
           <CyclingLogo
@@ -25,50 +31,54 @@ export default function FooterAlter() {
         </div>
 
         <div className="w-2/3 border-t-2 border-neutral-800 mb-10" />
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
         <div className="flex items-start">
           <div className="text-[10px] sm:text-xs font-jetbrains-mono">
-            <div className="grid grid-cols-2 gap-x-8 gap-y-1 justify-items-end text-right text-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">
               <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate("/team")}
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => navigate("/team")}
               >
-                Team
+              Team
               </button>
               <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate("/garden")}
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => navigate("/garden")}
               >
-                Garden
+              Garden
               </button>
               <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate("/research")}
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => navigate("/research")}
               >
-                Research
+              Research
               </button>
               <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate("/greenhouse")}
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => navigate("/greenhouse")}
               >
-                Greenhouse
+              Greenhouse
               </button>
               <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate("/contact")}
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => navigate("/contact")}
               >
-                Contact
+              Contact
               </button>
               <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate("/laboratory")}
+              type="button"
+              className="hover:underline cursor-pointer"
+              onClick={() => navigate("/laboratory")}
               >
-                Laboratory
+              Laboratory
               </button>
             </div>
           </div>

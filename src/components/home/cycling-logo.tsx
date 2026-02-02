@@ -22,14 +22,15 @@ export default function CyclingLogo({
   const totalDuration = cycleDuration * logoCount
 
   const widthValue = typeof width === 'number' ? `${width}px` : width
-  const heightValue = typeof height === 'number' ? `${height}px` : height
+  const heightValue = typeof height === 'number' ? `${height}px` : (height === 'auto' ? '100%' : height)
 
   return (
     <div 
       className={`relative ${className}`}
       style={{
         width: widthValue,
-        height: heightValue,
+        height: heightValue === '100%' ? 'auto' : heightValue,
+        minHeight: heightValue === '100%' ? '120px' : undefined,
       }}
     >
       {logos.map((logo, index) => {

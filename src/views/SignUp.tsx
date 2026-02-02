@@ -1,9 +1,9 @@
 import FooterAlter from "@/components/home/footer-alter";
-import SignInForm from "@/components/home/signin-form";
+import SignUpForm from "@/components/home/signup-form";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import Section from "@/components/Section";
 
-export default function SignIn() {
+export default function SignUp() {
   return (
     <div className="w-full overflow-x-hidden">
       <TransparentNavbar showScrollBackground />
@@ -25,11 +25,11 @@ export default function SignIn() {
             type="video/mp4"
           />
         </video>
-        
+
         <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 pt-24 pb-10">
-          <SignInForm />
+          <SignUpForm />
         </div>
-        
+
         <div className="relative z-10">
           <FooterAlter />
         </div>

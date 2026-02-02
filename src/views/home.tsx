@@ -1,11 +1,12 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
-import Navbar from '../components/home/navbar'
 import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
 import VideoTextSection from '../components/home/video-text-section'
 import SimpleMarquee from '../components/home/simple-marquee'
 import MainButton from '../components/ui/main-button'
+<<<<<<< HEAD
 import ImageTrail from '../components/home/image-trail'
 import PixelTrail from '../components/home/pixel-trail'
 import GooeySvgFilter from '../components/home/gooey-svg-filter'
@@ -21,16 +22,38 @@ export default function Home() {
   const browserName = useDetectBrowser()
   const isSafari = browserName === 'Safari'
   const screenSize = useScreenSize()
+=======
+import FooterMain from '../components/home/footer-main'
+import Section from '../components/Section'
+import Navbar from '@/components/home/navbar'
+import HeroSection from '@/components/home/hero-section'
+import DeclarativeSection from '@/components/home/declarative-section'
+import QuoteSection from '@/components/home/quote-section'
+
+export default function Home() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    document.body.classList.add('hide-scrollbar')
+    document.documentElement.classList.add('hide-scrollbar')
+
+    return () => {
+      document.body.classList.remove('hide-scrollbar')
+      document.documentElement.classList.remove('hide-scrollbar')
+    }
+  }, [])
+>>>>>>> dev
 
   return (
     <div className="w-full overflow-x-hidden">
-      <Navbar />
+      <Navbar position="fixed" showScrollProgress />
 
       <Section
         variant="hero"
         containerized={false}
         className="relative overflow-hidden items-stretch"
       >
+<<<<<<< HEAD
         <div className="absolute inset-0">
           <ImageTrail />
         </div>
@@ -66,13 +89,17 @@ export default function Home() {
             but evolutionary
           </p>
         </div>
+=======
+        <HeroSection />
+>>>>>>> dev
       </Section>
 
       <Section
         variant="large"
         containerized={false}
-        className="bg-neutral-800 items-stretch justify-start"
+        className="items-stretch justify-start"
       >
+<<<<<<< HEAD
         <div className="relative w-full h-full overflow-hidden">
           <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
@@ -95,6 +122,11 @@ export default function Home() {
             </p>
           </div>
         </div>
+=======
+        <DeclarativeSection 
+          text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
+        />
+>>>>>>> dev
       </Section>
 
       <Section
@@ -138,8 +170,9 @@ export default function Home() {
       <Section
         variant="medium"
         containerized={false}
-        className="bg-neutral-800 items-stretch justify-start"
+        className="items-stretch justify-start"
       >
+<<<<<<< HEAD
         <div className="relative w-full h-full overflow-hidden">
           <GooeySvgFilter id="gooey-filter-quote" strength={5} />
 
@@ -173,6 +206,13 @@ export default function Home() {
             </div>
           </div>
         </div>
+=======
+        <QuoteSection 
+          quote="Lloro porque no siento nada, y ahora además de triste me siento un farsante"
+          buttonText="CREATE YOUR OWN"
+          onButtonClick={() => navigate('/laboratory')}
+        />
+>>>>>>> dev
       </Section>
 
       <Section
@@ -180,10 +220,18 @@ export default function Home() {
         containerized={false}
         className="relative overflow-hidden"
       >
-            <BubbleBackground
-              interactive
-              className="absolute inset-0 flex items-center justify-center"
-            />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source
+            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770048737/BACKGROUND-COLORS_pm0nlf.mp4"
+            type="video/mp4"
+          />
+        </video>
 
         <div className="relative z-10">
           <FooterMain />

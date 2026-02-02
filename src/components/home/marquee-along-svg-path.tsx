@@ -48,33 +48,67 @@ interface CSSVariableInterpolation {
 interface MarqueeAlongSvgPathProps {
   children: React.ReactNode
   className?: string
+<<<<<<< HEAD
   path: string
   pathId?: string
   showPath?: boolean
+=======
+
+  path: string
+  pathId?: string
+  showPath?: boolean
+
+>>>>>>> dev
   width?: string | number
   height?: string | number
   viewBox?: string
   preserveAspectRatio?: PreserveAspectRatio
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   baseVelocity?: number
   direction?: "normal" | "reverse"
   easing?: (value: number) => number
   repeat?: number
+<<<<<<< HEAD
   slowdownOnHover?: boolean
   slowDownFactor?: number
   slowDownSpringConfig?: SpringOptions
+=======
+
+  slowdownOnHover?: boolean
+  slowDownFactor?: number
+  slowDownSpringConfig?: SpringOptions
+
+>>>>>>> dev
   useScrollVelocity?: boolean
   scrollAwareDirection?: boolean
   scrollSpringConfig?: SpringOptions
   scrollContainer?: RefObject<HTMLElement | null> | HTMLElement | null
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   draggable?: boolean
   dragSensitivity?: number
   dragVelocityDecay?: number
   dragAwareDirection?: boolean
   grabCursor?: boolean
+<<<<<<< HEAD
   enableRollingZIndex?: boolean
   zIndexBase?: number
   zIndexRange?: number
   cssVariableInterpolation?: CSSVariableInterpolation[]
+=======
+
+  enableRollingZIndex?: boolean
+  zIndexBase?: number
+  zIndexRange?: number
+
+  cssVariableInterpolation?: CSSVariableInterpolation[]
+
+>>>>>>> dev
   responsive?: boolean
 }
 
@@ -86,33 +120,67 @@ const wrap = (min: number, max: number, value: number): number => {
 export const MarqueeAlongSvgPathBase = ({
   children,
   className,
+<<<<<<< HEAD
   path,
   pathId,
   showPath = false,
+=======
+
+  path,
+  pathId,
+  showPath = false,
+
+>>>>>>> dev
   width = "100%",
   height = "100%",
   viewBox = "0 0 100 100",
   preserveAspectRatio = "xMidYMid meet",
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   baseVelocity = 5,
   direction = "normal",
   easing,
   repeat = 3,
+<<<<<<< HEAD
   slowdownOnHover = false,
   slowDownFactor = 0.3,
   slowDownSpringConfig = { damping: 50, stiffness: 400 },
+=======
+
+  slowdownOnHover = false,
+  slowDownFactor = 0.3,
+  slowDownSpringConfig = { damping: 50, stiffness: 400 },
+
+>>>>>>> dev
   useScrollVelocity = false,
   scrollAwareDirection = false,
   scrollSpringConfig = { damping: 50, stiffness: 400 },
   scrollContainer,
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   draggable = false,
   dragSensitivity = 0.2,
   dragVelocityDecay = 0.96,
   dragAwareDirection = false,
   grabCursor = false,
+<<<<<<< HEAD
   enableRollingZIndex = true,
   zIndexBase = 1,
   zIndexRange = 10,
   cssVariableInterpolation = [],
+=======
+
+  enableRollingZIndex = true,
+  zIndexBase = 1,
+  zIndexRange = 10,
+
+  cssVariableInterpolation = [],
+
+>>>>>>> dev
   responsive: _responsive,
 }: MarqueeAlongSvgPathProps) => {
   const container = useRef<HTMLDivElement>(null)
