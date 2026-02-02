@@ -58,7 +58,18 @@ function FeaturedFlora({ flora }: { flora: FloraItem }) {
         <img
           src={flora.image}
           alt={flora.title}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-all duration-700 ease-out"
+          style={{
+            filter: "grayscale(100%) contrast(120%)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.filter = "grayscale(0%) contrast(110%)"
+            e.currentTarget.style.transform = "scale(1.05)"
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.filter = "grayscale(100%) contrast(120%)"
+            e.currentTarget.style.transform = "scale(1)"
+          }}
         />
       </div>
       <div>
@@ -94,7 +105,18 @@ function GreenhouseFloraCard({ flora }: { flora: FloraItem }) {
         <img
           src={flora.image}
           alt={flora.title}
-          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-all duration-600 ease-[cubic-bezier(0.165,0.84,0.44,1)]"
+          style={{
+            filter: "grayscale(100%) contrast(120%)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.filter = "grayscale(0%) contrast(110%)"
+            e.currentTarget.style.transform = "scale(1.05)"
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.filter = "grayscale(100%) contrast(120%)"
+            e.currentTarget.style.transform = "scale(1)"
+          }}
         />
       </div>
       <h3 className="font-bizud-mincho-bold text-lg md:text-xl leading-tight uppercase mb-1 text-neutral-900">
