@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import PageTitle from "@/components/ui/page-title";
 import FooterAlter from "@/components/home/footer-alter";
-import FloraCard from "@/components/garden/flora-card";
 
 const floraImages = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
@@ -44,6 +43,74 @@ const allFloras = Array.from({ length: 48 }, (_, i) => ({
   seed: `#${Math.random().toString(16).substr(2, 6).toUpperCase()}`,
 }));
 
+type FloraItem = (typeof allFloras)[number];
+
+function FeaturedFlora({ flora }: { flora: FloraItem }) {
+  return (
+    <section className="group bg-[#E9E9E9] p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-lime-300 border-r-2 border-b-2 border-black">
+      <div className="absolute top-6 right-6 z-5 bg-black text-lime-300 font-jetbrains-mono text-[9px] md:text-xs px-2.5 py-1 uppercase tracking-[0.18em]">
+        S-TIER // FEATURED
+      </div>
+      <div
+        className="w-full overflow-hidden mb-6 border-2 border-black"
+        style={{ aspectRatio: "4 / 5" }}
+      >
+        <img
+          src={flora.image}
+          alt={flora.title}
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+      </div>
+      <div>
+        <h2 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-[0.9] uppercase tracking-tight mb-3 text-neutral-900">
+          {flora.title}
+        </h2>
+        <p className="font-jetbrains-mono text-[11px] md:text-xs italic opacity-90 line-clamp-2 mb-3">
+          "{flora.excerpt}"
+        </p>
+        <div className="grid grid-cols-3 border-t border-black pt-2 font-jetbrains-mono text-[10px] md:text-xs">
+          <span>ID: {flora.id}</span>
+          <span>GEN: {flora.generation}</span>
+          <span>SEED: {flora.seed}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function GreenhouseFloraCard({ flora }: { flora: FloraItem }) {
+  return (
+    <article className="group bg-[#E9E9E9] p-4 md:p-5 flex flex-col relative transition-colors duration-200 cursor-pointer hover:bg-lime-300 border-r-2 border-b-2 border-black">
+      <div className="flex justify-between items-start mb-4">
+        <span className="font-jetbrains-mono text-[10px]">{flora.id}</span>
+        <span className="font-jetbrains-mono text-[9px] border border-black px-1.5 py-0.5 uppercase">
+          {flora.generation}
+        </span>
+      </div>
+      <div
+        className="mb-3 overflow-hidden border-2 border-black"
+        style={{ aspectRatio: "4 / 5" }}
+      >
+        <img
+          src={flora.image}
+          alt={flora.title}
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        />
+      </div>
+      <h3 className="font-bizud-mincho-bold text-lg md:text-xl leading-tight uppercase mb-1 text-neutral-900">
+        {flora.title}
+      </h3>
+      <p className="font-jetbrains-mono text-[9px] md:text-[10px] italic opacity-90 line-clamp-2 mb-1">
+        "{flora.excerpt}"
+      </p>
+      <div className="flex justify-between font-jetbrains-mono text-[9px] md:text-[10px] opacity-75 mt-1">
+        <span>{flora.author}</span>
+        <span>{flora.seed}</span>
+      </div>
+    </article>
+  );
+}
+
 const filters = ['All Units', 'GEN_0', 'GEN_1', 'GEN_2'];
 const ITEMS_PER_PAGE = 12;
 
@@ -79,11 +146,10 @@ export default function Greenhouse() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMoreCards]);
 
-  const handleCardClick = () => {
-    // Card click interaction
-  };
-
   const visibleFloras = filteredFloras.slice(0, visibleCount);
+  const [featured, ...restFloras] = visibleFloras;
+  const sideFloras = restFloras.slice(0, 2);
+  const remainingFloras = restFloras.slice(2);
 
   return (
     <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
@@ -125,22 +191,30 @@ export default function Greenhouse() {
           </div>
         </div>
 
-        {/* Flora Grid con auto-fill y wrapper con borde negro */}
+        {/* Featured + gallery grid inspirado en el layout dado */}
         <div className="border-l-2 border-t-2 border-black">
-          <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
-            {visibleFloras.map((flora) => (
-              <FloraCard
-                key={flora.id}
-                id={flora.id}
-                generation={flora.generation}
-                image={flora.image}
-                title={flora.title}
-                excerpt={flora.excerpt}
-                author={flora.author}
-                seed={flora.seed}
-                onClick={handleCardClick}
-              />
-            ))}
+          <main>
+            {/* Fila principal: featured + dos secundarias */}
+            {featured && (
+              <div className="grid lg:grid-cols-[2fr_1fr]">
+                <FeaturedFlora flora={featured} />
+
+                <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1">
+                  {sideFloras.map((flora) => (
+                    <GreenhouseFloraCard key={flora.id} flora={flora} />
+                  ))}
+                </aside>
+              </div>
+            )}
+
+            {/* Resto de floras en grid */}
+            {remainingFloras.length > 0 && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-4">
+                {remainingFloras.map((flora) => (
+                  <GreenhouseFloraCard key={flora.id} flora={flora} />
+                ))}
+              </div>
+            )}
           </main>
         </div>
 
