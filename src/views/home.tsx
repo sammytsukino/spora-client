@@ -16,8 +16,6 @@ import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import CyclingLogo from '../components/home/cycling-logo'
 import Navbar from '@/components/home/navbar'
-import Aurora from '@/components/Aurora'
-
 
 export default function Home() {
   const navigate = useNavigate()
@@ -83,7 +81,7 @@ export default function Home() {
 
         {/* Capa de contenido: tipografía + CyclingLogo, siguiendo patrón del footer */}
         <div className="relative z-20 flex flex-col items-center justify-center gap-20 w-full h-full pointer-events-none">
-          <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mb-2">
+          <p className="font-bizud-mincho-bold text-base sm:text-lg md:text-xl tracking-wide mb-2">
             not revolutionary
           </p>
 
@@ -109,7 +107,7 @@ export default function Home() {
             cycleDuration={0.2}
           />
 
-          <p className="font-bizud-mincho-bold text-lg sm:text-xl md:text-2xl tracking-wide mt-2">
+          <p className="font-bizud-mincho-bold text-base sm:text-lg md:text-xl tracking-wide mt-2">
             but evolutionary
           </p>
         </div>
@@ -143,7 +141,7 @@ export default function Home() {
 
           {/* Texto declarativo por encima */}
           <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-            <p className="font-bizud-mincho text-neutral-200 -ml-23 text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+            <p className="font-bizud-mincho text-neutral-200 -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
               SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil.
             </p>
           </div>
@@ -205,7 +203,7 @@ export default function Home() {
           {/* Texto declarativo y botón alineados con el grid principal */}
           <div className="relative z-10 h-full flex flex-col items-end justify-start">
             
-            <p className="font-bizud-mincho text-neutral-200 -mr-3 max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+            <p className="font-bizud-mincho text-neutral-200 -mr-3 max-w-6xl flex text-right text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
             </p>
 
