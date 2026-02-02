@@ -22,7 +22,7 @@ export default function SignInForm() {
           Welcome back, cultivator
         </p>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
           <div>
             <label className="block text-sm font-jetbrains-mono mb-2">
               Email

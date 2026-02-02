@@ -6,71 +6,23 @@ import { useAnimate } from "motion/react"
 import { cn } from "@/lib/utils"
 
 interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * The content to be displayed
-   */
   children: React.ReactNode
-
-  /**
-   * HTML Tag
-   */
   as?: ElementType
-
-  /**
-   * How much distance in pixels the mouse has to travel to trigger of an element to appear.
-   */
   threshold?: number
-
-  /**
-   * The intensity for the momentum movement after showing the element. The value will be clamped > 0 and <= 1.0. Defaults to 0.3.
-   */
   intensity?: number
-
-  /**
-   * Animation Keyframes for defining the animation sequence. Example: { scale: [0, 1, 1, 0] }
-   */
   keyframes?: DOMKeyframesDefinition
-
-  /**
-   * Options for the animation/keyframes. Example: { duration: 1, times: [0, 0.1, 0.9, 1] }
-   */
   keyframesOptions?: AnimationOptions
-
-  /**
-   * Animation keyframes for the x and y positions after showing the element. Describes how the element should try to arrive at the mouse position.
-   */
   trailElementAnimationKeyframes?: {
     x?: AnimationOptions
     y?: AnimationOptions
   }
-
-  /**
-   * The number of times the children will be repeated. Defaults to 3.
-   */
   repeatChildren?: number
-
-  /**
-   * The base zIndex for all elements. Defaults to 0.
-   */
   baseZIndex?: number
-
-  /**
-   * Controls stacking order behavior.
-   * - "new-on-top": newer elements stack above older ones (default)
-   * - "old-on-top": older elements stay visually on top
-   */
   zIndexDirection?: "new-on-top" | "old-on-top"
 }
 
 interface ImageTrailItemProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * HTML Tag
-   */
   as?: ElementType
-
-  /**
-   * The content to be displayed
-   */
   children: React.ReactNode
 }
 

@@ -3,7 +3,6 @@ import { TextHighlighter } from "../fancy/text/text-highlighter";
 export default function VideoTextSection() {
   return (
     <div className="w-full h-full flex flex-col lg:flex-row">
-      {/* Sección izquierda: Video */}
       <div className="w-full lg:w-1/2 aspect-video lg:aspect-auto relative overflow-hidden">
         <video
           className="w-full h-full object-cover pointer-events-none"
@@ -14,13 +13,11 @@ export default function VideoTextSection() {
           disablePictureInPicture
           disableRemotePlayback
         >
-          {/* Aquí puedes agregar las fuentes del video */}
           <source src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4" type="video/mp4" />
           Tu navegador no soporta el elemento de video.
         </video>
       </div>
 
-      {/* Sección derecha: Texto */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start px-6 md:px-10 lg:px-16 py-8 md:py-12 space-y-6">
         <div className="space-y-6 md:space-y-8">
           <p className="text-neutral-200 font-bizud-mincho-bold text-base md:text-xl lg:text-2x1 leading-relaxed">

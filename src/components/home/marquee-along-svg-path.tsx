@@ -113,7 +113,7 @@ export const MarqueeAlongSvgPathBase = ({
   zIndexBase = 1,
   zIndexRange = 10,
   cssVariableInterpolation = [],
-  responsive,
+  responsive: _responsive,
 }: MarqueeAlongSvgPathProps) => {
   const container = useRef<HTMLDivElement>(null)
   const pathRef = useRef<SVGPathElement>(null)

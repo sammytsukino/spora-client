@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import '../index.css'
 import Navbar from '../components/home/navbar'
 import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
-import ImageTrail from '../components/home/image-trail'
 import VideoTextSection from '../components/home/video-text-section'
 import SimpleMarquee from '../components/home/simple-marquee'
 import MainButton from '../components/ui/main-button'
-import DeclarativeText from '../components/home/declarative-text'
+import ImageTrail from '../components/home/image-trail'
 import PixelTrail from '../components/home/pixel-trail'
 import GooeySvgFilter from '../components/home/gooey-svg-filter'
 import useDetectBrowser from '../hooks/use-detect-browser'
@@ -17,12 +16,11 @@ import Section from '../components/Section'
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble'
 import CyclingLogo from '../components/home/cycling-logo'
 
-
 export default function Home() {
   const navigate = useNavigate()
-  const screenSize = useScreenSize()
   const browserName = useDetectBrowser()
-  const isSafari = browserName === "Safari"
+  const isSafari = browserName === 'Safari'
+  const screenSize = useScreenSize()
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -92,9 +90,9 @@ export default function Home() {
           </div>
 
           <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-            <DeclarativeText className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none">
+            <p className="font-bizud-mincho text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none text-neutral-200 -ml-23 -mr-23">
               SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil.
-            </DeclarativeText>
+            </p>
           </div>
         </div>
       </Section>
@@ -117,8 +115,8 @@ export default function Home() {
 
       <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
-          <div className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 mt-8">
-            <h2 className="text-xl sm:text-lg md:text-2x1 underline font-jetbrains-mono">
+          <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
+            <h2 className="text-xl sm:text-lg md:text-2x1 font-jetbrains-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
               Featured Floras →
             </h2>
             <MainButton
@@ -143,11 +141,11 @@ export default function Home() {
         className="bg-neutral-800 items-stretch justify-start"
       >
         <div className="relative w-full h-full overflow-hidden">
-          <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
+          <GooeySvgFilter id="gooey-filter-quote" strength={5} />
 
           <div
             className="absolute inset-0 z-0"
-            style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-declarative)' }}
+            style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-quote)' }}
           >
             <PixelTrail
               pixelSize={screenSize.lessThan(`md`) ? 24 : 60}
@@ -159,9 +157,9 @@ export default function Home() {
           </div>
 
           <div className="relative z-10 h-full flex flex-col items-end justify-start pt-8 px-4 sm:px-6 md:px-8">
-            <DeclarativeText className="max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none -mr-15">
+            <p className="font-bizud-mincho max-w-6xl flex text-right text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight pointer-events-none -mr-15 text-neutral-200 -ml-23 -mr-23">
               "Lloro porque no siento nada, y ahora además de triste me siento un farsante"
-            </DeclarativeText>
+            </p>
 
             <div className="mt-12 pointer-events-auto">
               <MainButton
@@ -191,8 +189,6 @@ export default function Home() {
           <FooterMain />
         </div>
       </Section>
-
-
     </div>
   )
 }
