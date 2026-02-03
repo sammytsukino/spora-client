@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import PageTitle from "@/components/ui/page-title";
 import FooterAlter from "@/components/home/footer-alter";
@@ -6,13 +7,14 @@ import FilterTabs from "@/components/common/filter-tabs";
 import LoadingIndicator from "@/components/common/loading-indicator";
 import FeaturedFlora from "@/components/greenhouse/featured-flora";
 import GreenhouseFloraCard from "@/components/greenhouse/greenhouse-flora-card";
-import { generateFloraData, floraFilters, ITEMS_PER_PAGE } from "@/data/flora-data";
+import { generateFloraData, floraFilters, ITEMS_PER_PAGE, type FloraItem } from "@/data/flora-data";
 
 const allFloras = generateFloraData(48);
 
 export default function Greenhouse() {
   const [activeFilter, setActiveFilter] = useState('All Units');
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const navigate = useNavigate();
 
   const filteredFloras = activeFilter === 'All Units'
     ? allFloras
@@ -43,6 +45,12 @@ export default function Greenhouse() {
   const [featured, ...restFloras] = visibleFloras;
   const sideFloras = restFloras.slice(0, 2);
   const remainingFloras = restFloras.slice(2);
+
+  const handleCardClick = (flora: FloraItem) => {
+    navigate(`/flora/${encodeURIComponent(flora.id)}`, {
+      state: { flora },
+    });
+  };
 
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
@@ -84,11 +92,15 @@ export default function Greenhouse() {
           <main>
             {featured && (
               <div className="grid lg:grid-cols-[2fr_1fr]">
-                <FeaturedFlora flora={featured} />
+                <FeaturedFlora flora={featured} onClick={() => handleCardClick(featured)} />
 
                 <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1">
                   {sideFloras.map((flora) => (
-                    <GreenhouseFloraCard key={flora.id} flora={flora} />
+                    <GreenhouseFloraCard
+                      key={flora.id}
+                      flora={flora}
+                      onClick={() => handleCardClick(flora)}
+                    />
                   ))}
                 </aside>
               </div>
@@ -97,7 +109,11 @@ export default function Greenhouse() {
             {remainingFloras.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-4">
                 {remainingFloras.map((flora) => (
-                  <GreenhouseFloraCard key={flora.id} flora={flora} />
+                  <GreenhouseFloraCard
+                    key={flora.id}
+                    flora={flora}
+                    onClick={() => handleCardClick(flora)}
+                  />
                 ))}
               </div>
             )}

@@ -24,6 +24,7 @@ export default function Laboratory() {
   const [extraGrain, setExtraGrain] = useState(false);
   const [loopPreview, setLoopPreview] = useState(false);
   const [sidebarScrollProgress, setSidebarScrollProgress] = useState(0);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -89,13 +90,11 @@ export default function Laboratory() {
     <div className="relative w-full h-screen overflow-hidden bg-[#262626]">
       <LaboratoryNavbar />
 
-      {/* Left sidebar (scroll completo + HUD) */}
       <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[#e3e3e3] text-[#262626] border-r border-[#262626] z-20">
         <div
           ref={sidebarRef}
           className="h-full lab-scroll flex flex-col"
         >
-          {/* Scroll progress bar (HUD style, neutral colors) */}
           <div className="w-full h-[2px] bg-transparent">
             <div
               className="h-full"
@@ -107,23 +106,27 @@ export default function Laboratory() {
           </div>
 
           <div className="p-4 sm:p-6 flex flex-col gap-6">
-            {/* Laboratory logo */}
             <div className="flex justify-center mb-2">
-              <CyclingLogo
-                logos={[
-                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
-                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready4_tnwrxb.svg",
-                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready3_wtlf0u.svg",
-                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhs.svg",
-                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
-                ]}
-                width="clamp(6rem, 10vw, 9rem)"
-                height="clamp(72px, 8vw, 120px)"
-                cycleDuration={0.25}
-              />
+              <button
+                type="button"
+                onClick={() => setShowExitModal(true)}
+                className="outline-none focus-visible:ring-2 focus-visible:ring-[#262626] cursor-pointer"
+              >
+                <CyclingLogo
+                  logos={[
+                    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
+                    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready4_tnwrxb.svg",
+                    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready3_wtlf0u.svg",
+                    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhs.svg",
+                    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
+                  ]}
+                  width="clamp(6rem, 10vw, 9rem)"
+                  height="clamp(72px, 8vw, 120px)"
+                  cycleDuration={0.25}
+                />
+              </button>
             </div>
 
-            {/* Title */}
             <section>
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 TITLE
@@ -139,7 +142,6 @@ export default function Laboratory() {
               </div>
             </section>
 
-            {/* Your words */}
             <section className="flex flex-col">
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 YOUR WORDS
@@ -152,7 +154,6 @@ export default function Laboratory() {
               />
             </section>
 
-            {/* Tweaks */}
             <section className="flex flex-col">
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 TWEAKS
@@ -167,7 +168,6 @@ export default function Laboratory() {
               </div>
             </section>
 
-            {/* Stats HUD */}
             <section>
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 STATS
@@ -181,7 +181,6 @@ export default function Laboratory() {
               </div>
             </section>
 
-            {/* Render controls */}
             <section>
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 RENDER CONTROLS
@@ -229,7 +228,6 @@ export default function Laboratory() {
             </section>
           </div>
 
-          {/* Bottom buttons */}
           <div className="p-4 sm:p-6 flex gap-2 border-t border-[#262626] mt-4">
             <button
               type="button"
@@ -251,9 +249,7 @@ export default function Laboratory() {
         </div>
       </aside>
 
-      {/* Right canvas (fixed en viewport) */}
       <section className="fixed top-0 bottom-0 right-0 overflow-hidden z-10 left-[clamp(260px,20vw,24rem)]">
-        {/* Gradient / generative background */}
         <div className="absolute inset-0">
           <Grainient
             color1={LAB_COLOR1 as unknown as string[]}
@@ -281,7 +277,6 @@ export default function Laboratory() {
           />
         </div>
 
-        {/* Generated flora canvas */}
         <div className="relative z-10 h-full flex items-center justify-center p-6 pt-16">
           {generatedFlora ? (
             <img
@@ -297,13 +292,45 @@ export default function Laboratory() {
           )}
         </div>
 
-        {/* Stats box bottom-right */}
         <div className="absolute bottom-6 right-6 bg-[#e3e3e3] border border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
           <p>SOIL: LAB/ALPHA</p>
           <p>SENTIMENT: PENDING</p>
           <p>GEN: {generatedFlora ? `GEN_${generation}` : "—"}</p>
         </div>
       </section>
+
+      {showExitModal && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+          <div className="bg-[#E9E9E9] border-2 border-[#262626] max-w-md w-[90%] px-6 py-5 shadow-[0_0_0_4px_#262626]">
+            <h2 className="font-bizud-mincho-bold text-xl mb-3 text-[#262626]">
+              Leave the Laboratory?
+            </h2>
+            <p className="font-supply-mono text-[11px] sm:text-xs mb-5 text-[#262626]">
+              If you go back to Home you&apos;ll lose the current words, tweaks and
+              generation settings for this flora.
+            </p>
+            <div className="flex justify-end gap-3 font-supply-mono text-[11px] sm:text-xs">
+              <button
+                type="button"
+                className="px-4 py-2 border border-[#262626] bg-[#E9E9E9] text-[#262626] uppercase tracking-[0.25em] hover:bg-[#f5f5f5] cursor-pointer"
+                onClick={() => setShowExitModal(false)}
+              >
+                STAY HERE
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 border border-[#262626] bg-[#262626] text-[#E9E9E9] uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
+                onClick={() => {
+                  setShowExitModal(false);
+                  navigate("/home");
+                }}
+              >
+                GO HOME
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

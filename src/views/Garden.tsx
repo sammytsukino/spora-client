@@ -1,17 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import PageTitle from "@/components/ui/page-title";
 import FooterAlter from "@/components/home/footer-alter";
 import FloraCard from "@/components/garden/flora-card";
 import FilterTabs from "@/components/common/filter-tabs";
 import LoadingIndicator from "@/components/common/loading-indicator";
-import { generateFloraData, floraFilters, ITEMS_PER_PAGE } from "@/data/flora-data";
+import { generateFloraData, floraFilters, ITEMS_PER_PAGE, type FloraItem } from "@/data/flora-data";
 
 const allFloras = generateFloraData(48);
 
 export default function Garden() {
   const [activeFilter, setActiveFilter] = useState('All Units');
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const navigate = useNavigate();
 
   const filteredFloras = activeFilter === 'All Units'
     ? allFloras
@@ -38,7 +40,11 @@ export default function Garden() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMoreCards]);
 
-  const handleCardClick = () => {};
+  const handleCardClick = (flora: FloraItem) => {
+    navigate(`/flora/${encodeURIComponent(flora.id)}`, {
+      state: { flora },
+    });
+  };
 
   const visibleFloras = filteredFloras.slice(0, visibleCount);
 
@@ -91,7 +97,7 @@ export default function Garden() {
                 excerpt={flora.excerpt}
                 author={flora.author}
                 seed={flora.seed}
-                onClick={handleCardClick}
+                onClick={() => handleCardClick(flora)}
               />
             ))}
           </main>
