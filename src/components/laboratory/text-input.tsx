@@ -29,7 +29,7 @@ export default function TextInput({
           maxLength={maxLength}
           className="w-full h-48 p-4 font-supply-mono text-sm bg-[#262626] text-stone-200 resize-none focus:outline-none placeholder:text-neutral-500"
         />
-        <div className="px-4 py-2 bg-[#262626] text-lime-300 font-supply-mono text-xs flex justify-between items-center">
+        <div className="px-4 py-2 bg-[#262626] text-stone-200 font-supply-mono text-xs flex justify-between items-center">
           <span>CHARACTER COUNT</span>
           <span>{value.length} / {maxLength}</span>
         </div>

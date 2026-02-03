@@ -1,16 +1,59 @@
-import { useState, useEffect } from "react";
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import FooterAlter from "@/components/home/footer-alter";
-import PageTitle from "@/components/ui/page-title";
-import FloraGenerator from "@/components/laboratory/flora-generator";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import LaboratoryNavbar from "@/components/laboratory/laboratory-navbar";
+import Grainient from "@/components/Grainient";
 import { floraImages } from "@/data/flora-data";
+import TextInput from "@/components/laboratory/text-input";
+import CyclingLogo from "@/components/home/cycling-logo";
+
+const LAB_COLOR1 = ["#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3"] as const;
+const LAB_COLOR2 = ["#dd4aff", "#dd4aff", "#00dcff", "#f4ef40", "#ff64ff", "#52ff5a"] as const;
+const LAB_COLOR3 = ["#00dcff", "#f4ef40", "#52ff5a", "#52ff5a", "#00dcff", "#ff64ff"] as const;
 
 export default function Laboratory() {
+  const [title, setTitle] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [tweaks, setTweaks] = useState("");
   const [generatedFlora, setGeneratedFlora] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [seed, setSeed] = useState(
+    () => Math.random().toString(16).substr(2, 6).toUpperCase()
+  );
+  const [generation, setGeneration] = useState(0);
+  const [highContrast, setHighContrast] = useState(true);
+  const [extraGrain, setExtraGrain] = useState(false);
+  const [loopPreview, setLoopPreview] = useState(false);
+  const [sidebarScrollProgress, setSidebarScrollProgress] = useState(0);
 
-  const handleGenerate = (_text: string) => {
-    const randomImage = floraImages[Math.floor(Math.random() * floraImages.length)];
-    setGeneratedFlora(randomImage);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
+  const wordCount =
+    inputText.trim().length > 0
+      ? inputText
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean).length
+      : 0;
+  const lineCount = inputText.length > 0 ? inputText.split(/\n/).length : 0;
+
+  const handleGenerate = (destination?: "/garden" | "/greenhouse") => {
+    if (inputText.trim().length < 10) {
+      alert("Please enter at least 10 characters");
+      return;
+    }
+
+    setIsGenerating(true);
+    setTimeout(() => {
+      const randomImage =
+        floraImages[Math.floor(Math.random() * floraImages.length)];
+      setGeneratedFlora(randomImage);
+      setIsGenerating(false);
+      setGeneration((prev) => prev + 1);
+      if (destination) {
+        navigate(destination);
+      }
+    }, 1500);
   };
 
   useEffect(() => {
@@ -23,54 +66,244 @@ export default function Laboratory() {
     }
   }, [])
 
+  useEffect(() => {
+    const el = sidebarRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = el;
+      const docHeight = scrollHeight - clientHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setSidebarScrollProgress(Math.max(0, Math.min(100, progress)));
+    };
+
+    handleScroll();
+    el.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      el.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-[#262626]">
-      <TransparentNavbar showScrollBackground />
+    <div className="relative w-full h-screen overflow-hidden bg-[#262626]">
+      <LaboratoryNavbar />
 
-      <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16">
-        <PageTitle
-          supertitle="(03)LABORATORY"
-          title="CREATE YOUR OWN FLORA"
-          description="Transform your words into generative art. Each text input creates a unique visual organism."
-          className="mb-12"
-          theme="dark"
-        />
+      {/* Left sidebar (scroll completo + HUD) */}
+      <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[#e3e3e3] text-[#262626] border-r border-[#262626] z-20">
+        <div
+          ref={sidebarRef}
+          className="h-full lab-scroll flex flex-col"
+        >
+          {/* Scroll progress bar (HUD style, neutral colors) */}
+          <div className="w-full h-[2px] bg-transparent">
+            <div
+              className="h-full"
+              style={{
+                width: `${sidebarScrollProgress}%`,
+                backgroundColor: "#262626",
+              }}
+            />
+          </div>
 
-        <div className="max-w-6xl mx-auto">
-          <FloraGenerator onGenerate={handleGenerate} />
+          <div className="p-4 sm:p-6 flex flex-col gap-6">
+            {/* Laboratory logo */}
+            <div className="flex justify-center mb-2">
+              <CyclingLogo
+                logos={[
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready4_tnwrxb.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready3_wtlf0u.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhs.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
+                ]}
+                width="clamp(6rem, 10vw, 9rem)"
+                height="clamp(72px, 8vw, 120px)"
+                cycleDuration={0.25}
+              />
+            </div>
 
-          {generatedFlora && (
-            <div className="mt-12 border-2 border-lime-300 p-8">
-              <div className="flex flex-col md:flex-row gap-8 items-center">
-                <div className="flex-1">
-                  <img
-                    src={generatedFlora}
-                    alt="Generated Flora"
-                    className="w-full max-w-md mx-auto border-2 border-[#262626]"
-                  />
-                </div>
-                <div className="flex-1 text-stone-200">
-                  <h3 className="font-bizud-mincho-bold text-3xl mb-4">
-                    Your Flora is Ready
-                  </h3>
-                  <p className="font-supply-mono text-sm mb-6">
-                    This unique flora has been generated based on the sentiment, rhythm, and structure of your text.
-                  </p>
-                  <div className="space-y-2 font-supply-mono text-xs">
-                    <p>• ID: FLR/DEMO</p>
-                    <p>• GENERATION: GEN_0</p>
-                    <p>• SEED: #{Math.random().toString(16).substr(2, 6).toUpperCase()}</p>
-                  </div>
-                </div>
+            {/* Title */}
+            <section>
+              <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
+                TITLE
+              </h2>
+              <div className="border-2 border-[#262626] bg-[#e3e3e3]">
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-3 py-2 bg-transparent font-supply-mono text-sm text-[#262626] outline-none"
+                  placeholder="Give your flora a name..."
+                />
               </div>
+            </section>
+
+            {/* Your words */}
+            <section className="flex flex-col">
+              <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
+                YOUR WORDS
+              </h2>
+              <TextInput
+                value={inputText}
+                onChange={setInputText}
+                placeholder="Write something meaningful. Your words will become a unique flora..."
+                maxLength={500}
+              />
+            </section>
+
+            {/* Tweaks */}
+            <section className="flex flex-col">
+              <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
+                TWEAKS
+              </h2>
+              <div className="border-2 border-[#262626] bg-[#262626]">
+                <textarea
+                  value={tweaks}
+                  onChange={(e) => setTweaks(e.target.value)}
+                  className="w-full h-32 p-4 font-supply-mono text-xs bg-[#262626] text-stone-200 resize-none focus:outline-none placeholder:text-neutral-500"
+                  placeholder="Optional notes, constraints, or style hints for your flora..."
+                />
+              </div>
+            </section>
+
+            {/* Stats HUD */}
+            <section>
+              <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
+                STATS
+              </h2>
+              <div className="border-2 border-[#262626] bg-[#262626] text-[#e3e3e3] font-supply-mono text-[10px] sm:text-xs px-3 py-2 space-y-1">
+                <p>WORDS: <span className="text-stone-300">{wordCount}</span></p>
+                <p>CHARS: <span className="text-stone-300">{inputText.length}</span></p>
+                <p>LINES: <span className="text-stone-300">{lineCount}</span></p>
+                <p>SEED: <span className="text-stone-300">#{seed}</span></p>
+                <p>GEN: <span className="text-stone-300">{generation}</span></p>
+              </div>
+            </section>
+
+            {/* Render controls */}
+            <section>
+              <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
+                RENDER CONTROLS
+              </h2>
+              <div className="border-2 border-[#262626] bg-[#262626] text-stone-200 font-supply-mono text-[10px] sm:text-xs px-3 py-3 space-y-3">
+                <label className="flex items-center justify-between gap-2 cursor-pointer">
+                  <span>High contrast</span>
+                  <input
+                    type="checkbox"
+                    className="accent-[#e3e3e3]"
+                    checked={highContrast}
+                    onChange={(e) => setHighContrast(e.target.checked)}
+                  />
+                </label>
+                <label className="flex items-center justify-between gap-2 cursor-pointer">
+                  <span>Extra grain</span>
+                  <input
+                    type="checkbox"
+                    className="accent-[#e3e3e3]"
+                    checked={extraGrain}
+                    onChange={(e) => setExtraGrain(e.target.checked)}
+                  />
+                </label>
+                <label className="flex items-center justify-between gap-2 cursor-pointer">
+                  <span>Loop preview</span>
+                  <input
+                    type="checkbox"
+                    className="accent-[#e3e3e3]"
+                    checked={loopPreview}
+                    onChange={(e) => setLoopPreview(e.target.checked)}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="w-full mt-1 border border-[#e3e3e3] text-[#e3e3e3] py-1.5 hover:bg-[#e3e3e3] hover:text-[#262626] transition-colors"
+                  onClick={() =>
+                    setSeed(
+                      Math.random().toString(16).substr(2, 6).toUpperCase()
+                    )
+                  }
+                >
+                  REROLL SEED
+                </button>
+              </div>
+            </section>
+          </div>
+
+          {/* Bottom buttons */}
+          <div className="p-4 sm:p-6 flex gap-2 border-t border-[#262626] mt-4">
+            <button
+              type="button"
+              className="flex-1 py-5 bg-[#262626] text-stone-100 font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border border-[#262626] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              disabled={isGenerating || inputText.trim().length < 10}
+              onClick={() => handleGenerate("/greenhouse")}
+            >
+              PUBLISH<br />SEALED
+            </button>
+            <button
+              type="button"
+              className="flex-1 py-5 bg-[#e3e3e3] text-[#262626] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border border-[#262626] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              onClick={() => handleGenerate("/garden")}
+              disabled={isGenerating || inputText.trim().length < 10}
+            >
+              PUBLISH<br />BLOSSOMING
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Right canvas (fixed en viewport) */}
+      <section className="fixed top-0 bottom-0 right-0 overflow-hidden z-10 left-[clamp(260px,20vw,24rem)]">
+        {/* Gradient / generative background */}
+        <div className="absolute inset-0">
+          <Grainient
+            color1={LAB_COLOR1 as unknown as string[]}
+            color2={LAB_COLOR2 as unknown as string[]}
+            color3={LAB_COLOR3 as unknown as string[]}
+            timeSpeed={0.4}
+            colorBalance={0}
+            warpStrength={1}
+            warpFrequency={5}
+            warpSpeed={1.5}
+            warpAmplitude={40}
+            blendAngle={0}
+            blendSoftness={0.05}
+            rotationAmount={400}
+            noiseScale={2}
+            grainAmount={extraGrain ? 0.2 : 0.12}
+            grainScale={2}
+            grainAnimated={loopPreview}
+            contrast={highContrast ? 1.6 : 1.2}
+            gamma={1}
+            saturation={1}
+            centerX={0}
+            centerY={0}
+            zoom={0.9}
+          />
+        </div>
+
+        {/* Generated flora canvas */}
+        <div className="relative z-10 h-full flex items-center justify-center p-6 pt-16">
+          {generatedFlora ? (
+            <img
+              src={generatedFlora}
+              alt="Generated Flora"
+              className="max-h-[70vh] w-auto border border-[#262626] shadow-[0_0_0_4px_#e3e3e3]"
+            />
+          ) : (
+            <div className="border border-[#e3e3e3] bg-black backdrop-blur-sm px-6 py-4 font-supply-mono text-xs text-stone-200">
+              TYPE YOUR WORDS ON THE LEFT AND PUBLISH BLOSSOMING TO GROW A NEW
+              FLORA.
             </div>
           )}
         </div>
-      </main>
 
-      <div className="relative z-10">
-        <FooterAlter />
-      </div>
+        {/* Stats box bottom-right */}
+        <div className="absolute bottom-6 right-6 bg-[#e3e3e3] border border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
+          <p>SOIL: LAB/ALPHA</p>
+          <p>SENTIMENT: PENDING</p>
+          <p>GEN: {generatedFlora ? `GEN_${generation}` : "—"}</p>
+        </div>
+      </section>
     </div>
   )
 }

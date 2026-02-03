@@ -26,7 +26,7 @@ export default function FooterAlter() {
           />
         </div>
 
-        <div className="w-2/3 border-t-2 border-[#262626] mb-10" />
+        <div className="w-2/4 border-t-2 border-[#262626] mb-10" />
 
         <div className="flex items-start">
           <div className="text-[10px] sm:text-xs font-supply-mono">

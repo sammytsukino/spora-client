@@ -16,6 +16,16 @@ body.hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
+.lab-scroll {
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.lab-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @font-face {
   font-family: "BIZ UDPMincho";
   src: url("./assets/BIZUDMincho-Regular.ttf") format("truetype");
