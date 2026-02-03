@@ -212,9 +212,9 @@ export default function ImageTrail() {
   return (
     <div className="w-full h-full relative z-0 text-foreground dark:text-muted overflow-hidden" style={{ backgroundColor: "transparent" }}>
       <ImageTrailBase
-        threshold={250}
+        threshold={100}
         intensity={1}
-        keyframes={{ scale: [1, 3] }}
+        keyframes={{ scale: [1, 2] }}
         keyframesOptions={{
           scale: { duration: 0.3, times: [4, 1] },
         }}

@@ -1,6 +1,6 @@
 import MainButton from "@/components/ui/main-button";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type TransparentNavbarProps = {
   position?: "fixed" | "sticky";
@@ -16,6 +16,7 @@ export default function TransparentNavbar({
   showScrollBackground = false,
 }: TransparentNavbarProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const positionClass = position === "sticky" ? "sticky top-0" : "fixed top-0";
   const [scrollProgress, setScrollProgress] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -42,6 +43,11 @@ export default function TransparentNavbar({
       window.removeEventListener("resize", updateScrollProgress);
     };
   }, [showScrollProgress, showScrollBackground]);
+
+  const pathname = location.pathname.toLowerCase();
+  const isGarden = pathname.startsWith("/garden");
+  const isGreenhouse = pathname.startsWith("/greenhouse");
+  const isLaboratory = pathname.startsWith("/laboratory");
 
   return (
     <header
@@ -80,7 +86,7 @@ export default function TransparentNavbar({
             <li>
               <button
                 type="button"
-                className="hover:underline cursor-pointer"
+                className={`${isGarden ? "underline" : "hover:underline"} cursor-pointer`}
                 onClick={() => navigate("/garden")}
               >
                 (01)GARDEN
@@ -90,7 +96,7 @@ export default function TransparentNavbar({
             <li>
               <button
                 type="button"
-                className="hover:underline cursor-pointer"
+                className={`${isGreenhouse ? "underline" : "hover:underline"} cursor-pointer`}
                 onClick={() => navigate("/greenhouse")}
               >
                 (02)GREENHOUSE
@@ -100,7 +106,7 @@ export default function TransparentNavbar({
             <li>
               <button
                 type="button"
-                className="hover:underline cursor-pointer"
+                className={`${isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
                 onClick={() => navigate("/laboratory")}
               >
                 (03)LABORATORY
@@ -115,7 +121,7 @@ export default function TransparentNavbar({
             size="sm"
             type="button"
             onClick={() => navigate("/signin")}
-            className="bg-stone-200"
+            className="bg-transparent"
           >
             SIGN IN
           </MainButton >

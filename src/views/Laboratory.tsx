@@ -5,6 +5,7 @@ import Grainient from "@/components/Grainient";
 import { floraImages } from "@/data/flora-data";
 import TextInput from "@/components/laboratory/text-input";
 import CyclingLogo from "@/components/home/cycling-logo";
+import ConfirmModal from "@/components/common/confirm-modal";
 
 const LAB_COLOR1 = ["#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3"] as const;
 const LAB_COLOR2 = ["#dd4aff", "#dd4aff", "#00dcff", "#f4ef40", "#ff64ff", "#52ff5a"] as const;
@@ -25,6 +26,7 @@ export default function Laboratory() {
   const [loopPreview, setLoopPreview] = useState(false);
   const [sidebarScrollProgress, setSidebarScrollProgress] = useState(0);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [pendingExitPath, setPendingExitPath] = useState<string | null>(null);
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
@@ -88,7 +90,12 @@ export default function Laboratory() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#262626]">
-      <LaboratoryNavbar />
+      <LaboratoryNavbar
+        onNavigateRequest={(path) => {
+          setPendingExitPath(path);
+          setShowExitModal(true);
+        }}
+      />
 
       <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[#e3e3e3] text-[#262626] border-r border-[#262626] z-20">
         <div
@@ -109,7 +116,10 @@ export default function Laboratory() {
             <div className="flex justify-center mb-2">
               <button
                 type="button"
-                onClick={() => setShowExitModal(true)}
+                onClick={() => {
+                  setPendingExitPath("/home");
+                  setShowExitModal(true);
+                }}
                 className="outline-none focus-visible:ring-2 focus-visible:ring-[#262626] cursor-pointer"
               >
                 <CyclingLogo
@@ -299,38 +309,32 @@ export default function Laboratory() {
         </div>
       </section>
 
-      {showExitModal && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-          <div className="bg-[#E9E9E9] border-2 border-[#262626] max-w-md w-[90%] px-6 py-5 shadow-[0_0_0_4px_#262626]">
-            <h2 className="font-bizud-mincho-bold text-xl mb-3 text-[#262626]">
-              Leave the Laboratory?
-            </h2>
-            <p className="font-supply-mono text-[11px] sm:text-xs mb-5 text-[#262626]">
-              If you go back to Home you&apos;ll lose the current words, tweaks and
-              generation settings for this flora.
-            </p>
-            <div className="flex justify-end gap-3 font-supply-mono text-[11px] sm:text-xs">
-              <button
-                type="button"
-                className="px-4 py-2 border border-[#262626] bg-[#E9E9E9] text-[#262626] uppercase tracking-[0.25em] hover:bg-[#f5f5f5] cursor-pointer"
-                onClick={() => setShowExitModal(false)}
-              >
-                STAY HERE
-              </button>
-              <button
-                type="button"
-                className="px-4 py-2 border border-[#262626] bg-[#262626] text-[#E9E9E9] uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
-                onClick={() => {
-                  setShowExitModal(false);
-                  navigate("/home");
-                }}
-              >
-                GO HOME
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {(() => {
+        const label =
+          pendingExitPath === "/garden"
+            ? "GO TO GARDEN"
+            : pendingExitPath === "/greenhouse"
+            ? "GO TO GREENHOUSE"
+            : pendingExitPath === "/laboratory"
+            ? "STAY IN LAB"
+            : "GO HOME";
+
+        return (
+          <ConfirmModal
+            open={showExitModal}
+            title="Leave the Laboratory?"
+            description="If you leave the Laboratory you'll lose the current words, tweaks and generation settings for this flora."
+            cancelLabel="STAY HERE"
+            confirmLabel={label}
+            onCancel={() => setShowExitModal(false)}
+            onConfirm={() => {
+              setShowExitModal(false);
+              navigate(pendingExitPath ?? "/home");
+            }}
+          />
+        );
+      })()}
+
     </div>
   )
 }
