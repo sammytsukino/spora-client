@@ -97,7 +97,7 @@ export default function Laboratory() {
         }}
       />
 
-      <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[#e3e3e3] text-[#262626] border-r border-[#262626] z-20">
+      <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[#e3e3e3] text-[#262626] border-r-2 border-[#262626] z-20">
         <div
           ref={sidebarRef}
           className="h-full lab-scroll flex flex-col"
@@ -225,7 +225,7 @@ export default function Laboratory() {
                 </label>
                 <button
                   type="button"
-                  className="w-full mt-1 border border-[#e3e3e3] text-[#e3e3e3] py-1.5 hover:bg-[#e3e3e3] hover:text-[#262626] transition-colors"
+                  className="w-full mt-1 border-2 border-[#e3e3e3] text-[#e3e3e3] py-1.5 hover:bg-[#e3e3e3] hover:text-[#262626] transition-colors"
                   onClick={() =>
                     setSeed(
                       Math.random().toString(16).substr(2, 6).toUpperCase()
@@ -238,10 +238,10 @@ export default function Laboratory() {
             </section>
           </div>
 
-          <div className="p-4 sm:p-6 flex gap-2 border-t border-[#262626] mt-4">
+          <div className="p-4 sm:p-6 flex gap-2 border-t-2 border-[#262626] mt-4">
             <button
               type="button"
-              className="flex-1 py-5 bg-[#262626] text-stone-100 font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border border-[#262626] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 py-5 bg-[#262626] text-stone-100 font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[#262626] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={isGenerating || inputText.trim().length < 10}
               onClick={() => handleGenerate("/greenhouse")}
             >
@@ -249,7 +249,7 @@ export default function Laboratory() {
             </button>
             <button
               type="button"
-              className="flex-1 py-5 bg-[#e3e3e3] text-[#262626] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border border-[#262626] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 py-5 bg-[#e3e3e3] text-[#262626] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[#262626] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               onClick={() => handleGenerate("/garden")}
               disabled={isGenerating || inputText.trim().length < 10}
             >
@@ -292,17 +292,17 @@ export default function Laboratory() {
             <img
               src={generatedFlora}
               alt="Generated Flora"
-              className="max-h-[70vh] w-auto border border-[#262626] shadow-[0_0_0_4px_#e3e3e3]"
+              className="max-h-[70vh] w-auto border-2 border-[#262626] shadow-[0_0_0_4px_#e3e3e3]"
             />
           ) : (
-            <div className="border border-[#e3e3e3] bg-black backdrop-blur-sm px-6 py-4 font-supply-mono text-xs text-stone-200">
+            <div className="border-2 border-[#e3e3e3] bg-black backdrop-blur-sm px-6 py-4 font-supply-mono text-xs text-stone-200">
               TYPE YOUR WORDS ON THE LEFT AND PUBLISH BLOSSOMING TO GROW A NEW
               FLORA.
             </div>
           )}
         </div>
 
-        <div className="absolute bottom-6 right-6 bg-[#e3e3e3] border border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
+        <div className="absolute bottom-6 right-6 bg-[#e3e3e3] border-2 border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
           <p>SOIL: LAB/ALPHA</p>
           <p>SENTIMENT: PENDING</p>
           <p>GEN: {generatedFlora ? `GEN_${generation}` : "—"}</p>

@@ -28,13 +28,13 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden ">
       <Navbar position="fixed" showScrollProgress />
 
       <Section
         variant="hero"
         containerized={false}
-        className="relative overflow-hidden items-stretch"
+        className="relative overflow-hidden items-stretch "
       >
         <HeroSection />
       </Section>
@@ -42,7 +42,7 @@ export default function Home() {
       <Section
         variant="large"
         containerized={false}
-        className="items-stretch justify-start"
+        className="items-stretch justify-start "
       >
         <DeclarativeSection 
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."

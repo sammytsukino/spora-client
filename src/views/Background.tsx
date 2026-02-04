@@ -1,13 +1,13 @@
 //import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
-import Grainient from "@/components/Grainient";
-
+//import Grainient from "@/components/Grainient";
+import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
 //import Section from "@/components/Section";
 
 export default function Background() {
   return (
     <div className="w-full overflow-x-hidden">
 
-
+{/*
 <Grainient 
   color1={['#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed']}
   color2={['#dd4aff', '#dd4aff', '#00dcff', '#ff64ff', '#bbf451']}
@@ -31,7 +31,9 @@ export default function Background() {
   centerX={0}
   centerY={0}
   zoom={0.9}
-/>
+/>*/}
+
+<BubbleBackground interactive={true} className="absolute inset-0" />
   
     </div>
   )
