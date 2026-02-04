@@ -17,8 +17,8 @@ export default function TextInput({
 
   return (
     <div className="w-full">
-      <div className={`border-2 transition-colors ${
-        isFocused ? 'border-lime-300' : 'border-black'
+      <div className={`border-2 transition-colors duration-200 ${
+        isFocused ? 'border-[var(--spora-accent-secondary)]' : 'border-[var(--spora-primary)]'
       }`}>
         <textarea
           value={value}
@@ -27,11 +27,11 @@ export default function TextInput({
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
           maxLength={maxLength}
-          className="w-full h-48 p-4 font-jetbrains-mono text-sm bg-neutral-900 text-neutral-100 resize-none focus:outline-none placeholder:text-neutral-500"
+          className="w-full h-48 p-4 font-supply-mono text-sm bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-accent-secondary)] focus-visible:ring-offset-2 placeholder:text-neutral-500 transition-colors duration-200"
         />
-        <div className="px-4 py-2 bg-black text-lime-300 font-jetbrains-mono text-xs flex justify-between items-center">
+        <div className="px-4 py-2 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-xs flex justify-between items-center border-t-2 border-[var(--spora-primary)]">
           <span>CHARACTER COUNT</span>
-          <span>{value.length} / {maxLength}</span>
+          <span className={value.length >= maxLength ? 'text-red-400' : ''}>{value.length} / {maxLength}</span>
         </div>
       </div>
     </div>

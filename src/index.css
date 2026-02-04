@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -14,6 +13,16 @@ body.hide-scrollbar {
 
 html.hide-scrollbar::-webkit-scrollbar,
 body.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.lab-scroll {
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.lab-scroll::-webkit-scrollbar {
   display: none;
 }
 
@@ -33,13 +42,21 @@ body.hide-scrollbar::-webkit-scrollbar {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Supply Mono";
+  src: url("./assets/supplyMono-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #E9E9E9;
+  background-color: var(--spora-primary-light);
 }
 
 #root {
@@ -113,18 +130,18 @@ body {
   position: relative;
 }
 
-.font-jetbrains-mono {
-  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+.font-supply-mono {
+  font-family: "Supply Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .font-bizud-mincho {
-  font-family: 'BIZ UDPMincho', serif;
+  font-family: "BIZ UDPMincho", serif;
   font-weight: 400;
 }
 
 .font-bizud-mincho-bold {
-  font-family: 'BIZ UDPMincho', serif;
+  font-family: "BIZ UDPMincho", serif;
   font-weight: 700;
 }
 
@@ -162,6 +179,35 @@ body {
 
 .read-the-docs {
   color: #888;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @theme inline {
@@ -238,6 +284,16 @@ body {
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  --spora-primary: #262626;
+  --spora-primary-light: #E9E9E9;
+  --spora-primary-lighter: #e3e3e3;
+  --spora-primary-lightest: #e6e6e6;
+  --spora-accent: #ff6b4a;
+  --spora-accent-secondary: #bbf451;
+  --spora-text-primary: #262626;
+  --spora-text-secondary: #e5e7eb;
+  --spora-border: #262626;
 }
 
 .dark {

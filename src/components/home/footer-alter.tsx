@@ -5,7 +5,7 @@ export default function FooterAlter() {
   const navigate = useNavigate()
 
   return (
-    <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-neutral-900 overflow-hidden">
+    <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)] overflow-hidden">
       <div className="relative z-10 flex flex-col justify-between h-full">
 
 
@@ -26,10 +26,10 @@ export default function FooterAlter() {
           />
         </div>
 
-        <div className="w-2/3 border-t-2 border-neutral-800 mb-10" />
+        <div className="w-2/4 border-t-2 border-[var(--spora-primary)] mb-10" />
 
         <div className="flex items-start">
-          <div className="text-[10px] sm:text-xs font-jetbrains-mono">
+          <div className="text-[10px] sm:text-xs font-supply-mono">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">
               <button
               type="button"
@@ -78,7 +78,7 @@ export default function FooterAlter() {
         </div>
       </div>
 
-      <div className="mt-8 flex items-center justify-center text-[10px] sm:text-xs font-jetbrains-mono">
+      <div className="mt-8 flex items-center justify-center text-[10px] sm:text-xs font-supply-mono">
         <span className="text-center whitespace-nowrap">© 2026, SPORA</span>
       </div>
       </div>

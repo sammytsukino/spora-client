@@ -16,24 +16,24 @@ export default function PageTitle({
   theme = 'light' 
 }: PageTitleProps) {
   const textColors = theme === 'dark' 
-    ? 'text-neutral-200' 
-    : 'text-neutral-800';
+    ? 'text-[var(--spora-text-secondary)]' 
+    : 'text-[var(--spora-primary)]';
   
   const descriptionColor = theme === 'dark'
-    ? 'text-neutral-300'
-    : 'text-neutral-700';
+    ? 'text-[var(--spora-text-secondary)]'
+    : 'text-[var(--spora-primary)]';
 
   return (
     <div className={cn("w-full", className)}>
-      <span className={cn("font-jetbrains-mono text-xs sm:text-sm tracking-widest uppercase block mb-2", textColors)}>
+      <span className={cn("font-supply-mono text-xs sm:text-sm tracking-[0.3em] uppercase block mb-4", textColors)}>
         {supertitle}
       </span>
-      <div className={cn("flex items-center gap-8", description ? "justify-between" : "")}>
+      <div className={cn("flex items-center gap-8 md:gap-12", description ? "justify-between" : "")}>
         <h1 className={cn("font-bizud-mincho-bold text-4xl md:text-5xl lg:text-6xl leading-[1.1] whitespace-pre-line", textColors)}>
           {title}
         </h1>
         {description && (
-          <p className={cn("font-bizud-mincho text-sm md:text-base text-right max-w-xs md:max-w-sm leading-snug shrink-0", descriptionColor)}>
+          <p className={cn("font-bizud-mincho text-sm md:text-base text-right max-w-xs md:max-w-sm leading-relaxed shrink-0", descriptionColor)}>
             {description}
           </p>
         )}

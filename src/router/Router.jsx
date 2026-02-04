@@ -8,7 +8,10 @@ import Research from "../views/Research";
 import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
+import Profile from "../views/Profile";
+import AdminPanel from "../views/AdminPanel";
 import Background from "../views/Background";
+import FloraDetail from "../views/FloraDetail";
 import ScrollToTop from "../components/scroll-to-top";
 
 export default function Router() {
@@ -20,12 +23,15 @@ export default function Router() {
         <Route path="/home" element={<Home />} />
         <Route path="/garden" element={<Garden />} />
         <Route path="/greenhouse" element={<Greenhouse />} />
+        <Route path="/flora/:id" element={<FloraDetail />} />
         <Route path="/laboratory" element={<Laboratory />} />
         <Route path="/team" element={<Team />} />
         <Route path="/research" element={<Research />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/background" element={<Background />} />
       </Routes>
     </BrowserRouter>

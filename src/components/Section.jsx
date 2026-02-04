@@ -20,8 +20,12 @@ const Section = ({
     </div>
   ) : children;
 
+  const sectionClass = variant === 'hero'
+    ? `w-full ${variants[variant]} min-h-0 flex flex-col ${className}`.trim()
+    : `w-full ${variants[variant]} ${className}`.trim();
+
   return (
-    <section className={`w-full ${variants[variant]} ${className}`}>
+    <section className={sectionClass}>
       {content}
     </section>
   );

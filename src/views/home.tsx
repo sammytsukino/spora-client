@@ -12,6 +12,7 @@ import Navbar from '@/components/home/navbar'
 import HeroSection from '@/components/home/hero-section'
 import DeclarativeSection from '@/components/home/declarative-section'
 import QuoteSection from '@/components/home/quote-section'
+import Grainient from '@/components/Grainient'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -27,13 +28,13 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden ">
       <Navbar position="fixed" showScrollProgress />
 
       <Section
         variant="hero"
         containerized={false}
-        className="relative overflow-hidden items-stretch"
+        className="relative overflow-hidden flex flex-col min-h-0 p-0 m-0"
       >
         <HeroSection />
       </Section>
@@ -41,7 +42,7 @@ export default function Home() {
       <Section
         variant="large"
         containerized={false}
-        className="items-stretch justify-start"
+        className="items-stretch justify-start "
       >
         <DeclarativeSection 
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
@@ -59,7 +60,7 @@ export default function Home() {
       <Section
         variant="medium"
         containerized={false}
-        className="bg-neutral-800 items-stretch"
+        className="bg-[var(--spora-primary)] items-stretch"
       >
         <VideoTextSection />
       </Section>
@@ -67,7 +68,7 @@ export default function Home() {
       <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
           <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
-            <h2 className="text-xl sm:text-lg md:text-2x1 font-jetbrains-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
+            <h2 className="text-xl sm:text-lg md:text-2x1 font-supply-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
               Featured Floras →
             </h2>
             <MainButton
@@ -103,6 +104,8 @@ export default function Home() {
         containerized={false}
         className="relative overflow-hidden"
       >
+        {/* Fondo anterior en vídeo, comentado temporalmente */}
+        {/*
         <video
           autoPlay
           loop
@@ -115,6 +118,35 @@ export default function Home() {
             type="video/mp4"
           />
         </video>
+        */}
+
+        {/* Fondo con Grainient (mismo esquema que Background.tsx) */}
+        <div className="absolute inset-0 w-full h-full">
+          <Grainient
+            color1={['#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed']}
+            color2={['#dd4aff', '#dd4aff', '#00dcff', '#ff64ff', '#bbf451']}
+            color3={['#00dcff', '#f4ef40', '#bbf451', '#00dcff', '#ff64ff']}
+            timeSpeed={2.5}
+            colorBalance={0}
+            warpStrength={1}
+            warpFrequency={5}
+            warpSpeed={2}
+            warpAmplitude={50}
+            blendAngle={0}
+            blendSoftness={0.05}
+            rotationAmount={500}
+            noiseScale={2}
+            grainAmount={0.1}
+            grainScale={2}
+            grainAnimated={false}
+            contrast={1.5}
+            gamma={1}
+            saturation={1}
+            centerX={0}
+            centerY={0}
+            zoom={0.9}
+          />
+        </div>
 
         <div className="relative z-10">
           <FooterMain />

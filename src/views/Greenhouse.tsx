@@ -1,18 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import PageTitle from "@/components/ui/page-title";
 import FooterAlter from "@/components/home/footer-alter";
 import FilterTabs from "@/components/common/filter-tabs";
 import LoadingIndicator from "@/components/common/loading-indicator";
+import EmptyState from "@/components/common/empty-state";
 import FeaturedFlora from "@/components/greenhouse/featured-flora";
 import GreenhouseFloraCard from "@/components/greenhouse/greenhouse-flora-card";
-import { generateFloraData, floraFilters, ITEMS_PER_PAGE } from "@/data/flora-data";
+import { generateFloraData, floraFilters, ITEMS_PER_PAGE, type FloraItem } from "@/data/flora-data";
 
 const allFloras = generateFloraData(48);
 
 export default function Greenhouse() {
   const [activeFilter, setActiveFilter] = useState('All Units');
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const navigate = useNavigate();
 
   const filteredFloras = activeFilter === 'All Units'
     ? allFloras
@@ -44,6 +47,12 @@ export default function Greenhouse() {
   const sideFloras = restFloras.slice(0, 2);
   const remainingFloras = restFloras.slice(2);
 
+  const handleCardClick = (flora: FloraItem) => {
+    navigate(`/flora/${encodeURIComponent(flora.id)}`, {
+      state: { flora },
+    });
+  };
+
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
     document.documentElement.classList.add('hide-scrollbar')
@@ -55,7 +64,7 @@ export default function Greenhouse() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+    <div className="w-full overflow-x-hidden bg-[var(--spora-primary-light)]">
       <TransparentNavbar showScrollBackground />
 
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
@@ -68,7 +77,7 @@ export default function Greenhouse() {
 
         <div className="flex items-center justify-between gap-4 mb-6">
           <div className="flex-1">
-            <div className="w-full border-b-2 border-black" />
+            <div className="w-full border-b-2 border-[var(--spora-primary)]" />
           </div>
 
           <div className="flex items-center justify-end">
@@ -80,28 +89,43 @@ export default function Greenhouse() {
           </div>
         </div>
 
-        <div className="border-l-2 border-t-2 border-black">
-          <main>
-            {featured && (
-              <div className="grid lg:grid-cols-[2fr_1fr]">
-                <FeaturedFlora flora={featured} />
+        <div className="border-l-2 border-t-2 border-[var(--spora-primary)]">
+          {visibleFloras.length === 0 ? (
+            <EmptyState
+              title="No flora found"
+              description="Try adjusting your filters to see more results."
+            />
+          ) : (
+            <main>
+              {featured && (
+                <div className="grid lg:grid-cols-[2fr_1fr]">
+                  <FeaturedFlora flora={featured} onClick={() => handleCardClick(featured)} />
 
-                <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1">
-                  {sideFloras.map((flora) => (
-                    <GreenhouseFloraCard key={flora.id} flora={flora} />
+                  <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1">
+                    {sideFloras.map((flora) => (
+                      <GreenhouseFloraCard
+                        key={flora.id}
+                        flora={flora}
+                        onClick={() => handleCardClick(flora)}
+                      />
+                    ))}
+                  </aside>
+                </div>
+              )}
+
+              {remainingFloras.length > 0 && (
+                <div className="grid md:grid-cols-2 lg:grid-cols-4">
+                  {remainingFloras.map((flora) => (
+                    <GreenhouseFloraCard
+                      key={flora.id}
+                      flora={flora}
+                      onClick={() => handleCardClick(flora)}
+                    />
                   ))}
-                </aside>
-              </div>
-            )}
-
-            {remainingFloras.length > 0 && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-4">
-                {remainingFloras.map((flora) => (
-                  <GreenhouseFloraCard key={flora.id} flora={flora} />
-                ))}
-              </div>
-            )}
-          </main>
+                </div>
+              )}
+            </main>
+          )}
         </div>
 
         {visibleCount < filteredFloras.length && (

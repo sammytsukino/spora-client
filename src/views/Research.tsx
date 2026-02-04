@@ -37,7 +37,7 @@ export default function Research() {
 
         <div className="flex items-center justify-between gap-4 mb-8">
           <div className="flex-1">
-            <div className="w-full border-b-2 border-black" />
+            <div className="w-full border-b-2 border-[#262626]" />
           </div>
 
           <div className="flex items-center justify-end">
@@ -57,7 +57,7 @@ export default function Research() {
 
         {filteredProjects.length === 0 && (
           <div className="text-center py-16">
-            <p className="font-jetbrains-mono text-sm text-gray-500">
+            <p className="font-supply-mono text-sm text-gray-500">
               No projects found in this category.
             </p>
           </div>

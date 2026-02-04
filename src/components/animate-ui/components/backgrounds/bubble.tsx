@@ -78,7 +78,7 @@ function BubbleBackground({
   React.useEffect(() => {
     if (!interactive) return;
 
-    const INTENSITY = 1; // amplify mouse displacement effect
+    const INTENSITY = 1;
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = rectRef.current;
@@ -107,7 +107,7 @@ function BubbleBackground({
       ref={containerRef}
       data-slot="bubble-background"
       className={cn(
-        'relative size-full overflow-hidden bg-stone-200',
+        'relative size-full overflow-hidden bg-[#E9E9E9]',
         className,
       )}
       {...props}

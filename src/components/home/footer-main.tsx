@@ -5,8 +5,8 @@ export default function FooterMain() {
   const navigate = useNavigate()
 
   return (
-    <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-neutral-900">
-      <div className="flex items-start justify-between text-2xl sm:text-2xl font-jetbrains-mono mb-12">
+    <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)]">
+      <div className="flex items-start justify-between text-2xl sm:text-2xl font-supply-mono mb-12">
         <p className="whitespace-pre leading-tight">
           Not{"\n"}
           revolutionary
@@ -38,17 +38,17 @@ export default function FooterMain() {
         </div>
 
         <div className="flex-1 flex flex-col items-end justify-center ml-4 sm:ml-8">
-          <div className="w-1/2 border-t border-neutral-900" />
+          <div className="w-1/2 border-t-2 border-[var(--spora-primary)]" />
         </div>
       </div>
 
-      <div className="mt-8 flex items-end justify-between text-[10px] sm:text-xs font-jetbrains-mono">
+      <div className="mt-8 flex items-end justify-between text-[10px] sm:text-xs font-supply-mono">
         <span className="flex-1" />
 
         <span className="text-center whitespace-nowrap">© 2026, SPORA</span>
 
         <div className="flex-1 flex justify-end">
-          <div className="text-[10px] sm:text-xs font-jetbrains-mono">
+          <div className="text-[10px] sm:text-xs font-supply-mono">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">
               <button
                 type="button"
