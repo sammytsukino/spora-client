@@ -34,7 +34,7 @@ export default function Home() {
       <Section
         variant="hero"
         containerized={false}
-        className="relative overflow-hidden items-stretch "
+        className="relative overflow-hidden flex flex-col min-h-0 p-0 m-0"
       >
         <HeroSection />
       </Section>
@@ -126,7 +126,7 @@ export default function Home() {
             color1={['#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed']}
             color2={['#dd4aff', '#dd4aff', '#00dcff', '#ff64ff', '#bbf451']}
             color3={['#00dcff', '#f4ef40', '#bbf451', '#00dcff', '#ff64ff']}
-            timeSpeed={1.45}
+            timeSpeed={2.5}
             colorBalance={0}
             warpStrength={1}
             warpFrequency={5}

@@ -26,11 +26,12 @@ export default function CyclingLogo({
 
   return (
     <div 
-      className={`relative ${className}`}
+      className={`relative block ${className}`}
       style={{
         width: widthValue,
-        height: heightValue === '100%' ? 'auto' : heightValue,
-        minHeight: heightValue === '100%' ? '120px' : undefined,
+        height: heightValue,
+        minHeight: heightValue === '100%' ? undefined : undefined,
+        lineHeight: 0,
       }}
     >
       {logos.map((logo, index) => {
@@ -41,7 +42,7 @@ export default function CyclingLogo({
             key={index}
             src={logo}
             alt={`Logo ${index + 1}`}
-            className={`logo-cycling logo-${index + 1}`}
+            className={`logo-cycling logo-${index + 1} block`}
             style={{
               position: "absolute",
               top: 0,
@@ -49,10 +50,12 @@ export default function CyclingLogo({
               width: widthValue,
               height: heightValue,
               opacity: 0,
-              objectFit: "contain",
+              objectFit: "fill",
               animation: `brutalCycle-${logoCount} ${totalDuration}s step-end infinite`,
               animationDelay: `${delay}s`,
               pointerEvents: "none",
+              margin: 0,
+              padding: 0,
             }}
           />
         )
