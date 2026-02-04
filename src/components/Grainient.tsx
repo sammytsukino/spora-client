@@ -21,8 +21,6 @@ interface GrainientProps {
   centerX?: number;
   centerY?: number;
   zoom?: number;
-  // Cada color puede ser un string único o un array de opciones;
-  // se elige una al azar en el montaje.
   color1?: string | string[];
   color2?: string | string[];
   color3?: string | string[];
@@ -250,7 +248,6 @@ const Grainient: React.FC<GrainientProps> = ({
       try {
         container.removeChild(canvas);
       } catch {
-        // Ignore
       }
     };
   }, [

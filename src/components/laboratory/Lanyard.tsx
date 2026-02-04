@@ -16,8 +16,6 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
-// IMPORTANT: estos paths usan el alias "@/..." definido en vite.config.ts
-// Sustituye estos archivos por los reales del repo (card.glb y lanyard.png)
 import cardGLB from '@/assets/lanyard/card.glb';
 import lanyard from '@/assets/lanyard/lanyard.png';
 
@@ -102,7 +100,6 @@ interface BandProps {
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
-  // refs como "any" porque los tipos exactos dependen de Rapier internamente
   const band = useRef<any>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
@@ -195,7 +192,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
 
   return (
     <>
-      {/* Subimos ligeramente el anclaje para que la cuerda arranque más cerca del borde superior */}
       <group position={[0, 4.4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type={'fixed' as RigidBodyProps['type']} />
         <RigidBody

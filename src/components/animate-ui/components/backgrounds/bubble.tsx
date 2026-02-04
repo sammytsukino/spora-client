@@ -78,7 +78,7 @@ function BubbleBackground({
   React.useEffect(() => {
     if (!interactive) return;
 
-    const INTENSITY = 1; // amplify mouse displacement effect
+    const INTENSITY = 1;
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = rectRef.current;

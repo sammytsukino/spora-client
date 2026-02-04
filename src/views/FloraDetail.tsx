@@ -43,7 +43,7 @@ export default function FloraDetail() {
 
   const seedHex = flora.seed.replace("#", "").slice(0, 6);
   const seedInt = parseInt(seedHex, 16) || 0;
-  const normSeed = seedInt / 0xffffff; // 0..1
+  const normSeed = seedInt / 0xffffff;
 
   const sentimentIndex = normSeed;
   const sentimentLabel =
@@ -63,7 +63,7 @@ export default function FloraDetail() {
       ? "FREE VERSE"
       : "DENSE STANZAS";
 
-  const noiseLevel = Math.round((0.3 + normSeed * 0.5) * 100) / 100; // 0.30–0.80
+  const noiseLevel = Math.round((0.3 + normSeed * 0.5) * 100) / 100;
   const paletteLabel = sentimentIndex < 0.5 ? "COOL-LEANING" : "WARM-LEANING";
 
   const lineageHandles = [

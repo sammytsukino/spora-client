@@ -5,17 +5,13 @@ import { sporaLogos } from '@/data/logo-data';
 export default function HeroSection() {
   return (
     <div className="relative w-full min-h-0 flex-1 flex overflow-hidden">
-      {/* Sección izquierda - 20vw con fondo #e6e6e6 */}
       <div className="relative w-[20vw] min-w-0 bg-[#e6e6e6] pl-6 md:pl-12 lg:pl-16">
-        {/* Línea vertical delgada en el borde izquierdo */}
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-[#ff6b4a] opacity-60" />
 
-
-        {/* Contenedor pegado al fondo. Para cambiar tamaño: width (abajo), texto (text-base/lg/xl), logo (height en el div del CyclingLogo) */}
         <div
           className="absolute bottom-0 left-6 md:left-12 lg:left-16 z-10 pb-4 md:pb-6 lg:pb-8"
           style={{ width: 'clamp(10rem, 40vw, 60rem)' }}
         >
-          {/* Texto arriba del logo — tamaño: text-base / text-lg / text-xl / text-2xl */}
           <div className="mb-3 flex items-center gap-2 w-full">
             <div className="font-bizud-mincho text-base md:text-lg lg:text-xl text-[#262626] leading-none whitespace-nowrap">
               not revolutionary
@@ -26,7 +22,6 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* CyclingLogo — tamaño: cambia height (ej. 45vh, 500px) */}
           <div className="block leading-none" style={{ height: 'min(45vh, 420px)' }}>
             <CyclingLogo
               logos={sporaLogos}
@@ -39,7 +34,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Sección derecha - 80vw con Grainient */}
       <div className="relative flex-1 w-[80vw]">
         <Grainient
           color1={['#e3e3e3', '#e3e3e3', '#e3e3e3', '#e3e3e3', '#e3e3e3']}
