@@ -5,7 +5,7 @@ export default function FooterMain() {
   const navigate = useNavigate()
 
   return (
-    <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[#262626]">
+    <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)]">
       <div className="flex items-start justify-between text-2xl sm:text-2xl font-supply-mono mb-12">
         <p className="whitespace-pre leading-tight">
           Not{"\n"}
@@ -38,7 +38,7 @@ export default function FooterMain() {
         </div>
 
         <div className="flex-1 flex flex-col items-end justify-center ml-4 sm:ml-8">
-          <div className="w-1/2 border-t border-[#262626]" />
+          <div className="w-1/2 border-t-2 border-[var(--spora-primary)]" />
         </div>
       </div>
 

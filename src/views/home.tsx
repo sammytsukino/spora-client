@@ -60,7 +60,7 @@ export default function Home() {
       <Section
         variant="medium"
         containerized={false}
-        className="bg-[#262626] items-stretch"
+        className="bg-[var(--spora-primary)] items-stretch"
       >
         <VideoTextSection />
       </Section>

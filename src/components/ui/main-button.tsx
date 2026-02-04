@@ -16,13 +16,13 @@ export default function MainButton({
   ...props
 }: MainButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center bg-transparent transition-colors font-supply-mono font-bold cursor-pointer"
+    "inline-flex items-center justify-center bg-transparent transition-all duration-200 font-supply-mono font-bold cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-current"
 
   const variantStyles: Record<NonNullable<MainButtonProps["variant"]>, string> = {
-    default: "border border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-stone-200",
-    compact: "border-2 border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-stone-200",
+    default: "border border-[var(--spora-primary)] text-[var(--spora-primary)] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] focus-visible:ring-[var(--spora-primary)]",
+    compact: "border-2 border-[var(--spora-primary)] text-[var(--spora-primary)] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] focus-visible:ring-[var(--spora-primary)]",
     navbar:
-      "border-2 border-stone-200 text-stone-200 hover:bg-stone-200 hover:text-[#262626]",
+      "border-2 border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)] hover:bg-[var(--spora-text-secondary)] hover:text-[var(--spora-primary)] focus-visible:ring-[var(--spora-text-secondary)]",
   }
 
   const sizeStyles: Record<NonNullable<MainButtonProps["size"]>, string> = {

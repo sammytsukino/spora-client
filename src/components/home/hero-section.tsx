@@ -5,19 +5,19 @@ import { sporaLogos } from '@/data/logo-data';
 export default function HeroSection() {
   return (
     <div className="relative w-full min-h-0 flex-1 flex overflow-hidden">
-      <div className="relative w-[20vw] min-w-0 bg-[#e6e6e6] pl-6 md:pl-12 lg:pl-16">
-        <div className="absolute left-0 top-0 bottom-0 w-px bg-[#ff6b4a] opacity-60" />
+      <div className="relative w-[20vw] min-w-0 bg-[var(--spora-primary-lightest)] pl-6 md:pl-12 lg:pl-16">
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-[var(--spora-accent)] opacity-60" />
 
         <div
           className="absolute bottom-0 left-6 md:left-12 lg:left-16 z-10 pb-4 md:pb-6 lg:pb-8"
           style={{ width: 'clamp(10rem, 40vw, 60rem)' }}
         >
-          <div className="mb-3 flex items-center gap-2 w-full">
-            <div className="font-bizud-mincho text-base md:text-lg lg:text-xl text-[#262626] leading-none whitespace-nowrap">
+          <div className="mb-4 flex items-center gap-3 w-full">
+            <div className="font-bizud-mincho text-lg md:text-xl lg:text-2xl text-[var(--spora-primary)] leading-tight whitespace-nowrap">
               not revolutionary
             </div>
-            <div className="h-px bg-[#262626] flex-1 min-w-[40px]" />
-            <div className="font-bizud-mincho text-base md:text-lg lg:text-xl text-[#262626] leading-none whitespace-nowrap">
+            <div className="h-px bg-[var(--spora-primary)] flex-1 min-w-[40px]" />
+            <div className="font-bizud-mincho text-lg md:text-xl lg:text-2xl text-[var(--spora-primary)] leading-tight whitespace-nowrap">
               but evolutionary
             </div>
           </div>

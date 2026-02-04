@@ -15,7 +15,7 @@ export default function Team() {
   }, [])
 
   return (
-    <div className="relative w-full overflow-x-hidden min-h-screen flex flex-col bg-[#E9E9E9]">
+    <div className="relative w-full overflow-x-hidden min-h-screen flex flex-col bg-[var(--spora-primary-light)]">
             <TransparentNavbar showScrollBackground />
 
 

@@ -89,7 +89,7 @@ export default function Laboratory() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#262626]">
+    <div className="relative w-full h-screen overflow-hidden bg-[var(--spora-primary)]">
       <LaboratoryNavbar
         onNavigateRequest={(path) => {
           setPendingExitPath(path);
@@ -97,17 +97,17 @@ export default function Laboratory() {
         }}
       />
 
-      <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[#e3e3e3] text-[#262626] border-r-2 border-[#262626] z-20">
+      <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] border-r-2 border-[var(--spora-primary)] z-20">
         <div
           ref={sidebarRef}
           className="h-full lab-scroll flex flex-col"
         >
           <div className="w-full h-[2px] bg-transparent">
             <div
-              className="h-full"
+              className="h-full transition-all duration-150 ease-out"
               style={{
                 width: `${sidebarScrollProgress}%`,
-                backgroundColor: "#262626",
+                backgroundColor: "var(--spora-primary)",
               }}
             />
           </div>
@@ -120,7 +120,7 @@ export default function Laboratory() {
                   setPendingExitPath("/home");
                   setShowExitModal(true);
                 }}
-                className="outline-none focus-visible:ring-2 focus-visible:ring-[#262626] cursor-pointer"
+                className="outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] cursor-pointer"
               >
                 <CyclingLogo
                   logos={[
@@ -141,12 +141,12 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 TITLE
               </h2>
-              <div className="border-2 border-[#262626] bg-[#e3e3e3]">
+              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary-lighter)] transition-colors duration-200 focus-within:border-[var(--spora-accent-secondary)]">
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-transparent font-supply-mono text-sm text-[#262626] outline-none"
+                  className="w-full px-3 py-2 bg-transparent font-supply-mono text-sm text-[var(--spora-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-accent-secondary)] focus-visible:ring-offset-2"
                   placeholder="Give your flora a name..."
                 />
               </div>
@@ -168,11 +168,11 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 TWEAKS
               </h2>
-              <div className="border-2 border-[#262626] bg-[#262626]">
+              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)]">
                 <textarea
                   value={tweaks}
                   onChange={(e) => setTweaks(e.target.value)}
-                  className="w-full h-32 p-4 font-supply-mono text-xs bg-[#262626] text-stone-200 resize-none focus:outline-none placeholder:text-neutral-500"
+                  className="w-full h-32 p-4 font-supply-mono text-xs bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)] placeholder:text-neutral-500"
                   placeholder="Optional notes, constraints, or style hints for your flora..."
                 />
               </div>
@@ -182,7 +182,7 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 STATS
               </h2>
-              <div className="border-2 border-[#262626] bg-[#262626] text-[#e3e3e3] font-supply-mono text-[10px] sm:text-xs px-3 py-2 space-y-1">
+              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-lighter)] font-supply-mono text-[10px] sm:text-xs px-3 py-2 space-y-1">
                 <p>WORDS: <span className="text-stone-300">{wordCount}</span></p>
                 <p>CHARS: <span className="text-stone-300">{inputText.length}</span></p>
                 <p>LINES: <span className="text-stone-300">{lineCount}</span></p>
@@ -195,12 +195,12 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 RENDER CONTROLS
               </h2>
-              <div className="border-2 border-[#262626] bg-[#262626] text-stone-200 font-supply-mono text-[10px] sm:text-xs px-3 py-3 space-y-3">
+              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[10px] sm:text-xs px-3 py-3 space-y-3">
                 <label className="flex items-center justify-between gap-2 cursor-pointer">
                   <span>High contrast</span>
                   <input
                     type="checkbox"
-                    className="accent-[#e3e3e3]"
+                    className="accent-[var(--spora-primary-lighter)]"
                     checked={highContrast}
                     onChange={(e) => setHighContrast(e.target.checked)}
                   />
@@ -209,7 +209,7 @@ export default function Laboratory() {
                   <span>Extra grain</span>
                   <input
                     type="checkbox"
-                    className="accent-[#e3e3e3]"
+                    className="accent-[var(--spora-primary-lighter)]"
                     checked={extraGrain}
                     onChange={(e) => setExtraGrain(e.target.checked)}
                   />
@@ -218,14 +218,14 @@ export default function Laboratory() {
                   <span>Loop preview</span>
                   <input
                     type="checkbox"
-                    className="accent-[#e3e3e3]"
+                    className="accent-[var(--spora-primary-lighter)]"
                     checked={loopPreview}
                     onChange={(e) => setLoopPreview(e.target.checked)}
                   />
                 </label>
                 <button
                   type="button"
-                  className="w-full mt-1 border-2 border-[#e3e3e3] text-[#e3e3e3] py-1.5 hover:bg-[#e3e3e3] hover:text-[#262626] transition-colors"
+                  className="w-full mt-1 border-2 border-[var(--spora-primary-lighter)] text-[var(--spora-primary-lighter)] py-1.5 hover:bg-[var(--spora-primary-lighter)] hover:text-[var(--spora-primary)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--spora-primary-lighter)]"
                   onClick={() =>
                     setSeed(
                       Math.random().toString(16).substr(2, 6).toUpperCase()
@@ -238,10 +238,10 @@ export default function Laboratory() {
             </section>
           </div>
 
-          <div className="p-4 sm:p-6 flex gap-2 border-t-2 border-[#262626] mt-4">
+          <div className="p-4 sm:p-6 flex gap-2 border-t-2 border-[var(--spora-primary)] mt-4">
             <button
               type="button"
-              className="flex-1 py-5 bg-[#262626] text-stone-100 font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[#262626] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 py-5 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)]"
               disabled={isGenerating || inputText.trim().length < 10}
               onClick={() => handleGenerate("/greenhouse")}
             >
@@ -249,7 +249,7 @@ export default function Laboratory() {
             </button>
             <button
               type="button"
-              className="flex-1 py-5 bg-[#e3e3e3] text-[#262626] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[#262626] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 py-5 bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)]"
               onClick={() => handleGenerate("/garden")}
               disabled={isGenerating || inputText.trim().length < 10}
             >

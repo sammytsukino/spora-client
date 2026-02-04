@@ -5,7 +5,7 @@ export default function FooterAlter() {
   const navigate = useNavigate()
 
   return (
-    <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[#262626] overflow-hidden">
+    <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)] overflow-hidden">
       <div className="relative z-10 flex flex-col justify-between h-full">
 
 
@@ -26,7 +26,7 @@ export default function FooterAlter() {
           />
         </div>
 
-        <div className="w-2/4 border-t-2 border-[#262626] mb-10" />
+        <div className="w-2/4 border-t-2 border-[var(--spora-primary)] mb-10" />
 
         <div className="flex items-start">
           <div className="text-[10px] sm:text-xs font-supply-mono">
