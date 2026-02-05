@@ -45,7 +45,7 @@ export default function Home() {
         containerized={false}
         className="items-stretch justify-start "
       >
-        <DeclarativeSection 
+        <DeclarativeSection
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
         />
       </Section>
@@ -93,7 +93,7 @@ export default function Home() {
         containerized={false}
         className="items-stretch justify-start"
       >
-        <QuoteSection 
+        <QuoteSection
           quote="Lloro porque no siento nada, y ahora además de triste me siento un farsante"
           buttonText="CREATE YOUR OWN"
           onButtonClick={() => navigate('/laboratory')}
@@ -123,12 +123,14 @@ export default function Home() {
 
         {/* Fondo con Grainient (mismo esquema que Background.tsx) */}
         <div className="absolute inset-0 w-full h-full">
-    <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-      <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
-      />
-      
-    </div>
+          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
+            />
+
+          </div>
         </div>
+
+        
 
         <div className="relative z-10">
           <FooterMain />
