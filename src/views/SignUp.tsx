@@ -2,7 +2,8 @@ import FooterAlter from "@/components/home/footer-alter";
 import SignUpForm from "@/components/home/signup-form";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import Section from "@/components/Section";
-import Grainient from "@/components/Grainient";
+//import Grainient from "@/components/Grainient";
+import { MeshGradient } from "@paper-design/shaders-react";
 
 export default function SignUp() {
   return (
@@ -30,31 +31,9 @@ export default function SignUp() {
         </video>
         */}
 
-        {/* Fondo con Grainient, mismo esquema de color que Background/Home */}
+
         <div className="fixed inset-0 w-full h-full z-0">
-          <Grainient
-            color1={['#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed', '#f5f3ed']}
-            color2={['#dd4aff', '#dd4aff', '#00dcff', '#ff64ff', '#bbf451']}
-            color3={['#00dcff', '#f4ef40', '#bbf451', '#00dcff', '#ff64ff']}
-            timeSpeed={1.45}
-            colorBalance={0}
-            warpStrength={1}
-            warpFrequency={5}
-            warpSpeed={2}
-            warpAmplitude={50}
-            blendAngle={0}
-            blendSoftness={0.05}
-            rotationAmount={500}
-            noiseScale={2}
-            grainAmount={0.1}
-            grainScale={2}
-            grainAnimated={false}
-            contrast={1.5}
-            gamma={1}
-            saturation={1}
-            centerX={0}
-            centerY={0}
-            zoom={0.9}
+          <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
           />
         </div>
 
