@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../views/Home";
+import Home from "../views/home";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
 import Laboratory from "../views/Laboratory";
