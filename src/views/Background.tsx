@@ -1,9 +1,13 @@
-import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
+import { MeshGradient } from '@paper-design/shaders-react';
 
-export default function Background() {
+function App() {
   return (
-    <div className="w-full overflow-x-hidden">
-      <BubbleBackground interactive={true} className="absolute inset-0" />
+    <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+      <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
+      />
     </div>
-  )
+  );
 }
+export default App;
+
+
