@@ -1,5 +1,5 @@
 import CyclingLogo from './cycling-logo';
-import Grainient from '@/components/Grainient';
+//import Grainient from '@/components/Grainient';
 import { sporaLogos } from '@/data/logo-data';
 import { MeshGradient } from '@paper-design/shaders-react';
 
@@ -36,30 +36,8 @@ export default function HeroSection() {
       </div>
 
       <div className="relative flex-1 w-[80vw]">
-      <Grainient
-              color1="#FF9FFC"
-              color2="#5227FF"
-              color3="#B19EEF"
-              timeSpeed={1.6}
-              colorBalance={0}
-              warpStrength={1}
-              warpFrequency={5}
-              warpSpeed={2}
-              warpAmplitude={50}
-              blendAngle={0}
-              blendSoftness={0.05}
-              rotationAmount={500}
-              noiseScale={2}
-              grainAmount={0.1}
-              grainScale={2}
-              grainAnimated={false}
-              contrast={1.5}
-              gamma={1}
-              saturation={1}
-              centerX={0}
-              centerY={0}
-              zoom={0.9}
-            />
+      <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
+      />
       </div>
     </div>
   );
