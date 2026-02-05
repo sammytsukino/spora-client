@@ -69,7 +69,7 @@ export default function FloraCardBase({
           }}
           onLoad={(e) => {
             const img = e.currentTarget;
-            const placeholder = img.parentElement?.querySelector('.animate-pulse');
+            const placeholder = img.parentElement?.querySelector('.animate-pulse') as HTMLElement | null;
             if (placeholder) {
               placeholder.style.display = 'none';
             }

@@ -150,7 +150,7 @@ const ImageTrailBase = ({
     }
   }
 
-  const ElementTag = as ?? "div"
+  const ElementTag = (as ?? "div") as any
 
   return (
     <ElementTag
@@ -159,8 +159,8 @@ const ImageTrailBase = ({
       ref={containerRef}
       {...props}
     >
-      {Array.from({ length: repeatChildren }).map(() => (
-        <>{children}</>
+      {Array.from({ length: repeatChildren }).map((_, index) => (
+        <React.Fragment key={index}>{children}</React.Fragment>
       ))}
     </ElementTag>
   )
@@ -172,7 +172,7 @@ export const ImageTrailItem = ({
   as = "div",
   ...props
 }: ImageTrailItemProps) => {
-  const ElementTag = as ?? "div"
+  const ElementTag = (as ?? "div") as any
   
   return (
     <ElementTag

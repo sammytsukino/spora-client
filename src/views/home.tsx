@@ -12,7 +12,7 @@ import Navbar from '@/components/home/navbar'
 import HeroSection from '@/components/home/hero-section'
 import DeclarativeSection from '@/components/home/declarative-section'
 import QuoteSection from '@/components/home/quote-section'
-import Grainient from '@/components/Grainient'
+// import Grainient from '@/components/Grainient'
 import { MeshGradient } from '@paper-design/shaders-react'
 
 export default function Home() {
