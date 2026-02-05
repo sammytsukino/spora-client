@@ -80,8 +80,15 @@ This project is split into two repositories for better organization and deployme
 
 **Technologies:**  
 ▸ Node.js + Express  
-▸ MongoDB (NoSQL document database)  
-▸ RESTful API architecture
+▸ MongoDB + Mongoose ODM  
+▸ RESTful API architecture  
+▸ MVC pattern (Models, Controllers, Routes)
+
+**Authentication & Security:**  
+▸ JWT (JSON Web Tokens) for authentication  
+▸ bcrypt for password hashing  
+▸ Helmet for security headers  
+▸ CORS configuration
 
 **Text Analysis:**  
 ▸ Natural.js for morphological analysis  
@@ -176,8 +183,8 @@ Cuttings inherit license restrictions from parent work according to Creative Com
 
 ### Prerequisites
 ```bash
-Node.js >= 16.x
-MongoDB >= 5.x
+Node.js >= 18.x
+MongoDB >= 5.x (local or Docker)
 npm or yarn
 ```
 
@@ -186,15 +193,14 @@ npm or yarn
 **Frontend Repository:**
 ```bash
 # Clone frontend repository
-git clone https://github.com/yourusername/spora-frontend.git
-cd spora-frontend
+git clone https://github.com/sammytsukino/spora-client.git
+cd spora-client
 
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your backend API URL
+# Set up environment variables (create .env file)
+# VITE_API_URL=http://localhost:4000/api
 
 # Run development server
 npm run dev
@@ -203,15 +209,20 @@ npm run dev
 **Backend Repository:**
 ```bash
 # Clone backend repository
-git clone https://github.com/yourusername/spora-backend.git
-cd spora-backend
+git clone https://github.com/sammytsukino/spora-server.git
+cd spora-server
 
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your MongoDB connection string
+# Set up environment variables (create .env file)
+# PORT=4000
+# MONGO_URL=mongodb://localhost:27017/sporadb
+# JWT_SECRET=your_secret_here
+# CORS_ORIGIN=http://localhost:5173
+
+# Start MongoDB (if using Docker)
+docker run -d --name spora-mongo -p 27017:27017 mongo:latest
 
 # Run development server
 npm run dev
@@ -221,46 +232,64 @@ npm run dev
 
 **Frontend (.env):**
 ```
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:4000/api
 ```
 
 **Backend (.env):**
 ```
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PORT=5000
-FRONTEND_URL=http://localhost:5173
+PORT=4000
+MONGO_URL=mongodb://localhost:27017/sporadb
+JWT_SECRET=your_jwt_secret_change_in_production
+CORS_ORIGIN=http://localhost:5173
 ```
 
 ⟡ ═════════════════════════════════════════ ⟡
 
 ## ◈ Project Structure
 
-**Frontend Repository (spora-frontend):**
+**Frontend Repository (spora-client):**
 ```
-spora-frontend/
+spora-client/
 ├── src/
 │   ├── components/     # Reusable UI components
 │   ├── pages/          # Main views (Garden, Laboratory, etc.)
-│   ├── router/         # API communication
-│   ├── services/       # Helper functions
+│   ├── router/         # Routing configuration
+│   ├── services/       # API communication
 │   └── styles/         # Global styles
 ├── public/             # Static assets
 └── docs/               # Frontend documentation
 ```
 
-**Backend Repository (spora-backend):**
+**Backend Repository (spora-server):**
 ```
-spora-backend/
+spora-server/
 ├── src/
-│   ├── models/         # Mongoose schemas
-│   ├── controllers/    # Business logic
-│   ├── routes/         # Express routes
-│   ├── services/       # Text analysis, generation
-│   ├── middleware/     # Auth, validation, permissions
-│   └── utils/          # Helper functions
-├── tests/             # Test suites
-└── docs/              # API documentation
+│   ├── app.js                    # Express app configuration
+│   ├── server.js                 # Server entry point
+│   ├── config/
+│   │   └── db.js                 # MongoDB connection
+│   ├── models/                   # Mongoose schemas
+│   │   ├── User.js               # User model (auth, roles)
+│   │   ├── Flora.js              # Flora model (text + generative data)
+│   │   ├── Report.js             # Report model (moderation)
+│   │   └── AdminLog.js           # Admin action logs
+│   ├── controllers/              # Business logic
+│   │   ├── authController.js     # Signup, signin, JWT
+│   │   ├── floraController.js    # CRUD operations
+│   │   ├── reportController.js   # Report creation
+│   │   └── adminController.js    # Admin panel
+│   ├── routes/                   # Express routes
+│   │   ├── auth.js               # Auth endpoints
+│   │   ├── floras.js             # Flora endpoints
+│   │   ├── reports.js            # Report endpoints
+│   │   └── admin.js              # Admin endpoints
+│   ├── middleware/               # Auth & validation
+│   │   ├── auth.js               # JWT verification, role checking
+│   │   └── error.js              # Error handling
+│   └── services/                 # Text analysis (future)
+├── postman_collection.json       # API testing
+├── .env                          # Environment variables
+└── package.json                  # Dependencies
 ```
 
 ⟡ ═════════════════════════════════════════ ⟡
@@ -284,8 +313,8 @@ Individual floras created on the platform are licensed by their respective autho
 
 ## ◕ Author
 
-**[Your Name]**  
-SPORA ▸ CEI: Centros de Estudios de Innovación 
+**Sammy Cabello**  
+SPORA ▸ CEI: Centros de Estudios de Innovación  
 Academic Year: 2025-2026
 
 
