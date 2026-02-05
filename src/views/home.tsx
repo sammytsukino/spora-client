@@ -12,7 +12,7 @@ import Navbar from '@/components/home/navbar'
 import HeroSection from '@/components/home/hero-section'
 import DeclarativeSection from '@/components/home/declarative-section'
 import QuoteSection from '@/components/home/quote-section'
-//import Grainient from '@/components/Grainient'
+import Grainient from '@/components/Grainient'
 import { MeshGradient } from '@paper-design/shaders-react'
 
 export default function Home() {
@@ -45,7 +45,7 @@ export default function Home() {
         containerized={false}
         className="items-stretch justify-start "
       >
-        <DeclarativeSection 
+        <DeclarativeSection
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
         />
       </Section>
@@ -93,7 +93,7 @@ export default function Home() {
         containerized={false}
         className="items-stretch justify-start"
       >
-        <QuoteSection 
+        <QuoteSection
           quote="Lloro porque no siento nada, y ahora además de triste me siento un farsante"
           buttonText="CREATE YOUR OWN"
           onButtonClick={() => navigate('/laboratory')}
@@ -123,10 +123,34 @@ export default function Home() {
 
         {/* Fondo con Grainient (mismo esquema que Background.tsx) */}
         <div className="absolute inset-0 w-full h-full">
-    <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-      <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
-      />
-    </div>
+
+
+          <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+            <Grainient
+              color1="#FF9FFC"
+              color2="#5227FF"
+              color3="#B19EEF"
+              timeSpeed={1.6}
+              colorBalance={0}
+              warpStrength={1}
+              warpFrequency={5}
+              warpSpeed={2}
+              warpAmplitude={50}
+              blendAngle={0}
+              blendSoftness={0.05}
+              rotationAmount={500}
+              noiseScale={2}
+              grainAmount={0.1}
+              grainScale={2}
+              grainAnimated={false}
+              contrast={1.5}
+              gamma={1}
+              saturation={1}
+              centerX={0}
+              centerY={0}
+              zoom={0.9}
+            />
+          </div>
         </div>
 
         <div className="relative z-10">
