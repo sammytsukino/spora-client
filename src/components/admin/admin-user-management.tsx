@@ -30,7 +30,6 @@ export default function AdminUserManagement({
   users,
   onUserClick,
   onRoleChange,
-  onStatusChange,
   onExportUsers,
   onExportUser,
   onSuspend,

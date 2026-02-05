@@ -16,8 +16,21 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
-import cardGLB from '@/assets/lanyard/card.glb';
-import lanyard from '@/assets/lanyard/lanyard.png';
+import cardGLB from '@/assets/lanyard/card.glb?url';
+import lanyard from '@/assets/lanyard/LANYARD.png';
+
+// Extend Three.js with MeshLine components
+extend({ MeshLineGeometry, MeshLineMaterial });
+
+// Type declarations for JSX elements
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      meshLineGeometry: any;
+      meshLineMaterial: any;
+    }
+  }
+}
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -259,7 +272,9 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
         </RigidBody>
       </group>
       <mesh ref={band}>
+        {/* @ts-expect-error - MeshLine types are extended via @react-three/fiber */}
         <meshLineGeometry />
+        {/* @ts-expect-error - MeshLine types are extended via @react-three/fiber */}
         <meshLineMaterial
           color="white"
           depthTest={false}
