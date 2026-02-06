@@ -1,17 +1,17 @@
-import PixelTrail from './pixel-trail';
-import GooeySvgFilter from './gooey-svg-filter';
-import useScreenSize from '@/hooks/use-screen-size';
-import useDetectBrowser from '@/hooks/use-detect-browser';
+//import PixelTrail from './pixel-trail';
+//import GooeySvgFilter from './gooey-svg-filter';
+//import useScreenSize from '@/hooks/use-screen-size';
+//import useDetectBrowser from '@/hooks/use-detect-browser';
 
 interface DeclarativeSectionProps {
   text: string;
 }
 
 export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
-  const screenSize = useScreenSize();
-  const browserName = useDetectBrowser();
-  const isSafari = browserName === "Safari";
-  const pixelColors = [
+  //const screenSize = useScreenSize();
+  //const browserName = useDetectBrowser();
+  //const isSafari = browserName === "Safari";
+  {/* const pixelColors = [
     '#CAFF50',
     '#FF64FF',
     '#F4EF40',
@@ -19,7 +19,7 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
     '#00DCFF',
     '#DD4AFF',
     '#EDEDED',
-  ];
+  ]; */}
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-(--spora-primary)">

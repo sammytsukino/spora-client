@@ -17,7 +17,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section className="relative w-full min-h-0 flex-1 overflow-hidden bg-[var(--spora-primary)] text-[var(--spora-primary-light)]">
+    <section className="relative w-full min-h-0 flex-1 overflow-hidden bg-(--spora-primary) text-(--spora-primary-light)">
       <GooeySvgFilter id="gooey-filter-hero" strength={5} />
 
       <div
@@ -56,13 +56,13 @@ export default function HeroSection() {
         </div>
         <button
           type="button"
-          className="pointer-events-auto border border-[var(--spora-primary-light)] px-3 py-1 text-[10px] md:text-xs font-supply-mono uppercase tracking-[0.3em]"
+          className="pointer-events-auto border border-(--spora-primary-light) px-3 py-1 text-[10px] md:text-xs font-supply-mono uppercase tracking-[0.3em]"
         >
           SIGN IN
         </button>
       </div>
 
-      <div className="absolute left-6 bottom-[27px] md:left-12 lg:left-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
+      <div className="absolute left-6 bottom-6.75 md:left-12 lg:left-16 z-20 max-w-65 md:max-w-90 pointer-events-none hidden md:block">
         <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed">
  
 
@@ -73,7 +73,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute right-6 bottom-[27px] md:right-12 lg:right-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
+      <div className="absolute right-6 bottom-6.75 md:right-12 lg:right-16 z-20 max-w-65 md:max-w-90 pointer-events-none hidden md:block">
         <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-right">
 
           <div>
@@ -83,7 +83,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-[27px] z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none hidden md:flex">
+      <div className="absolute inset-x-0 bottom-6.75 z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none md:flex">
         EST 2026, SPORA ©
       </div>
     </section>

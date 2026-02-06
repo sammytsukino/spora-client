@@ -12,18 +12,18 @@ import Navbar from '@/components/home/navbar'
 import HeroSection from '@/components/home/hero-section'
 import DeclarativeSection from '@/components/home/declarative-section'
 import QuoteSection from '@/components/home/quote-section'
-import Grainient from '@/components/Grainient'
+//import Grainient from '@/components/Grainient'
 import { MeshGradient } from '@paper-design/shaders-react'
-import { floraImages } from '@/data/flora-data'
-import SpecimenMarquee from '@/components/home/specimen-marquee'
+//import { floraImages } from '@/data/flora-data'
+//import SpecimenMarquee from '@/components/home/specimen-marquee'
 
 export default function Home() {
   const navigate = useNavigate()
 
-  const achievementItems = floraImages.map((image, index) => ({
+{/* const achievementItems = floraImages.map((image, index) => ({
     id: `SP/${String(index + 1).padStart(3, '0')}`,
     image,
-  }))
+  })) */}
 
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
@@ -120,7 +120,7 @@ export default function Home() {
       <Section
         variant="large"
         containerized={false}
-        className="bg-[var(--spora-primary)] items-stretch"
+        className="bg-(--spora-primary) items-stretch"
       >
         <VideoTextSection />
       </Section>
