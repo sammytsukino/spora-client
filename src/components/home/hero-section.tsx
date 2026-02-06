@@ -62,10 +62,8 @@ export default function HeroSection() {
         </button>
       </div>
 
-      <div className="absolute left-6 bottom-6.75 md:left-12 lg:left-16 z-20 max-w-65 md:max-w-90 pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed">
- 
-
+      <div className="absolute inset-x-6 top-24 md:inset-x-auto md:top-auto md:left-12 lg:left-16 md:bottom-6.75 z-20 max-w-65 md:max-w-90 pointer-events-none">
+        <div className="flex flex-col items-center md:items-start gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-center md:text-left">
           <div>
             Generative art for everyone. A canvas made of the smallest thing we
             share: plain, simple text.
@@ -73,9 +71,8 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute right-6 bottom-6.75 md:right-12 lg:right-16 z-20 max-w-65 md:max-w-90 pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-right">
-
+      <div className="absolute inset-x-6 bottom-24 md:inset-x-auto md:bottom-6.75 md:right-12 lg:right-16 z-20 max-w-65 md:max-w-90 pointer-events-none">
+        <div className="flex flex-col items-center md:items-end gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-center md:text-right">
           <div>
             Parametric reading of your words, blooming into singular works that
             live, branch, and grow.
@@ -83,7 +80,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-6.75 z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none md:flex">
+      <div className="absolute inset-x-0 bottom-6.75 z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none">
         EST 2026, SPORA ©
       </div>
     </section>
