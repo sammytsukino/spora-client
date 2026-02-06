@@ -96,17 +96,6 @@ export default function NavbarBase({
           }}
         />
       )}
-      {showScrollProgress && (
-        <div className="w-full h-[2px] bg-transparent">
-          <div
-            className="h-full transition-all duration-150 ease-out"
-            style={{
-              width: `${scrollProgress}%`,
-              backgroundColor: isDark ? "#bbf451" : "oklch(65.6% 0.241 354.308)",
-            }}
-          />
-        </div>
-      )}
       <div className={`relative z-10 mx-auto flex items-center ${justifyHeader} px-6 py-3 md:px-12 lg:px-16 md:py-4`}>
         {(isTeam || isDark || isTransparent) && (
           <div className="flex items-center">
@@ -192,6 +181,17 @@ export default function NavbarBase({
           </div>
         )}
       </div>
+      {showScrollProgress && (
+        <div className="w-full h-[2px] bg-transparent">
+          <div
+            className="h-full transition-all duration-150 ease-out"
+            style={{
+              width: `${scrollProgress}%`,
+              backgroundColor: isDark ? "#bbf451" : "oklch(65.6% 0.241 354.308)",
+            }}
+          />
+        </div>
+      )}
     </header>
   );
 }
