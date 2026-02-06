@@ -12,7 +12,7 @@ import Navbar from '@/components/home/navbar'
 import HeroSection from '@/components/home/hero-section'
 import DeclarativeSection from '@/components/home/declarative-section'
 import QuoteSection from '@/components/home/quote-section'
-// import Grainient from '@/components/Grainient'
+import Grainient from '@/components/Grainient'
 import { MeshGradient } from '@paper-design/shaders-react'
 
 export default function Home() {
@@ -39,6 +39,22 @@ export default function Home() {
       >
         <HeroSection />
       </Section>
+
+      <div className="relative w-full h-[800px] overflow-hidden">
+        <Grainient
+          className="w-full h-full"
+          timeSpeed={0.2}
+          warpStrength={1.2}
+          warpFrequency={4.5}
+          warpSpeed={1.8}
+          blendSoftness={0.08}
+          rotationAmount={280}
+          grainAmount={0.12}
+          color1="#CAFF50"
+          color2="#00DCFF"
+          color3="#FF64FF"
+        />
+      </div>
 
       <Section
         variant="large"
