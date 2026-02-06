@@ -37,9 +37,9 @@ export default function HeroSection() {
 
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
         <img
-          src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1770373851/SPORA-LACE-TRANSPARENT_xby3av.png"
+          src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1770388115/SPORA-LACE-TRANSPARENT-MINI_hzwlvt.webp"
           alt="Spora lace mark"
-          className="w-[min(78vw,920px)] max-h-[70vh] object-contain pointer-events-none"
+          className="w-[min(78vw,1400px)] max-h-[70vh] object-contain pointer-events-none"
         />
       </div>
 
@@ -63,10 +63,8 @@ export default function HeroSection() {
       </div>
 
       <div className="absolute left-6 bottom-[27px] md:left-12 lg:left-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed">
-          <div className="font-supply-mono text-lg sm:text-l md:text-xl lg:text-2xl">
-            NOT REVOLUTIONARY
-          </div>
+        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed">
+ 
 
           <div>
             Generative art for everyone. A canvas made of the smallest thing we
@@ -76,10 +74,8 @@ export default function HeroSection() {
       </div>
 
       <div className="absolute right-6 bottom-[27px] md:right-12 lg:right-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed text-right">
-          <div className="font-supply-mono text-lg sm:text-l md:text-xl lg:text-2xl">
-            BUT EVOLUTIONARY
-          </div>
+        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-right">
+
           <div>
             Parametric reading of your words, blooming into singular works that
             live, branch, and grow.

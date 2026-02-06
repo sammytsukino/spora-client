@@ -210,6 +210,34 @@ body {
   }
 }
 
+@keyframes specimenMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.specimen-marquee {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
+  padding-top: 12px;
+}
+
+.specimen-marquee-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  animation: specimenMarquee 60s linear infinite;
+  will-change: transform;
+}
+
+.specimen-marquee:hover .specimen-marquee-track {
+  animation-play-state: paused;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -289,6 +317,7 @@ body {
   --spora-primary-light: #E9E9E9;
   --spora-primary-lighter: #e3e3e3;
   --spora-primary-lightest: #e6e6e6;
+  --spora-secondary: #e3e3e3;
   --spora-accent: #ff6b4a;
   --spora-accent-secondary: #bbf451;
   --spora-text-primary: #262626;

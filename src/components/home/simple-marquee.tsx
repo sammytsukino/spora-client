@@ -28,6 +28,7 @@ interface SimpleMarqueeProps {
   slowdownOnHover?: boolean
   slowDownFactor?: number
   slowDownSpringConfig?: SpringOptions
+  rows?: 1 | 2 | 3
 }
 
 const MarqueeItem = ({ children }: { children: React.ReactNode }) => (
@@ -120,6 +121,7 @@ export default function SimpleMarquee({
   slowdownOnHover = true,
   slowDownFactor = 0.1,
   slowDownSpringConfig = { damping: 60, stiffness: 300 },
+  rows = 3,
 }: SimpleMarqueeProps) {
   const defaultImages = [
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
@@ -179,12 +181,28 @@ export default function SimpleMarquee({
         </MarqueeItem>
       ))
 
-  const firstThird = displayItems.slice(0, Math.floor(displayItems.length / 3))
-  const secondThird = displayItems.slice(
-    Math.floor(displayItems.length / 3),
-    Math.floor((2 * displayItems.length) / 3)
-  )
-  const lastThird = displayItems.slice(Math.floor((2 * displayItems.length) / 3))
+  const rowItems = (() => {
+    if (rows === 1) {
+      return [displayItems]
+    }
+
+    if (rows === 2) {
+      const midpoint = Math.ceil(displayItems.length / 2)
+      return [
+        displayItems.slice(0, midpoint),
+        displayItems.slice(midpoint),
+      ]
+    }
+
+    const firstThird = displayItems.slice(0, Math.floor(displayItems.length / 3))
+    const secondThird = displayItems.slice(
+      Math.floor(displayItems.length / 3),
+      Math.floor((2 * displayItems.length) / 3)
+    )
+    const lastThird = displayItems.slice(Math.floor((2 * displayItems.length) / 3))
+
+    return [firstThird, secondThird, lastThird]
+  })()
 
   return (
     <div
@@ -194,41 +212,26 @@ export default function SimpleMarquee({
       )}
     >
       <div className="w-full h-full flex flex-col justify-center items-center space-y-2 sm:space-y-3 md:space-y-4 py-8">
-        <MarqueeRow
-          className="w-full"
-          baseVelocity={baseVelocity}
-          repeat={repeat}
-          slowDownFactor={slowDownFactor}
-          slowdownOnHover={slowdownOnHover}
-          slowDownSpringConfig={slowDownSpringConfig}
-          direction={direction}
-        >
-          {firstThird}
-        </MarqueeRow>
-
-        <MarqueeRow
-          className="w-full"
-          baseVelocity={baseVelocity}
-          repeat={repeat}
-          slowdownOnHover={slowdownOnHover}
-          slowDownFactor={slowDownFactor}
-          slowDownSpringConfig={slowDownSpringConfig}
-          direction={direction === "left" ? "right" : "left"}
-        >
-          {secondThird}
-        </MarqueeRow>
-
-        <MarqueeRow
-          className="w-full"
-          baseVelocity={baseVelocity}
-          repeat={repeat}
-          slowDownFactor={slowDownFactor}
-          slowdownOnHover={slowdownOnHover}
-          slowDownSpringConfig={slowDownSpringConfig}
-          direction={direction}
-        >
-          {lastThird}
-        </MarqueeRow>
+        {rowItems.map((row, rowIndex) => (
+          <MarqueeRow
+            key={`row-${rowIndex}`}
+            className="w-full"
+            baseVelocity={baseVelocity}
+            repeat={repeat}
+            slowDownFactor={slowDownFactor}
+            slowdownOnHover={slowdownOnHover}
+            slowDownSpringConfig={slowDownSpringConfig}
+            direction={
+              rowIndex % 2 === 0
+                ? direction
+                : direction === "left"
+                  ? "right"
+                  : "left"
+            }
+          >
+            {row}
+          </MarqueeRow>
+        ))}
       </div>
     </div>
   )

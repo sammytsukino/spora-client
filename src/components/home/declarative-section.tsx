@@ -22,8 +22,8 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
   ];
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#262626]">
-      <GooeySvgFilter id="gooey-filter-declarative" strength={5} />
+    <div className="relative w-full h-full overflow-hidden bg-(--spora-primary)">
+      {/*<GooeySvgFilter id="gooey-filter-declarative" strength={5} />
 
       <div
         className="absolute inset-0 z-0"
@@ -38,10 +38,10 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
           className="w-full h-full"
           colorDarken={0.85}
         />
-      </div>
+      </div>*/}
 
       <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-        <p className="font-bizud-mincho text-stone-200 -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
+        <p className="font-bizud-mincho text-(--spora-secondary) -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
           {text}
         </p>
       </div>
