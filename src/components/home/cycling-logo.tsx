@@ -5,6 +5,8 @@ interface CyclingLogoProps {
   cycleDuration?: number
   visiblePercentage?: number
   className?: string
+  aspectRatio?: number | string
+  fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 }
 
 export default function CyclingLogo({
@@ -14,6 +16,8 @@ export default function CyclingLogo({
   cycleDuration = 0.75,
   visiblePercentage,
   className = "",
+  aspectRatio,
+  fit = 'fill',
 }: CyclingLogoProps) {
   const logoCount = logos.length
   
@@ -22,14 +26,22 @@ export default function CyclingLogo({
   const totalDuration = cycleDuration * logoCount
 
   const widthValue = typeof width === 'number' ? `${width}px` : width
-  const heightValue = typeof height === 'number' ? `${height}px` : (height === 'auto' ? '100%' : height)
+  const heightValue = typeof height === 'number' ? `${height}px` : height
+  const containerHeightValue = heightValue === 'auto' ? 'auto' : heightValue
+  const imageHeightValue = heightValue === 'auto' ? '100%' : heightValue
+  const computedAspectRatio =
+    aspectRatio ??
+    (typeof width === 'number' && typeof height === 'number'
+      ? `${width} / ${height}`
+      : undefined)
 
   return (
     <div 
       className={`relative block ${className}`}
       style={{
         width: widthValue,
-        height: heightValue,
+        height: containerHeightValue,
+        aspectRatio: computedAspectRatio,
         minHeight: heightValue === '100%' ? undefined : undefined,
         lineHeight: 0,
       }}
@@ -48,9 +60,9 @@ export default function CyclingLogo({
               top: 0,
               left: 0,
               width: widthValue,
-              height: heightValue,
+              height: imageHeightValue,
               opacity: 0,
-              objectFit: "fill",
+              objectFit: fit,
               animation: `brutalCycle-${logoCount} ${totalDuration}s step-end infinite`,
               animationDelay: `${delay}s`,
               pointerEvents: "none",

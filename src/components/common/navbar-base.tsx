@@ -182,7 +182,7 @@ export default function NavbarBase({
         )}
       </div>
       {showScrollProgress && (
-        <div className="w-full h-0.5 bg-transparent">
+        <div className="w-full h-[2px] bg-transparent">
           <div
             className="h-full transition-all duration-150 ease-out"
             style={{

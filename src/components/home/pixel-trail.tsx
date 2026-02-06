@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid"
 import { cn } from "@/lib/utils"
 import { useDimensions } from "@/hooks/use-dimensions"
 
+const pixelAnimateMap = new WeakMap<HTMLElement, () => void>()
+
 interface PixelTrailProps {
   pixelSize: number
   fadeDuration?: number
@@ -46,7 +48,7 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
         `${trailId.current}-pixel-${x}-${y}`
       )
       if (pixelElement) {
-        const animatePixel = (pixelElement as any).__animatePixel
+        const animatePixel = pixelAnimateMap.get(pixelElement)
         if (animatePixel) animatePixel()
       }
     },
@@ -89,6 +91,17 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
     [colors, columns, dimensions.height, dimensions.width, rows, tonedColors]
   )
 
+  const pixelGrid = useMemo(
+    () =>
+      Array.from({ length: rows }).map((_, rowIndex) =>
+        Array.from({ length: columns }).map((_, colIndex) => ({
+          rowIndex,
+          colIndex,
+        }))
+      ),
+    [rows, columns]
+  )
+
   return (
     <div
       ref={containerRef}
@@ -98,9 +111,9 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
       )}
       onMouseMove={handleMouseMove}
     >
-      {Array.from({ length: rows }).map((_, rowIndex) => (
+      {pixelGrid.map((row, rowIndex) => (
         <div key={rowIndex} className="flex">
-          {Array.from({ length: columns }).map((_, colIndex) => (
+          {row.map(({ colIndex }) => (
             <PixelDot
               key={`${colIndex}-${rowIndex}`}
               id={`${trailId.current}-pixel-${colIndex}-${rowIndex}`}
@@ -153,7 +166,7 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
       (node: HTMLDivElement | null) => {
         if (node) {
           nodeRef.current = node
-          ;(node as any).__animatePixel = animatePixel
+          pixelAnimateMap.set(node, animatePixel)
         }
       },
       [animatePixel]

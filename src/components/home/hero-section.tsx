@@ -20,45 +20,55 @@ export default function HeroSection() {
     <section className="relative w-full min-h-0 flex-1 overflow-hidden bg-(--spora-primary) text-(--spora-primary-light)">
       <GooeySvgFilter id="gooey-filter-hero" strength={5} />
 
-      <div
-        className="absolute inset-0 z-0"
-        style={{ filter: isSafari ? "none" : "url(#gooey-filter-hero)" }}
-      >
-        <PixelTrail
-          pixelSize={screenSize.lessThan("md") ? 60 : 80}
-          fadeDuration={0}
-          delay={1500}
-          colors={pixelColors}
-          pixelClassName="opacity-100 mix-blend-screen"
-          className="w-full h-full"
-          colorDarken={2}
-        />
-      </div>
+        <div
+          className="absolute bottom-0 left-6 md:left-12 lg:left-16 z-10 pb-4 md:pb-6 lg:pb-8"
+          style={{ width: 'max(10rem, 50vw)' }}
+        >
+          <div className="mb-20 flex items-center gap-3 w-full">
+            <div className="font-bizud-mincho text-lg md:text-xl lg:text-2xl text-[var(--spora-primary)] leading-tight whitespace-nowrap">
+              not revolutionary
+            </div>
+            <div className="h-px bg-[var(--spora-primary)] flex-1 min-w-[40px]" />
+            <div className="font-bizud-mincho text-lg md:text-xl lg:text-2xl text-[var(--spora-primary)] leading-tight whitespace-nowrap">
+              but evolutionary
+            </div>
+          </div>
 
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-        <img
-          src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1770388115/SPORA-LACE-TRANSPARENT-MINI_hzwlvt.webp"
-          alt="Spora lace mark"
-          className="w-[min(78vw,1400px)] max-h-[70vh] object-contain pointer-events-none"
-        />
-      </div>
-
-
-      <div className="absolute inset-x-6 top-24 md:inset-x-auto md:top-auto md:left-12 lg:left-16 md:bottom-6.75 z-20 max-w-65 md:max-w-90 pointer-events-none">
-        <div className="flex flex-col items-center md:items-start gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-center md:text-left">
-          <div>
-            Generative art for everyone. A canvas made of the smallest thing we
-            share: plain, simple text.
+          <div className="block leading-none">
+            <CyclingLogo
+              logos={sporaLogos}
+              width="100%"
+              height="auto"
+              aspectRatio="10 / 3"
+              cycleDuration={0.2}
+              className="leading-none w-full"
+            />
           </div>
         </div>
       </div>
 
-      <div className="absolute inset-x-6 bottom-24 md:inset-x-auto md:bottom-6.75 md:right-12 lg:right-16 z-20 max-w-65 md:max-w-90 pointer-events-none">
-        <div className="flex flex-col items-center md:items-end gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-center md:text-right">
-          <div>
-            Parametric reading of your words, blooming into singular works that
-            live, branch, and grow.
-          </div>
+      <div className="relative flex-1 w-[80vw]">
+        <MeshGradient
+          speed={1}
+          scale={1}
+          distortion={0.8}
+          swirl={0.1}
+          colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']}
+          style={{ height: '100%', width: '100%' }}
+        />
+
+        <div className="absolute right-6 md:right-12 lg:right-16 top-16 md:top-20 lg:top-24 text-right">
+          <p className="font-supply-mono text-sm md:text-base lg:text-[16px] leading-relaxed text-[var(--spora-primary)] max-w-[44ch] ml-auto">
+            Generative art for everyone. A canvas for the smallest thing we share: our words. Words blooming into singular works that live, branch, and grow. </p>
+        </div>
+
+        <div className="absolute right-6 md:right-12 lg:right-16 bottom-4 md:bottom-6 lg:bottom-8 text-right">
+          <button
+            type="button"
+            className="font-supply-mono text-sm md:text-base lg:text-[16px] text-[var(--spora-primary)] hover:underline"
+          >
+            next flora →
+          </button>
         </div>
       </div>
 

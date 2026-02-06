@@ -69,47 +69,6 @@ export default function Home() {
 
       {/*
       <Section
-        variant="compact"
-        containerized={false}
-        className="items-stretch justify-start bg-[var(--spora-primary)]"
-      >
-        <div className="w-full px-6 md:px-12 lg:px-16 text-[var(--spora-secondary)]">
-          <div className="flex flex-col gap-6 md:gap-8">
-            <div className="flex justify-between items-center py-4 mt-8">
-              <h2
-                className="text-xl sm:text-lg md:text-2x1 font-supply-mono hover:underline cursor-pointer"
-                onClick={() => navigate('/garden')}
-              >
-                What you can achieve in SPORA →
-              </h2>
-              <MainButton
-                variant="compact"
-                size="sm"
-                type="button"
-                onClick={() => navigate('/garden')}
-                className="border-2 border-[var(--spora-secondary)] text-[var(--spora-secondary)] hover:bg-[var(--spora-secondary)] hover:text-[var(--spora-primary)]"
-              >
-                VIEW ALL
-              </MainButton>
-            </div>
-
-            <div className="-mx-6 md:-mx-12 lg:-mx-16">
-              <SpecimenMarquee items={achievementItems} />
-            </div>
-          </div>
-        </div>
-      </Section>*/}
-
-
-
-
-
-
-
-
-
-
-      <Section
         variant="large"
         containerized={false}
         className="items-stretch"
