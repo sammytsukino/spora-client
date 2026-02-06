@@ -11,6 +11,15 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
   const screenSize = useScreenSize();
   const browserName = useDetectBrowser();
   const isSafari = browserName === "Safari";
+  const pixelColors = [
+    '#CAFF50',
+    '#FF64FF',
+    '#F4EF40',
+    '#52FF5A',
+    '#00DCFF',
+    '#DD4AFF',
+    '#EDEDED',
+  ];
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-[#262626]">
@@ -24,8 +33,10 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
           pixelSize={screenSize.lessThan(`md`) ? 24 : 60}
           fadeDuration={0}
           delay={2000}
-          pixelClassName="[background:radial-gradient(circle,#c6ff00_0%,#ff00f0_100%)]"
+          colors={pixelColors}
+          pixelClassName="mix-blend-screen"
           className="w-full h-full"
+          colorDarken={0.85}
         />
       </div>
 

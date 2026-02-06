@@ -40,9 +40,9 @@ export default function Home() {
         <HeroSection />
       </Section>
 
-      <div className="relative w-full h-[800px] overflow-hidden">
+      <div className="relative w-full h-[50px] overflow-hidden">
         <Grainient
-          className="w-full h-full"
+          className="w-full h-50"
           timeSpeed={0.2}
           warpStrength={1.2}
           warpFrequency={4.5}

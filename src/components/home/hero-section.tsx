@@ -7,6 +7,14 @@ export default function HeroSection() {
   const screenSize = useScreenSize();
   const browserName = useDetectBrowser();
   const isSafari = browserName === 'Safari';
+  const pixelColors = [
+    '#CAFF50',
+    '#FF64FF',
+    '#F4EF40',
+    '#52FF5A',
+    '#00DCFF',
+    '#DD4AFF',
+  ];
 
   return (
     <section className="relative w-full min-h-0 flex-1 overflow-hidden bg-[var(--spora-primary)] text-[var(--spora-primary-light)]">
@@ -20,8 +28,10 @@ export default function HeroSection() {
           pixelSize={screenSize.lessThan('md') ? 60 : 80}
           fadeDuration={0}
           delay={1500}
-          pixelClassName="opacity-100 mix-blend-screen [background:radial-gradient(circle,#c6ff00_0%,#ff00f0_100%)]"
+          colors={pixelColors}
+          pixelClassName="opacity-100 mix-blend-screen"
           className="w-full h-full"
+          colorDarken={0.9}
         />
       </div>
 
