@@ -1,19 +1,19 @@
-import PixelTrail from './pixel-trail';
-import GooeySvgFilter from './gooey-svg-filter';
-import useScreenSize from '@/hooks/use-screen-size';
-import useDetectBrowser from '@/hooks/use-detect-browser';
+import PixelTrail from "./pixel-trail";
+import GooeySvgFilter from "./gooey-svg-filter";
+import useScreenSize from "@/hooks/use-screen-size";
+import useDetectBrowser from "@/hooks/use-detect-browser";
 
 export default function HeroSection() {
   const screenSize = useScreenSize();
   const browserName = useDetectBrowser();
-  const isSafari = browserName === 'Safari';
+  const isSafari = browserName === "Safari";
   const pixelColors = [
-    '#CAFF50',
-    '#FF64FF',
-    '#F4EF40',
-    '#52FF5A',
-    '#00DCFF',
-    '#DD4AFF',
+    "#B1E200",
+    "#DE00EA",
+    "#E8D700",
+    "#00E000",
+    "#00C0ED",
+    "#7A00EF",
   ];
 
   return (
@@ -22,16 +22,16 @@ export default function HeroSection() {
 
       <div
         className="absolute inset-0 z-0"
-        style={{ filter: isSafari ? 'none' : 'url(#gooey-filter-hero)' }}
+        style={{ filter: isSafari ? "none" : "url(#gooey-filter-hero)" }}
       >
         <PixelTrail
-          pixelSize={screenSize.lessThan('md') ? 60 : 80}
+          pixelSize={screenSize.lessThan("md") ? 60 : 80}
           fadeDuration={0}
           delay={1500}
           colors={pixelColors}
           pixelClassName="opacity-100 mix-blend-screen"
           className="w-full h-full"
-          colorDarken={0.9}
+          colorDarken={2}
         />
       </div>
 
@@ -62,18 +62,53 @@ export default function HeroSection() {
         </button>
       </div>
 
-      <div className="absolute left-6 bottom-6 md:left-12 md:bottom-10 lg:left-16 lg:bottom-12 z-20 max-w-[260px] md:max-w-[360px] text-sm md:text-lg font-supply-mono leading-relaxed pointer-events-none">
-        Generative art for everyone. A canvas made of the smallest thing we share:
-        plain text.
+      <div className="absolute left-6 bottom-[27px] md:left-12 lg:left-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
+        <div className="flex flex-col gap-4 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed">
+          <div className="font-supply-mono text-lg sm:text-l md:text-xl lg:text-2xl">
+            NOT REVOLUTIONARY
+          </div>
+
+          <div>
+            Generative art for everyone. A canvas made of the smallest thing we
+            share: plain text.
+          </div>
+        </div>
       </div>
 
-      <div className="absolute right-6 bottom-6 md:right-12 md:bottom-10 lg:right-16 lg:bottom-12 z-20 max-w-[260px] md:max-w-[360px] text-sm md:text-lg font-supply-mono leading-relaxed text-right pointer-events-none">
-        Parametric reading of your words, blooming into singular works that live,
-        branch, and grow.
+      <div className="absolute right-6 bottom-[27px] md:right-12 lg:right-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
+        <div className="flex flex-col gap-4 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed text-right">
+          <div className="font-supply-mono text-lg sm:text-l md:text-xl lg:text-2xl">
+            BUT EVOLUTIONARY
+          </div>
+          <div>
+            Parametric reading of your words, blooming into singular works that
+            live, branch, and grow.
+          </div>
+        </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none">
+      <div className="absolute inset-x-0 bottom-[27px] z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none hidden md:flex">
         © 2026, SPORA
+      </div>
+
+      <div className="absolute inset-x-0 bottom-[27px] z-20 flex flex-col gap-5 px-6 text-[11px] font-bizud-mincho leading-relaxed pointer-events-none md:hidden">
+        <div className="flex flex-col gap-3">
+          <div className="font-supply-mono text-lg">NOT REVOLUTIONARY</div>
+          <div>
+            Generative art for everyone. A canvas made of the smallest thing we
+            share: plain text.
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 text-right">
+          <div className="font-supply-mono text-lg">BUT EVOLUTIONARY</div>
+          <div>
+            Parametric reading of your words, blooming into singular works that
+            live, branch, and grow.
+          </div>
+        </div>
+        <div className="flex justify-center text-[10px] font-supply-mono opacity-70">
+          © 2026, SPORA
+        </div>
       </div>
     </section>
   );
