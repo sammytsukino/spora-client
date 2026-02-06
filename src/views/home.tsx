@@ -40,21 +40,12 @@ export default function Home() {
         <HeroSection />
       </Section>
 
-      <div className="relative w-full h-[50px] overflow-hidden">
-        <Grainient
-          className="w-full h-50"
-          timeSpeed={0.2}
-          warpStrength={1.2}
-          warpFrequency={4.5}
-          warpSpeed={1.8}
-          blendSoftness={0.08}
-          rotationAmount={280}
-          grainAmount={0.12}
-          color1="#CAFF50"
-          color2="#00DCFF"
-          color3="#FF64FF"
-        />
-      </div>
+
+      <Section
+        variant='large'
+        containerized={false}
+        className="items-stretch justify-start "
+      />
 
       <Section
         variant="large"
@@ -65,6 +56,8 @@ export default function Home() {
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
         />
       </Section>
+
+
 
       <Section
         variant="medium"
@@ -146,7 +139,7 @@ export default function Home() {
           </div>
         </div>
 
-        
+
 
         <div className="relative z-10">
           <FooterMain />

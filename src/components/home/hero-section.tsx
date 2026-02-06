@@ -63,20 +63,20 @@ export default function HeroSection() {
       </div>
 
       <div className="absolute left-6 bottom-[27px] md:left-12 lg:left-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-4 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed">
+        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed">
           <div className="font-supply-mono text-lg sm:text-l md:text-xl lg:text-2xl">
             NOT REVOLUTIONARY
           </div>
 
           <div>
             Generative art for everyone. A canvas made of the smallest thing we
-            share: plain text.
+            share: plain, simple text.
           </div>
         </div>
       </div>
 
       <div className="absolute right-6 bottom-[27px] md:right-12 lg:right-16 z-20 max-w-[260px] md:max-w-[360px] pointer-events-none hidden md:block">
-        <div className="flex flex-col gap-4 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed text-right">
+        <div className="flex flex-col gap-2 text-[11px] sm:text-sm md:text-base lg:text-lg font-bizud-mincho leading-relaxed text-right">
           <div className="font-supply-mono text-lg sm:text-l md:text-xl lg:text-2xl">
             BUT EVOLUTIONARY
           </div>
@@ -88,27 +88,7 @@ export default function HeroSection() {
       </div>
 
       <div className="absolute inset-x-0 bottom-[27px] z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none hidden md:flex">
-        © 2026, SPORA
-      </div>
-
-      <div className="absolute inset-x-0 bottom-[27px] z-20 flex flex-col gap-5 px-6 text-[11px] font-bizud-mincho leading-relaxed pointer-events-none md:hidden">
-        <div className="flex flex-col gap-3">
-          <div className="font-supply-mono text-lg">NOT REVOLUTIONARY</div>
-          <div>
-            Generative art for everyone. A canvas made of the smallest thing we
-            share: plain text.
-          </div>
-        </div>
-        <div className="flex flex-col gap-3 text-right">
-          <div className="font-supply-mono text-lg">BUT EVOLUTIONARY</div>
-          <div>
-            Parametric reading of your words, blooming into singular works that
-            live, branch, and grow.
-          </div>
-        </div>
-        <div className="flex justify-center text-[10px] font-supply-mono opacity-70">
-          © 2026, SPORA
-        </div>
+        EST 2026, SPORA ©
       </div>
     </section>
   );
