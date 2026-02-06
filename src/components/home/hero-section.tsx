@@ -43,24 +43,6 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="absolute left-6 right-6 top-6 md:left-12 md:right-12 lg:left-16 lg:right-16 z-20 flex items-center justify-between pointer-events-none">
-        <div className="font-supply-mono text-[10px] md:text-xs uppercase tracking-[0.3em] opacity-70">
-          SPORA
-        </div>
-        <div className="hidden md:flex font-supply-mono text-[10px] md:text-xs uppercase tracking-[0.3em] gap-6">
-          <span>[01] GARDEN</span>
-          <span>|</span>
-          <span>[02] GREENHOUSE</span>
-          <span>|</span>
-          <span>[03] LABORATORY</span>
-        </div>
-        <button
-          type="button"
-          className="pointer-events-auto border border-(--spora-primary-light) px-3 py-1 text-[10px] md:text-xs font-supply-mono uppercase tracking-[0.3em]"
-        >
-          SIGN IN
-        </button>
-      </div>
 
       <div className="absolute inset-x-6 top-24 md:inset-x-auto md:top-auto md:left-12 lg:left-16 md:bottom-6.75 z-20 max-w-65 md:max-w-90 pointer-events-none">
         <div className="flex flex-col items-center md:items-start gap-2 text-[11px] sm:text-sm md:text-base lg:text-base font-supply-mono leading-relaxed text-center md:text-left">
