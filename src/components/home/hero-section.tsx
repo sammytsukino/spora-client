@@ -1,24 +1,13 @@
-import PixelTrail from "./pixel-trail";
-import GooeySvgFilter from "./gooey-svg-filter";
-import useScreenSize from "@/hooks/use-screen-size";
-import useDetectBrowser from "@/hooks/use-detect-browser";
+import CyclingLogo from './cycling-logo';
+//import Grainient from '@/components/Grainient';
+import { sporaLogos } from '@/data/logo-data';
+import { MeshGradient } from '@paper-design/shaders-react';
 
 export default function HeroSection() {
-  const screenSize = useScreenSize();
-  const browserName = useDetectBrowser();
-  const isSafari = browserName === "Safari";
-  const pixelColors = [
-    "#B1E200",
-    "#DE00EA",
-    "#E8D700",
-    "#00E000",
-    "#00C0ED",
-    "#7A00EF",
-  ];
-
   return (
-    <section className="relative w-full min-h-0 flex-1 overflow-hidden bg-(--spora-primary) text-(--spora-primary-light)">
-      <GooeySvgFilter id="gooey-filter-hero" strength={5} />
+    <div className="relative w-full min-h-0 flex-1 flex overflow-hidden">
+      <div className="relative w-[20vw] min-w-0 bg-[var(--spora-primary-lightest)] pl-6 md:pl-12 lg:pl-16">
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-[var(--spora-accent)] opacity-60" />
 
         <div
           className="absolute bottom-0 left-6 md:left-12 lg:left-16 z-10 pb-4 md:pb-6 lg:pb-8"
@@ -71,10 +60,6 @@ export default function HeroSection() {
           </button>
         </div>
       </div>
-
-      <div className="absolute inset-x-0 bottom-6.75 z-20 flex justify-center text-[10px] md:text-xs font-supply-mono opacity-70 pointer-events-none">
-        EST 2026, SPORA ©
-      </div>
-    </section>
+    </div>
   );
 }

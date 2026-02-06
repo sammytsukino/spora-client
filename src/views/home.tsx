@@ -12,18 +12,11 @@ import Navbar from '@/components/home/navbar'
 import HeroSection from '@/components/home/hero-section'
 import DeclarativeSection from '@/components/home/declarative-section'
 import QuoteSection from '@/components/home/quote-section'
-//import Grainient from '@/components/Grainient'
+// import Grainient from '@/components/Grainient'
 import { MeshGradient } from '@paper-design/shaders-react'
-//import { floraImages } from '@/data/flora-data'
-//import SpecimenMarquee from '@/components/home/specimen-marquee'
 
 export default function Home() {
   const navigate = useNavigate()
-
-{/* const achievementItems = floraImages.map((image, index) => ({
-    id: `SP/${String(index + 1).padStart(3, '0')}`,
-    image,
-  })) */}
 
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
@@ -47,18 +40,8 @@ export default function Home() {
         <HeroSection />
       </Section>
 
-
       <Section
-        variant="compact"
-        containerized={false}
-        className="items-stretch justify-start "
-      >
-
-        </Section>
-
-
-      <Section
-        variant="medium"
+        variant="large"
         containerized={false}
         className="items-stretch justify-start "
       >
@@ -67,7 +50,6 @@ export default function Home() {
         />
       </Section>
 
-      {/*
       <Section
         variant="large"
         containerized={false}
@@ -77,9 +59,9 @@ export default function Home() {
       </Section>
 
       <Section
-        variant="large"
+        variant="medium"
         containerized={false}
-        className="bg-(--spora-primary) items-stretch"
+        className="bg-[var(--spora-primary)] items-stretch"
       >
         <VideoTextSection />
       </Section>
@@ -148,7 +130,7 @@ export default function Home() {
           </div>
         </div>
 
-
+        
 
         <div className="relative z-10">
           <FooterMain />

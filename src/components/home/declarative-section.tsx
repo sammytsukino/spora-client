@@ -1,7 +1,7 @@
-//import PixelTrail from './pixel-trail';
-//import GooeySvgFilter from './gooey-svg-filter';
-//import useScreenSize from '@/hooks/use-screen-size';
-//import useDetectBrowser from '@/hooks/use-detect-browser';
+import PixelTrail from './pixel-trail';
+import GooeySvgFilter from './gooey-svg-filter';
+import useScreenSize from '@/hooks/use-screen-size';
+import useDetectBrowser from '@/hooks/use-detect-browser';
 
 interface DeclarativeSectionProps {
   text: string;
@@ -18,18 +18,9 @@ interface DeclarativeSectionProps {
 
 
 export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
-  //const screenSize = useScreenSize();
-  //const browserName = useDetectBrowser();
-  //const isSafari = browserName === "Safari";
-  {/* const pixelColors = [
-    '#CAFF50',
-    '#FF64FF',
-    '#F4EF40',
-    '#52FF5A',
-    '#00DCFF',
-    '#DD4AFF',
-    '#EDEDED',
-  ]; */}
+  const screenSize = useScreenSize();
+  const browserName = useDetectBrowser();
+  const isSafari = browserName === "Safari";
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-[#262626]">
@@ -49,11 +40,11 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
           className="w-full h-full"
           colorDarken={2}
         />
-      </div>*/}
+      </div>
 
 
       <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-        <p className="font-bizud-mincho text-(--spora-secondary) -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
+        <p className="font-bizud-mincho text-stone-200 -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
           {text}
         </p>
       </div>
