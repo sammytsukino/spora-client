@@ -27,7 +27,7 @@ export default function TextInput({
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
           maxLength={maxLength}
-          className="w-full h-48 p-4 font-supply-mono text-sm bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-accent-secondary)] focus-visible:ring-offset-2 placeholder:text-neutral-500 transition-colors duration-200"
+          className="w-full h-32 sm:h-40 md:h-48 p-4 font-supply-mono text-sm bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-accent-secondary)] focus-visible:ring-offset-2 placeholder:text-neutral-500 transition-colors duration-200"
         />
         <div className="px-4 py-2 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-xs flex justify-between items-center border-t-2 border-[var(--spora-primary)]">
           <span>CHARACTER COUNT</span>

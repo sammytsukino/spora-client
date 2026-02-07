@@ -79,8 +79,11 @@ export default function NavbarBase({
     ? ""
     : "bg-transparent";
 
-  const justifyNav = isTeam ? "justify-start" : isLaboratory ? "justify-end" : "justify-center";
-  const justifyHeader = isTeam ? "justify-between" : "justify-between";
+  const justifyNav = isTeam
+    ? "md:justify-start"
+    : isLaboratory
+    ? "md:justify-end"
+    : "md:justify-center";
 
   return (
     <header
@@ -96,90 +99,97 @@ export default function NavbarBase({
           }}
         />
       )}
-      <div className={`relative z-10 mx-auto flex items-center ${justifyHeader} px-6 py-3 md:px-12 lg:px-16 md:py-4`}>
-        {(isTeam || isDark || isTransparent) && (
-          <div className="flex items-center">
-            <img
-              src={
-                isDark
-                  ? "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg"
-                  : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
-              }
-              alt="Spora logo"
-              className="h-9 w-auto cursor-pointer"
-              onClick={() => navigate("/")}
-            />
-          </div>
-        )}
+      <div className="relative z-10 mx-auto w-full px-5 sm:px-6 md:px-12 lg:px-16 py-3 md:py-4">
+        <div className="flex items-center justify-between gap-4 md:gap-6">
+          {(isTeam || isDark || isTransparent) && (
+            <div className="hidden md:flex items-center">
+                <img
+                  src={
+                    isDark
+                      ? "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg"
+                      : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
+                  }
+                  alt="Spora logo"
+                  className="h-8 sm:h-9 w-auto cursor-pointer"
+                  onClick={() => navigate("/")}
+                />
+            </div>
+          )}
 
-        <nav className="flex-1">
-          <ul className={`flex items-center ${justifyNav} gap-4 sm:gap-6 md:gap-8 text-[10px] sm:text-xs tracking-[0.3em] uppercase font-semibold`}>
+          <nav className="flex-1">
+            <ul
+              className={`flex items-center justify-start ${justifyNav} gap-2 sm:gap-3 md:gap-8 text-[8px] sm:text-[10px] md:text-xs tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] uppercase font-semibold whitespace-nowrap`}
+            >
             <li>
               <button
                 type="button"
                 className={`${isGarden && !isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
                 onClick={() => handleClick("/garden")}
               >
-                (01)GARDEN
+                <span className="md:hidden">GARDEN</span>
+                <span className="hidden md:inline">(01)GARDEN</span>
               </button>
             </li>
-            <li>|</li>
+            <li className="hidden md:inline">|</li>
             <li>
               <button
                 type="button"
                 className={`${isGreenhouse && !isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
                 onClick={() => handleClick("/greenhouse")}
               >
-                (02)GREENHOUSE
+                <span className="md:hidden">GREENHOUSE</span>
+                <span className="hidden md:inline">(02)GREENHOUSE</span>
               </button>
             </li>
-            <li>|</li>
+            <li className="hidden md:inline">|</li>
             <li>
               <button
                 type="button"
                 className={`${isLaboratoryPath && isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
                 onClick={() => handleClick("/laboratory")}
               >
-                (03)LABORATORY
+                <span className="md:hidden">LAB</span>
+                <span className="hidden md:inline">(03)LABORATORY</span>
               </button>
             </li>
-          </ul>
-        </nav>
+            </ul>
+          </nav>
 
-        {isTeam && (
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            className="cursor-pointer"
-          >
-            <CyclingLogo
-              logos={[
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready4_tnwrxb.svg",
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready3_wtlf0u.svg",
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhb.svg",
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
-              ]}
-              width="80px"
-              height={30}
-              cycleDuration={0.2}
-            />
-          </button>
-        )}
-
-        {!isTeam && !isLaboratory && (
-          <div className="flex items-center">
-            <MainButton
-              variant={isDark ? "navbar" : "compact"}
-              size="sm"
+          {isTeam && (
+            <button
               type="button"
-              onClick={() => navigate("/signin")}
-              className={isTransparent ? "bg-transparent" : ""}
+              onClick={() => navigate("/")}
+              className="hidden md:inline-flex cursor-pointer"
             >
-              SIGN IN
-            </MainButton>
-          </div>
-        )}
+              <CyclingLogo
+                logos={[
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready4_tnwrxb.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready3_wtlf0u.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhb.svg",
+                  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
+                ]}
+                width="80px"
+                height={30}
+                cycleDuration={0.2}
+              />
+            </button>
+          )}
+
+          {!isTeam && !isLaboratory && (
+            <div className="flex items-center">
+              <MainButton
+                variant={isDark ? "navbar" : "compact"}
+                size="sm"
+                type="button"
+                onClick={() => navigate("/signin")}
+                className={isTransparent ? "bg-transparent" : ""}
+              >
+                SIGN IN
+              </MainButton>
+            </div>
+          )}
+        </div>
       </div>
       {showScrollProgress && (
         <div className="w-full h-[2px] bg-transparent">
