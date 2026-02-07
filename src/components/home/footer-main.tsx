@@ -33,7 +33,8 @@ export default function FooterMain() {
             ]}
             width="clamp(12.5rem, 20vw, 20rem)"
             height="clamp(120px, 12vw, 200px)"
-            cycleDuration={0.2}
+            cycleDuration={0.5}
+            overlapDuration={0.07}
           />
         </div>
 

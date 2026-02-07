@@ -3,6 +3,8 @@ interface CyclingLogoProps {
   width?: number | string
   height?: number | string
   cycleDuration?: number
+  pauseDuration?: number
+  overlapDuration?: number
   visiblePercentage?: number
   className?: string
   aspectRatio?: number | string
@@ -14,16 +16,24 @@ export default function CyclingLogo({
   width = 400,
   height = 120,
   cycleDuration = 0.75,
+  pauseDuration = 0.02,
+  overlapDuration = 0,
   visiblePercentage,
   className = "",
   aspectRatio,
   fit = 'fill',
 }: CyclingLogoProps) {
   const logoCount = logos.length
-  
-  const calculatedVisiblePercentage = visiblePercentage || (100 / logoCount)
-  const visibleEnd = calculatedVisiblePercentage - 0.01
-  const totalDuration = cycleDuration * logoCount
+  const perLogoDuration = cycleDuration
+  const baseVisibleDuration = Math.max(cycleDuration - pauseDuration, 0)
+  const totalDuration = perLogoDuration * logoCount
+  const visibleDuration = Math.min(
+    Math.max(baseVisibleDuration + overlapDuration, 0),
+    totalDuration
+  )
+  const calculatedVisiblePercentage =
+    visiblePercentage ?? (visibleDuration / totalDuration) * 100
+  const visibleEnd = Math.max(calculatedVisiblePercentage - 0.01, 0)
 
   const widthValue = typeof width === 'number' ? `${width}px` : width
   const heightValue = typeof height === 'number' ? `${height}px` : height
@@ -47,7 +57,7 @@ export default function CyclingLogo({
       }}
     >
       {logos.map((logo, index) => {
-        const delay = -(cycleDuration * index)
+        const delay = -(perLogoDuration * index)
         
         return (
           <img

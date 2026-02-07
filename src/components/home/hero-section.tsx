@@ -29,7 +29,8 @@ export default function HeroSection() {
               width="100%"
               height="auto"
               aspectRatio="10 / 3"
-              cycleDuration={0.2}
+              cycleDuration={0.5}
+              overlapDuration={0.07}
               className="leading-none w-full"
             />
           </div>
@@ -40,8 +41,8 @@ export default function HeroSection() {
         <MeshGradient
           speed={1}
           scale={1}
-          distortion={0.8}
-          swirl={0.1}
+          distortion={0.1}
+          swirl={0}
           colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']}
           style={{ height: '100%', width: '100%' }}
         />
