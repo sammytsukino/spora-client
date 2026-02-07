@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+*::selection {
+  background: #bbf451;
+  color: #262626;
+}
+
 body {
   @apply bg-background text-foreground;
 }
