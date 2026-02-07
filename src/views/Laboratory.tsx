@@ -89,7 +89,7 @@ export default function Laboratory() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[var(--spora-primary)]">
+    <div className="relative w-full min-h-screen bg-[var(--spora-primary)] md:h-screen md:overflow-hidden">
       <LaboratoryNavbar
         onNavigateRequest={(path) => {
           setPendingExitPath(path);
@@ -97,12 +97,12 @@ export default function Laboratory() {
         }}
       />
 
-      <aside className="fixed top-0 left-0 bottom-0 w-[20vw] min-w-[260px] max-w-sm bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] border-r-2 border-[var(--spora-primary)] z-20">
+      <aside className="relative w-full bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] border-b-2 md:border-b-0 md:border-r-2 border-[var(--spora-primary)] z-20 md:fixed md:top-0 md:left-0 md:bottom-0 md:w-[20vw] md:min-w-[260px] md:max-w-sm">
         <div
           ref={sidebarRef}
-          className="h-full lab-scroll flex flex-col"
+          className="flex flex-col md:h-full md:lab-scroll"
         >
-          <div className="w-full h-[2px] bg-transparent">
+          <div className="w-full h-[2px] bg-transparent hidden md:block">
             <div
               className="h-full transition-all duration-150 ease-out"
               style={{
@@ -112,8 +112,8 @@ export default function Laboratory() {
             />
           </div>
 
-          <div className="p-4 sm:p-6 flex flex-col gap-6">
-            <div className="flex justify-center mb-2">
+          <div className="p-4 sm:p-5 md:p-6 flex flex-col gap-4 sm:gap-5">
+            <div className="flex justify-center mb-1 sm:mb-2">
               <button
                 type="button"
                 onClick={() => {
@@ -172,7 +172,7 @@ export default function Laboratory() {
                 <textarea
                   value={tweaks}
                   onChange={(e) => setTweaks(e.target.value)}
-                  className="w-full h-32 p-4 font-supply-mono text-xs bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)] placeholder:text-neutral-500"
+                  className="w-full h-24 sm:h-28 md:h-32 p-4 font-supply-mono text-xs bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)] placeholder:text-neutral-500"
                   placeholder="Optional notes, constraints, or style hints for your flora..."
                 />
               </div>
@@ -238,10 +238,10 @@ export default function Laboratory() {
             </section>
           </div>
 
-          <div className="p-4 sm:p-6 flex gap-2 border-t-2 border-[var(--spora-primary)] mt-4">
+          <div className="p-4 sm:p-5 md:p-6 flex gap-2 border-t-2 border-[var(--spora-primary)] mt-2 sm:mt-3">
             <button
               type="button"
-              className="flex-1 py-5 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)]"
+              className="flex-1 py-4 sm:py-5 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)]"
               disabled={isGenerating || inputText.trim().length < 10}
               onClick={() => handleGenerate("/greenhouse")}
             >
@@ -249,7 +249,7 @@ export default function Laboratory() {
             </button>
             <button
               type="button"
-              className="flex-1 py-5 bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] font-supply-mono text-[11px] sm:text-xs tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)]"
+              className="flex-1 py-4 sm:py-5 bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] font-supply-mono text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)]"
               onClick={() => handleGenerate("/garden")}
               disabled={isGenerating || inputText.trim().length < 10}
             >
@@ -259,7 +259,7 @@ export default function Laboratory() {
         </div>
       </aside>
 
-      <section className="fixed top-0 bottom-0 right-0 overflow-hidden z-10 left-[clamp(260px,20vw,24rem)]">
+      <section className="relative w-full overflow-hidden z-10 md:fixed md:top-0 md:bottom-0 md:right-0 md:left-[clamp(260px,20vw,24rem)]">
         <div className="absolute inset-0">
           <Grainient
             color1={LAB_COLOR1 as unknown as string[]}
@@ -287,12 +287,12 @@ export default function Laboratory() {
           />
         </div>
 
-        <div className="relative z-10 h-full flex items-center justify-center p-6 pt-16">
+        <div className="relative z-10 flex items-center justify-center p-5 sm:p-6 pt-8 md:pt-16 min-h-[45vh] md:min-h-0">
           {generatedFlora ? (
             <img
               src={generatedFlora}
               alt="Generated Flora"
-              className="max-h-[70vh] w-auto border-2 border-[#262626] shadow-[0_0_0_4px_#e3e3e3]"
+              className="max-h-[52vh] sm:max-h-[60vh] md:max-h-[70vh] w-auto border-2 border-[#262626] shadow-[0_0_0_4px_#e3e3e3]"
             />
           ) : (
             <div className="border-2 border-[#e3e3e3] bg-black backdrop-blur-sm px-6 py-4 font-supply-mono text-xs text-stone-200">
@@ -302,7 +302,7 @@ export default function Laboratory() {
           )}
         </div>
 
-        <div className="absolute bottom-6 right-6 bg-[#e3e3e3] border-2 border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
+        <div className="relative md:absolute md:bottom-6 md:right-6 bg-[#e3e3e3] border-2 border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626] mx-5 sm:mx-6 md:mx-0 mb-6 md:mb-0">
           <p>SOIL: LAB/ALPHA</p>
           <p>SENTIMENT: PENDING</p>
           <p>GEN: {generatedFlora ? `GEN_${generation}` : "—"}</p>
