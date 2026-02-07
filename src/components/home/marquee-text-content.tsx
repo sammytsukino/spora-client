@@ -47,7 +47,7 @@ export default function MarqueeTextContent({
   return (
     <div
       className={cn(
-        "absolute left-0 top-0 flex flex-row items-start gap-8 md:gap-10 lg:gap-12 pl-6 md:pl-12 pt-12 md:pt-16 z-10 w-auto",
+        "absolute left-0 top-0 flex flex-col md:flex-row items-start gap-4 sm:gap-5 md:gap-10 lg:gap-12 px-6 sm:px-8 md:px-12 pt-6 sm:pt-9 md:pt-16 z-10 w-full md:w-auto box-border",
         className
       )}
     >
@@ -55,13 +55,13 @@ export default function MarqueeTextContent({
         <button
           key={index}
           type="button"
-          className="flex flex-col w-[18%] text-left cursor-pointer"
+          className="flex flex-col w-full md:w-[18%] text-left cursor-pointer"
           onClick={() => handleClick(item)}
         >
           <p className="font-supply-mono text-xs md:text-sm lg:text-sm text-[#262626] mb-2">
             ({item.number}) {item.title}
           </p>
-          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-[#262626] leading-tight hover:underline">
+          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-[#262626] leading-tight hover:underline break-words">
             {item.description}
           </p>
         </button>

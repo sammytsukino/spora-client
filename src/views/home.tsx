@@ -51,7 +51,7 @@ export default function Home() {
       </Section>
 
       <Section
-        variant="large"
+        variant="flush"
         containerized={false}
         className="items-stretch"
       >
