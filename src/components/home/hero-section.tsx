@@ -55,7 +55,7 @@ export default function HeroSection() {
         <div className="absolute right-6 md:right-12 lg:right-16 bottom-4 md:bottom-6 lg:bottom-8 text-right">
           <button
             type="button"
-            className="font-supply-mono text-sm md:text-base lg:text-[16px] text-[var(--spora-primary)] hover:underline"
+            className="font-supply-mono text-sm md:text-base lg:text-[16px] text-[var(--spora-primary)] hover:underline hover:cursor-pointer"
           >
             next flora →
           </button>
