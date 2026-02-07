@@ -41,9 +41,9 @@ export default function Home() {
       </Section>
 
       <Section
-        variant="large"
+        variant="flush"
         containerized={false}
-        className="items-stretch justify-start "
+        className="items-stretch justify-start"
       >
         <DeclarativeSection
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
