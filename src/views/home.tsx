@@ -124,7 +124,7 @@ export default function Home() {
         {/* Fondo con Grainient (mismo esquema que Background.tsx) */}
         <div className="absolute inset-0 w-full h-full">
           <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <MeshGradient speed={1} scale={1} distortion={0} swirl={0} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
+            <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
             />
 
           </div>
