@@ -23,7 +23,7 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
   const isSafari = browserName === "Safari";
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#262626]">
+    <div className="relative w-full overflow-hidden bg-[#262626] min-h-[55vh] sm:min-h-[65vh] lg:min-h-[80vh]">
 
       <GooeySvgFilter id="gooey-filter-hero" strength={5} />
 
@@ -43,10 +43,13 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
       </div>
 
 
-      <div className="relative z-10 px-20 h-full flex items-start pt-8 pointer-events-none">
-        <p className="font-bizud-mincho text-stone-200 -ml-23 text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-tight pointer-events-none">
-          {text}
-        </p>
+      <div className="relative z-10 flex flex-col h-full pointer-events-none">
+        <div className="px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16">
+          <p className="font-bizud-mincho text-stone-200 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight w-full">
+            {text}
+          </p>
+        </div>
+        <div className="flex-1 min-h-0 sm:min-h-[22vh] md:min-h-[36vh]" />
       </div>
     </div>
   );
