@@ -102,6 +102,25 @@ export default function NavbarBase({
       <div className="relative z-10 mx-auto w-full px-5 sm:px-6 md:px-12 lg:px-16 py-3 md:py-4">
         <div className="flex items-center justify-between gap-4 md:gap-6">
           {(isTeam || isDark || isTransparent) && (
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="md:hidden flex items-center"
+              aria-label="Go to home"
+            >
+              <img
+                src={
+                  isDark
+                    ? "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg"
+                    : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
+                }
+                alt="Spora logo"
+                className="h-5 w-auto"
+              />
+            </button>
+          )}
+
+          {(isTeam || isDark || isTransparent) && (
             <div className="hidden md:flex items-center">
                 <img
                   src={
