@@ -6,7 +6,7 @@ export default function FooterMain() {
 
   return (
     <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)]">
-      <div className="flex items-start justify-between text-2xl sm:text-2xl font-supply-mono mb-12">
+      <div className="flex items-start justify-between text-lg sm:text-2xl font-supply-mono mb-10 sm:mb-12">
         <p className="whitespace-pre leading-tight">
           Not{"\n"}
           revolutionary
@@ -18,7 +18,11 @@ export default function FooterMain() {
       </div>
 
       <div className="flex items-start justify-end">
-        <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg" alt="Spora logo" className="max-w-[800px]  object-contain" />
+        <img
+          src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg"
+          alt="Spora logo"
+          className="max-w-[220px] sm:max-w-[480px] lg:max-w-[800px] object-contain"
+        />
       </div>
 
       <div className="flex-1 flex items-center justify-between">
@@ -31,8 +35,8 @@ export default function FooterMain() {
               "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhs.svg",
               "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
             ]}
-            width="clamp(12.5rem, 20vw, 20rem)"
-            height="clamp(120px, 12vw, 200px)"
+            width="clamp(9rem, 16vw, 16rem)"
+            height="clamp(90px, 10vw, 160px)"
             cycleDuration={0.5}
             overlapDuration={0.07}
           />

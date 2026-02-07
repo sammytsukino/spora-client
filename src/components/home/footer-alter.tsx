@@ -27,7 +27,7 @@ export default function FooterAlter() {
             />
           </div>
 
-          <div className="w-2/4 border-t-2 border-[var(--spora-primary)] mb-10" />
+          <div className="hidden lg:block w-2/4 border-t-2 border-[var(--spora-primary)] mb-10" />
 
           <div className="flex items-start">
             <div className="text-[10px] sm:text-xs font-supply-mono">
