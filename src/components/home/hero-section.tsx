@@ -41,8 +41,8 @@ export default function HeroSection() {
         <MeshGradient
           speed={1}
           scale={1}
-          distortion={0.1}
-          swirl={0}
+          distortion={0.8}
+          swirl={0.1}
           colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']}
           style={{ height: '100%', width: '100%' }}
         />
