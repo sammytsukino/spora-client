@@ -9,7 +9,6 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react"
-import { MeshGradient } from "@paper-design/shaders-react"
 
 import { cn } from "@/lib/utils"
 import MarqueeTextContent from "./marquee-text-content"
@@ -372,6 +371,8 @@ export function MarqueeBackground({
   children?: React.ReactNode
 }) {
   return (
+    
+    
     <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase
         path={path}
@@ -413,16 +414,7 @@ export default function MarqueeAlongSvgPath({
 }) {
   return (
     <div className="w-full relative overflow-hidden min-h-[36vh] sm:min-h-[50vh] md:min-h-[80vh]">
-      <div className="absolute inset-0 w-full h-full md:hidden">
-        <MeshGradient
-          speed={1}
-          scale={1}
-          distortion={0.8}
-          swirl={0.1}
-          colors={["#CAFF50", "#FF64FF", "#F4EF40", "#52FF5A", "#00DCFF", "#DD4AFF", "#EDEDED"]}
-          style={{ height: "100%", width: "100%" }}
-        />
-      </div>
+      <div className="absolute inset-0 w-full h-full md:hidden bg-linear-to-b from-(--spora-accent-secondary) to-(--spora-secondary)" />
       <MarqueeBackground className="absolute inset-0 w-full h-full overflow-hidden" />
       {showText && <MarqueeTextContent />}
     </div>

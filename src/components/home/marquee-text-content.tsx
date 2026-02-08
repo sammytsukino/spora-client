@@ -58,7 +58,7 @@ export default function MarqueeTextContent({
           className="flex flex-col w-full md:w-[18%] text-left cursor-pointer"
           onClick={() => handleClick(item)}
         >
-          <p className="font-supply-mono text-xs md:text-sm lg:text-sm text-[#262626] mb-2">
+          <p className="font-supply-mono text-xs md:text-sm lg:text-sm text-[#262626]">
             ({item.number}) {item.title}
           </p>
           <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-[#262626] leading-tight hover:underline break-words">
