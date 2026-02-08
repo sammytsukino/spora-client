@@ -9,7 +9,7 @@ export const sporaLogos = [
   // "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903329/12_nizkdg.svg",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770479349/img-5_rznt00.webp",
   // "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903328/10_cgfww1.svg",
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770479343/img-4_moysqc.webp",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770556851/Recurso_32logo_nfm9qq.webp",
   // "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903327/6_hi73sd.svg",
   // "https://res.cloudinary.com/dsy30p7gf/image/upload/v1767903331/2_gnhbhj.svg",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770479346/img-0_tqvogu.webp",
