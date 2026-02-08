@@ -28,12 +28,12 @@ export default function PageTitle({
       <span className={cn("font-supply-mono text-xs sm:text-sm tracking-[0.3em] uppercase block mb-4", textColors)}>
         {supertitle}
       </span>
-      <div className={cn("flex items-center gap-8 md:gap-12", description ? "justify-between" : "")}>
+      <div className={cn("flex flex-col gap-4 md:flex-row md:items-center md:gap-12", description ? "md:justify-between" : "")}>
         <h1 className={cn("font-bizud-mincho-bold text-4xl md:text-5xl lg:text-6xl leading-[1.1] whitespace-pre-line", textColors)}>
           {title}
         </h1>
         {description && (
-          <p className={cn("font-bizud-mincho text-sm md:text-base text-right max-w-xs md:max-w-sm leading-relaxed shrink-0", descriptionColor)}>
+          <p className={cn("font-bizud-mincho text-sm md:text-base text-left md:text-right max-w-full md:max-w-sm leading-relaxed", descriptionColor)}>
             {description}
           </p>
         )}

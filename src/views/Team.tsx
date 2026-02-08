@@ -19,13 +19,13 @@ export default function Team() {
             <TransparentNavbar showScrollBackground />
 
 
-      <main className="relative flex-1">
+      <main className="relative min-h-[100dvh]">
         <div className="absolute inset-0">
           <Lanyard position={[0, 0, 10]} gravity={[0, -40, 0]} />
         </div>
       </main>
 
-      <div className="absolute inset-x-0 bottom-0 z-10">
+      <div className="relative z-10 md:absolute md:inset-x-0 md:bottom-0">
         <TeamFooter />
       </div>
     </div>
