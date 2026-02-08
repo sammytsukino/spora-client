@@ -29,11 +29,11 @@ export default function FooterMain() {
         <div className="flex items-center">
           <CyclingLogo
             logos={[
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready4_tnwrxb.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready3_wtlf0u.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready2_f5swhs.svg",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready1_psvx4m.svg",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557718/Ready5_wlhvqu.webp",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557729/Ready1_tho4wi.webp",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557729/Ready2_cxjg7b.webp",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557720/Ready3_hisekc.webp",
+              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557719/Ready4_b6iujg.webp",
             ]}
             width="clamp(9rem, 16vw, 16rem)"
             height="clamp(90px, 10vw, 160px)"
