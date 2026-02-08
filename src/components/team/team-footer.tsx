@@ -5,8 +5,8 @@ export default function TeamFooter() {
 
   return (
     <footer className="relative w-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)]">
-      <div className="flex items-end justify-between gap-8">
-        <div className="max-w-xs text-sm sm:text-lg font-supply-mono leading-relaxed">
+      <div className="flex flex-col items-center gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-full md:max-w-xs text-center md:text-left text-sm sm:text-lg font-supply-mono leading-relaxed">
           <span>SPORA: Conceptualized, designed and developed with lots of ♡ by{" "}
             <a
               href="https://www.linkedin.com/in/sammycabello/"
@@ -19,8 +19,8 @@ export default function TeamFooter() {
           </span>
         </div>
 
-        <div className="text-[10px] sm:text-xs font-supply-mono">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">
+        <div className="w-full md:w-auto text-[10px] sm:text-xs font-supply-mono">
+          <div className="grid grid-cols-3 grid-rows-2 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-center md:justify-items-end text-center md:text-right text-sm sm:text-lg">
             <button
               type="button"
               className="hover:underline cursor-pointer"

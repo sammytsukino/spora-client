@@ -57,10 +57,14 @@ export default function Lanyard({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const cameraPosition: [number, number, number] = isMobile
+    ? [position[0], position[1], position[2] + 4]
+    : position;
+
   return (
     <div className="relative z-0 flex h-screen w-full items-center justify-center">
       <Canvas
-        camera={{ position, fov }}
+        camera={{ position: cameraPosition, fov }}
         dpr={[1, isMobile ? 1.5 : 2]}
         gl={{ alpha: transparent }}
         onCreated={({ gl }) =>
