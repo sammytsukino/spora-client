@@ -25,7 +25,8 @@ export default function Router() {
         <Route path="/garden" element={<Garden />} />
         <Route path="/greenhouse" element={<Greenhouse />} />
         <Route path="/flora/:id" element={<FloraDetail />} />
-        <Route path="/laboratory" element={<Laboratory />} />
+      {/*  <Route path="/laboratory" element={<Laboratory />} />*/}
+        <Route path="/laboratory" element={<Installation />} />
         <Route path="/installation" element={<Installation />} />
         <Route path="/team" element={<Team />} />
         <Route path="/research" element={<Research />} />
