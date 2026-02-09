@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../views/home";
+import Installation from "../views/Installation";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
 import Laboratory from "../views/Laboratory";
@@ -25,6 +26,7 @@ export default function Router() {
         <Route path="/greenhouse" element={<Greenhouse />} />
         <Route path="/flora/:id" element={<FloraDetail />} />
         <Route path="/laboratory" element={<Laboratory />} />
+        <Route path="/installation" element={<Installation />} />
         <Route path="/team" element={<Team />} />
         <Route path="/research" element={<Research />} />
         <Route path="/contact" element={<Contact />} />
