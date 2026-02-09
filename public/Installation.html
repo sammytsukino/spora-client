@@ -442,7 +442,7 @@
 function setup() {
     const container = document.getElementById('canvas-container');
 
-    // canvas temporal mínimo
+
     const cnv = createCanvas(1, 1);
     cnv.parent('canvas-container');
 
@@ -451,7 +451,7 @@ function setup() {
     frameRate(30);
     updateBackground();
 
-    // ⚠️ forzar resize cuando el layout YA está estable
+
     setTimeout(() => {
         windowResized();
     }, 0);
@@ -459,7 +459,7 @@ function setup() {
 
 
         function draw() {
-            clear(); // Fondo manejado por CSS
+            clear();
 
             const windOn = document.getElementById('chkWind').checked;
             const windForce = parseFloat(document.getElementById('rngWind').value);
