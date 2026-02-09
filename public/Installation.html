@@ -551,11 +551,11 @@ function setup() {
                     let dispY = p.y;
 
                     if (windOn && windForce > 0) {
-                        if (scrambleOn && random(1) < windForce * 0.01) {
+                        if (scrambleOn && random(3) < windForce * 0.02) {
                             charIndex = floor(random(f.chars.length));
                         }
                         if (jitterOn) {
-                            let shake = windForce * 0.3;
+                            let shake = windForce * 0.5;
                             dispX += random(-shake, shake);
                             dispY += random(-shake, shake);
                         }
@@ -674,7 +674,7 @@ function setup() {
             pgOutline.loadPixels();
 
             const points = [];
-            let density = map(fSize, 10, 60, 0.95, 0.35);
+            let density = map(fSize, 10, 60, 0.95, 0.15);
             density = constrain(density, 0.70, 1.0);
             const step = fSize * density;
 
