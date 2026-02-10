@@ -3,7 +3,7 @@ import SignInForm from "@/components/home/signin-form";
 import TransparentNavbar from "@/components/home/transparent-navbar";
 import Section from "@/components/Section";
 //import Grainient from "@/components/Grainient";
-import { MeshGradient } from "@paper-design/shaders-react";
+
 
 export default function SignIn() {
   return (
@@ -33,8 +33,18 @@ export default function SignIn() {
 
         {/* Fondo con Grainient, mismo esquema de color que Background/Home */}
         <div className="fixed inset-0 w-full h-full z-0">
-          <MeshGradient speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']} style={{ height: '100%', width: '100%' }}
-      />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source
+              src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
+              type="video/mp4"
+            />
+          </video>
         </div>
 
         <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 pt-24 pb-10">
