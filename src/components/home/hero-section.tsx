@@ -1,7 +1,7 @@
 import CyclingLogo from './cycling-logo';
 //import Grainient from '@/components/Grainient';
 import { sporaLogos } from '@/data/logo-data';
-import { MeshGradient } from '@paper-design/shaders-react';
+
 
 export default function HeroSection() {
   return (
@@ -35,14 +35,19 @@ export default function HeroSection() {
       </div>
 
       <div className="relative flex-1 w-full md:w-[80vw] min-h-[48vh] md:min-h-0">
-        <MeshGradient
-          speed={1}
-          scale={1}
-          distortion={0.8}
-          swirl={0.1}
-          colors={['#CAFF50', '#FF64FF', '#F4EF40', '#52FF5A', '#00DCFF', '#DD4AFF', '#EDEDED']}
-          style={{ height: '100%', width: '100%' }}
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source
+            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
+            type="video/mp4"
+          />
+        </video>
+
 
         <div className="absolute inset-0 p-5 sm:p-6 md:p-0">
           <div className="md:absolute md:right-12 lg:right-16 md:top-20 lg:top-24 md:text-right">
