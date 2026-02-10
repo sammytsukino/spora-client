@@ -1,5 +1,5 @@
 /** @paper-design/shaders-react@0.0.71 */
-import { MeshGradient as MeshGradientComponent } from '@paper-design/shaders-react';
+
 
 /**
  * from Paper
@@ -7,6 +7,20 @@ import { MeshGradient as MeshGradientComponent } from '@paper-design/shaders-rea
  * on Feb 5, 2026
  */
 export default function MeshGradient() {
-  return <MeshGradientComponent speed={1} scale={1} distortion={0.8} swirl={0.1} colors={['#CAFF50', '#3A00F4', '#F75092', '#73F7FF']} style={{ height: '600px', width: '800px' }} />;
+  return (
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover"
+      style={{ height: '600px', width: '800px' }}
+    >
+      <source
+        src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
+        type="video/mp4"
+      />
+    </video>
+  );
 }
 
