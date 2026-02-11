@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>SPORA LAB 3.8</title>
+    <title>SPORA LAB 3.8 - Sentiment & Species</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -206,6 +206,18 @@
             margin-top: 10px;
         }
 
+        /* SENTIMENT DEBUGGER STYLE */
+        .debug-panel {
+            margin-top: 20px;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .debug-panel h3 { font-size: 10px; margin: 0 0 5px 0; text-transform: uppercase; }
+        .debug-btns { display: flex; gap: 5px; }
+        .debug-btn { padding: 5px; font-size: 9px; background: #666; color: #fff; border: none; cursor: pointer; }
+
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -231,6 +243,14 @@
                 oninput="triggerRegen()">Self-hatred grows in me like cancer. I can't locate its whereabouts but it's feasting on its host. I expected him to have the answers. I thought I taught him how to love me Now he fears me like a ghost.</textarea>
         </div>
 
+        <div class="debug-panel">
+            <h3>Sentiment Simulator (Dev Mode)</h3>
+            <div class="debug-btns">
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.positive)">Happy (Daisy)</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.negative)">Sad (Rose)</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.chaos)">Chaos (Carnation)</button>
+            </div>
+        </div>
         <h2>Geometry & Style</h2>
         <details open>
             <summary>Typography & Scale</summary>
@@ -389,6 +409,7 @@
 
     <script>
         let flowers = [];
+        let targetFlowerSet = null; // Variable Global para forzar el tipo de flor
 
         const maskUrls = {
             daisy: [
@@ -604,8 +625,13 @@
             const sliderScale = parseFloat(document.getElementById('rngScale').value);
             const outlineWidth = parseInt(document.getElementById('rngOutlineWidth').value);
 
+            // LOGICA MODIFICADA PARA SOPORTAR SENTIMENT
             const setNames = Object.keys(loadedAssets);
-            const activeSetName = setNames[Math.floor(Math.random() * setNames.length)];
+            // Si targetFlowerSet está definido y existe en nuestros assets, úsalo. Si no, random.
+            const activeSetName = (targetFlowerSet && loadedAssets[targetFlowerSet]) 
+                                  ? targetFlowerSet 
+                                  : setNames[Math.floor(Math.random() * setNames.length)];
+            
             const activeImages = loadedAssets[activeSetName];
 
             document.getElementById('statusText').innerText = `Set: ${activeSetName.toUpperCase()} | Calculating...`;
@@ -791,6 +817,69 @@
             generateGarden();
         }
         window.addEventListener("orientationchange", () => setTimeout(windowResized, 300));
+
+        // =========================================================
+        // --- SENTIMENT INTEGRATION INTERFACE (SPORA V4 PREP) ---
+        // =========================================================
+
+        const moodProfiles = {
+            positive: {
+                flowerSet: 'daisy', // TIPO DE FLOR
+                wind: { active: true, strength: 0.3 },
+                chaos: { scramble: false, jitter: false },
+                colors: { maskA: '#ffcc00', maskB: '#ff6600', stem: '#00ff44', text: '#ffffff', bgA: '#87ceeb', bgB: '#e0f7fa' },
+                geometry: { scale: 1.0, fontSize: 18, font: 'Inter' }
+            },
+            negative: {
+                flowerSet: 'rose', // TIPO DE FLOR
+                wind: { active: true, strength: 1.2 },
+                chaos: { scramble: false, jitter: true },
+                colors: { maskA: '#000088', maskB: '#330033', stem: '#444444', text: '#aaaaaa', bgA: '#000000', bgB: '#1a1a2e' },
+                geometry: { scale: 0.8, fontSize: 14, font: 'UnifrakturMaguntia' }
+            },
+            chaos: {
+                flowerSet: 'carnation', // TIPO DE FLOR
+                wind: { active: true, strength: 1.8 },
+                chaos: { scramble: true, jitter: true },
+                colors: { maskA: '#ff00ff', maskB: '#00ffff', stem: '#ffff00', text: '#ff0000', bgA: '#222222', bgB: '#111111' },
+                geometry: { scale: 0.7, fontSize: 24, font: 'Courier Prime' }
+            }
+        };
+
+        function applyVisualState(state) {
+            // 0. Set Flower Type (NUEVO)
+            targetFlowerSet = state.flowerSet;
+
+            // 1. Atmosphere
+            document.getElementById('chkWind').checked = state.wind.active;
+            document.getElementById('rngWind').value = state.wind.strength;
+            updateUI('lblWind', 'Wind Strength', state.wind.strength, '');
+
+            document.getElementById('chkScramble').checked = state.chaos.scramble;
+            document.getElementById('chkJitter').checked = state.chaos.jitter;
+
+            // 2. Colors
+            document.getElementById('colMaskGradA').value = state.colors.maskA;
+            document.getElementById('colMaskGradB').value = state.colors.maskB;
+            document.getElementById('colStem').value = state.colors.stem;
+            document.getElementById('colTextSolid').value = state.colors.text;
+            document.getElementById('colBgGradA').value = state.colors.bgA;
+            document.getElementById('colBgGradB').value = state.colors.bgB;
+
+            // 3. Geometry
+            document.getElementById('rngScale').value = state.geometry.scale;
+            updateUI('lblScale', 'Flower Scale', state.geometry.scale, 'x');
+            
+            document.getElementById('rngSize').value = state.geometry.fontSize;
+            updateUI('lblSize', 'Font Size', state.geometry.fontSize, 'px');
+
+            document.getElementById('selFont').value = state.geometry.font;
+
+            // 4. Force Updates
+            updateBackground();
+            // IMPORTANT: regenerateGarden porque hemos cambiado el set de flores
+            generateGarden(); 
+        }
     </script>
 </body>
 
