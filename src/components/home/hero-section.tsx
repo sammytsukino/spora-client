@@ -10,11 +10,13 @@ export default function HeroSection() {
         <div className="absolute left-0 top-0 bottom-0 w-px bg-[--spora-accent] opacity-60 hidden md:block" />
 
         <div className="relative z-10 pt-16 pb-5 sm:pt-16 sm:pb-6 md:py-0 md:absolute md:bottom-0 md:left-12 lg:left-16 md:pb-6 lg:pb-8" style={{ width: 'max(16rem, 50vw)' }}>
-          <div className="mb-4 sm:mb-5 md:mb-8 lg:mb-16 hidden sm:flex items-center gap-4 sm:gap-6 md:gap-10 w-full">
+          <div className="mb-4 sm:mb-5 md:mb-8 lg:mb-16 max-sm:hidden flex items-center gap-4 sm:gap-6 md:gap-10 w-full">
             <div className="font-bizud-mincho text-base sm:text-lg md:text-3xl lg:text-4xl text-[--spora-primary] leading-tight whitespace-nowrap">
               not revolutionary
             </div>
-            <div className="h-px bg-[--spora-primary] flex-1 min-w-6" />
+            <div className="flex-1 min-w-6">
+              <div className="h-[2px] bg-(--spora-primary) w-full" />
+            </div>
             <div className="font-bizud-mincho text-base sm:text-lg md:text-3xl lg:text-4xl text-[--spora-primary] leading-tight whitespace-nowrap">
               but evolutionary
             </div>

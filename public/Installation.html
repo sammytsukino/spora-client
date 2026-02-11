@@ -3,8 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>SPORA LAB</title>
+    <title>SPORA LAB 3.8 - BRUTALIST</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <style>
         body {
@@ -39,15 +46,13 @@
             position: relative;
             background: #000;
             overflow: hidden;
-            
+            background-position: center top;
+            transition: background 0.2s ease;
         }
 
         canvas {
             display: block;
         }
-
-
-        
 
         textarea {
             width: 93%;
@@ -77,17 +82,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #e6e6e6;
+            background: #dcdcdc;
             padding: 10px;
             border-radius: 4px;
-            border: 1px solid #222;
+            border: 1px solid #ccc;
         }
 
         h2 {
             margin: 0;
             font-size: 12px;
             color: #666;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #999;
             padding-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -96,7 +101,7 @@
 
         label {
             font-size: 11px;
-            color: #696969;
+            color: #333;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: bold;
@@ -121,6 +126,27 @@
             background: none;
             cursor: pointer;
             padding: 0;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            font-size: 11px;
+            box-sizing: border-box;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #999;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         button {
@@ -150,7 +176,7 @@
 
         details {
             background: #f0f0f0;
-            border: 1px solid #222;
+            border: 1px solid #ccc;
             border-radius: 6px;
             padding: 8px 10px;
         }
@@ -180,36 +206,32 @@
             margin-top: 10px;
         }
 
+        .debug-panel {
+            margin-top: 20px;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            border-radius: 4px;
+            border: 1px solid #8de22b;
+        }
+        .debug-panel h3 { font-size: 10px; margin: 0 0 5px 0; text-transform: uppercase; color: #8de22b; }
+        .debug-btns { display: flex; gap: 5px; }
+        .debug-btn { padding: 8px; font-size: 10px; font-weight: bold; background: #333; color: #fff; border: none; cursor: pointer; text-transform: uppercase; flex-grow: 1; }
+        .debug-btn:hover { background: #8de22b; color: #000; }
+
         @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
 
-    body {
-        flex-direction: column;
-        height: 100dvh;
-        overflow: hidden;
-    }
-
-#ui {
-    width: 100%;
-    min-width: 0;
-    height: auto;
-    max-height: 30dvh;
-    border-right: none;
-    border-bottom: 1px solid #333;
-    overflow-y: auto;
-}
-
-
-    #canvas-container {
-        width: 100%;
-        flex-grow: 1;
-        height: auto;
-    }
-
-    canvas {
-        width: 100% !important;
-        height: 100% !important;
-    }
-}
+            #ui {
+                width: 100%;
+                height: auto;
+                max-height: 30dvh;
+                border-right: none;
+                border-bottom: 1px solid #333;
+            }
+        }
     </style>
 </head>
 
@@ -222,21 +244,34 @@
                 oninput="triggerRegen()">Self-hatred grows in me like cancer. I can't locate its whereabouts but it's feasting on its host. I expected him to have the answers. I thought I taught him how to love me Now he fears me like a ghost.</textarea>
         </div>
 
-        <h2>Geometry</h2>
+        <div class="debug-panel">
+            <h3>Sentiment Simulator</h3>
+            <div class="debug-btns">
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.positive)">ACID JOY</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.negative)">VOID</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.chaos)">GLITCH</button>
+            </div>
+        </div>
+
+        <h2>Geometry & Style</h2>
         <details open>
-            <summary>Typography</summary>
+            <summary>Typography & Scale</summary>
             <div class="folder-body">
                 <div class="row">
+                    <label>Font Family</label>
+                    <select id="selFont" onchange="triggerVisuals()">
+                        <option value="Arial">System Sans (Arial)</option>
+                        <option value="Inter">Modern (Inter)</option>
+                        <option value="Playfair Display">Editorial (Playfair)</option>
+                        <option value="Courier Prime">Code (Courier)</option>
+                        <option value="UnifrakturMaguntia">Gothic (Unifraktur)</option>
+                    </select>
+                </div>
+                <div class="row">
                     <label id="lblSize">Font Size: 16px</label>
-                    <input type="range" id="rngSize" min="10" max="60" value="16"
+                    <input type="range" id="rngSize" min="10" max="80" value="16"
                         oninput="updateUI('lblSize', 'Font Size', this.value, 'px'); triggerVisuals();">
                 </div>
-            </div>
-        </details>
-
-        <details open>
-            <summary>Scale</summary>
-            <div class="folder-body">
                 <div class="row">
                     <label id="lblScale">Flower Scale: 1.5x</label>
                     <input type="range" id="rngScale" min="0.5" max="2.5" step="0.1" value="1.5"
@@ -245,9 +280,57 @@
             </div>
         </details>
 
-        <h2>Atmosphere</h2>
+        <details>
+            <summary>Fill & Colors</summary>
+            <div class="folder-body">
+                <div class="row">
+                    <label>Fill Gradient Dir</label>
+                    <select id="selFillDir" onchange="triggerVisuals()">
+                        <option value="vertical">Vertical</option>
+                        <option value="horizontal">Horizontal</option>
+                        <option value="radial">Radial</option>
+                    </select>
+                </div>
+                <div class="row-h">
+                    <label for="chkMask">Show Fill</label>
+                    <input type="checkbox" id="chkMask">
+                </div>
+                <div class="row-h">
+                    <label for="chkFillGradient">Active Gradient</label>
+                    <input type="checkbox" id="chkFillGradient">
+                </div>
+                <div class="row-h">
+                    <label>Fill Solid / A</label>
+                    <input type="color" id="colMaskGradA" value="#0000ff">
+                </div>
+                <div class="row-h">
+                    <label>Fill B</label>
+                    <input type="color" id="colMaskGradB" value="#00ffea">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>Outline</summary>
+            <div class="folder-body">
+                <div class="row-h">
+                    <label for="chkOutline">Show Outline</label>
+                    <input type="checkbox" id="chkOutline">
+                </div>
+                <div class="row">
+                    <label id="lblOutlineWidth">Outline Width: 1px</label>
+                    <input type="range" id="rngOutlineWidth" min="1" max="6" step="1" value="1"
+                        oninput="updateUI('lblOutlineWidth', 'Width', this.value, 'px'); triggerVisuals();">
+                </div>
+                <div class="row-h">
+                    <label>Outline Color</label>
+                    <input type="color" id="colOutlineSolid" value="#ffffff">
+                </div>
+            </div>
+        </details>
+
         <details open>
-            <summary>Wind</summary>
+            <summary>Atmosphere & Chaos</summary>
             <div class="folder-body">
                 <div class="row-h">
                     <label for="chkWind">Wind Active</label>
@@ -258,127 +341,64 @@
                     <input type="range" id="rngWind" min="0" max="2" step="0.1" value="0.5"
                         oninput="updateUI('lblWind', 'Wind Strength', this.value, '')">
                 </div>
-            </div>
-        </details>
-
-        <h2>Chaos Effects</h2>
-        <details open>
-            <summary>Distortion</summary>
-            <div class="folder-body">
-                <div class="row-h">
-                    <label for="chkScramble">Text Scramble</label>
+                
+                <div class="row-h" style="border-left: 3px solid #8de22b; padding-left: 8px;">
+                    <label for="chkScramble">Chaos: Scramble</label>
                     <input type="checkbox" id="chkScramble">
                 </div>
-                <div class="row-h">
-                    <label for="chkJitter">Position Jitter</label>
+                <div class="row-h" style="border-left: 3px solid #8de22b; padding-left: 8px;">
+                    <label for="chkJitter">Chaos: Jitter</label>
                     <input type="checkbox" id="chkJitter">
                 </div>
-            </div>
-        </details>
 
-        <h2>Colors</h2>
-        <details open>
-            <summary>Stem</summary>
-            <div class="folder-body">
                 <div class="row-h">
-                    <label>Stem Base Color</label>
+                    <label>Stem Color</label>
                     <input type="color" id="colStem" value="#15ff00">
                 </div>
-            </div>
-        </details>
-
-        <details open>
-            <summary>Background</summary>
-            <div class="folder-body">
                 <div class="row-h">
-                    <label for="chkBgGradient">Background Gradient</label>
-                    <input type="checkbox" id="chkBgGradient" checked oninput="updateBackground();">
-                </div>
-                <div class="row-h">
-                    <label>Background Solid</label>
-                    <input type="color" id="colBgSolid" value="#000000" oninput="updateBackground();">
-                </div>
-                <div class="row-h">
-                    <label>Background Gradient A</label>
-                    <input type="color" id="colBgGradA" value="#000ff0" oninput="updateBackground();">
-                </div>
-                <div class="row-h">
-                    <label>Background Gradient B</label>
-                    <input type="color" id="colBgGradB" value="#ffffff" oninput="updateBackground();">
-                </div>
-            </div>
-        </details>
-
-        <details open>
-            <summary>Fill</summary>
-            <div class="folder-body">
-                <div class="row-h">
-                    <label for="chkMask">Show Fill</label>
-                    <input type="checkbox" id="chkMask">
-                </div>
-                <div class="row-h">
-                    <label for="chkFillGradient">Fill Gradient</label>
-                    <input type="checkbox" id="chkFillGradient">
-                </div>
-                <div class="row-h">
-                    <label>Fill Solid</label>
-                    <input type="color" id="colMaskSolid" value="#ff0055">
-                </div>
-                <div class="row-h">
-                    <label>Fill Gradient A</label>
-                    <input type="color" id="colMaskGradA" value="#ff0055">
-                </div>
-                <div class="row-h">
-                    <label>Fill Gradient B</label>
-                    <input type="color" id="colMaskGradB" value="#00ffea">
-                </div>
-            </div>
-        </details>
-
-        <details open>
-            <summary>Outline</summary>
-            <div class="folder-body">
-                <div class="row-h">
-                    <label for="chkOutline">Show Outline</label>
-                    <input type="checkbox" id="chkOutline">
-                </div>
-                <div class="row-h">
-                    <label for="chkOutlineGradient">Outline Gradient</label>
-                    <input type="checkbox" id="chkOutlineGradient">
-                </div>
-                <div class="row-h">
-                    <label>Outline Solid</label>
-                    <input type="color" id="colOutlineSolid" value="#ffffff">
-                </div>
-                <div class="row-h">
-                    <label>Outline Gradient A</label>
-                    <input type="color" id="colOutlineGradA" value="#ffffff">
-                </div>
-                <div class="row-h">
-                    <label>Outline Gradient B</label>
-                    <input type="color" id="colOutlineGradB" value="#ff00aa">
-                </div>
-            </div>
-        </details>
-
-        <details open>
-            <summary>Text</summary>
-            <div class="folder-body">
-                <div class="row-h">
-                    <label>Text Solid</label>
+                    <label>Text Color</label>
                     <input type="color" id="colTextSolid" value="#ffffff">
                 </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>Background</summary>
+            <div class="folder-body">
+                <div class="row">
+                    <label>BG Mode</label>
+                    <select id="selBgMode" onchange="updateBackground()">
+                        <option value="gradient">Gradient</option>
+                        <option value="solid">Solid Color</option>
+                        <option value="tile">Image Pattern (Tile)</option>
+                        <option value="stretch">Image Stretch</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <label>Image URL</label>
+                    <input type="text" id="inpBgUrl" value="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/cosmos-flower-on-black-background-mike-hill.jpg"
+                        onchange="updateBackground()">
+                </div>
+
+                <div class="row">
+                    <label id="lblBgStretchY">Vertical Force: 100%</label>
+                    <input type="range" id="rngBgStretchY" min="100" max="300" value="100"
+                        oninput="updateUI('lblBgStretchY', 'Vertical Force', this.value, '%'); updateBackground()">
+                </div>
+
                 <div class="row-h">
-                    <label for="chkTextGradient">Text Gradient</label>
-                    <input type="checkbox" id="chkTextGradient">
+                    <label>Gradient A / Solid</label>
+                    <input type="color" id="colBgGradA" value="#0000ff" oninput="updateBackground()">
                 </div>
                 <div class="row-h">
-                    <label>Text Gradient A</label>
-                    <input type="color" id="colTextGradA" value="#00ffea">
+                    <label>Gradient B</label>
+                    <input type="color" id="colBgGradB" value="#ffffff" oninput="updateBackground()">
                 </div>
-                <div class="row-h">
-                    <label>Text Gradient B</label>
-                    <input type="color" id="colTextGradB" value="#ff00aa">
+                <div class="row">
+                    <label id="lblBgAngle">Gradient Angle: 180deg</label>
+                    <input type="range" id="rngBgAngle" min="0" max="360" value="180"
+                        oninput="updateUI('lblBgAngle', 'Gradient Angle', this.value, 'deg'); updateBackground()">
                 </div>
             </div>
         </details>
@@ -391,6 +411,7 @@
 
     <script>
         let flowers = [];
+        let targetFlowerSet = null; 
 
         const maskUrls = {
             daisy: [
@@ -405,7 +426,6 @@
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636207/img-8_xeah1b.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636207/img-7_hzirh9.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636204/img-5_koy5ks.png",
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636204/img-10_unpptn.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636832/filled-4_sn6mnd.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636834/filled-3_ukp1hd.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636856/filled-2_aurbfg.png",
@@ -429,8 +449,10 @@
             ],
         };
 
+
         let loadedAssets = {};
         let debounceTimer;
+        let visualDebounce;
         const BASE_SIZE = 280;
 
         function preload() {
@@ -439,54 +461,46 @@
             });
         }
 
-function setup() {
-    const container = document.getElementById('canvas-container');
+        function setup() {
+            const container = document.getElementById('canvas-container');
+            const cnv = createCanvas(1, 1);
+            cnv.parent('canvas-container');
 
+            pixelDensity(1);
+            frameRate(30);
+            updateBackground();
 
-    const cnv = createCanvas(1, 1);
-    cnv.parent('canvas-container');
+            setTimeout(() => windowResized(), 0);
+        }
 
-    pixelDensity(1);
-    textFont('Arial');
-    frameRate(30);
-    updateBackground();
-
-
-    setTimeout(() => {
-        windowResized();
-    }, 0);
-}
-
+        function forceAlpha(c) {
+            c.setAlpha(255);
+            return c;
+        }
 
         function draw() {
             clear();
 
             const windOn = document.getElementById('chkWind').checked;
             const windForce = parseFloat(document.getElementById('rngWind').value);
+
             const scrambleOn = document.getElementById('chkScramble').checked;
             const jitterOn = document.getElementById('chkJitter').checked;
 
             const maskOn = document.getElementById('chkMask').checked;
             const outlineOn = document.getElementById('chkOutline').checked;
-
             const fillGradientOn = document.getElementById('chkFillGradient').checked;
-            const outlineGradientOn = document.getElementById('chkOutlineGradient').checked;
-            const textGradientOn = document.getElementById('chkTextGradient').checked;
+            const selFont = document.getElementById('selFont').value;
+            const fillDir = document.getElementById('selFillDir').value;
 
-            const fillSolidColor = color(document.getElementById('colMaskSolid').value);
-            const fillGradA = color(document.getElementById('colMaskGradA').value);
-            const fillGradB = color(document.getElementById('colMaskGradB').value);
+            textFont(selFont);
 
-            const outlineSolidColor = color(document.getElementById('colOutlineSolid').value);
-            const outlineGradA = color(document.getElementById('colOutlineGradA').value);
-            const outlineGradB = color(document.getElementById('colOutlineGradB').value);
-
-            const textSolidColor = color(document.getElementById('colTextSolid').value);
-            const textGradA = color(document.getElementById('colTextGradA').value);
-            const textGradB = color(document.getElementById('colTextGradB').value);
-
-            const stemColorHex = document.getElementById('colStem').value;
-            const cStem = color(stemColorHex);
+            const fillSolidColor = forceAlpha(color(document.getElementById('colMaskGradA').value));
+            const fillGradA = forceAlpha(color(document.getElementById('colMaskGradA').value));
+            const fillGradB = forceAlpha(color(document.getElementById('colMaskGradB').value));
+            const outlineColor = forceAlpha(color(document.getElementById('colOutlineSolid').value));
+            const textColor = forceAlpha(color(document.getElementById('colTextSolid').value));
+            const cStem = color(document.getElementById('colStem').value);
 
             const time = millis() * 0.001;
 
@@ -494,22 +508,17 @@ function setup() {
                 let swayX = 0, swayRot = 0, bend = f.bend;
 
                 if (windOn) {
-                    const noise = sin(time + i + f.x * 0.01) + sin(time * 0.5 + i);
-                    bend += noise * 30 * windForce;
+                    const noise = sin(time + i + f.x * 0.01) + sin(time * 2 + i);
+                    bend += noise * 35 * windForce;
                     swayRot = noise * 0.05 * windForce;
-                    swayX = noise * 20 * windForce;
+                    swayX = noise * 35 * windForce;
                 }
 
                 let depthBrightness = map(f.ty, height * 0.1, height * 0.8, 0.3, 1.0);
                 depthBrightness = constrain(depthBrightness, 0.3, 1.0);
-
-                let r = red(cStem) * depthBrightness;
-                let g = green(cStem) * depthBrightness;
-                let b = blue(cStem) * depthBrightness;
-
-                noFill();
-                stroke(r, g, b, 180);
+                stroke(red(cStem) * depthBrightness, green(cStem) * depthBrightness, blue(cStem) * depthBrightness, 255);
                 strokeWeight(lerp(5, 15, f.h / height));
+                noFill();
 
                 const p0x = f.x, p0y = height + 10;
                 const p2x = f.tx + swayX, p2y = f.ty;
@@ -526,25 +535,41 @@ function setup() {
                 translate(p2x, p2y);
                 rotate(swayRot);
 
+                let fillT = 0;
+                if (fillGradientOn) {
+                    if (fillDir === 'vertical') {
+                        fillT = constrain(map(f.ty, 0, height, 0, 1), 0, 1);
+                    } else if (fillDir === 'horizontal') {
+                        fillT = constrain(map(f.tx, 0, width, 0, 1), 0, 1);
+                    } else if (fillDir === 'radial') {
+                        let d = dist(f.tx, f.ty, width / 2, height / 2);
+                        let maxD = dist(0, 0, width / 2, height / 2);
+                        fillT = constrain(map(d, 0, maxD, 0, 1), 0, 1);
+                    }
+                }
+
                 if (maskOn && f.graphic) {
-                    const fillT = constrain(map(f.ty, 0, height, 0, 1), 0, 1);
-                    const fillTint = fillGradientOn ? lerpColor(fillGradA, fillGradB, fillT) : fillSolidColor;
-                    tint(fillTint);
+                    const finalFill = fillGradientOn ? forceAlpha(lerpColor(fillGradA, fillGradB, fillT)) : fillSolidColor;
+                    tint(finalFill);
                     imageMode(CENTER);
+                    noStroke();
                     image(f.graphic, 0, 0);
+                    noTint();
                 }
 
                 if (outlineOn && f.graphicOutline) {
-                    const outlineT = constrain(map(f.ty, 0, height, 0, 1), 0, 1);
-                    const outlineTint = outlineGradientOn ? lerpColor(outlineGradA, outlineGradB, outlineT) : outlineSolidColor;
-                    tint(outlineTint);
+                    tint(outlineColor);
                     imageMode(CENTER);
+                    noStroke();
                     image(f.graphicOutline, 0, 0);
+                    noTint();
                 }
 
                 noStroke();
                 textSize(f.fontSize);
                 textAlign(CENTER, CENTER);
+                fill(textColor);
+
                 f.points.forEach((p, idx) => {
                     let charIndex = idx % f.chars.length;
                     let dispX = p.x;
@@ -554,18 +579,33 @@ function setup() {
                         if (scrambleOn && random(3) < windForce * 0.02) {
                             charIndex = floor(random(f.chars.length));
                         }
+
                         if (jitterOn) {
-                            let shake = windForce * 0.5;
-                            dispX += random(-shake, shake);
-                            dispY += random(-shake, shake);
+                            let dynamicChunk = map(f.fontSize, 10, 80, 10, 3);
+                            dynamicChunk = floor(constrain(dynamicChunk, 1, 10));
+
+                            const chunkId = floor(idx / dynamicChunk);
+
+                            const snapSpeed = 8.0;
+                            const timeStep = floor(time * snapSpeed);
+
+                            let sizeFactor = map(f.fontSize, 10, 80, 0.5, 2.5);
+                            sizeFactor = constrain(sizeFactor, 0.5, 3.0);
+
+                            const baseAmp = windForce * 5.0;
+                            const amp = baseAmp * sizeFactor;
+
+                            const noiseX = noise(chunkId * 0.1, timeStep * 0.5);
+                            const noiseY = noise(chunkId * 0.1 + 500, timeStep * 0.5);
+
+                            const shiftX = map(noiseX, 0, 1, -amp, amp);
+                            const shiftY = map(noiseY, 0, 1, -amp, amp);
+
+                            dispX += shiftX;
+                            dispY += shiftY;
                         }
                     }
-                    if (textGradientOn) {
-                        const gradT = constrain(map(p.y, -f.radius, f.radius, 0, 1), 0, 1);
-                        fill(lerpColor(textGradA, textGradB, gradT));
-                    } else {
-                        fill(textSolidColor);
-                    }
+
                     text(f.chars[charIndex], dispX, dispY);
                 });
                 pop();
@@ -578,19 +618,28 @@ function setup() {
                 if (f.graphicOutline) f.graphicOutline.remove();
             });
             flowers = [];
+
             const text = document.getElementById('txtInp').value.trim();
             if (!text) return;
+
             const baseSize = parseInt(document.getElementById('rngSize').value);
             const sliderScale = parseFloat(document.getElementById('rngScale').value);
+            const outlineWidth = parseInt(document.getElementById('rngOutlineWidth').value);
+
             const setNames = Object.keys(loadedAssets);
-            const activeSetName = setNames[Math.floor(Math.random() * setNames.length)];
+            const activeSetName = (targetFlowerSet && loadedAssets[targetFlowerSet]) 
+                                  ? targetFlowerSet 
+                                  : setNames[Math.floor(Math.random() * setNames.length)];
+            
             const activeImages = loadedAssets[activeSetName];
+
             document.getElementById('statusText').innerText = `Set: ${activeSetName.toUpperCase()} | Calculating...`;
+
             const words = text.split(/\s+/);
             const count = constrain(ceil(words.length / 12), 2, 20);
-            let densityFactor = 1.0;
-            if (count > 5) densityFactor = map(count, 5, 20, 1.0, 0.55);
+            let densityFactor = (count > 5) ? map(count, 5, 20, 1.0, 0.55) : 1.0;
             const effectiveBaseScale = sliderScale * densityFactor;
+
             let chunks = [];
             if (words.length < count) {
                 for (let i = 0; i < count; i++) chunks.push(text.split(''));
@@ -598,12 +647,12 @@ function setup() {
                 const wordsPerFlower = ceil(words.length / count);
                 for (let i = 0; i < count; i++) {
                     let start = i * wordsPerFlower;
-                    let end = start + wordsPerFlower;
-                    let segment = words.slice(start, end);
+                    let segment = words.slice(start, start + wordsPerFlower);
                     if (segment.length > 0) chunks.push(segment.join(' ').split(''));
                 }
                 while (chunks.length < count) chunks.push(text.split(''));
             }
+
             const maxW = min(width, 1400);
             for (let i = 0; i < count; i++) {
                 let best = null, attempts = 0;
@@ -613,10 +662,14 @@ function setup() {
                     const spread = maxW * map(effectiveBaseScale, 0.5, 2.5, 0.35, 0.5);
                     const tx = width / 2 + random(-spread, spread);
                     const ty = height - (height * random(0.35, 0.85));
+
                     if (flowers.some(f => dist(tx, ty, f.tx, f.ty) < radius + f.radius)) continue;
+
                     const img = random(activeImages);
                     const fontSize = baseSize * random(0.9, 1.1);
-                    const data = processImage(img, fontSize, scale);
+
+                    const data = processImage(img, fontSize, scale, outlineWidth);
+
                     best = {
                         x: width / 2, tx, ty, h: height - ty,
                         bend: random(-100, 100),
@@ -634,22 +687,26 @@ function setup() {
                 if (best) flowers.push(best);
             }
             flowers.sort((a, b) => a.ty - b.ty);
-            document.getElementById('statusText').innerText = `Set: ${activeSetName.toUpperCase()} | Flowers: ${flowers.length}`;
+            document.getElementById('statusText').innerText = `Ready. Flowers: ${flowers.length}`;
         }
 
         function updateVisuals() {
             const baseSize = parseInt(document.getElementById('rngSize').value);
             const sliderScale = parseFloat(document.getElementById('rngScale').value);
+            const outlineWidth = parseInt(document.getElementById('rngOutlineWidth').value);
+
             const count = flowers.length;
-            let densityFactor = 1.0;
-            if (count > 5) densityFactor = map(count, 5, 20, 1.0, 0.55);
+            let densityFactor = (count > 5) ? map(count, 5, 20, 1.0, 0.55) : 1.0;
             const effectiveBaseScale = sliderScale * densityFactor;
+
             flowers.forEach(f => {
                 const newScale = effectiveBaseScale * f.relScale;
                 const newSize = baseSize * f.relFont;
                 f.graphic.remove();
                 if (f.graphicOutline) f.graphicOutline.remove();
-                const data = processImage(f.source, newSize, newScale);
+
+                const data = processImage(f.source, newSize, newScale, outlineWidth);
+
                 f.points = data.points;
                 f.graphic = data.pg;
                 f.graphicOutline = data.pgOutline;
@@ -658,91 +715,180 @@ function setup() {
             });
         }
 
-        function processImage(img, fSize, scale) {
+        function processImage(img, fSize, scale, outlineW) {
             const dim = Math.ceil(BASE_SIZE * scale);
             const pg = createGraphics(dim, dim);
-            pg.clear();
+            const pgOutline = createGraphics(dim, dim);
+            pg.clear(); pgOutline.clear();
+
             const asp = img.width / img.height;
             const w = asp >= 1 ? dim : dim * asp;
             const h = asp >= 1 ? dim / asp : dim;
-            pg.image(img, (dim - w) / 2, (dim - h) / 2, w, h);
+            const dx = (dim - w) / 2;
+            const dy = (dim - h) / 2;
 
-            const pgOutline = createGraphics(dim, dim);
-            pgOutline.clear();
-
+            pg.image(img, dx, dy, w, h);
             pg.loadPixels();
-            pgOutline.loadPixels();
 
             const points = [];
-            let density = map(fSize, 10, 60, 0.95, 0.15);
-            density = constrain(density, 0.70, 1.0);
-            const step = fSize * density;
+
+            let spacingFactor = map(fSize, 10, 80, 1.0, 0.6);
+            spacingFactor = constrain(spacingFactor, 0.6, 1.0);
+            const step = Math.max(fSize * spacingFactor, 2);
 
             for (let y = 0; y < dim; y += step) {
                 for (let x = 0; x < dim; x += step) {
-                    const idx = (floor(x) + floor(y) * pg.width) * 4;
-                    if (pg.pixels[idx + 3] > 20) points.push({ x: x - dim / 2, y: y - dim / 2 });
+                    const idx = (floor(x) + floor(y) * dim) * 4;
+                    if (idx < pg.pixels.length && pg.pixels[idx + 3] > 20) {
+                        points.push({ x: x - dim / 2, y: y - dim / 2 });
+                    }
                 }
             }
 
+            const pW = pg.width;
+            const edgePoints = [];
             for (let y = 1; y < dim - 1; y++) {
                 for (let x = 1; x < dim - 1; x++) {
-                    const i = (x + y * pg.width) * 4;
+                    const i = (x + y * pW) * 4;
                     if (pg.pixels[i + 3] > 0) {
-                        if (pg.pixels[i + 3 - 4] === 0 ||
-                            pg.pixels[i + 3 + 4] === 0 ||
-                            pg.pixels[i + 3 - dim * 4] === 0 ||
-                            pg.pixels[i + 3 + dim * 4] === 0) {
-
-                            pgOutline.pixels[i] = 255;
-                            pgOutline.pixels[i + 1] = 255;
-                            pgOutline.pixels[i + 2] = 255;
-                            pgOutline.pixels[i + 3] = 255;
+                        if (pg.pixels[i + 3 - 4] === 0 || pg.pixels[i + 3 + 4] === 0 ||
+                            pg.pixels[i + 3 - pW * 4] === 0 || pg.pixels[i + 3 + pW * 4] === 0) {
+                            edgePoints.push({ x, y });
                         }
                     }
                 }
             }
-            pgOutline.updatePixels();
+            if (edgePoints.length > 0) {
+                pgOutline.stroke(255);
+                pgOutline.strokeWeight(outlineW);
+                pgOutline.noFill();
+                for (let pt of edgePoints) pgOutline.point(pt.x, pt.y);
+            }
 
             for (let i = 0; i < pg.pixels.length; i += 4) {
                 if (pg.pixels[i + 3] > 20) {
                     pg.pixels[i] = 255; pg.pixels[i + 1] = 255; pg.pixels[i + 2] = 255; pg.pixels[i + 3] = 255;
-                } else pg.pixels[i + 3] = 0;
+                } else {
+                    pg.pixels[i + 3] = 0;
+                }
             }
             pg.updatePixels();
+
             return { points, pg, pgOutline };
         }
 
-        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateGarden, 400); }
-        function triggerVisuals() { updateVisuals(); }
-        function updateUI(id, txt, val, unit) { document.getElementById(id).innerText = `${txt}: ${val}${unit}`; }
         function updateBackground() {
-            const bgGradientOn = document.getElementById('chkBgGradient').checked;
-            const bgSolid = document.getElementById('colBgSolid').value;
-            const bgA = document.getElementById('colBgGradA').value;
-            const bgB = document.getElementById('colBgGradB').value;
-            const bgStyle = bgGradientOn ? `linear-gradient(to bottom, ${bgA}, ${bgB})` : bgSolid;
-            document.getElementById('canvas-container').style.background = bgStyle;
-        }
-
-        function windowResized() {
+            const mode = document.getElementById('selBgMode').value;
+            const colA = document.getElementById('colBgGradA').value;
+            const colB = document.getElementById('colBgGradB').value;
+            const angle = document.getElementById('rngBgAngle').value;
+            const url = document.getElementById('inpBgUrl').value;
             const container = document.getElementById('canvas-container');
 
-            const w = container.clientWidth;
-            const h = container.clientHeight;
+            const stretchY = document.getElementById('rngBgStretchY').value;
 
-            resizeCanvas(Math.floor(w), Math.floor(h));
+            container.style.background = 'none';
+            container.style.backgroundImage = 'none';
+            container.style.backgroundSize = 'auto';
+            container.style.backgroundRepeat = 'repeat';
 
-            generateGarden();
+            if (mode === 'solid') {
+                container.style.backgroundColor = colA;
+            } else if (mode === 'gradient') {
+                container.style.background = `linear-gradient(${angle}deg, ${colA}, ${colB})`;
+            } else if (mode === 'tile') {
+                container.style.backgroundImage = `url('${url}')`;
+                container.style.backgroundRepeat = 'repeat';
+                container.style.backgroundSize = '100px 100px';
+            } else if (mode === 'stretch') {
+                container.style.backgroundImage = `url('${url}')`;
+                container.style.backgroundRepeat = 'no-repeat';
+                container.style.backgroundSize = `100% ${stretchY}%`;
+            }
         }
 
-        window.addEventListener("orientationchange", () => {
-            setTimeout(() => {
-                windowResized();
-            }, 300);
-        });
+        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateGarden, 400); }
+        function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
+        function updateUI(id, txt, val, unit) { document.getElementById(id).innerText = `${txt}: ${val}${unit}`; }
+        function windowResized() {
+            const c = document.getElementById('canvas-container');
+            resizeCanvas(c.clientWidth, c.clientHeight);
+            generateGarden();
+        }
+        window.addEventListener("orientationchange", () => setTimeout(windowResized, 300));
 
+        const moodProfiles = {
+            positive: {
+                flowerSet: 'daisy',
+                wind: { active: true, strength: 0.2 },
+                chaos: { scramble: false, jitter: false },
+                colors: { maskA: '#CCFF00', maskB: '#FFFFFF', stem: '#00FF00', text: '#000000', bgA: '#0000FF', bgB: '#CCFF00' },
+                style: {
+                    fill: { active: true, gradient: false, dir: 'radial' },
+                    outline: { active: true, width: 2 }
+                },
+                geometry: { scale: 1.1, fontSize: 18, font: 'Inter' }
+            },
+            negative: {
+                flowerSet: 'rose',
+                wind: { active: true, strength: 0.1 },
+                chaos: { scramble: false, jitter: false },
+                colors: { maskA: '#000000', maskB: '#FF0000', stem: '#00FF00', text: '#FFFFFF', bgA: '#FF0000', bgB: '#000000' },
+                style: {
+                    fill: { active: true, gradient: true, dir: 'vertical' },
+                    outline: { active: true, width: 1 }
+                },
+                geometry: { scale: 0.8, fontSize: 12, font: 'UnifrakturMaguntia' }
+            },
+            chaos: {
+                flowerSet: 'carnation',
+                wind: { active: true, strength: 2.0 },
+                chaos: { scramble: true, jitter: true },
+                colors: { maskA: '#FF00FF', maskB: '#00FF00', stem: '#00FF00', text: '#FFFF00', bgA: '#1a1a1a', bgB: '#330033' },
+                style: {
+                    fill: { active: false, gradient: false, dir: 'horizontal' },
+                    outline: { active: true, width: 4 }
+                },
+                geometry: { scale: 2, fontSize: 55, font: 'Courier Prime' }
+            }
+        };
 
+        function applyVisualState(state) {
+            targetFlowerSet = state.flowerSet;
+
+            document.getElementById('chkWind').checked = state.wind.active;
+            document.getElementById('rngWind').value = state.wind.strength;
+            updateUI('lblWind', 'Wind Strength', state.wind.strength, '');
+
+            document.getElementById('chkScramble').checked = state.chaos.scramble;
+            document.getElementById('chkJitter').checked = state.chaos.jitter;
+
+            document.getElementById('colMaskGradA').value = state.colors.maskA;
+            document.getElementById('colMaskGradB').value = state.colors.maskB;
+            document.getElementById('colStem').value = state.colors.stem;
+            document.getElementById('colTextSolid').value = state.colors.text;
+            document.getElementById('colBgGradA').value = state.colors.bgA;
+            document.getElementById('colBgGradB').value = state.colors.bgB;
+
+            document.getElementById('chkMask').checked = state.style.fill.active;
+            document.getElementById('chkFillGradient').checked = state.style.fill.gradient;
+            document.getElementById('selFillDir').value = state.style.fill.dir;
+            
+            document.getElementById('chkOutline').checked = state.style.outline.active;
+            document.getElementById('rngOutlineWidth').value = state.style.outline.width;
+            updateUI('lblOutlineWidth', 'Width', state.style.outline.width, 'px');
+
+            document.getElementById('rngScale').value = state.geometry.scale;
+            updateUI('lblScale', 'Flower Scale', state.geometry.scale, 'x');
+            
+            document.getElementById('rngSize').value = state.geometry.fontSize;
+            updateUI('lblSize', 'Font Size', state.geometry.fontSize, 'px');
+
+            document.getElementById('selFont').value = state.geometry.font;
+
+            updateBackground();
+            generateGarden(); 
+        }
     </script>
 </body>
 
