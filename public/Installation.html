@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>SPORA LAB 3.8 - Sentiment & Species</title>
+    <title>SPORA LAB 3.8 - BRUTALIST</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -206,17 +206,18 @@
             margin-top: 10px;
         }
 
-        /* SENTIMENT DEBUGGER STYLE */
         .debug-panel {
             margin-top: 20px;
             padding: 10px;
-            background: #333;
+            background: #000;
             color: #fff;
             border-radius: 4px;
+            border: 1px solid #8de22b;
         }
-        .debug-panel h3 { font-size: 10px; margin: 0 0 5px 0; text-transform: uppercase; }
+        .debug-panel h3 { font-size: 10px; margin: 0 0 5px 0; text-transform: uppercase; color: #8de22b; }
         .debug-btns { display: flex; gap: 5px; }
-        .debug-btn { padding: 5px; font-size: 9px; background: #666; color: #fff; border: none; cursor: pointer; }
+        .debug-btn { padding: 8px; font-size: 10px; font-weight: bold; background: #333; color: #fff; border: none; cursor: pointer; text-transform: uppercase; flex-grow: 1; }
+        .debug-btn:hover { background: #8de22b; color: #000; }
 
         @media (max-width: 768px) {
             body {
@@ -244,13 +245,14 @@
         </div>
 
         <div class="debug-panel">
-            <h3>Sentiment Simulator (Dev Mode)</h3>
+            <h3>Sentiment Simulator</h3>
             <div class="debug-btns">
-                <button class="debug-btn" onclick="applyVisualState(moodProfiles.positive)">Happy (Daisy)</button>
-                <button class="debug-btn" onclick="applyVisualState(moodProfiles.negative)">Sad (Rose)</button>
-                <button class="debug-btn" onclick="applyVisualState(moodProfiles.chaos)">Chaos (Carnation)</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.positive)">ACID JOY</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.negative)">VOID</button>
+                <button class="debug-btn" onclick="applyVisualState(moodProfiles.chaos)">GLITCH</button>
             </div>
         </div>
+
         <h2>Geometry & Style</h2>
         <details open>
             <summary>Typography & Scale</summary>
@@ -409,7 +411,7 @@
 
     <script>
         let flowers = [];
-        let targetFlowerSet = null; // Variable Global para forzar el tipo de flor
+        let targetFlowerSet = null; 
 
         const maskUrls = {
             daisy: [
@@ -424,7 +426,6 @@
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636207/img-8_xeah1b.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636207/img-7_hzirh9.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636204/img-5_koy5ks.png",
-                "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636204/img-10_unpptn.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636832/filled-4_sn6mnd.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636834/filled-3_ukp1hd.png",
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636856/filled-2_aurbfg.png",
@@ -625,9 +626,7 @@
             const sliderScale = parseFloat(document.getElementById('rngScale').value);
             const outlineWidth = parseInt(document.getElementById('rngOutlineWidth').value);
 
-            // LOGICA MODIFICADA PARA SOPORTAR SENTIMENT
             const setNames = Object.keys(loadedAssets);
-            // Si targetFlowerSet está definido y existe en nuestros assets, úsalo. Si no, random.
             const activeSetName = (targetFlowerSet && loadedAssets[targetFlowerSet]) 
                                   ? targetFlowerSet 
                                   : setNames[Math.floor(Math.random() * setNames.length)];
@@ -818,39 +817,45 @@
         }
         window.addEventListener("orientationchange", () => setTimeout(windowResized, 300));
 
-        // =========================================================
-        // --- SENTIMENT INTEGRATION INTERFACE (SPORA V4 PREP) ---
-        // =========================================================
-
         const moodProfiles = {
             positive: {
-                flowerSet: 'daisy', // TIPO DE FLOR
-                wind: { active: true, strength: 0.3 },
+                flowerSet: 'daisy',
+                wind: { active: true, strength: 0.2 },
                 chaos: { scramble: false, jitter: false },
-                colors: { maskA: '#ffcc00', maskB: '#ff6600', stem: '#00ff44', text: '#ffffff', bgA: '#87ceeb', bgB: '#e0f7fa' },
-                geometry: { scale: 1.0, fontSize: 18, font: 'Inter' }
+                colors: { maskA: '#CCFF00', maskB: '#FFFFFF', stem: '#00FF00', text: '#000000', bgA: '#0000FF', bgB: '#CCFF00' },
+                style: {
+                    fill: { active: true, gradient: false, dir: 'radial' },
+                    outline: { active: true, width: 2 }
+                },
+                geometry: { scale: 1.1, fontSize: 18, font: 'Inter' }
             },
             negative: {
-                flowerSet: 'rose', // TIPO DE FLOR
-                wind: { active: true, strength: 1.2 },
-                chaos: { scramble: false, jitter: true },
-                colors: { maskA: '#000088', maskB: '#330033', stem: '#444444', text: '#aaaaaa', bgA: '#000000', bgB: '#1a1a2e' },
-                geometry: { scale: 0.8, fontSize: 14, font: 'UnifrakturMaguntia' }
+                flowerSet: 'rose',
+                wind: { active: true, strength: 0.1 },
+                chaos: { scramble: false, jitter: false },
+                colors: { maskA: '#000000', maskB: '#FF0000', stem: '#00FF00', text: '#FFFFFF', bgA: '#FF0000', bgB: '#000000' },
+                style: {
+                    fill: { active: true, gradient: true, dir: 'vertical' },
+                    outline: { active: true, width: 1 }
+                },
+                geometry: { scale: 0.8, fontSize: 12, font: 'UnifrakturMaguntia' }
             },
             chaos: {
-                flowerSet: 'carnation', // TIPO DE FLOR
-                wind: { active: true, strength: 1.8 },
+                flowerSet: 'carnation',
+                wind: { active: true, strength: 2.0 },
                 chaos: { scramble: true, jitter: true },
-                colors: { maskA: '#ff00ff', maskB: '#00ffff', stem: '#ffff00', text: '#ff0000', bgA: '#222222', bgB: '#111111' },
-                geometry: { scale: 0.7, fontSize: 24, font: 'Courier Prime' }
+                colors: { maskA: '#FF00FF', maskB: '#00FF00', stem: '#00FF00', text: '#FFFF00', bgA: '#1a1a1a', bgB: '#330033' },
+                style: {
+                    fill: { active: false, gradient: false, dir: 'horizontal' },
+                    outline: { active: true, width: 4 }
+                },
+                geometry: { scale: 2, fontSize: 55, font: 'Courier Prime' }
             }
         };
 
         function applyVisualState(state) {
-            // 0. Set Flower Type (NUEVO)
             targetFlowerSet = state.flowerSet;
 
-            // 1. Atmosphere
             document.getElementById('chkWind').checked = state.wind.active;
             document.getElementById('rngWind').value = state.wind.strength;
             updateUI('lblWind', 'Wind Strength', state.wind.strength, '');
@@ -858,7 +863,6 @@
             document.getElementById('chkScramble').checked = state.chaos.scramble;
             document.getElementById('chkJitter').checked = state.chaos.jitter;
 
-            // 2. Colors
             document.getElementById('colMaskGradA').value = state.colors.maskA;
             document.getElementById('colMaskGradB').value = state.colors.maskB;
             document.getElementById('colStem').value = state.colors.stem;
@@ -866,7 +870,14 @@
             document.getElementById('colBgGradA').value = state.colors.bgA;
             document.getElementById('colBgGradB').value = state.colors.bgB;
 
-            // 3. Geometry
+            document.getElementById('chkMask').checked = state.style.fill.active;
+            document.getElementById('chkFillGradient').checked = state.style.fill.gradient;
+            document.getElementById('selFillDir').value = state.style.fill.dir;
+            
+            document.getElementById('chkOutline').checked = state.style.outline.active;
+            document.getElementById('rngOutlineWidth').value = state.style.outline.width;
+            updateUI('lblOutlineWidth', 'Width', state.style.outline.width, 'px');
+
             document.getElementById('rngScale').value = state.geometry.scale;
             updateUI('lblScale', 'Flower Scale', state.geometry.scale, 'x');
             
@@ -875,9 +886,7 @@
 
             document.getElementById('selFont').value = state.geometry.font;
 
-            // 4. Force Updates
             updateBackground();
-            // IMPORTANT: regenerateGarden porque hemos cambiado el set de flores
             generateGarden(); 
         }
     </script>
