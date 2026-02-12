@@ -8,6 +8,7 @@ import {
   RigidBody,
   useRopeJoint,
   useSphericalJoint,
+  type RapierRigidBody,
   type RigidBodyProps,
 } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
@@ -101,15 +102,6 @@ interface BandProps {
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
-  type RigidBodyHandle = {
-    translation: () => THREE.Vector3;
-    wakeUp: () => void;
-    setNextKinematicTranslation: (value: { x: number; y: number; z: number }) => void;
-    angvel: () => THREE.Vector3;
-    rotation: () => THREE.Euler;
-    setAngvel: (value: { x: number; y: number; z: number }) => void;
-  };
-
   type MeshLineGeometryHandle = {
     setPoints: (points: THREE.Vector3[]) => void;
   };
@@ -127,11 +119,11 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
   };
 
   const band = useRef<THREE.Mesh | null>(null);
-  const fixed = useRef<RigidBodyHandle | null>(null);
-  const j1 = useRef<RigidBodyHandle | null>(null);
-  const j2 = useRef<RigidBodyHandle | null>(null);
-  const j3 = useRef<RigidBodyHandle | null>(null);
-  const card = useRef<RigidBodyHandle | null>(null);
+  const fixed = useRef<RapierRigidBody>(null!);
+  const j1 = useRef<RapierRigidBody>(null!);
+  const j2 = useRef<RapierRigidBody>(null!);
+  const j3 = useRef<RapierRigidBody>(null!);
+  const card = useRef<RapierRigidBody>(null!);
 
   const vec = new THREE.Vector3();
   const ang = new THREE.Vector3();
