@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>SPORA LAB 3.8 - BRUTALIST</title>
+    <title>SPORA LAB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,8 @@
         rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -48,10 +50,19 @@
             overflow: hidden;
             background-position: center top;
             transition: background 0.2s ease;
+            /* Importante para html2canvas: asegura que el contenido se renderice correctamente */
+            display: flex; 
+            align-items: center;
+            justify-content: center;
         }
 
         canvas {
             display: block;
+            /* Asegura que el canvas no interfiera con el layout para la captura */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1; 
         }
 
         textarea {
@@ -404,6 +415,21 @@
         </details>
 
         <button onclick="generateGarden()">Regenerate Seed</button>
+
+        <div style="margin-top: 20px; border-top: 1px solid #666; padding-top: 10px;">
+            <h2>System & Export</h2>
+            <div class="row">
+                <button onclick="downloadState()" style="background: #fff; color: #000; margin-bottom: 5px;">Download State (.json)</button>
+                <button onclick="saveFullArt()" style="background: #8de22b; color: #000; margin-bottom: 5px;">FULL RENDER (BG+ART)</button>
+                
+                <div class="row-h" style="background: #333; color: #fff; border: none;">
+                    <label style="color:#fff; cursor:pointer;" for="fileInput">Load State File</label>
+                    <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display:none;">
+                    <button onclick="document.getElementById('fileInput').click()" style="width: auto; padding: 5px 10px; font-size: 10px;">BROWSE</button>
+                </div>
+            </div>
+        </div>
+
         <div class="status" id="statusText">System Ready</div>
     </div>
 
@@ -412,6 +438,7 @@
     <script>
         let flowers = [];
         let targetFlowerSet = null; 
+        let lastUsedSet = 'daisy';
 
         const maskUrls = {
             daisy: [
@@ -465,7 +492,9 @@
             const container = document.getElementById('canvas-container');
             const cnv = createCanvas(1, 1);
             cnv.parent('canvas-container');
-
+            // Aseguramos que el canvas no tenga fondo propio
+            cnv.style('display', 'block');
+            
             pixelDensity(1);
             frameRate(30);
             updateBackground();
@@ -631,6 +660,8 @@
                                   ? targetFlowerSet 
                                   : setNames[Math.floor(Math.random() * setNames.length)];
             
+            lastUsedSet = activeSetName;
+
             const activeImages = loadedAssets[activeSetName];
 
             document.getElementById('statusText').innerText = `Set: ${activeSetName.toUpperCase()} | Calculating...`;
@@ -817,6 +848,103 @@
         }
         window.addEventListener("orientationchange", () => setTimeout(windowResized, 300));
 
+        // --- EXPORT SYSTEM (SAVE/LOAD & IMAGE CAPTURE WITH BACKGROUND) ---
+
+        function saveFullArt() {
+            const container = document.getElementById('canvas-container');
+            const status = document.getElementById('statusText');
+            status.innerText = "Capturing High-Res Image...";
+
+            html2canvas(container, {
+                scale: 2, // Exporta al doble de resolución para mejor calidad
+                useCORS: true, // Intenta cargar imágenes externas
+                allowTaint: true,
+                backgroundColor: null,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'spora_full_render_' + new Date().getTime() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                status.innerText = "Capture Downloaded.";
+            }).catch(err => {
+                console.error(err);
+                status.innerText = "Error capturing image (CORS blocked?)";
+            });
+        }
+
+        function downloadState() {
+            const currentState = {
+                text: document.getElementById('txtInp').value,
+                flowerSet: lastUsedSet, 
+                wind: { 
+                    active: document.getElementById('chkWind').checked, 
+                    strength: parseFloat(document.getElementById('rngWind').value) 
+                },
+                chaos: { 
+                    scramble: document.getElementById('chkScramble').checked, 
+                    jitter: document.getElementById('chkJitter').checked 
+                },
+                colors: { 
+                    maskA: document.getElementById('colMaskGradA').value, 
+                    maskB: document.getElementById('colMaskGradB').value, 
+                    stem: document.getElementById('colStem').value, 
+                    text: document.getElementById('colTextSolid').value, 
+                    bgA: document.getElementById('colBgGradA').value, 
+                    bgB: document.getElementById('colBgGradB').value 
+                },
+                style: {
+                    fill: { 
+                        active: document.getElementById('chkMask').checked, 
+                        gradient: document.getElementById('chkFillGradient').checked, 
+                        dir: document.getElementById('selFillDir').value 
+                    },
+                    outline: { 
+                        active: document.getElementById('chkOutline').checked, 
+                        width: parseInt(document.getElementById('rngOutlineWidth').value) 
+                    }
+                },
+                geometry: { 
+                    scale: parseFloat(document.getElementById('rngScale').value), 
+                    fontSize: parseInt(document.getElementById('rngSize').value), 
+                    font: document.getElementById('selFont').value 
+                },
+                background: {
+                    mode: document.getElementById('selBgMode').value,
+                    url: document.getElementById('inpBgUrl').value,
+                    angle: parseInt(document.getElementById('rngBgAngle').value),
+                    stretchY: parseInt(document.getElementById('rngBgStretchY').value)
+                }
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentState, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "spora_state_" +  new Date().getTime() + ".json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function loadStateFromFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    applyVisualState(json);
+                    document.getElementById('statusText').innerText = "State Loaded Successfully";
+                } catch (err) {
+                    console.error(err);
+                    document.getElementById('statusText').innerText = "Error Loading JSON";
+                }
+            };
+            reader.readAsText(file);
+            input.value = ''; 
+        }
+
         const moodProfiles = {
             positive: {
                 flowerSet: 'daisy',
@@ -854,7 +982,11 @@
         };
 
         function applyVisualState(state) {
-            targetFlowerSet = state.flowerSet;
+            if (state.text) {
+                document.getElementById('txtInp').value = state.text;
+            }
+
+            targetFlowerSet = state.flowerSet || 'daisy';
 
             document.getElementById('chkWind').checked = state.wind.active;
             document.getElementById('rngWind').value = state.wind.strength;
@@ -885,6 +1017,16 @@
             updateUI('lblSize', 'Font Size', state.geometry.fontSize, 'px');
 
             document.getElementById('selFont').value = state.geometry.font;
+
+            if (state.background) {
+                document.getElementById('selBgMode').value = state.background.mode;
+                document.getElementById('inpBgUrl').value = state.background.url;
+                document.getElementById('rngBgAngle').value = state.background.angle;
+                document.getElementById('rngBgStretchY').value = state.background.stretchY || 100;
+                
+                updateUI('lblBgAngle', 'Gradient Angle', state.background.angle, 'deg');
+                updateUI('lblBgStretchY', 'Vertical Force', state.background.stretchY || 100, '%');
+            }
 
             updateBackground();
             generateGarden(); 
