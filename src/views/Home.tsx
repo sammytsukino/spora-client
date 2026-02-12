@@ -94,7 +94,12 @@ export default function Home() {
         className="items-stretch justify-start"
       >
         <QuoteSection
-          quote="Lloro porque no siento nada, y ahora además de triste me siento un farsante"
+          quote="Estoy luchando con desesperación
+contra cosas que no veo,
+cosas que proceden de otro mundo
+donde mi cuerpo parece que es la puerta...
+"
+          author="Fran Barreno"
           buttonText="CREATE YOUR OWN"
           onButtonClick={() => navigate('/laboratory')}
         />
