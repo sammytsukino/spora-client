@@ -1,12 +1,12 @@
 import { useState } from "react";
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import FooterAlter from "@/components/home/footer-alter";
-import ProfileHeader from "@/components/profile/profile-header";
-import ProfileMetrics from "@/components/profile/profile-metrics";
-import ProfileSocial from "@/components/profile/profile-social";
-import ProfileDangerZone from "@/components/profile/profile-danger-zone";
-import FilterTabs from "@/components/common/filter-tabs";
-import FloraCard from "@/components/garden/flora-card";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
+import FooterAlter from "@/components/home/FooterAlter";
+import ProfileHeader from "@/components/profile/ProfileHeader";
+import ProfileMetrics from "@/components/profile/ProfileMetrics";
+import ProfileSocial from "@/components/profile/ProfileSocial";
+import ProfileDangerZone from "@/components/profile/ProfileDangerZone";
+import FilterTabs from "@/components/common/FilterTabs";
+import FloraCard from "@/components/garden/FloraCard";
 import {
   profileGalleryFilters,
   defaultProfileUser,

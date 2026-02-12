@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import PageTitle from "@/components/ui/page-title";
-import FooterAlter from "@/components/home/footer-alter";
-import FloraCard from "@/components/garden/flora-card";
-import FilterTabs from "@/components/common/filter-tabs";
-import LoadingIndicator from "@/components/common/loading-indicator";
-import EmptyState from "@/components/common/empty-state";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
+import PageTitle from "@/components/ui/PageTitle";
+import FooterAlter from "@/components/home/FooterAlter";
+import FloraCard from "@/components/garden/FloraCard";
+import FilterTabs from "@/components/common/FilterTabs";
+import LoadingIndicator from "@/components/common/LoadingIndicator";
+import EmptyState from "@/components/common/EmptyState";
 import { generateFloraData, floraFilters, ITEMS_PER_PAGE, type FloraItem } from "@/data/flora-data";
 
 const allFloras = generateFloraData(48);

@@ -1,24 +1,21 @@
-import NavbarBase from "@/components/common/navbar-base";
+import NavbarBase from "@/components/common/NavbarBase";
 
-type TransparentNavbarProps = {
+type NavbarProps = {
   position?: "fixed" | "sticky";
   className?: string;
   showScrollProgress?: boolean;
-  showScrollBackground?: boolean;
 };
 
-export default function TransparentNavbar({
+export default function Navbar({
   position = "fixed",
   className = "",
   showScrollProgress = false,
-  showScrollBackground = false,
-}: TransparentNavbarProps) {
+}: NavbarProps) {
   return (
     <NavbarBase
-      variant="transparent"
+      variant="default"
       position={position}
       showScrollProgress={showScrollProgress}
-      showScrollBackground={showScrollBackground}
       className={`z-50 ${className}`}
     />
   );
