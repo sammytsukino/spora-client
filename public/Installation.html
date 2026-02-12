@@ -1,437 +1,466 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hide-scrollbar">
 
 <head>
     <meta charset="UTF-8">
-    <title>SPORA LAB</title>
+    <title>SPORA LABORATORY</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&family=Inter:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
+        :root {
+            --spora-bg-ui: #e6e6e6;
+            --spora-dark: #262626;
+            --spora-lime: #bbf451;
+            --spora-white: #ffffff;
+            --font-main: 'BIZ UDMincho', serif;
+            --font-mono: 'Jetbrains Mono', monospace;
+        }
+
+        ::selection {
+            background: var(--spora-lime);
+            color: var(--spora-dark);
+        }
+
         body {
             margin: 0;
             background: #000;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
+            color: var(--spora-dark);
+            font-family: var(--font-main);
             height: 100dvh;
             overflow: hidden;
             display: flex;
         }
 
         #ui {
-            width: 20vw;
-            min-width: 280px;
+            width: 24vw;
+            min-width: 320px;
             height: 100%;
-            background: #e6e6e6;
-            border-right: 1px solid #333;
-            padding: 20px;
+            background: var(--spora-bg-ui);
+            border-right: 2px solid var(--spora-dark);
+            padding: 30px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 28px;
             overflow-y: auto;
             overflow-x: hidden;
             z-index: 10;
         }
 
-        #canvas-container {
-            flex-grow: 1;
-            height: 100%;
-            position: relative;
-            background: #000;
-            overflow: hidden;
-            background-position: center top;
-            transition: background 0.2s ease;
-            /* Importante para html2canvas: asegura que el contenido se renderice correctamente */
-            display: flex; 
-            align-items: center;
-            justify-content: center;
+        #ui::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        h2 {
+            margin: 0 0 10px 0;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--spora-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-weight: 700;
         }
 
-        canvas {
-            display: block;
-            /* Asegura que el canvas no interfiera con el layout para la captura */
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1; 
-        }
-
-        textarea {
-            width: 93%;
-            height: 120px;
-            background: #000;
-            border: 1px solid #333;
-            color: #eee;
-            font-family: 'Arial', sans-serif;
-            font-size: 13px;
-            padding: 10px;
-            resize: none;
-            border-radius: 4px;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #8de22b;
-        }
-
-        .row {
+        section {
             display: flex;
             flex-direction: column;
             gap: 8px;
+        }
+
+        .control-box {
+            border: 2px solid var(--spora-dark);
+            background: transparent;
+            padding: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .control-box:focus-within {
+            border-color: var(--spora-dark);
+            box-shadow: 4px 4px 0px var(--spora-lime);
         }
 
         .row-h {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #dcdcdc;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-
-        h2 {
-            margin: 0;
-            font-size: 12px;
-            color: #666;
-            border-bottom: 1px solid #999;
-            padding-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
         }
 
         label {
-            font-size: 11px;
-            color: #333;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--spora-dark);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: bold;
+            letter-spacing: 0.1em;
+            font-weight: 700;
         }
 
-        input[type=range] {
+        textarea, input[type=text] {
             width: 100%;
-            cursor: pointer;
-            accent-color: #8de22b;
-        }
-
-        input[type=checkbox] {
-            transform: scale(1.2);
-            cursor: pointer;
-            accent-color: #8de22b;
-        }
-
-        input[type=color] {
+            background: transparent;
             border: none;
-            width: 30px;
-            height: 30px;
-            background: none;
-            cursor: pointer;
+            color: var(--spora-dark);
+            font-family: var(--font-main);
+            font-size: 13px;
+            line-height: 1.5;
+            outline: none;
+            resize: none;
             padding: 0;
+            margin: 0;
+            font-weight: 400;
         }
-
-        input[type=text] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #999;
-            border-radius: 4px;
-            font-size: 11px;
-            box-sizing: border-box;
-        }
+        
+        textarea { height: 100px; }
+        textarea::placeholder { color: #888; opacity: 1; font-style: italic; }
 
         select {
             width: 100%;
-            padding: 8px;
-            background: #fff;
-            color: #000;
-            border: 1px solid #999;
-            border-radius: 4px;
+            background: transparent;
+            border: none;
+            color: var(--spora-dark);
+            font-family: var(--font-mono);
             font-size: 11px;
             text-transform: uppercase;
-            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23262626' stroke-width='2' stroke-linecap='square' stroke-linejoin='arcs'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0 center;
+            background-size: 16px;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin: 10px 0;
+        }
+        
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            background: var(--spora-dark);
+            border: none;
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            background: var(--spora-dark);
+            border: 2px solid var(--spora-dark);
+            margin-top: -6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        input[type=range]:hover::-webkit-slider-thumb {
+            background: var(--spora-lime);
+        }
+
+        input[type=checkbox] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--spora-dark);
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            margin: 0;
+        }
+        
+        input[type=checkbox]:checked {
+            background: var(--spora-lime);
+            box-shadow: inset 0 0 0 2px var(--spora-dark); 
+        }
+
+        input[type=color] {
+            width: 100%;
+            height: 24px;
+            border: 2px solid var(--spora-dark);
+            padding: 0;
+            background: none;
+            cursor: pointer;
+        }
+        input[type=color]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type=color]::-webkit-color-swatch { border: none; }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
         }
 
         button {
             width: 100%;
-            padding: 15px;
-            background: #8de22b;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
+            padding: 14px;
+            background: transparent;
+            border: 2px solid var(--spora-dark);
+            color: var(--spora-dark);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            border-radius: 4px;
-            margin-top: auto;
-            color: #000;
-            font-family: 'Arial', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            top: 0;
+            left: 0;
         }
 
         button:hover {
-            background: #88ff00;
+            background: var(--spora-dark);
+            color: var(--spora-lime);
         }
-
-        .status {
-            font-size: 10px;
-            color: #555;
-            text-align: center;
-            margin-top: 10px;
+        
+        button:active {
+            top: 2px;
+            left: 2px;
+        }
+        
+        .btn-primary {
+            background: var(--spora-lime);
+            color: var(--spora-dark);
+        }
+        .btn-primary:hover {
+            background: var(--spora-dark);
+            color: var(--spora-lime);
+            border-color: var(--spora-dark);
+        }
+        
+        .btn-random {
+            border-style: dashed;
         }
 
         details {
-            background: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 8px 10px;
+            border: 2px solid var(--spora-dark);
+            margin-bottom: 12px;
+            background: transparent;
         }
-
-        details+details {
-            margin-top: 10px;
-        }
-
+        
         summary {
+            padding: 12px;
             cursor: pointer;
             list-style: none;
-            font-size: 11px;
-            color: #333;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: bold;
-        }
-
-        summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .folder-body {
+            letter-spacing: 0.15em;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            transition: background 0.2s;
+        }
+        
+        summary:hover {
+            background: rgba(187, 244, 81, 0.2);
         }
 
-        .debug-panel {
-            margin-top: 20px;
-            padding: 10px;
-            background: #000;
-            color: #fff;
-            border-radius: 4px;
-            border: 1px solid #8de22b;
+        summary::after { content: "+"; font-size: 14px; }
+        details[open] summary::after { content: "-"; }
+        details[open] summary { border-bottom: 2px solid var(--spora-dark); }
+        
+        .folder-body { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+
+        #canvas-container {
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
+            background: #111;
+            overflow: hidden;
+            display: flex; 
+            align-items: center;
+            justify-content: center;
         }
-        .debug-panel h3 { font-size: 10px; margin: 0 0 5px 0; text-transform: uppercase; color: #8de22b; }
-        .debug-btns { display: flex; gap: 5px; }
-        .debug-btn { padding: 8px; font-size: 10px; font-weight: bold; background: #333; color: #fff; border: none; cursor: pointer; text-transform: uppercase; flex-grow: 1; }
-        .debug-btn:hover { background: #8de22b; color: #000; }
+        canvas { display: block; position: absolute; top: 0; left: 0; z-index: 1; }
 
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-
-            #ui {
-                width: 100%;
-                height: auto;
-                max-height: 30dvh;
-                border-right: none;
-                border-bottom: 1px solid #333;
-            }
+            body { flex-direction: column; }
+            #ui { width: 100%; height: auto; max-height: 40vh; border-right: none; border-bottom: 2px solid var(--spora-dark); }
         }
     </style>
 </head>
 
 <body>
 
-    <div id="ui">
-        <h2>Content</h2>
-        <div class="row">
-            <textarea id="txtInp"
-                oninput="triggerRegen()">Self-hatred grows in me like cancer. I can't locate its whereabouts but it's feasting on its host. I expected him to have the answers. I thought I taught him how to love me Now he fears me like a ghost.</textarea>
+    <aside id="ui">
+        <div style="border-bottom: 2px solid var(--spora-dark); padding-bottom: 20px; display: flex; justify-content: center;">
+            <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1770896818/Ready4_b6iujg_e_sharpen_w7vgiw_c_pad_w_200_guj4yk.webp" alt="Logo" style="width: 200px; height: 138px; display: block; object-fit: cover;;">
         </div>
 
-        <div class="debug-panel">
-            <h3>Sentiment Simulator</h3>
-            <div class="debug-btns">
-                <button class="debug-btn" onclick="applyVisualState(moodProfiles.positive)">ACID JOY</button>
-                <button class="debug-btn" onclick="applyVisualState(moodProfiles.negative)">VOID</button>
-                <button class="debug-btn" onclick="applyVisualState(moodProfiles.chaos)">GLITCH</button>
+        <section>
+            <h2>YOUR WORDS</h2>
+            <div class="control-box">
+                <textarea id="txtInp" oninput="triggerRegen()" placeholder="Write something meaningful...">Self-hatred grows in me like cancer. I can't locate its whereabouts but it's feasting on its host.</textarea>
             </div>
-        </div>
+        </section>
 
-        <h2>Geometry & Style</h2>
-        <details open>
-            <summary>Typography & Scale</summary>
-            <div class="folder-body">
-                <div class="row">
-                    <label>Font Family</label>
-                    <select id="selFont" onchange="triggerVisuals()">
-                        <option value="Arial">System Sans (Arial)</option>
-                        <option value="Inter">Modern (Inter)</option>
-                        <option value="Playfair Display">Editorial (Playfair)</option>
-                        <option value="Courier Prime">Code (Courier)</option>
-                        <option value="UnifrakturMaguntia">Gothic (Unifraktur)</option>
-                    </select>
-                </div>
-                <div class="row">
-                    <label id="lblSize">Font Size: 16px</label>
-                    <input type="range" id="rngSize" min="10" max="80" value="16"
-                        oninput="updateUI('lblSize', 'Font Size', this.value, 'px'); triggerVisuals();">
-                </div>
-                <div class="row">
-                    <label id="lblScale">Flower Scale: 1.5x</label>
-                    <input type="range" id="rngScale" min="0.5" max="2.5" step="0.1" value="1.5"
-                        oninput="updateUI('lblScale', 'Flower Scale', this.value, 'x'); triggerVisuals();">
-                </div>
+        <section>
+            <h2>EMOTIONAL STATE</h2>
+            <div class="btn-group">
+                <button onclick="applyVisualState(moodProfiles.positive)">JOY</button>
+                <button onclick="applyVisualState(moodProfiles.negative)">VOID</button>
+                <button onclick="applyVisualState(moodProfiles.chaos)">GLITCH</button>
             </div>
-        </details>
+            <button class="btn-random" style="margin-top:5px;" onclick="randomizeState()">RANDOM MUTATION</button>
+        </section>
 
-        <details>
-            <summary>Fill & Colors</summary>
-            <div class="folder-body">
-                <div class="row">
-                    <label>Fill Gradient Dir</label>
-                    <select id="selFillDir" onchange="triggerVisuals()">
-                        <option value="vertical">Vertical</option>
-                        <option value="horizontal">Horizontal</option>
-                        <option value="radial">Radial</option>
-                    </select>
+        <section>
+            <h2>PARAMETERS</h2>
+            
+            <details open>
+                <summary>GEOMETRY</summary>
+                <div class="folder-body">
+                    <div class="control-box">
+                        <div class="row-h"><label>FONT FAMILY</label></div>
+                        <select id="selFont" onchange="triggerVisuals()">
+                            <option value="Arial">System Sans</option>
+                            <option value="Inter">Inter (Modern)</option>
+                            <option value="Playfair Display">Playfair (Serif)</option>
+                            <option value="Courier Prime">Courier (Code)</option>
+                            <option value="UnifrakturMaguntia">Unifraktur (Gothic)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-box">
+                         <div class="row-h">
+                            <label id="lblSize">SIZE: 16px</label>
+                        </div>
+                        <input type="range" id="rngSize" min="10" max="80" value="16" oninput="updateUI('lblSize', 'SIZE', this.value, 'px'); triggerVisuals();">
+                    </div>
+
+                    <div class="control-box">
+                        <div class="row-h">
+                           <label id="lblScale">SCALE: 1.5x</label>
+                       </div>
+                       <input type="range" id="rngScale" min="0.5" max="2.5" step="0.1" value="1.5" oninput="updateUI('lblScale', 'SCALE', this.value, 'x'); triggerVisuals();">
+                   </div>
                 </div>
-                <div class="row-h">
-                    <label for="chkMask">Show Fill</label>
-                    <input type="checkbox" id="chkMask">
+            </details>
+
+            <details>
+                <summary>FILL & COLOR</summary>
+                <div class="folder-body">
+                    <div class="control-box">
+                        <div class="row-h"><label>Fill Mode</label></div>
+                        <select id="selFillDir" onchange="triggerVisuals()">
+                            <option value="vertical">Vertical</option>
+                            <option value="horizontal">Horizontal</option>
+                            <option value="radial">Radial</option>
+                        </select>
+                    </div>
+                    <div class="row-h">
+                        <label>Show Fill</label>
+                        <input type="checkbox" id="chkMask">
+                    </div>
+                    <div class="row-h">
+                        <label>Gradient Active</label>
+                        <input type="checkbox" id="chkFillGradient">
+                    </div>
+                    
+                    <div class="control-box" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <input type="color" id="colMaskGradA" value="#0000ff" title="Color A">
+                        <input type="color" id="colMaskGradB" value="#00ffea" title="Color B">
+                    </div>
                 </div>
-                <div class="row-h">
-                    <label for="chkFillGradient">Active Gradient</label>
-                    <input type="checkbox" id="chkFillGradient">
+            </details>
+
+            <details>
+                <summary>STROKE</summary>
+                <div class="folder-body">
+                    <div class="row-h">
+                        <label>Active</label>
+                        <input type="checkbox" id="chkOutline">
+                    </div>
+                    <div class="control-box">
+                        <label id="lblOutlineWidth">WIDTH: 1px</label>
+                        <input type="range" id="rngOutlineWidth" min="1" max="6" step="1" value="1" oninput="updateUI('lblOutlineWidth', 'WIDTH', this.value, 'px'); triggerVisuals();">
+                    </div>
+                    <div class="control-box">
+                        <input type="color" id="colOutlineSolid" value="#ffffff">
+                    </div>
                 </div>
-                <div class="row-h">
-                    <label>Fill Solid / A</label>
-                    <input type="color" id="colMaskGradA" value="#0000ff">
+            </details>
+
+            <details>
+                <summary>PHYSICS & CHAOS</summary>
+                <div class="folder-body">
+                    <div class="row-h">
+                        <label>Wind Sim</label>
+                        <input type="checkbox" id="chkWind">
+                    </div>
+                    <div class="control-box">
+                        <label id="lblWind">FORCE: 0.5</label>
+                        <input type="range" id="rngWind" min="0" max="2" step="0.1" value="0.5" oninput="updateUI('lblWind', 'FORCE', this.value, '')">
+                    </div>
+                    <div class="row-h" style="border-left: 4px solid var(--spora-lime); padding-left: 10px;">
+                        <label>Scramble Text</label>
+                        <input type="checkbox" id="chkScramble">
+                    </div>
+                    <div class="row-h" style="border-left: 4px solid var(--spora-lime); padding-left: 10px;">
+                        <label>Jitter Pos</label>
+                        <input type="checkbox" id="chkJitter">
+                    </div>
                 </div>
-                <div class="row-h">
-                    <label>Fill B</label>
-                    <input type="color" id="colMaskGradB" value="#00ffea">
+            </details>
+
+            <details>
+                <summary>BACKGROUND</summary>
+                <div class="folder-body">
+                    <div class="control-box">
+                        <label>MODE</label>
+                        <select id="selBgMode" onchange="updateBackground()">
+                            <option value="gradient">Gradient</option>
+                            <option value="solid">Solid Color</option>
+                            <option value="tile">Image Pattern</option>
+                            <option value="stretch">Image Stretch</option>
+                        </select>
+                    </div>
+                    <div class="control-box">
+                        <label>URL</label>
+                        <input type="text" id="inpBgUrl" value="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/cosmos-flower-on-black-background-mike-hill.jpg" onchange="updateBackground()">
+                    </div>
+                    <div class="control-box">
+                        <label id="lblBgStretchY">V-STRETCH: 100%</label>
+                        <input type="range" id="rngBgStretchY" min="100" max="300" value="100" oninput="updateUI('lblBgStretchY', 'V-STRETCH', this.value, '%'); updateBackground()">
+                    </div>
+                    <div class="control-box" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <input type="color" id="colBgGradA" value="#0000ff" oninput="updateBackground()">
+                        <input type="color" id="colBgGradB" value="#ffffff" oninput="updateBackground()">
+                    </div>
+                    <div class="control-box">
+                        <label id="lblBgAngle">ANGLE: 180deg</label>
+                        <input type="range" id="rngBgAngle" min="0" max="360" value="180" oninput="updateUI('lblBgAngle', 'ANGLE', this.value, 'deg'); updateBackground()">
+                    </div>
                 </div>
+            </details>
+        </section>
+
+        <input type="hidden" id="colStem" value="#15ff00">
+        <input type="hidden" id="colTextSolid" value="#ffffff">
+
+        <section style="margin-top:auto; padding-top:25px; border-top: 2px solid var(--spora-dark);">
+            <h2>SYSTEM EXPORT</h2>
+            <button class="btn-primary" style="margin-bottom:12px;" onclick="generateGarden()">REGENERATE SEED</button>
+            <div class="btn-group">
+                <button onclick="downloadState()">SAVE JSON</button>
+                <button onclick="saveFullArt()">RENDER PNG</button>
             </div>
-        </details>
+            
+            <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display:none;">
+            <button style="margin-top:10px; border-style: dotted;" onclick="document.getElementById('fileInput').click()">LOAD JSON FILE</button>
 
-        <details>
-            <summary>Outline</summary>
-            <div class="folder-body">
-                <div class="row-h">
-                    <label for="chkOutline">Show Outline</label>
-                    <input type="checkbox" id="chkOutline">
-                </div>
-                <div class="row">
-                    <label id="lblOutlineWidth">Outline Width: 1px</label>
-                    <input type="range" id="rngOutlineWidth" min="1" max="6" step="1" value="1"
-                        oninput="updateUI('lblOutlineWidth', 'Width', this.value, 'px'); triggerVisuals();">
-                </div>
-                <div class="row-h">
-                    <label>Outline Color</label>
-                    <input type="color" id="colOutlineSolid" value="#ffffff">
-                </div>
-            </div>
-        </details>
-
-        <details open>
-            <summary>Atmosphere & Chaos</summary>
-            <div class="folder-body">
-                <div class="row-h">
-                    <label for="chkWind">Wind Active</label>
-                    <input type="checkbox" id="chkWind">
-                </div>
-                <div class="row">
-                    <label id="lblWind">Wind Strength: 0.5</label>
-                    <input type="range" id="rngWind" min="0" max="2" step="0.1" value="0.5"
-                        oninput="updateUI('lblWind', 'Wind Strength', this.value, '')">
-                </div>
-                
-                <div class="row-h" style="border-left: 3px solid #8de22b; padding-left: 8px;">
-                    <label for="chkScramble">Chaos: Scramble</label>
-                    <input type="checkbox" id="chkScramble">
-                </div>
-                <div class="row-h" style="border-left: 3px solid #8de22b; padding-left: 8px;">
-                    <label for="chkJitter">Chaos: Jitter</label>
-                    <input type="checkbox" id="chkJitter">
-                </div>
-
-                <div class="row-h">
-                    <label>Stem Color</label>
-                    <input type="color" id="colStem" value="#15ff00">
-                </div>
-                <div class="row-h">
-                    <label>Text Color</label>
-                    <input type="color" id="colTextSolid" value="#ffffff">
-                </div>
-            </div>
-        </details>
-
-        <details>
-            <summary>Background</summary>
-            <div class="folder-body">
-                <div class="row">
-                    <label>BG Mode</label>
-                    <select id="selBgMode" onchange="updateBackground()">
-                        <option value="gradient">Gradient</option>
-                        <option value="solid">Solid Color</option>
-                        <option value="tile">Image Pattern (Tile)</option>
-                        <option value="stretch">Image Stretch</option>
-                    </select>
-                </div>
-
-                <div class="row">
-                    <label>Image URL</label>
-                    <input type="text" id="inpBgUrl" value="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/cosmos-flower-on-black-background-mike-hill.jpg"
-                        onchange="updateBackground()">
-                </div>
-
-                <div class="row">
-                    <label id="lblBgStretchY">Vertical Force: 100%</label>
-                    <input type="range" id="rngBgStretchY" min="100" max="300" value="100"
-                        oninput="updateUI('lblBgStretchY', 'Vertical Force', this.value, '%'); updateBackground()">
-                </div>
-
-                <div class="row-h">
-                    <label>Gradient A / Solid</label>
-                    <input type="color" id="colBgGradA" value="#0000ff" oninput="updateBackground()">
-                </div>
-                <div class="row-h">
-                    <label>Gradient B</label>
-                    <input type="color" id="colBgGradB" value="#ffffff" oninput="updateBackground()">
-                </div>
-                <div class="row">
-                    <label id="lblBgAngle">Gradient Angle: 180deg</label>
-                    <input type="range" id="rngBgAngle" min="0" max="360" value="180"
-                        oninput="updateUI('lblBgAngle', 'Gradient Angle', this.value, 'deg'); updateBackground()">
-                </div>
-            </div>
-        </details>
-
-        <button onclick="generateGarden()">Regenerate Seed</button>
-
-        <div style="margin-top: 20px; border-top: 1px solid #666; padding-top: 10px;">
-            <h2>System & Export</h2>
-            <div class="row">
-                <button onclick="downloadState()" style="background: #fff; color: #000; margin-bottom: 5px;">Download State (.json)</button>
-                <button onclick="saveFullArt()" style="background: #8de22b; color: #000; margin-bottom: 5px;">FULL RENDER (BG+ART)</button>
-                
-                <div class="row-h" style="background: #333; color: #fff; border: none;">
-                    <label style="color:#fff; cursor:pointer;" for="fileInput">Load State File</label>
-                    <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display:none;">
-                    <button onclick="document.getElementById('fileInput').click()" style="width: auto; padding: 5px 10px; font-size: 10px;">BROWSE</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="status" id="statusText">System Ready</div>
-    </div>
+            <div class="status" id="statusText" style="margin-top:15px; font-family:var(--font-mono); font-size:9px; text-align:center; color:var(--spora-dark); opacity:0.6;">SYSTEM READY</div>
+        </section>
+    </aside>
 
     <div id="canvas-container"></div>
 
@@ -476,7 +505,6 @@
             ],
         };
 
-
         let loadedAssets = {};
         let debounceTimer;
         let visualDebounce;
@@ -492,7 +520,6 @@
             const container = document.getElementById('canvas-container');
             const cnv = createCanvas(1, 1);
             cnv.parent('canvas-container');
-            // Aseguramos que el canvas no tenga fondo propio
             cnv.style('display', 'block');
             
             pixelDensity(1);
@@ -512,10 +539,8 @@
 
             const windOn = document.getElementById('chkWind').checked;
             const windForce = parseFloat(document.getElementById('rngWind').value);
-
             const scrambleOn = document.getElementById('chkScramble').checked;
             const jitterOn = document.getElementById('chkJitter').checked;
-
             const maskOn = document.getElementById('chkMask').checked;
             const outlineOn = document.getElementById('chkOutline').checked;
             const fillGradientOn = document.getElementById('chkFillGradient').checked;
@@ -528,7 +553,7 @@
             const fillGradA = forceAlpha(color(document.getElementById('colMaskGradA').value));
             const fillGradB = forceAlpha(color(document.getElementById('colMaskGradB').value));
             const outlineColor = forceAlpha(color(document.getElementById('colOutlineSolid').value));
-            const textColor = forceAlpha(color(document.getElementById('colTextSolid').value));
+            const textColor = color(255); 
             const cStem = color(document.getElementById('colStem').value);
 
             const time = millis() * 0.001;
@@ -612,24 +637,17 @@
                         if (jitterOn) {
                             let dynamicChunk = map(f.fontSize, 10, 80, 10, 3);
                             dynamicChunk = floor(constrain(dynamicChunk, 1, 10));
-
                             const chunkId = floor(idx / dynamicChunk);
-
                             const snapSpeed = 8.0;
                             const timeStep = floor(time * snapSpeed);
-
                             let sizeFactor = map(f.fontSize, 10, 80, 0.5, 2.5);
                             sizeFactor = constrain(sizeFactor, 0.5, 3.0);
-
                             const baseAmp = windForce * 5.0;
                             const amp = baseAmp * sizeFactor;
-
                             const noiseX = noise(chunkId * 0.1, timeStep * 0.5);
                             const noiseY = noise(chunkId * 0.1 + 500, timeStep * 0.5);
-
                             const shiftX = map(noiseX, 0, 1, -amp, amp);
                             const shiftY = map(noiseY, 0, 1, -amp, amp);
-
                             dispX += shiftX;
                             dispY += shiftY;
                         }
@@ -659,12 +677,10 @@
             const activeSetName = (targetFlowerSet && loadedAssets[targetFlowerSet]) 
                                   ? targetFlowerSet 
                                   : setNames[Math.floor(Math.random() * setNames.length)];
-            
             lastUsedSet = activeSetName;
-
             const activeImages = loadedAssets[activeSetName];
 
-            document.getElementById('statusText').innerText = `Set: ${activeSetName.toUpperCase()} | Calculating...`;
+            document.getElementById('statusText').innerText = `SET: ${activeSetName.toUpperCase()} | CALC...`;
 
             const words = text.split(/\s+/);
             const count = constrain(ceil(words.length / 12), 2, 20);
@@ -693,14 +709,10 @@
                     const spread = maxW * map(effectiveBaseScale, 0.5, 2.5, 0.35, 0.5);
                     const tx = width / 2 + random(-spread, spread);
                     const ty = height - (height * random(0.35, 0.85));
-
                     if (flowers.some(f => dist(tx, ty, f.tx, f.ty) < radius + f.radius)) continue;
-
                     const img = random(activeImages);
                     const fontSize = baseSize * random(0.9, 1.1);
-
                     const data = processImage(img, fontSize, scale, outlineWidth);
-
                     best = {
                         x: width / 2, tx, ty, h: height - ty,
                         bend: random(-100, 100),
@@ -718,14 +730,13 @@
                 if (best) flowers.push(best);
             }
             flowers.sort((a, b) => a.ty - b.ty);
-            document.getElementById('statusText').innerText = `Ready. Flowers: ${flowers.length}`;
+            document.getElementById('statusText').innerText = `READY | BLOOMS: ${flowers.length}`;
         }
 
         function updateVisuals() {
             const baseSize = parseInt(document.getElementById('rngSize').value);
             const sliderScale = parseFloat(document.getElementById('rngScale').value);
             const outlineWidth = parseInt(document.getElementById('rngOutlineWidth').value);
-
             const count = flowers.length;
             let densityFactor = (count > 5) ? map(count, 5, 20, 1.0, 0.55) : 1.0;
             const effectiveBaseScale = sliderScale * densityFactor;
@@ -735,9 +746,7 @@
                 const newSize = baseSize * f.relFont;
                 f.graphic.remove();
                 if (f.graphicOutline) f.graphicOutline.remove();
-
                 const data = processImage(f.source, newSize, newScale, outlineWidth);
-
                 f.points = data.points;
                 f.graphic = data.pg;
                 f.graphicOutline = data.pgOutline;
@@ -762,7 +771,6 @@
             pg.loadPixels();
 
             const points = [];
-
             let spacingFactor = map(fSize, 10, 80, 1.0, 0.6);
             spacingFactor = constrain(spacingFactor, 0.6, 1.0);
             const step = Math.max(fSize * spacingFactor, 2);
@@ -804,7 +812,6 @@
                 }
             }
             pg.updatePixels();
-
             return { points, pg, pgOutline };
         }
 
@@ -815,7 +822,6 @@
             const angle = document.getElementById('rngBgAngle').value;
             const url = document.getElementById('inpBgUrl').value;
             const container = document.getElementById('canvas-container');
-
             const stretchY = document.getElementById('rngBgStretchY').value;
 
             container.style.background = 'none';
@@ -848,28 +854,21 @@
         }
         window.addEventListener("orientationchange", () => setTimeout(windowResized, 300));
 
-        // --- EXPORT SYSTEM (SAVE/LOAD & IMAGE CAPTURE WITH BACKGROUND) ---
-
         function saveFullArt() {
             const container = document.getElementById('canvas-container');
             const status = document.getElementById('statusText');
-            status.innerText = "Capturing High-Res Image...";
-
+            status.innerText = "RENDERING...";
             html2canvas(container, {
-                scale: 2, // Exporta al doble de resolución para mejor calidad
-                useCORS: true, // Intenta cargar imágenes externas
-                allowTaint: true,
-                backgroundColor: null,
-                logging: false
+                scale: 2, useCORS: true, allowTaint: true, backgroundColor: null, logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'spora_full_render_' + new Date().getTime() + '.png';
+                link.download = 'spora_render_' + new Date().getTime() + '.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                status.innerText = "Capture Downloaded.";
+                status.innerText = "RENDER COMPLETE";
             }).catch(err => {
                 console.error(err);
-                status.innerText = "Error capturing image (CORS blocked?)";
+                status.innerText = "RENDER ERROR";
             });
         }
 
@@ -877,46 +876,24 @@
             const currentState = {
                 text: document.getElementById('txtInp').value,
                 flowerSet: lastUsedSet, 
-                wind: { 
-                    active: document.getElementById('chkWind').checked, 
-                    strength: parseFloat(document.getElementById('rngWind').value) 
-                },
-                chaos: { 
-                    scramble: document.getElementById('chkScramble').checked, 
-                    jitter: document.getElementById('chkJitter').checked 
-                },
+                wind: { active: document.getElementById('chkWind').checked, strength: parseFloat(document.getElementById('rngWind').value) },
+                chaos: { scramble: document.getElementById('chkScramble').checked, jitter: document.getElementById('chkJitter').checked },
                 colors: { 
-                    maskA: document.getElementById('colMaskGradA').value, 
-                    maskB: document.getElementById('colMaskGradB').value, 
-                    stem: document.getElementById('colStem').value, 
-                    text: document.getElementById('colTextSolid').value, 
-                    bgA: document.getElementById('colBgGradA').value, 
-                    bgB: document.getElementById('colBgGradB').value 
+                    maskA: document.getElementById('colMaskGradA').value, maskB: document.getElementById('colMaskGradB').value, 
+                    stem: document.getElementById('colStem').value, bgA: document.getElementById('colBgGradA').value, bgB: document.getElementById('colBgGradB').value 
                 },
                 style: {
-                    fill: { 
-                        active: document.getElementById('chkMask').checked, 
-                        gradient: document.getElementById('chkFillGradient').checked, 
-                        dir: document.getElementById('selFillDir').value 
-                    },
-                    outline: { 
-                        active: document.getElementById('chkOutline').checked, 
-                        width: parseInt(document.getElementById('rngOutlineWidth').value) 
-                    }
+                    fill: { active: document.getElementById('chkMask').checked, gradient: document.getElementById('chkFillGradient').checked, dir: document.getElementById('selFillDir').value },
+                    outline: { active: document.getElementById('chkOutline').checked, width: parseInt(document.getElementById('rngOutlineWidth').value) }
                 },
                 geometry: { 
-                    scale: parseFloat(document.getElementById('rngScale').value), 
-                    fontSize: parseInt(document.getElementById('rngSize').value), 
-                    font: document.getElementById('selFont').value 
+                    scale: parseFloat(document.getElementById('rngScale').value), fontSize: parseInt(document.getElementById('rngSize').value), font: document.getElementById('selFont').value 
                 },
                 background: {
-                    mode: document.getElementById('selBgMode').value,
-                    url: document.getElementById('inpBgUrl').value,
-                    angle: parseInt(document.getElementById('rngBgAngle').value),
-                    stretchY: parseInt(document.getElementById('rngBgStretchY').value)
+                    mode: document.getElementById('selBgMode').value, url: document.getElementById('inpBgUrl').value, 
+                    angle: parseInt(document.getElementById('rngBgAngle').value), stretchY: parseInt(document.getElementById('rngBgStretchY').value)
                 }
             };
-
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentState, null, 2));
             const downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href", dataStr);
@@ -929,16 +906,15 @@
         function loadStateFromFile(input) {
             const file = input.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     const json = JSON.parse(e.target.result);
                     applyVisualState(json);
-                    document.getElementById('statusText').innerText = "State Loaded Successfully";
+                    document.getElementById('statusText').innerText = "STATE LOADED";
                 } catch (err) {
                     console.error(err);
-                    document.getElementById('statusText').innerText = "Error Loading JSON";
+                    document.getElementById('statusText').innerText = "LOAD ERROR";
                 }
             };
             reader.readAsText(file);
@@ -950,47 +926,60 @@
                 flowerSet: 'daisy',
                 wind: { active: true, strength: 0.2 },
                 chaos: { scramble: false, jitter: false },
-                colors: { maskA: '#CCFF00', maskB: '#FFFFFF', stem: '#00FF00', text: '#000000', bgA: '#0000FF', bgB: '#CCFF00' },
-                style: {
-                    fill: { active: true, gradient: false, dir: 'radial' },
-                    outline: { active: true, width: 2 }
-                },
+                colors: { maskA: '#CCFF00', maskB: '#FFFFFF', stem: '#00FF00', bgA: '#0000FF', bgB: '#CCFF00' },
+                style: { fill: { active: true, gradient: false, dir: 'radial' }, outline: { active: true, width: 2 } },
                 geometry: { scale: 1.1, fontSize: 18, font: 'Inter' }
             },
             negative: {
                 flowerSet: 'rose',
                 wind: { active: true, strength: 0.1 },
                 chaos: { scramble: false, jitter: false },
-                colors: { maskA: '#000000', maskB: '#FF0000', stem: '#00FF00', text: '#FFFFFF', bgA: '#FF0000', bgB: '#000000' },
-                style: {
-                    fill: { active: true, gradient: true, dir: 'vertical' },
-                    outline: { active: true, width: 1 }
-                },
+                colors: { maskA: '#000000', maskB: '#FF0000', stem: '#00FF00', bgA: '#FF0000', bgB: '#000000' },
+                style: { fill: { active: true, gradient: true, dir: 'vertical' }, outline: { active: true, width: 1 } },
                 geometry: { scale: 0.8, fontSize: 12, font: 'UnifrakturMaguntia' }
             },
             chaos: {
                 flowerSet: 'carnation',
                 wind: { active: true, strength: 2.0 },
                 chaos: { scramble: true, jitter: true },
-                colors: { maskA: '#FF00FF', maskB: '#00FF00', stem: '#00FF00', text: '#FFFF00', bgA: '#1a1a1a', bgB: '#330033' },
-                style: {
-                    fill: { active: false, gradient: false, dir: 'horizontal' },
-                    outline: { active: true, width: 4 }
-                },
+                colors: { maskA: '#FF00FF', maskB: '#00FF00', stem: '#00FF00', bgA: '#1a1a1a', bgB: '#330033' },
+                style: { fill: { active: false, gradient: false, dir: 'horizontal' }, outline: { active: true, width: 4 } },
                 geometry: { scale: 2, fontSize: 55, font: 'Courier Prime' }
             }
         };
 
-        function applyVisualState(state) {
-            if (state.text) {
-                document.getElementById('txtInp').value = state.text;
-            }
+        function randomizeState() {
+            const randomColor = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            const sets = Object.keys(maskUrls);
+            const fonts = ['Arial', 'Inter', 'Playfair Display', 'Courier Prime', 'UnifrakturMaguntia'];
+            const bgModes = ['gradient', 'solid'];
 
+            const randomProfile = {
+                flowerSet: sets[Math.floor(Math.random() * sets.length)],
+                wind: { active: Math.random() > 0.5, strength: parseFloat((Math.random() * 2).toFixed(1)) },
+                chaos: { scramble: Math.random() > 0.8, jitter: Math.random() > 0.7 },
+                colors: { maskA: randomColor(), maskB: randomColor(), stem: randomColor(), bgA: randomColor(), bgB: randomColor() },
+                style: {
+                    fill: { active: Math.random() > 0.2, gradient: Math.random() > 0.5, dir: ['vertical', 'horizontal', 'radial'][Math.floor(Math.random() * 3)] },
+                    outline: { active: Math.random() > 0.3, width: Math.floor(Math.random() * 6) + 1 }
+                },
+                geometry: { scale: parseFloat((Math.random() * 2 + 0.5).toFixed(1)), fontSize: Math.floor(Math.random() * 70) + 10, font: fonts[Math.floor(Math.random() * fonts.length)] },
+                background: {
+                    mode: bgModes[Math.floor(Math.random() * bgModes.length)], url: document.getElementById('inpBgUrl').value, 
+                    angle: Math.floor(Math.random() * 360), stretchY: 100
+                }
+            };
+            applyVisualState(randomProfile);
+            document.getElementById('statusText').innerText = "RANDOM MUTATION APPLIED";
+        }
+
+        function applyVisualState(state) {
+            if (state.text) document.getElementById('txtInp').value = state.text;
             targetFlowerSet = state.flowerSet || 'daisy';
 
             document.getElementById('chkWind').checked = state.wind.active;
             document.getElementById('rngWind').value = state.wind.strength;
-            updateUI('lblWind', 'Wind Strength', state.wind.strength, '');
+            updateUI('lblWind', 'FORCE', state.wind.strength, '');
 
             document.getElementById('chkScramble').checked = state.chaos.scramble;
             document.getElementById('chkJitter').checked = state.chaos.jitter;
@@ -998,7 +987,6 @@
             document.getElementById('colMaskGradA').value = state.colors.maskA;
             document.getElementById('colMaskGradB').value = state.colors.maskB;
             document.getElementById('colStem').value = state.colors.stem;
-            document.getElementById('colTextSolid').value = state.colors.text;
             document.getElementById('colBgGradA').value = state.colors.bgA;
             document.getElementById('colBgGradB').value = state.colors.bgB;
 
@@ -1008,14 +996,12 @@
             
             document.getElementById('chkOutline').checked = state.style.outline.active;
             document.getElementById('rngOutlineWidth').value = state.style.outline.width;
-            updateUI('lblOutlineWidth', 'Width', state.style.outline.width, 'px');
+            updateUI('lblOutlineWidth', 'WIDTH', state.style.outline.width, 'px');
 
             document.getElementById('rngScale').value = state.geometry.scale;
-            updateUI('lblScale', 'Flower Scale', state.geometry.scale, 'x');
-            
+            updateUI('lblScale', 'SCALE', state.geometry.scale, 'x');
             document.getElementById('rngSize').value = state.geometry.fontSize;
-            updateUI('lblSize', 'Font Size', state.geometry.fontSize, 'px');
-
+            updateUI('lblSize', 'SIZE', state.geometry.fontSize, 'px');
             document.getElementById('selFont').value = state.geometry.font;
 
             if (state.background) {
@@ -1023,15 +1009,12 @@
                 document.getElementById('inpBgUrl').value = state.background.url;
                 document.getElementById('rngBgAngle').value = state.background.angle;
                 document.getElementById('rngBgStretchY').value = state.background.stretchY || 100;
-                
-                updateUI('lblBgAngle', 'Gradient Angle', state.background.angle, 'deg');
-                updateUI('lblBgStretchY', 'Vertical Force', state.background.stretchY || 100, '%');
+                updateUI('lblBgAngle', 'ANGLE', state.background.angle, 'deg');
+                updateUI('lblBgStretchY', 'V-STRETCH', state.background.stretchY || 100, '%');
             }
-
             updateBackground();
             generateGarden(); 
         }
     </script>
 </body>
-
 </html>
