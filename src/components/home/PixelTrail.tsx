@@ -28,7 +28,7 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const dimensions = useDimensions(containerRef)
-  const trailId = useRef(uuidv4())
+  const trailId = useMemo(() => uuidv4(), [])
   const mousePosition = useRef({ x: 0, y: 0 })
 
   const handleMouseMove = useCallback(
@@ -45,14 +45,14 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
       }
 
       const pixelElement = document.getElementById(
-        `${trailId.current}-pixel-${x}-${y}`
+        `${trailId}-pixel-${x}-${y}`
       )
       if (pixelElement) {
         const animatePixel = pixelAnimateMap.get(pixelElement)
         if (animatePixel) animatePixel()
       }
     },
-    [pixelSize]
+    [pixelSize, trailId]
   )
 
   const columns = useMemo(
@@ -116,7 +116,7 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
           {row.map(({ colIndex }) => (
             <PixelDot
               key={`${colIndex}-${rowIndex}`}
-              id={`${trailId.current}-pixel-${colIndex}-${rowIndex}`}
+              id={`${trailId}-pixel-${colIndex}-${rowIndex}`}
               col={colIndex}
               row={rowIndex}
               size={pixelSize}

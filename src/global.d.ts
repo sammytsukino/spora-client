@@ -16,17 +16,18 @@ declare module "*.jpg" {
 declare module "meshline" {
   export class MeshLineGeometry {
     constructor();
-    setPoints(points: any[]): void;
+    setPoints(points: unknown[]): void;
   }
   export class MeshLineMaterial {
-    constructor(options?: any);
+    constructor(options?: Record<string, unknown>);
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare namespace JSX {
   interface IntrinsicElements {
-    meshLineGeometry: any;
-    meshLineMaterial: any;
+    meshLineGeometry: Record<string, unknown>;
+    meshLineMaterial: Record<string, unknown>;
   }
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import MainButton from "@/components/ui/main-button";
-import CyclingLogo from "@/components/home/cycling-logo";
+import MainButton from "@/components/ui/MainButton";
+import CyclingLogo from "@/components/home/CyclingLogo";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
 type NavbarPosition = "fixed" | "sticky";

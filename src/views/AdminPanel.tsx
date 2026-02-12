@@ -1,12 +1,12 @@
 import { useState } from "react";
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import FooterAlter from "@/components/home/footer-alter";
-import FilterTabs from "@/components/common/filter-tabs";
-import AdminMetrics from "@/components/admin/admin-metrics";
-import AdminUsageCharts from "@/components/admin/admin-usage-charts";
-import AdminReports from "@/components/admin/admin-reports";
-import AdminUserManagement from "@/components/admin/admin-user-management";
-import AdminFlaggedContent from "@/components/admin/admin-flagged-content";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
+import FooterAlter from "@/components/home/FooterAlter";
+import FilterTabs from "@/components/common/FilterTabs";
+import AdminMetrics from "@/components/admin/AdminMetrics";
+import AdminUsageCharts from "@/components/admin/AdminUsageCharts";
+import AdminReports from "@/components/admin/AdminReports";
+import AdminUserManagement from "@/components/admin/AdminUserManagement";
+import AdminFlaggedContent from "@/components/admin/AdminFlaggedContent";
 import {
   adminSectionTabs,
   defaultAdminMetrics,

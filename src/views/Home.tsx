@@ -2,16 +2,16 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
-import MarqueeAlongSvgPath from '../components/home/marquee-along-svg-path'
-import VideoTextSection from '../components/home/video-text-section'
-import SimpleMarquee from '../components/home/simple-marquee'
-import MainButton from '../components/ui/main-button'
-import FooterMain from '../components/home/footer-main'
+import MarqueeAlongSvgPath from '../components/home/MarqueeAlongSvgPath'
+import VideoTextSection from '../components/home/VideoTextSection'
+import SimpleMarquee from '../components/home/SimpleMarquee'
+import MainButton from '../components/ui/MainButton'
+import FooterMain from '../components/home/FooterMain'
 import Section from '../components/Section'
-import Navbar from '@/components/home/navbar'
-import HeroSection from '@/components/home/hero-section'
-import DeclarativeSection from '@/components/home/declarative-section'
-import QuoteSection from '@/components/home/quote-section'
+import Navbar from '@/components/home/Navbar'
+import HeroSection from '@/components/home/HeroSection'
+import DeclarativeSection from '@/components/home/DeclarativeSection'
+import QuoteSection from '@/components/home/QuoteSection'
 // import Grainient from '@/components/Grainient'
 
 
@@ -94,7 +94,12 @@ export default function Home() {
         className="items-stretch justify-start"
       >
         <QuoteSection
-          quote="Lloro porque no siento nada, y ahora además de triste me siento un farsante"
+          quote="Estoy luchando con desesperación
+contra cosas que no veo,
+cosas que proceden de otro mundo
+donde mi cuerpo parece que es la puerta...
+"
+          author="Fran Barreno"
           buttonText="CREATE YOUR OWN"
           onButtonClick={() => navigate('/laboratory')}
         />

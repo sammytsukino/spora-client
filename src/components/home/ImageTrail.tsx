@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react"
-import type { ElementType, HTMLAttributes } from "react"
+import type { HTMLAttributes } from "react"
 import type { DOMKeyframesDefinition, AnimationOptions } from "motion"
 import { useAnimate } from "motion/react"
 
@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils"
 
 interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
-  as?: ElementType
   threshold?: number
   intensity?: number
   keyframes?: DOMKeyframesDefinition
@@ -22,7 +21,6 @@ interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 interface ImageTrailItemProps extends HTMLAttributes<HTMLDivElement> {
-  as?: ElementType
   children: React.ReactNode
 }
 
@@ -34,7 +32,6 @@ const MathUtils = {
 
 const ImageTrailBase = ({
   className,
-  as = "div",
   children,
   threshold = 50,
   intensity = 0.1,
@@ -150,10 +147,8 @@ const ImageTrailBase = ({
     }
   }
 
-  const ElementTag = (as ?? "div") as any
-
   return (
-    <ElementTag
+    <div
       className={cn("h-full w-full relative", className)}
       onMouseMove={handleMouseMove}
       ref={containerRef}
@@ -162,20 +157,17 @@ const ImageTrailBase = ({
       {Array.from({ length: repeatChildren }).map((_, index) => (
         <React.Fragment key={index}>{children}</React.Fragment>
       ))}
-    </ElementTag>
+    </div>
   )
 }
 
 export const ImageTrailItem = ({
   className,
   children,
-  as = "div",
   ...props
 }: ImageTrailItemProps) => {
-  const ElementTag = (as ?? "div") as any
-  
   return (
-    <ElementTag
+    <div
       {...props}
       className={cn(
         "absolute top-0 left-0 will-change-transform hidden",
@@ -184,7 +176,7 @@ export const ImageTrailItem = ({
       )}
     >
       {children}
-    </ElementTag>
+    </div>
   )
 }
 

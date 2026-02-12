@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import CyclingLogo from "./cycling-logo"
+import CyclingLogo from "./CyclingLogo"
 
 export default function FooterMain() {
   const navigate = useNavigate()
