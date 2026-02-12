@@ -1,5 +1,5 @@
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import FooterAlter from "@/components/home/footer-alter";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
+import FooterAlter from "@/components/home/FooterAlter";
 
 export default function Contact() {
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import MainButton from "@/components/ui/main-button"
+import MainButton from "@/components/ui/MainButton"
 
 export default function SignUpForm() {
   const navigate = useNavigate()

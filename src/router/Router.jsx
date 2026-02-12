@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../views/home";
+import Home from "../views/Home";
 import Installation from "../views/Installation";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
@@ -13,7 +13,7 @@ import Profile from "../views/Profile";
 import AdminPanel from "../views/AdminPanel";
 import Background from "../views/Background";
 import FloraDetail from "../views/FloraDetail";
-import ScrollToTop from "../components/scroll-to-top";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function Router() {
   return (

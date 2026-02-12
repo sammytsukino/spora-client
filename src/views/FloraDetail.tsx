@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import FooterAlter from "@/components/home/footer-alter";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
+import FooterAlter from "@/components/home/FooterAlter";
 import { generateFloraData, type FloraItem } from "@/data/flora-data";
 
 interface FloraLocationState {

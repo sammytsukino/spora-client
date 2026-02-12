@@ -150,7 +150,7 @@ const ImageTrailBase = ({
     }
   }
 
-  const ElementTag = (as ?? "div") as any
+  const ElementTag = (as ?? "div") as ElementType
 
   return (
     <ElementTag
@@ -172,7 +172,7 @@ export const ImageTrailItem = ({
   as = "div",
   ...props
 }: ImageTrailItemProps) => {
-  const ElementTag = (as ?? "div") as any
+  const ElementTag = (as ?? "div") as ElementType
   
   return (
     <ElementTag
