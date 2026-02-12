@@ -41,11 +41,9 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
             }
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.filter = "grayscale(0%) contrast(110%)"
             e.currentTarget.style.transform = "scale(1.05)"
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.filter = "grayscale(100%) contrast(120%)"
             e.currentTarget.style.transform = "scale(1)"
           }}
         />
