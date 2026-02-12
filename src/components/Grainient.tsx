@@ -245,9 +245,8 @@ const Grainient: React.FC<GrainientProps> = ({
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      try {
+      if (container.contains(canvas)) {
         container.removeChild(canvas);
-      } catch {
       }
     };
   }, [

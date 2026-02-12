@@ -1,5 +1,5 @@
-import PixelTrail from './pixel-trail';
-import GooeySvgFilter from './gooey-svg-filter';
+import PixelTrail from './PixelTrail';
+import GooeySvgFilter from './GooeySvgFilter';
 import useScreenSize from '@/hooks/use-screen-size';
 import useDetectBrowser from '@/hooks/use-detect-browser';
 

@@ -1,4 +1,4 @@
-import MainButton from '@/components/ui/main-button';
+import MainButton from '@/components/ui/MainButton';
 
 interface QuoteSectionProps {
   quote: string;

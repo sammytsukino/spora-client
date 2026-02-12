@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import TransparentNavbar from "@/components/home/transparent-navbar";
-import FooterAlter from "@/components/home/footer-alter";
-import PageTitle from "@/components/ui/page-title";
-import FilterTabs from "@/components/common/filter-tabs";
-import ResearchCard from "@/components/research/research-card";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
+import FooterAlter from "@/components/home/FooterAlter";
+import PageTitle from "@/components/ui/PageTitle";
+import FilterTabs from "@/components/common/FilterTabs";
+import ResearchCard from "@/components/research/ResearchCard";
 import { researchProjects, researchCategories } from "@/data/research-data";
 
 export default function Research() {

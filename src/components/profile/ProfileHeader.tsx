@@ -1,6 +1,6 @@
 import { Users, UserPlus } from "lucide-react";
 import type { ProfileUser } from "@/data/profile-data";
-import MainButton from "@/components/ui/main-button";
+import MainButton from "@/components/ui/MainButton";
 
 interface ProfileHeaderProps {
   user: ProfileUser;

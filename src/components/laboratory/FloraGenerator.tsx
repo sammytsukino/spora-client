@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import TextInput from './text-input';
-import MainButton from '@/components/ui/main-button';
+import MainButton from '@/components/ui/MainButton';
 
 interface FloraGeneratorProps {
   onGenerate: (text: string) => void;

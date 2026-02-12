@@ -1,6 +1,6 @@
-import FooterAlter from "@/components/home/footer-alter";
-import SignUpForm from "@/components/home/signup-form";
-import TransparentNavbar from "@/components/home/transparent-navbar";
+import FooterAlter from "@/components/home/FooterAlter";
+import SignUpForm from "@/components/home/SignUpForm";
+import TransparentNavbar from "@/components/home/TransparentNavbar";
 import Section from "@/components/Section";
 //import Grainient from "@/components/Grainient";
 
