@@ -622,28 +622,25 @@ Look, this is where you plant your words. Words that transform, creating life fr
             <details>
                 <summary>PHYSICS & CHAOS</summary>
                 <div class="folder-body">
-                    <div class="row-h">
-                        <label>Wind Sim</label>
-                        <input type="checkbox" id="chkWind" />
+                    <div class="control-box">
+                        <div class="row-h"><label>Wind Sim</label><input type="checkbox" id="chkWind" /></div>
+                        <input type="range" id="rngWind" min="0" max="2" step="0.1" value="0.5" />
                     </div>
                     <div class="control-box">
-                        <label id="lblWind">FORCE: 0.5</label>
-                        <input type="range" id="rngWind" min="0" max="2" step="0.1" value="0.5"
-                            oninput="updateUI('lblWind', 'FORCE', this.value, '')" />
+                        <div class="row-h"><label>Scramble Text</label><input type="checkbox" id="chkScramble" /></div>
+                        <input type="range" id="rngScramble" min="0" max="1" step="0.05" value="0.1" />
                     </div>
-                    <div class="row-h" style="
-                border-left: 4px solid var(--spora-lime);
-                padding-left: 10px;
-              ">
-                        <label>Scramble Text</label>
-                        <input type="checkbox" id="chkScramble" />
+                    <div class="control-box">
+                        <div class="row-h"><label>Jitter Pos</label><input type="checkbox" id="chkJitter" /></div>
+                        <input type="range" id="rngJitter" min="0" max="2" step="0.1" value="0.5" />
                     </div>
-                    <div class="row-h" style="
-                border-left: 4px solid var(--spora-lime);
-                padding-left: 10px;
-              ">
-                        <label>Jitter Pos</label>
-                        <input type="checkbox" id="chkJitter" />
+                    <div class="control-box">
+                        <div class="row-h"><label>Pulse Text</label><input type="checkbox" id="chkPulse" /></div>
+                        <input type="range" id="rngPulse" min="0" max="2" step="0.1" value="1.0" />
+                    </div>
+                    <div class="control-box">
+                        <div class="row-h"><label>Wave Flow</label><input type="checkbox" id="chkWave" /></div>
+                        <input type="range" id="rngWave" min="0" max="2" step="0.1" value="1.0" />
                     </div>
                 </div>
             </details>
@@ -823,14 +820,25 @@ Look, this is where you plant your words. Words that transform, creating life fr
 
             const windOn = document.getElementById("chkWind").checked;
             const windForce = parseFloat(document.getElementById("rngWind").value);
+
             const scrambleOn = document.getElementById("chkScramble").checked;
+            const scrambleForce = parseFloat(document.getElementById("rngScramble").value);
+
             const jitterOn = document.getElementById("chkJitter").checked;
+            const jitterForce = parseFloat(document.getElementById("rngJitter").value);
+
+            const pulseOn = document.getElementById("chkPulse").checked;
+            const pulseForce = parseFloat(document.getElementById("rngPulse").value);
+
+            const waveOn = document.getElementById("chkWave").checked;
+            const waveForce = parseFloat(document.getElementById("rngWave").value);
             const maskOn = document.getElementById("chkMask").checked;
             const outlineOn = document.getElementById("chkOutline").checked;
             const fillGradientOn =
                 document.getElementById("chkFillGradient").checked;
             const selFont = document.getElementById("selFont").value;
             const fillDir = document.getElementById("selFillDir").value;
+
 
             textFont(selFont);
 
@@ -895,6 +903,12 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 translate(p2x, p2y);
                 rotate(swayRot);
 
+                if (pulseOn) {
+                    let organicBreath = sin(time * 1.2 + i) * 0.7 + sin(time * 0.6 + i * 1.5) * 0.3;
+                    let pulseScale = 1.0 + organicBreath * (0.04 * pulseForce);
+                    scale(pulseScale);
+                }
+
                 let fillT = 0;
                 if (fillGradientOn) {
                     if (fillDir === "vertical") {
@@ -937,28 +951,39 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     let dispX = p.x;
                     let dispY = p.y;
 
-                    if (windOn && windForce > 0) {
-                        if (scrambleOn && random(3) < windForce * 0.02) {
-                            charIndex = floor(random(f.chars.length));
+                    if (scrambleOn && scrambleForce > 0) {
+                        let glitchNoise = noise(idx * 0.2, time * 2.0);
+                        let threshold = 1.0 - (scrambleForce * 0.8); 
+                        
+                        if (glitchNoise > threshold) {
+                            let timeBlock = floor(time * 5.0); 
+                            let randomOffset = floor(noise(idx, timeBlock) * f.chars.length);
+                            charIndex = (charIndex + randomOffset) % f.chars.length;
                         }
+                    }
 
-                        if (jitterOn) {
-                            let dynamicChunk = map(f.fontSize, 10, 80, 10, 3);
-                            dynamicChunk = floor(constrain(dynamicChunk, 1, 10));
-                            const chunkId = floor(idx / dynamicChunk);
-                            const snapSpeed = 8.0;
-                            const timeStep = floor(time * snapSpeed);
-                            let sizeFactor = map(f.fontSize, 10, 80, 0.5, 2.5);
-                            sizeFactor = constrain(sizeFactor, 0.5, 3.0);
-                            const baseAmp = windForce * 5.0;
-                            const amp = baseAmp * sizeFactor;
-                            const noiseX = noise(chunkId * 0.1, timeStep * 0.5);
-                            const noiseY = noise(chunkId * 0.1 + 500, timeStep * 0.5);
-                            const shiftX = map(noiseX, 0, 1, -amp, amp);
-                            const shiftY = map(noiseY, 0, 1, -amp, amp);
-                            dispX += shiftX;
-                            dispY += shiftY;
-                        }
+                    if (jitterOn) {
+                        let dynamicChunk = map(f.fontSize, 10, 80, 10, 3);
+                        dynamicChunk = floor(constrain(dynamicChunk, 1, 10));
+                        const chunkId = floor(idx / dynamicChunk);
+                        const snapSpeed = 8.0;
+                        const timeStep = floor(time * snapSpeed);
+                        let sizeFactor = map(f.fontSize, 10, 80, 0.5, 2.5);
+                        sizeFactor = constrain(sizeFactor, 0.5, 3.0);
+
+                        const baseAmp = jitterForce * 5.0;
+                        const amp = baseAmp * sizeFactor;
+                        const noiseX = noise(chunkId * 0.1, timeStep * 0.5);
+                        const noiseY = noise(chunkId * 0.1 + 500, timeStep * 0.5);
+                        const shiftX = map(noiseX, 0, 1, -amp, amp);
+                        const shiftY = map(noiseY, 0, 1, -amp, amp);
+                        dispX += shiftX;
+                        dispY += shiftY;
+                    }
+
+                    if (waveOn) {
+                        let waveOffset = sin(time * 4.0 + p.y * 0.05) * (3.0 * waveForce);
+                        dispX += waveOffset;
                     }
 
                     text(f.chars[charIndex], dispX, dispY);
@@ -1026,7 +1051,6 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 }
 
                 let maxCeiling = map(progress, 0, 1, 0.4, 0.85);
-                // -----------------------------------------------------
 
                 while (!best && attempts++ < 100) {
                     const scale = effectiveBaseScale * random(0.9, 1.1);
@@ -1340,7 +1364,13 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 },
                 chaos: {
                     scramble: document.getElementById("chkScramble").checked,
+                    scrambleForce: parseFloat(document.getElementById("rngScramble").value),
                     jitter: document.getElementById("chkJitter").checked,
+                    jitterForce: parseFloat(document.getElementById("rngJitter").value),
+                    pulse: document.getElementById("chkPulse").checked,
+                    pulseForce: parseFloat(document.getElementById("rngPulse").value),
+                    wave: document.getElementById("chkWave").checked,
+                    waveForce: parseFloat(document.getElementById("rngWave").value),
                 },
                 colors: {
                     maskA: document.getElementById("colMaskGradA").value,
@@ -1408,147 +1438,60 @@ Look, this is where you plant your words. Words that transform, creating life fr
             positive: {
                 flowerSet: "daisy",
                 wind: { active: true, strength: 0.2 },
-                chaos: { scramble: false, jitter: false },
-                colors: {
-                    maskA: "#CCFF00",
-                    maskB: "#FFFFFF",
-                    stem: "#00FF00",
-                    bgA: "#0000FF",
-                    bgB: "#CCFF00",
-                },
-                style: {
-                    fill: { active: true, gradient: false, dir: "radial" },
-                    outline: { active: true, width: 2 },
-                },
-                geometry: {
-                    scale: 1.1,
-                    fontSize: 18,
-                    font: "'Cormorant Garamond', serif",
-                },
+                chaos: { scramble: false, scrambleForce: 0.1, jitter: false, jitterForce: 0.5, pulse: true, pulseForce: 0.3, wave: true, waveForce: 0.4 },
+                colors: { maskA: "#CCFF00", maskB: "#FFFFFF", stem: "#00FF00", bgA: "#0000FF", bgB: "#CCFF00" },
+                style: { fill: { active: true, gradient: false, dir: "radial" }, outline: { active: true, width: 2 } },
+                geometry: { scale: 1.1, fontSize: 18, font: "'Cormorant Garamond', serif" },
             },
             negative: {
                 flowerSet: "rose",
                 wind: { active: true, strength: 0.1 },
-                chaos: { scramble: false, jitter: false },
-                colors: {
-                    maskA: "#000000",
-                    maskB: "#FF0000",
-                    stem: "#00FF00",
-                    bgA: "#FF0000",
-                    bgB: "#000000",
-                },
-                style: {
-                    fill: { active: true, gradient: true, dir: "vertical" },
-                    outline: { active: true, width: 1 },
-                },
-                geometry: {
-                    scale: 0.8,
-                    fontSize: 12,
-                    font: "'Grenze Gotisch', cursive",
-                },
+                chaos: { scramble: false, scrambleForce: 0.1, jitter: true, jitterForce: 0.2, pulse: true, pulseForce: 0.8, wave: false, waveForce: 0.5 },
+                colors: { maskA: "#000000", maskB: "#FF0000", stem: "#00FF00", bgA: "#FF0000", bgB: "#000000" },
+                style: { fill: { active: true, gradient: true, dir: "vertical" }, outline: { active: true, width: 1 } },
+                geometry: { scale: 0.8, fontSize: 12, font: "'Grenze Gotisch', cursive" },
             },
             chaos: {
                 flowerSet: "carnation",
                 wind: { active: true, strength: 2.0 },
-                chaos: { scramble: true, jitter: true },
-                colors: {
-                    maskA: "#FF00FF",
-                    maskB: "#00FF00",
-                    stem: "#00FF00",
-                    bgA: "#1a1a1a",
-                    bgB: "#330033",
-                },
-                style: {
-                    fill: { active: false, gradient: false, dir: "horizontal" },
-                    outline: { active: true, width: 4 },
-                },
-                geometry: { scale: 2, fontSize: 55, font: "'Space Mono', monospace" }, // <-- Cambiado aquí
+                chaos: { scramble: true, scrambleForce: 0.8, jitter: true, jitterForce: 1.5, pulse: true, pulseForce: 1.2, wave: true, waveForce: 1.8 },
+                colors: { maskA: "#FF00FF", maskB: "#00FF00", stem: "#00FF00", bgA: "#1a1a1a", bgB: "#330033" },
+                style: { fill: { active: false, gradient: false, dir: "horizontal" }, outline: { active: true, width: 4 } },
+                geometry: { scale: 2, fontSize: 55, font: "'Space Mono', monospace" },
             },
-
             editorial: {
                 flowerSet: "rose",
                 wind: { active: true, strength: 0.15 },
-                chaos: { scramble: false, jitter: false },
-                colors: {
-                    maskA: "#D90429",
-                    maskB: "#FFCAD4",
-                    stem: "#2B2D42",
-                    text: "#2B2D42",
-                    bgA: "#F2F0E9",
-                    bgB: "#F2F0E9",
-                },
-                style: {
-                    fill: { active: true, gradient: true, dir: "vertical" },
-                    outline: { active: true, width: 1 },
-                },
-                geometry: {
-                    scale: 1.0,
-                    fontSize: 24,
-                    font: "'Playfair Display', serif",
-                },
+                chaos: { scramble: false, scrambleForce: 0, jitter: false, jitterForce: 0, pulse: false, pulseForce: 0.1, wave: true, waveForce: 0.2 },
+                colors: { maskA: "#D90429", maskB: "#FFCAD4", stem: "#2B2D42", text: "#2B2D42", bgA: "#F2F0E9", bgB: "#F2F0E9" },
+                style: { fill: { active: true, gradient: true, dir: "vertical" }, outline: { active: true, width: 1 } },
+                geometry: { scale: 1.0, fontSize: 24, font: "'Playfair Display', serif" },
                 background: { mode: "solid", url: "", angle: 0, stretchY: 100 },
             },
-
             system: {
                 flowerSet: "daisy",
                 wind: { active: true, strength: 2 },
-                chaos: { scramble: true, jitter: true },
-                colors: {
-                    maskA: "#bbf451",
-                    maskB: "#ffffff",
-                    stem: "#e6e6e6",
-                    text: "#e6e6e6",
-                    bgA: "#262626",
-                    bgB: "#262626",
-                },
-                style: {
-                    fill: { active: true, gradient: false, dir: "radial" },
-                    outline: { active: true, width: 2 },
-                },
-                geometry: {
-                    scale: 1.2,
-                    fontSize: 16,
-                    font: "'JetBrains Mono', monospace",
-                },
+                chaos: { scramble: true, scrambleForce: 0.4, jitter: true, jitterForce: 0.5, pulse: false, pulseForce: 0.5, wave: true, waveForce: 1.2 },
+                colors: { maskA: "#bbf451", maskB: "#ffffff", stem: "#e6e6e6", text: "#e6e6e6", bgA: "#262626", bgB: "#262626" },
+                style: { fill: { active: true, gradient: false, dir: "radial" }, outline: { active: true, width: 2 } },
+                geometry: { scale: 1.2, fontSize: 16, font: "'JetBrains Mono', monospace" },
                 background: { mode: "solid", url: "", angle: 0, stretchY: 100 },
             },
-
             midnight: {
                 flowerSet: "orchid",
                 wind: { active: true, strength: 0.5 },
-                chaos: { scramble: false, jitter: true },
-                colors: {
-                    maskA: "#4361EE",
-                    maskB: "#4CC9F0",
-                    stem: "#4CC9F0",
-                    text: "#F8F9FA",
-                    bgA: "#050505",
-                    bgB: "#101020",
-                },
-                style: {
-                    fill: { active: true, gradient: true, dir: "horizontal" },
-                    outline: { active: false, width: 0 },
-                },
+                chaos: { scramble: false, scrambleForce: 0.1, jitter: true, jitterForce: 0.3, pulse: true, pulseForce: 0.5, wave: true, waveForce: 0.8 },
+                colors: { maskA: "#4361EE", maskB: "#4CC9F0", stem: "#4CC9F0", text: "#F8F9FA", bgA: "#050505", bgB: "#101020" },
+                style: { fill: { active: true, gradient: true, dir: "horizontal" }, outline: { active: false, width: 0 } },
                 geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" },
                 background: { mode: "gradient", url: "", angle: 135, stretchY: 100 },
             },
-
             warning: {
                 flowerSet: "carnation",
                 wind: { active: false, strength: 0 },
-                chaos: { scramble: false, jitter: false },
-                colors: {
-                    maskA: "#000000",
-                    maskB: "#262626",
-                    stem: "#000000",
-                    text: "#000000",
-                    bgA: "#FF5400",
-                    bgB: "#FF5400",
-                },
-                style: {
-                    fill: { active: false, gradient: false, dir: "vertical" },
-                    outline: { active: true, width: 3 },
-                },
+                chaos: { scramble: false, scrambleForce: 0, jitter: false, jitterForce: 0, pulse: true, pulseForce: 1.5, wave: false, waveForce: 0 },
+                colors: { maskA: "#000000", maskB: "#262626", stem: "#000000", text: "#000000", bgA: "#FF5400", bgB: "#FF5400" },
+                style: { fill: { active: false, gradient: false, dir: "vertical" }, outline: { active: true, width: 3 } },
                 geometry: { scale: 1.8, fontSize: 60, font: "'BioRhyme', serif" },
                 background: { mode: "solid", url: "", angle: 0, stretchY: 100 },
             },
@@ -1586,7 +1529,16 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     active: Math.random() > 0.5,
                     strength: parseFloat((Math.random() * 2).toFixed(1)),
                 },
-                chaos: { scramble: Math.random() > 0.8, jitter: Math.random() > 0.7 },
+                chaos: { 
+                    scramble: Math.random() > 0.8, 
+                    scrambleForce: parseFloat((Math.random() * 1.0).toFixed(2)),
+                    jitter: Math.random() > 0.7,
+                    jitterForce: parseFloat((Math.random() * 2.0).toFixed(2)),
+                    pulse: Math.random() > 0.5,
+                    pulseForce: parseFloat((Math.random() * 1.5).toFixed(2)),
+                    wave: Math.random() > 0.4,
+                    waveForce: parseFloat((Math.random() * 1.5).toFixed(2))
+                },
                 colors: {
                     maskA: randomColor(),
                     maskB: randomColor(),
@@ -1631,10 +1583,20 @@ Look, this is where you plant your words. Words that transform, creating life fr
 
             document.getElementById("chkWind").checked = state.wind.active;
             document.getElementById("rngWind").value = state.wind.strength;
-            updateUI("lblWind", "FORCE", state.wind.strength, "");
 
             document.getElementById("chkScramble").checked = state.chaos.scramble;
+            if (state.chaos.scrambleForce !== undefined) { document.getElementById("rngScramble").value = state.chaos.scrambleForce; }
+            
             document.getElementById("chkJitter").checked = state.chaos.jitter;
+            if (state.chaos.jitterForce !== undefined) { document.getElementById("rngJitter").value = state.chaos.jitterForce; }
+            
+            if (document.getElementById("chkPulse")) document.getElementById("chkPulse").checked = state.chaos.pulse || false;
+            if (state.chaos.pulseForce !== undefined) { document.getElementById("rngPulse").value = state.chaos.pulseForce; }
+            
+            if (document.getElementById("chkWave")) document.getElementById("chkWave").checked = state.chaos.wave || false;
+            if (state.chaos.waveForce !== undefined) { document.getElementById("rngWave").value = state.chaos.waveForce; }
+
+
 
             document.getElementById("colMaskGradA").value = state.colors.maskA;
             document.getElementById("colMaskGradB").value = state.colors.maskB;
