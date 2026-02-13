@@ -201,7 +201,10 @@ This flora was generated from a unique text input. Its morphology is influenced 
 
           <button
             type="button"
-            onClick={() => navigate(`/laboratory?floraId=${encodeURIComponent(derived.id)}`)}
+            onClick={() => {
+              const url = `/laboratory?floraId=${encodeURIComponent(derived.id)}`;
+              window.open(url, "_blank", "noopener,noreferrer");
+            }}
             className="mb-4 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline"
           >
             <span>Open in laboratory</span>
