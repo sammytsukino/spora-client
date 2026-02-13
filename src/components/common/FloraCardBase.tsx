@@ -85,7 +85,7 @@ export default function FloraCardBase({
 
       <div className={`flex flex-col gap-2 ${isGarden ? 'px-6 pb-6' : 'p-0'}`}>
         <h2
-          className={`font-bizud-mincho-bold leading-none uppercase tracking-tight text-[var(--spora-primary)] ${
+          className={`font-bizud-mincho-bold leading-none uppercase tracking-tight text-[var(--spora-primary)] line-clamp-1 ${
             isGarden
               ? 'text-[28px]'
               : 'text-lg md:text-xl mb-1'

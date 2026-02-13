@@ -49,7 +49,7 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
         />
       </div>
       <div>
-        <h2 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-[0.9] uppercase tracking-tight mb-3 text-[var(--spora-primary)]">
+        <h2 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-[0.9] uppercase tracking-tight mb-3 text-[var(--spora-primary)] line-clamp-1">
           {flora.title}
         </h2>
         <p className="font-supply-mono text-[11px] md:text-xs italic opacity-90 line-clamp-2 mb-3 text-[var(--spora-primary)]">

@@ -497,7 +497,7 @@
 <body>
     <aside id="ui">
         <div style="padding-bottom: 20px; display: flex; justify-content: center">
-            <a id="homeLogoLink" href="/">
+            <a id="homeLogoLink" href="/" target="_top">
                 <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1770906020/logo-threads_dcedtk.png"
                     alt="Logo" style="width: 200px; height: 138px; display: block; object-fit: cover;" />
             </a>
@@ -1323,7 +1323,7 @@
 
                 s.innerText = status === "sealed" ? "SEALED" : "BLOSSOMING";
                 setTimeout(() => {
-                    window.open(`/?view=flora&id=${data._id}`, "_blank");
+                    window.open(`/flora/${data._id}`, "_blank");
                 }, 800);
             } catch (err) {
                 s.innerText = "NETWORK ERROR";

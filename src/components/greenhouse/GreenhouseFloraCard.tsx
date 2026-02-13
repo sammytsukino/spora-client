@@ -48,7 +48,7 @@ export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraC
           }}
         />
       </div>
-      <h3 className="font-bizud-mincho-bold text-lg md:text-xl leading-tight uppercase mb-1 text-[var(--spora-primary)]">
+      <h3 className="font-bizud-mincho-bold text-lg md:text-xl leading-tight uppercase mb-1 text-[var(--spora-primary)] line-clamp-1">
         {flora.title}
       </h3>
       <p className="font-supply-mono text-[9px] md:text-[10px] italic opacity-90 line-clamp-2 mb-1">
