@@ -1099,7 +1099,15 @@
             const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
             document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
-            const words = txt.split(/\s+/), count = constrain(ceil(words.length / 12), 2, 20);
+            
+            // Calcular divisor adaptativo basado en tamaño de flor y fuente
+            // Flores pequeñas + fuente grande = más flores (divisor menor)
+            // Flores grandes + fuente pequeña = menos flores (divisor mayor)
+            const flowerSizeFactor = map(sS, 0.5, 2.5, 0.5, 2.0); // Flor grande = factor mayor
+            const fontSizeFactor = map(bS, 10, 80, 2.0, 0.5); // Fuente grande = factor menor
+            const adaptiveDivisor = constrain(12 * flowerSizeFactor * fontSizeFactor, 3, 50);
+            
+            const words = txt.split(/\s+/), count = constrain(ceil(words.length / adaptiveDivisor), 2, 20);
             let dF = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0, eS = sS * dF;
             let chunks = [];
             if (words.length < count) for (let i = 0; i < count; i++) chunks.push(txt.split(""));
