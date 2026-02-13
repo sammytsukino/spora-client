@@ -454,12 +454,7 @@
         <div style="padding-bottom: 20px; display: flex; justify-content: center">
             <a id="homeLogoLink" href="/">
                 <img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1770906020/logo-threads_dcedtk.png"
-                    alt="Logo" style="
-              width: 200px;
-              height: 138px;
-              display: block;
-              object-fit: cover;
-            " />
+                    alt="Logo" style="width: 200px; height: 138px; display: block; object-fit: cover;" />
             </a>
         </div>
         <section>
@@ -471,46 +466,26 @@
         <section>
             <h2>YOUR WORDS</h2>
             <div class="control-box">
-                <textarea id="txtInp" oninput="
-              triggerRegen();
-              updateCharCount();
-            " placeholder="Write something meaningful..." style="resize: none">
+                <textarea id="txtInp" oninput="triggerRegen(); updateCharCount();" placeholder="Write something meaningful..." style="resize: none">
 Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</textarea>
             </div>
-            <div id="charCount" style="
-            text-align: left;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--spora-dark);
-            margin-top: 4px;
-            opacity: 0.7;
-          "></div>
+            <div id="charCount" style="text-align: left; font-family: var(--font-mono); font-size: 10px; color: var(--spora-dark); margin-top: 4px; opacity: 0.7;"></div>
         </section>
 
         <section>
             <h2>VISUAL MOODS</h2>
             <div class="btn-group">
                 <button onclick="applyVisualState(moodProfiles.positive)">JOY</button>
-                <button onclick="applyVisualState(moodProfiles.negative)">
-                    VOID
-                </button>
+                <button onclick="applyVisualState(moodProfiles.negative)">VOID</button>
                 <button onclick="applyVisualState(moodProfiles.chaos)">GLITCH</button>
             </div>
             <div class="btn-group" style="margin-bottom: 5px">
-                <button onclick="applyVisualState(moodProfiles.editorial)">
-                    EDITORIAL
-                </button>
-                <button onclick="applyVisualState(moodProfiles.system)">
-                    SYSTEM
-                </button>
+                <button onclick="applyVisualState(moodProfiles.editorial)">EDITORIAL</button>
+                <button onclick="applyVisualState(moodProfiles.system)">SYSTEM</button>
             </div>
             <div class="btn-group">
-                <button onclick="applyVisualState(moodProfiles.midnight)">
-                    MIDNIGHT
-                </button>
-                <button onclick="applyVisualState(moodProfiles.warning)">
-                    WARNING
-                </button>
+                <button onclick="applyVisualState(moodProfiles.midnight)">MIDNIGHT</button>
+                <button onclick="applyVisualState(moodProfiles.warning)">WARNING</button>
             </div>
 
             <button class="btn-random" style="margin-top: 10px" onclick="randomizeState()">
@@ -530,20 +505,15 @@ Look, this is where you plant your words. Words that transform, creating life fr
                             <option value="'JetBrains Mono', monospace">JetBrains Mono (Dev)</option>
                             <option value="'Inter', sans-serif">Inter (UI Standard)</option>
                             <option value="'DM Sans', sans-serif">DM Sans (Geometric)</option>
-
                             <option value="'Darker Grotesque', sans-serif">Darker Grotesque (Raw)</option>
-
                             <option value="'Cormorant Garamond', serif">Cormorant (Elegant)</option>
                             <option value="'Libre Baskerville', serif">Baskerville (Book)</option>
                             <option value="'Playfair Display', serif">Playfair Display (Fashion)</option>
                             <option value="'Gloock', serif">Gloock (Contrast)</option>
                             <option value="'BIZ UDMincho', serif">BIZ UDMincho (Mincho)</option>
-
-
                             <option value="'Space Mono', monospace">Space Mono (Tech)</option>
                             <option value="'Xanh Mono', monospace">Xanh Mono (Hybrid)</option>
                             <option value="'Syne', sans-serif">Syne (Art House)</option>
-
                             <option value="'BioRhyme', serif">BioRhyme (Brutalist)</option>
                             <option value="'Eczar', serif">Eczar (Spiky)</option>
                             <option value="'Grenze Gotisch', cursive">Grenze Gotisch (Dark)</option>
@@ -551,23 +521,13 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     </div>
 
                     <div class="control-box">
-                        <div class="row-h">
-                            <label id="lblSize">SIZE: 16px</label>
-                        </div>
-                        <input type="range" id="rngSize" min="10" max="80" value="16" oninput="
-                  updateUI('lblSize', 'SIZE', this.value, 'px');
-                  triggerVisuals();
-                " />
+                        <div class="row-h"><label id="lblSize">SIZE: 16px</label></div>
+                        <input type="range" id="rngSize" min="10" max="80" value="16" oninput="updateUI('lblSize', 'SIZE', this.value, 'px'); triggerVisuals();" />
                     </div>
 
                     <div class="control-box">
-                        <div class="row-h">
-                            <label id="lblScale">SCALE: 1.5x</label>
-                        </div>
-                        <input type="range" id="rngScale" min="0.5" max="2.5" step="0.1" value="1.5" oninput="
-                  updateUI('lblScale', 'SCALE', this.value, 'x');
-                  triggerVisuals();
-                " />
+                        <div class="row-h"><label id="lblScale">SCALE: 1.5x</label></div>
+                        <input type="range" id="rngScale" min="0.5" max="2.5" step="0.1" value="1.5" oninput="updateUI('lblScale', 'SCALE', this.value, 'x'); triggerVisuals();" />
                     </div>
                 </div>
             </details>
@@ -593,8 +553,22 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     </div>
 
                     <div class="control-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
-                        <input type="color" id="colMaskGradA" value="#0000ff" title="Color A" />
-                        <input type="color" id="colMaskGradB" value="#00ffea" title="Color B" />
+                        <input type="color" id="colMaskGradA" value="#0000ff" title="Color A" oninput="triggerVisuals()" />
+                        <input type="color" id="colMaskGradB" value="#00ffea" title="Color B" oninput="triggerVisuals()" />
+                    </div>
+
+                    <div class="row-h">
+                        <label>Auto-Contrast</label>
+                        <input type="checkbox" id="chkAutoContrast" checked onchange="triggerVisuals()" />
+                    </div>
+
+                    <div class="control-box">
+                        <div class="row-h"><label>STEM COLOR</label></div>
+                        <input type="color" id="colStem" value="#15ff00" oninput="triggerVisuals()" />
+                    </div>
+                    <div class="control-box">
+                        <div class="row-h"><label>TEXT COLOR</label></div>
+                        <input type="color" id="colTextSolid" value="#ffffff" oninput="triggerVisuals()" />
                     </div>
                 </div>
             </details>
@@ -608,10 +582,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     </div>
                     <div class="control-box">
                         <label id="lblOutlineWidth">WIDTH: 1px</label>
-                        <input type="range" id="rngOutlineWidth" min="1" max="6" step="1" value="1" oninput="
-                  updateUI('lblOutlineWidth', 'WIDTH', this.value, 'px');
-                  triggerVisuals();
-                " />
+                        <input type="range" id="rngOutlineWidth" min="1" max="6" step="1" value="1" oninput="updateUI('lblOutlineWidth', 'WIDTH', this.value, 'px'); triggerVisuals();" />
                     </div>
                     <div class="control-box">
                         <input type="color" id="colOutlineSolid" value="#ffffff" />
@@ -650,7 +621,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 <div class="folder-body">
                     <div class="control-box">
                         <label>MODE</label>
-                        <select id="selBgMode" onchange="updateBackground()">
+                        <select id="selBgMode" onchange="updateBackground(); triggerVisuals();">
                             <option value="gradient">Gradient</option>
                             <option value="solid">Solid Color</option>
                             <option value="tile">Image Pattern</option>
@@ -659,65 +630,30 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     </div>
                     <div class="control-box">
                         <label>URL</label>
-                        <input type="text" id="inpBgUrl"
-                            value="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/cosmos-flower-on-black-background-mike-hill.jpg"
-                            onchange="updateBackground()" />
-                    </div>
-                    <div class="control-box">
-                        <label id="lblBgStretchY">V-STRETCH: 100%</label>
-                        <input type="range" id="rngBgStretchY" min="100" max="300" value="100" oninput="
-                  updateUI('lblBgStretchY', 'V-STRETCH', this.value, '%');
-                  updateBackground();
-                " />
+                        <input type="text" id="inpBgUrl" value="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/cosmos-flower-on-black-background-mike-hill.jpg" onchange="updateBackground()" />
                     </div>
                     <div class="control-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
-                        <input type="color" id="colBgGradA" value="#0000ff" oninput="updateBackground()" />
+                        <input type="color" id="colBgGradA" value="#0000ff" oninput="updateBackground(); triggerVisuals();" />
                         <input type="color" id="colBgGradB" value="#ffffff" oninput="updateBackground()" />
                     </div>
                     <div class="control-box">
                         <label id="lblBgAngle">ANGLE: 180deg</label>
-                        <input type="range" id="rngBgAngle" min="0" max="360" value="180" oninput="
-                  updateUI('lblBgAngle', 'ANGLE', this.value, 'deg');
-                  updateBackground();
-                " />
+                        <input type="range" id="rngBgAngle" min="0" max="360" value="180" oninput="updateUI('lblBgAngle', 'ANGLE', this.value, 'deg'); updateBackground();" />
                     </div>
                 </div>
             </details>
         </section>
 
-        <input type="hidden" id="colStem" value="#15ff00" />
-        <input type="hidden" id="colTextSolid" value="#ffffff" />
-
-        <section style="
-          margin-top: auto;
-          padding-top: 25px;
-          border-top: 2px solid var(--spora-dark);
-        ">
+        <section style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark);">
             <h2>SYSTEM EXPORT</h2>
-            <button class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">
-                REGENERATE SEED
-            </button>
+            <button class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
             <div class="btn-group">
                 <button onclick="downloadState()">SAVE JSON</button>
                 <button onclick="saveFullArt()">RENDER PNG</button>
             </div>
-
             <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display: none" />
-            <button style="margin-top: 10px; border-style: dotted"
-                onclick="document.getElementById('fileInput').click()">
-                LOAD JSON FILE
-            </button>
-
-            <div class="status" id="statusText" style="
-            margin-top: 15px;
-            font-family: var(--font-mono);
-            font-size: 9px;
-            text-align: center;
-            color: var(--spora-dark);
-            opacity: 0.6;
-          ">
-                SYSTEM READY
-            </div>
+            <button style="margin-top: 10px; border-style: dotted" onclick="document.getElementById('fileInput').click()">LOAD JSON FILE</button>
+            <div class="status" id="statusText" style="margin-top: 15px; font-family: var(--font-mono); font-size: 9px; text-align: center; color: var(--spora-dark); opacity: 0.6;">SYSTEM READY</div>
         </section>
     </aside>
 
@@ -725,20 +661,11 @@ Look, this is where you plant your words. Words that transform, creating life fr
 
     <div id="confirmModal" class="confirm-modal-overlay" aria-hidden="true">
         <div class="confirm-modal" role="document">
-            <h2 id="confirmModalTitle" class="confirm-modal-title">
-                Leave the Laboratory?
-            </h2>
-            <p id="confirmModalDesc" class="confirm-modal-desc">
-                If you leave the Laboratory you'll lose the current words, tweaks and
-                generation settings for this flora.
-            </p>
+            <h2 id="confirmModalTitle" class="confirm-modal-title">Leave the Laboratory?</h2>
+            <p id="confirmModalDesc" class="confirm-modal-desc">If you leave the Laboratory you'll lose the current words, tweaks and generation settings for this flora.</p>
             <div class="confirm-modal-actions">
-                <button id="confirmCancelBtn" type="button" class="confirm-modal-btn">
-                    STAY HERE
-                </button>
-                <button id="confirmOkBtn" type="button" class="confirm-modal-btn confirm-modal-btn-confirm">
-                    GO HOME
-                </button>
+                <button id="confirmCancelBtn" type="button" class="confirm-modal-btn">STAY HERE</button>
+                <button id="confirmOkBtn" type="button" class="confirm-modal-btn confirm-modal-btn-confirm">GO HOME</button>
             </div>
         </div>
     </div>
@@ -785,860 +712,246 @@ Look, this is where you plant your words. Words that transform, creating life fr
         };
 
         let loadedAssets = {};
-        let debounceTimer;
-        let visualDebounce;
+        let debounceTimer, visualDebounce;
         const BASE_SIZE = 280;
 
         function preload() {
-            Object.keys(maskUrls).forEach((setName) => {
-                loadedAssets[setName] = maskUrls[setName].map((url) =>
-                    loadImage(url),
-                );
-            });
+            Object.keys(maskUrls).forEach(s => loadedAssets[s] = maskUrls[s].map(u => loadImage(u)));
         }
 
         function setup() {
-            const container = document.getElementById("canvas-container");
             const cnv = createCanvas(1, 1);
             cnv.parent("canvas-container");
-            cnv.style("display", "block");
-
             pixelDensity(1);
             frameRate(30);
             updateBackground();
-
-            setTimeout(() => windowResized(), 0);
+            setTimeout(windowResized, 0);
         }
 
-        function forceAlpha(c) {
-            c.setAlpha(255);
-            return c;
+        function forceAlpha(c) { c.setAlpha(255); return c; }
+
+        function getContrastColor(hex) {
+            if (!hex) return "#ffffff";
+            const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? "#000000" : "#ffffff";
         }
 
         function draw() {
             clear();
+            const ui = id => document.getElementById(id);
+            const windOn = ui("chkWind").checked, windF = parseFloat(ui("rngWind").value);
+            const scrambleOn = ui("chkScramble").checked, scrambleF = parseFloat(ui("rngScramble").value);
+            const jitterOn = ui("chkJitter").checked, jitterF = parseFloat(ui("rngJitter").value);
+            const pulseOn = ui("chkPulse").checked, pulseF = parseFloat(ui("rngPulse").value);
+            const waveOn = ui("chkWave").checked, waveF = parseFloat(ui("rngWave").value);
+            const maskOn = ui("chkMask").checked, outlineOn = ui("chkOutline").checked;
+            const fillGradOn = ui("chkFillGradient").checked, fillDir = ui("selFillDir").value;
+            const autoContrast = ui("chkAutoContrast").checked;
 
-            const windOn = document.getElementById("chkWind").checked;
-            const windForce = parseFloat(document.getElementById("rngWind").value);
+            const cStem = color(ui("colStem").value);
+            const cFillA = forceAlpha(color(ui("colMaskGradA").value)), cFillB = forceAlpha(color(ui("colMaskGradB").value));
+            const cOutline = forceAlpha(color(ui("colOutlineSolid").value));
 
-            const scrambleOn = document.getElementById("chkScramble").checked;
-            const scrambleForce = parseFloat(document.getElementById("rngScramble").value);
+            if (autoContrast) {
+                const ref = maskOn ? ui("colMaskGradA").value : ui("colBgGradA").value;
+                ui("colTextSolid").value = getContrastColor(ref);
+            }
+            const cText = color(ui("colTextSolid").value);
 
-            const jitterOn = document.getElementById("chkJitter").checked;
-            const jitterForce = parseFloat(document.getElementById("rngJitter").value);
-
-            const pulseOn = document.getElementById("chkPulse").checked;
-            const pulseForce = parseFloat(document.getElementById("rngPulse").value);
-
-            const waveOn = document.getElementById("chkWave").checked;
-            const waveForce = parseFloat(document.getElementById("rngWave").value);
-            const maskOn = document.getElementById("chkMask").checked;
-            const outlineOn = document.getElementById("chkOutline").checked;
-            const fillGradientOn =
-                document.getElementById("chkFillGradient").checked;
-            const selFont = document.getElementById("selFont").value;
-            const fillDir = document.getElementById("selFillDir").value;
-
-
-            textFont(selFont);
-
-            const fillSolidColor = forceAlpha(
-                color(document.getElementById("colMaskGradA").value),
-            );
-            const fillGradA = forceAlpha(
-                color(document.getElementById("colMaskGradA").value),
-            );
-            const fillGradB = forceAlpha(
-                color(document.getElementById("colMaskGradB").value),
-            );
-            const outlineColor = forceAlpha(
-                color(document.getElementById("colOutlineSolid").value),
-            );
-            const textColor = color(255);
-            const cStem = color(document.getElementById("colStem").value);
-
+            textFont(ui("selFont").value);
             const time = millis() * 0.001;
 
             flowers.forEach((f, i) => {
-                let swayX = 0,
-                    swayRot = 0,
-                    bend = f.bend;
-
+                let swayX = 0, swayR = 0, bend = f.bend;
                 if (windOn) {
-                    const noise = sin(time + i + f.x * 0.01) + sin(time * 2 + i);
-                    bend += noise * 35 * windForce;
-                    swayRot = noise * 0.05 * windForce;
-                    swayX = noise * 35 * windForce;
+                    const n = sin(time + i + f.x * 0.01) + sin(time * 2 + i);
+                    bend += n * 35 * windF; swayR = n * 0.05 * windF; swayX = n * 35 * windF;
                 }
 
-                let depthBrightness = map(f.ty, height * 0.1, height * 0.8, 0.3, 1.0);
-                depthBrightness = constrain(depthBrightness, 0.3, 1.0);
-                stroke(
-                    red(cStem) * depthBrightness,
-                    green(cStem) * depthBrightness,
-                    blue(cStem) * depthBrightness,
-                    255,
-                );
-                strokeWeight(lerp(5, 15, f.h / height));
-                noFill();
+                let dBr = constrain(map(f.ty, height * 0.1, height * 0.8, 0.3, 1.0), 0.3, 1.0);
+                stroke(red(cStem) * dBr, green(cStem) * dBr, blue(cStem) * dBr);
+                strokeWeight(lerp(5, 15, f.h / height)); noFill();
 
-                const p0x = f.x,
-                    p0y = height + 10;
-                const p2x = f.tx + swayX,
-                    p2y = f.ty;
-                const p1x = p0x + bend * 0.5,
-                    p1y = p2y + (p0y - p2y) * 0.4;
-
+                const p0x = f.x, p0y = height + 10, p2x = f.tx + swayX, p2y = f.ty;
+                const p1x = p0x + bend * 0.5, p1y = p2y + (p0y - p2y) * 0.4;
                 beginShape();
                 for (let t = 0; t <= 1; t += 0.05) {
-                    const mt = 1 - t;
-                    vertex(
-                        mt * mt * p0x + 2 * mt * t * p1x + t * t * p2x,
-                        mt * mt * p0y + 2 * mt * t * p1y + t * t * p2y,
-                    );
+                    let mt = 1 - t;
+                    vertex(mt * mt * p0x + 2 * mt * t * p1x + t * t * p2x, mt * mt * p0y + 2 * mt * t * p1y + t * t * p2y);
                 }
                 endShape();
 
-                push();
-                translate(p2x, p2y);
-                rotate(swayRot);
-
-                if (pulseOn) {
-                    let organicBreath = sin(time * 1.2 + i) * 0.7 + sin(time * 0.6 + i * 1.5) * 0.3;
-                    let pulseScale = 1.0 + organicBreath * (0.04 * pulseForce);
-                    scale(pulseScale);
-                }
-
-                let fillT = 0;
-                if (fillGradientOn) {
-                    if (fillDir === "vertical") {
-                        fillT = constrain(map(f.ty, 0, height, 0, 1), 0, 1);
-                    } else if (fillDir === "horizontal") {
-                        fillT = constrain(map(f.tx, 0, width, 0, 1), 0, 1);
-                    } else if (fillDir === "radial") {
-                        let d = dist(f.tx, f.ty, width / 2, height / 2);
-                        let maxD = dist(0, 0, width / 2, height / 2);
-                        fillT = constrain(map(d, 0, maxD, 0, 1), 0, 1);
-                    }
-                }
+                push(); translate(p2x, p2y); rotate(swayR);
+                if (pulseOn) scale(1.0 + (sin(time * 1.2 + i) * 0.7 + sin(time * 0.6 + i * 1.5) * 0.3) * (0.04 * pulseF));
 
                 if (maskOn && f.graphic) {
-                    const finalFill = fillGradientOn
-                        ? forceAlpha(lerpColor(fillGradA, fillGradB, fillT))
-                        : fillSolidColor;
-                    tint(finalFill);
-                    imageMode(CENTER);
-                    noStroke();
-                    image(f.graphic, 0, 0);
-                    noTint();
+                    let fillT = 0;
+                    if (fillGradOn) {
+                        if (fillDir === "vertical") fillT = constrain(map(f.ty, 0, height, 0, 1), 0, 1);
+                        else if (fillDir === "horizontal") fillT = constrain(map(f.tx, 0, width, 0, 1), 0, 1);
+                        else { let d = dist(f.tx, f.ty, width / 2, height / 2); fillT = constrain(map(d, 0, dist(0, 0, width / 2, height / 2), 0, 1), 0, 1); }
+                    }
+                    tint(fillGradOn ? lerpColor(cFillA, cFillB, fillT) : cFillA);
+                    imageMode(CENTER); noStroke(); image(f.graphic, 0, 0); noTint();
                 }
 
-                if (outlineOn && f.graphicOutline) {
-                    tint(outlineColor);
-                    imageMode(CENTER);
-                    noStroke();
-                    image(f.graphicOutline, 0, 0);
-                    noTint();
-                }
+                if (outlineOn && f.graphicOutline) { tint(cOutline); imageMode(CENTER); image(f.graphicOutline, 0, 0); noTint(); }
 
-                noStroke();
-                textSize(f.fontSize);
-                textAlign(CENTER, CENTER);
-                fill(textColor);
-
+                noStroke(); textSize(f.fontSize); textAlign(CENTER, CENTER); fill(cText);
                 f.points.forEach((p, idx) => {
-                    let charIndex = idx % f.chars.length;
-                    let dispX = p.x;
-                    let dispY = p.y;
-
-                    if (scrambleOn && scrambleForce > 0) {
-                        let glitchNoise = noise(idx * 0.2, time * 2.0);
-                        let threshold = 1.0 - (scrambleForce * 0.8); 
-                        
-                        if (glitchNoise > threshold) {
-                            let timeBlock = floor(time * 5.0); 
-                            let randomOffset = floor(noise(idx, timeBlock) * f.chars.length);
-                            charIndex = (charIndex + randomOffset) % f.chars.length;
-                        }
+                    let cIdx = idx % f.chars.length, dx = p.x, dy = p.y;
+                    if (scrambleOn && scrambleF > 0 && noise(idx * 0.2, time * 2) > (1 - scrambleF * 0.8)) {
+                        cIdx = (cIdx + floor(noise(idx, floor(time * 5)) * f.chars.length)) % f.chars.length;
                     }
-
                     if (jitterOn) {
-                        let dynamicChunk = map(f.fontSize, 10, 80, 10, 3);
-                        dynamicChunk = floor(constrain(dynamicChunk, 1, 10));
-                        const chunkId = floor(idx / dynamicChunk);
-                        const snapSpeed = 8.0;
-                        const timeStep = floor(time * snapSpeed);
-                        let sizeFactor = map(f.fontSize, 10, 80, 0.5, 2.5);
-                        sizeFactor = constrain(sizeFactor, 0.5, 3.0);
-
-                        const baseAmp = jitterForce * 5.0;
-                        const amp = baseAmp * sizeFactor;
-                        const noiseX = noise(chunkId * 0.1, timeStep * 0.5);
-                        const noiseY = noise(chunkId * 0.1 + 500, timeStep * 0.5);
-                        const shiftX = map(noiseX, 0, 1, -amp, amp);
-                        const shiftY = map(noiseY, 0, 1, -amp, amp);
-                        dispX += shiftX;
-                        dispY += shiftY;
+                        let cid = floor(idx / floor(constrain(map(f.fontSize, 10, 80, 10, 3), 1, 10)));
+                        let amp = jitterF * 5 * constrain(map(f.fontSize, 10, 80, 0.5, 2.5), 0.5, 3.0);
+                        dx += map(noise(cid * 0.1, floor(time * 8) * 0.5), 0, 1, -amp, amp);
+                        dy += map(noise(cid * 0.1 + 500, floor(time * 8) * 0.5), 0, 1, -amp, amp);
                     }
-
-                    if (waveOn) {
-                        let waveOffset = sin(time * 4.0 + p.y * 0.05) * (3.0 * waveForce);
-                        dispX += waveOffset;
-                    }
-
-                    text(f.chars[charIndex], dispX, dispY);
+                    if (waveOn) dx += sin(time * 4 + p.y * 0.05) * (3 * waveF);
+                    text(f.chars[cIdx], dx, dy);
                 });
                 pop();
             });
         }
 
         function generateGarden() {
-            flowers.forEach((f) => {
-                f.graphic.remove();
-                if (f.graphicOutline) f.graphicOutline.remove();
-            });
+            flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
-
-            const text = document.getElementById("txtInp").value.trim();
-            if (!text) return;
-
-            const baseSize = parseInt(document.getElementById("rngSize").value);
-            const sliderScale = parseFloat(
-                document.getElementById("rngScale").value,
-            );
-            const outlineWidth = parseInt(
-                document.getElementById("rngOutlineWidth").value,
-            );
-
-            const setNames = Object.keys(loadedAssets);
-            const activeSetName =
-                targetFlowerSet && loadedAssets[targetFlowerSet]
-                    ? targetFlowerSet
-                    : setNames[Math.floor(Math.random() * setNames.length)];
-            lastUsedSet = activeSetName;
-            const activeImages = loadedAssets[activeSetName];
-
-            document.getElementById("statusText").innerText =
-                `SET: ${activeSetName.toUpperCase()} | CALC...`;
-
-            const words = text.split(/\s+/);
-            const count = constrain(ceil(words.length / 12), 2, 20);
-            let densityFactor = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0;
-            const effectiveBaseScale = sliderScale * densityFactor;
-
+            const txt = document.getElementById("txtInp").value.trim(); if (!txt) return;
+            const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
+            const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
+            lastUsedSet = activeS; const imgs = loadedAssets[activeS];
+            document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
+            const words = txt.split(/\s+/), count = constrain(ceil(words.length / 12), 2, 20);
+            let dF = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0, eS = sS * dF;
             let chunks = [];
-            if (words.length < count) {
-                for (let i = 0; i < count; i++) chunks.push(text.split(""));
-            } else {
-                const wordsPerFlower = ceil(words.length / count);
-                for (let i = 0; i < count; i++) {
-                    let start = i * wordsPerFlower;
-                    let segment = words.slice(start, start + wordsPerFlower);
-                    if (segment.length > 0) chunks.push(segment.join(" ").split(""));
-                }
-                while (chunks.length < count) chunks.push(text.split(""));
-            }
-
+            if (words.length < count) for (let i = 0; i < count; i++) chunks.push(txt.split(""));
+            else { let wPF = ceil(words.length / count); for (let i = 0; i < count; i++) chunks.push(words.slice(i * wPF, (i + 1) * wPF).join(" ").split("")); }
             const maxW = min(width, 1400);
-
             for (let i = 0; i < count; i++) {
-                let best = null,
-                    attempts = 0;
-
-                let progress = 0;
-                if (count > 1) {
-                    progress = i / (count - 1);
-                }
-
-                let maxCeiling = map(progress, 0, 1, 0.4, 0.85);
-
-                while (!best && attempts++ < 100) {
-                    const scale = effectiveBaseScale * random(0.9, 1.1);
-                    const radius = (BASE_SIZE * scale) / 2 + 5;
-                    const spread = maxW * map(effectiveBaseScale, 0.5, 2.5, 0.35, 0.5);
-                    const tx = width / 2 + random(-spread, spread);
-
-                    const ty = height - height * random(0.15, maxCeiling);
-
-                    if (
-                        flowers.some((f) => dist(tx, ty, f.tx, f.ty) < radius + f.radius)
-                    )
-                        continue;
-
-                    const img = random(activeImages);
-                    const fontSize = baseSize * random(0.9, 1.1);
-                    const data = processImage(img, fontSize, scale, outlineWidth);
-                    best = {
-                        x: width / 2,
-                        tx,
-                        ty,
-                        h: height - ty,
-                        bend: random(-100, 100),
-                        chars: chunks[i],
-                        points: data.points,
-                        graphic: data.pg,
-                        graphicOutline: data.pgOutline,
-                        source: img,
-                        fontSize,
-                        radius,
-                        relScale: scale / sliderScale,
-                        relFont: fontSize / baseSize,
-                    };
+                let best = null, att = 0;
+                while (!best && att++ < 100) {
+                    const sc = eS * random(0.9, 1.1), rad = (BASE_SIZE * sc) / 2 + 5, spr = maxW * map(eS, 0.5, 2.5, 0.35, 0.5);
+                    const tx = width / 2 + random(-spr, spr), ty = height - height * random(0.15, map(i / (count - 1 || 1), 0, 1, 0.4, 0.85));
+                    if (flowers.some(f => dist(tx, ty, f.tx, f.ty) < rad + f.radius)) continue;
+                    const img = random(imgs), fz = bS * random(0.9, 1.1), data = processImage(img, fz, sc, oW);
+                    best = { x: width / 2, tx, ty, h: height - ty, bend: random(-100, 100), chars: chunks[i] || chunks[0], points: data.points, graphic: data.pg, graphicOutline: data.pgOutline, source: img, fontSize: fz, radius: rad, relScale: sc / sS, relFont: fz / bS };
                 }
                 if (best) flowers.push(best);
             }
-
             flowers.sort((a, b) => a.ty - b.ty);
-            document.getElementById("statusText").innerText =
-                `READY | BLOOMS: ${flowers.length}`;
+            document.getElementById("statusText").innerText = `READY | BLOOMS: ${flowers.length}`;
         }
 
         function updateVisuals() {
-            const baseSize = parseInt(document.getElementById("rngSize").value);
-            const sliderScale = parseFloat(
-                document.getElementById("rngScale").value,
-            );
-            const outlineWidth = parseInt(
-                document.getElementById("rngOutlineWidth").value,
-            );
-            const count = flowers.length;
-            let densityFactor = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0;
-            const effectiveBaseScale = sliderScale * densityFactor;
-
-            flowers.forEach((f) => {
-                const newScale = effectiveBaseScale * f.relScale;
-                const newSize = baseSize * f.relFont;
-                f.graphic.remove();
-                if (f.graphicOutline) f.graphicOutline.remove();
-                const data = processImage(f.source, newSize, newScale, outlineWidth);
-                f.points = data.points;
-                f.graphic = data.pg;
-                f.graphicOutline = data.pgOutline;
-                f.fontSize = newSize;
-                f.radius = (BASE_SIZE * newScale) / 2 + 5;
+            const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
+            const dF = flowers.length > 5 ? map(flowers.length, 5, 20, 1.0, 0.55) : 1.0, eS = sS * dF;
+            flowers.forEach(f => {
+                const nSc = eS * f.relScale, nSi = bS * f.relFont;
+                f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove();
+                const d = processImage(f.source, nSi, nSc, oW);
+                f.points = d.points; f.graphic = d.pg; f.graphicOutline = d.pgOutline; f.fontSize = nSi; f.radius = (BASE_SIZE * nSc) / 2 + 5;
             });
         }
 
-        function processImage(img, fSize, scale, outlineW) {
-            const dim = Math.ceil(BASE_SIZE * scale);
-            const pg = createGraphics(dim, dim);
-            const pgOutline = createGraphics(dim, dim);
-            pg.clear();
-            pgOutline.clear();
-
-            const asp = img.width / img.height;
-            const w = asp >= 1 ? dim : dim * asp;
-            const h = asp >= 1 ? dim / asp : dim;
-            const dx = (dim - w) / 2;
-            const dy = (dim - h) / 2;
-
-            pg.image(img, dx, dy, w, h);
-            pg.loadPixels();
-
-            const points = [];
-            let spacingFactor = map(fSize, 10, 80, 1.0, 0.1);
-            spacingFactor = constrain(spacingFactor, 0.6, 1.0);
-            const step = Math.max(fSize * spacingFactor, 2);
-
-            for (let y = 0; y < dim; y += step) {
-                for (let x = 0; x < dim; x += step) {
-                    const idx = (floor(x) + floor(y) * dim) * 4;
-                    if (idx < pg.pixels.length && pg.pixels[idx + 3] > 20) {
-                        points.push({ x: x - dim / 2, y: y - dim / 2 });
-                    }
-                }
+        function processImage(img, fz, sc, ow) {
+            const dim = ceil(BASE_SIZE * sc), pg = createGraphics(dim, dim), pgo = createGraphics(dim, dim);
+            const asp = img.width / img.height, w = asp >= 1 ? dim : dim * asp, h = asp >= 1 ? dim / asp : dim;
+            pg.image(img, (dim - w) / 2, (dim - h) / 2, w, h); pg.loadPixels();
+            const pts = [], step = max(fz * constrain(map(fz, 10, 80, 1.0, 0.1), 0.6, 1.0), 2);
+            for (let y = 0; y < dim; y += step) for (let x = 0; x < dim; x += step) {
+                const i = (floor(x) + floor(y) * dim) * 4;
+                if (i < pg.pixels.length && pg.pixels[i + 3] > 20) pts.push({ x: x - dim / 2, y: y - dim / 2 });
             }
-
-            const pW = pg.width;
-            const edgePoints = [];
-            for (let y = 1; y < dim - 1; y++) {
-                for (let x = 1; x < dim - 1; x++) {
-                    const i = (x + y * pW) * 4;
-                    if (pg.pixels[i + 3] > 0) {
-                        if (
-                            pg.pixels[i + 3 - 4] === 0 ||
-                            pg.pixels[i + 3 + 4] === 0 ||
-                            pg.pixels[i + 3 - pW * 4] === 0 ||
-                            pg.pixels[i + 3 + pW * 4] === 0
-                        ) {
-                            edgePoints.push({ x, y });
-                        }
-                    }
-                }
+            const pW = pg.width; pgo.stroke(255); pgo.strokeWeight(ow); pgo.noFill();
+            for (let y = 1; y < dim - 1; y++) for (let x = 1; x < dim - 1; x++) {
+                const i = (x + y * pW) * 4;
+                if (pg.pixels[i + 3] > 0 && (pg.pixels[i - 1] === 0 || pg.pixels[i + 7] === 0 || pg.pixels[i - pW * 4 + 3] === 0 || pg.pixels[i + pW * 4 + 3] === 0)) pgo.point(x, y);
             }
-            if (edgePoints.length > 0) {
-                pgOutline.stroke(255);
-                pgOutline.strokeWeight(outlineW);
-                pgOutline.noFill();
-                for (let pt of edgePoints) pgOutline.point(pt.x, pt.y);
-            }
-
-            for (let i = 0; i < pg.pixels.length; i += 4) {
-                if (pg.pixels[i + 3] > 20) {
-                    pg.pixels[i] = 255;
-                    pg.pixels[i + 1] = 255;
-                    pg.pixels[i + 2] = 255;
-                    pg.pixels[i + 3] = 255;
-                } else {
-                    pg.pixels[i + 3] = 0;
-                }
-            }
-            pg.updatePixels();
-            return { points, pg, pgOutline };
+            for (let i = 0; i < pg.pixels.length; i += 4) { if (pg.pixels[i + 3] > 20) { pg.pixels[i] = pg.pixels[i + 1] = pg.pixels[i + 2] = 255; pg.pixels[i + 3] = 255; } else pg.pixels[i + 3] = 0; }
+            pg.updatePixels(); return { points: pts, pg, pgOutline: pgo };
         }
 
         function updateBackground() {
-            const mode = document.getElementById("selBgMode").value;
-            const colA = document.getElementById("colBgGradA").value;
-            const colB = document.getElementById("colBgGradB").value;
-            const angle = document.getElementById("rngBgAngle").value;
-            const url = document.getElementById("inpBgUrl").value;
-            const container = document.getElementById("canvas-container");
-            const stretchY = document.getElementById("rngBgStretchY").value;
-
-            container.style.background = "none";
-            container.style.backgroundImage = "none";
-            container.style.backgroundSize = "auto";
-            container.style.backgroundRepeat = "repeat";
-
-            if (mode === "solid") {
-                container.style.backgroundColor = colA;
-            } else if (mode === "gradient") {
-                container.style.background = `linear-gradient(${angle}deg, ${colA}, ${colB})`;
-            } else if (mode === "tile") {
-                container.style.backgroundImage = `url('${url}')`;
-                container.style.backgroundRepeat = "repeat";
-                container.style.backgroundSize = "100px 100px";
-            } else if (mode === "stretch") {
-                container.style.backgroundImage = `url('${url}')`;
-                container.style.backgroundRepeat = "no-repeat";
-                container.style.backgroundSize = `100% ${stretchY}%`;
-            }
+            const ui = id => document.getElementById(id), mode = ui("selBgMode").value, cA = ui("colBgGradA").value, cB = ui("colBgGradB").value, ang = ui("rngBgAngle").value, url = ui("inpBgUrl").value, cont = ui("canvas-container");
+            cont.style.background = mode === "solid" ? cA : mode === "gradient" ? `linear-gradient(${ang}deg, ${cA}, ${cB})` : `url('${url}')`;
+            cont.style.backgroundRepeat = mode === "tile" ? "repeat" : "no-repeat";
+            cont.style.backgroundSize = mode === "tile" ? "100px 100px" : mode === "stretch" ? "100% 100%" : "auto";
         }
 
-        function triggerRegen() {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(generateGarden, 400);
-        }
-        function triggerVisuals() {
-            clearTimeout(visualDebounce);
-            visualDebounce = setTimeout(updateVisuals, 100);
-        }
-        function updateUI(id, txt, val, unit) {
-            document.getElementById(id).innerText = `${txt}: ${val}${unit}`;
-        }
-
-        function updateCharCount() {
-            var txt = document.getElementById("txtInp");
-            var count = txt.value.length;
-            var max = txt.hasAttribute("maxlength")
-                ? txt.getAttribute("maxlength")
-                : "";
-            var label = count + (max ? " / " + max : "") + " characters";
-            document.getElementById("charCount").textContent = label;
-        }
-
-        var confirmModalState = {
-            open: false,
-            onConfirm: null,
-            onCancel: null,
-        };
-
-        var confirmModalEl = document.getElementById("confirmModal");
-        var confirmTitleEl = document.getElementById("confirmModalTitle");
-        var confirmDescEl = document.getElementById("confirmModalDesc");
-        var confirmCancelBtn = document.getElementById("confirmCancelBtn");
-        var confirmOkBtn = document.getElementById("confirmOkBtn");
-        var homeLogoLink = document.getElementById("homeLogoLink");
-
-        function openConfirmModal(options) {
-            var title = options.title || "Confirm";
-            var description = options.description || "";
-            var confirmLabel = options.confirmLabel || "CONFIRM";
-            var cancelLabel = options.cancelLabel || "CANCEL";
-            confirmModalState.open = true;
-            confirmModalState.onConfirm = options.onConfirm || null;
-            confirmModalState.onCancel = options.onCancel || null;
-            confirmTitleEl.textContent = title;
-            confirmDescEl.textContent = description;
-            confirmOkBtn.textContent = confirmLabel;
-            confirmCancelBtn.textContent = cancelLabel;
-            confirmModalEl.classList.add("is-open");
-            confirmModalEl.setAttribute("aria-hidden", "false");
-        }
-
-        function closeConfirmModal(triggerCancel) {
-            confirmModalState.open = false;
-            confirmModalEl.classList.remove("is-open");
-            confirmModalEl.setAttribute("aria-hidden", "true");
-            if (triggerCancel && typeof confirmModalState.onCancel === "function") {
-                confirmModalState.onCancel();
-            }
-            confirmModalState.onConfirm = null;
-            confirmModalState.onCancel = null;
-        }
-
-        confirmModalEl.addEventListener("click", function () {
-            closeConfirmModal(true);
-        });
-
-        confirmCancelBtn.addEventListener("click", function (event) {
-            event.stopPropagation();
-            closeConfirmModal(true);
-        });
-
-        confirmOkBtn.addEventListener("click", function (event) {
-            event.stopPropagation();
-            var onConfirm = confirmModalState.onConfirm;
-            closeConfirmModal(false);
-            if (typeof onConfirm === "function") {
-                onConfirm();
-            }
-        });
-
-        document.addEventListener("keydown", function (event) {
-            if (!confirmModalState.open) return;
-            if (event.key === "Escape" || event.key === "Esc") {
-                event.stopPropagation();
-                closeConfirmModal(true);
-            }
-        });
-
-        homeLogoLink.addEventListener("click", function (event) {
-            event.preventDefault();
-            openConfirmModal({
-                title: "Leave the Laboratory?",
-                description:
-                    "If you leave the Laboratory you'll lose the current words, tweaks and generation settings for this flora.",
-                confirmLabel: "GO HOME",
-                cancelLabel: "STAY HERE",
-                onConfirm: function () {
-                    window.location.href = homeLogoLink.getAttribute("href");
-                },
-                onCancel: function () { },
-            });
-        });
-        function windowResized() {
-            const c = document.getElementById("canvas-container");
-            resizeCanvas(c.clientWidth, c.clientHeight);
-            generateGarden();
-        }
-        window.addEventListener("orientationchange", () =>
-            setTimeout(windowResized, 300),
-        );
-
-        window.addEventListener("DOMContentLoaded", updateCharCount);
+        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateGarden, 400); }
+        function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
+        function updateUI(id, t, v, u) { document.getElementById(id).innerText = `${t}: ${v}${u}`; }
+        function updateCharCount() { const t = document.getElementById("txtInp"); document.getElementById("charCount").textContent = t.value.length + " characters"; }
 
         function saveFullArt() {
-            const container = document.getElementById("canvas-container");
-            const status = document.getElementById("statusText");
-            status.innerText = "RENDERING...";
-            html2canvas(container, {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null,
-                logging: false,
-            })
-                .then((canvas) => {
-                    const link = document.createElement("a");
-                    link.download = "spora_render_" + new Date().getTime() + ".png";
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                    status.innerText = "RENDER COMPLETE";
-                })
-                .catch((err) => {
-                    console.error(err);
-                    status.innerText = "RENDER ERROR";
-                });
+            const s = document.getElementById("statusText"); s.innerText = "RENDERING...";
+            html2canvas(document.getElementById("canvas-container"), { scale: 2, useCORS: true }).then(c => {
+                const l = document.createElement("a"); l.download = "spora_" + Date.now() + ".png"; l.href = c.toDataURL(); l.click(); s.innerText = "DONE";
+            });
         }
 
         function downloadState() {
-            const currentState = {
-                title: document.getElementById("inpTitle").value,
-                text: document.getElementById("txtInp").value,
-                flowerSet: lastUsedSet,
-                wind: {
-                    active: document.getElementById("chkWind").checked,
-                    strength: parseFloat(document.getElementById("rngWind").value),
-                },
-                chaos: {
-                    scramble: document.getElementById("chkScramble").checked,
-                    scrambleForce: parseFloat(document.getElementById("rngScramble").value),
-                    jitter: document.getElementById("chkJitter").checked,
-                    jitterForce: parseFloat(document.getElementById("rngJitter").value),
-                    pulse: document.getElementById("chkPulse").checked,
-                    pulseForce: parseFloat(document.getElementById("rngPulse").value),
-                    wave: document.getElementById("chkWave").checked,
-                    waveForce: parseFloat(document.getElementById("rngWave").value),
-                },
-                colors: {
-                    maskA: document.getElementById("colMaskGradA").value,
-                    maskB: document.getElementById("colMaskGradB").value,
-                    stem: document.getElementById("colStem").value,
-                    bgA: document.getElementById("colBgGradA").value,
-                    bgB: document.getElementById("colBgGradB").value,
-                },
-                style: {
-                    fill: {
-                        active: document.getElementById("chkMask").checked,
-                        gradient: document.getElementById("chkFillGradient").checked,
-                        dir: document.getElementById("selFillDir").value,
-                    },
-                    outline: {
-                        active: document.getElementById("chkOutline").checked,
-                        width: parseInt(document.getElementById("rngOutlineWidth").value),
-                    },
-                },
-                geometry: {
-                    scale: parseFloat(document.getElementById("rngScale").value),
-                    fontSize: parseInt(document.getElementById("rngSize").value),
-                    font: document.getElementById("selFont").value,
-                },
-                background: {
-                    mode: document.getElementById("selBgMode").value,
-                    url: document.getElementById("inpBgUrl").value,
-                    angle: parseInt(document.getElementById("rngBgAngle").value),
-                    stretchY: parseInt(document.getElementById("rngBgStretchY").value),
-                },
+            const s = {
+                title: document.getElementById("inpTitle").value, text: document.getElementById("txtInp").value, flowerSet: lastUsedSet,
+                wind: { active: document.getElementById("chkWind").checked, strength: parseFloat(document.getElementById("rngWind").value) },
+                chaos: { scramble: document.getElementById("chkScramble").checked, scrambleForce: parseFloat(document.getElementById("rngScramble").value), jitter: document.getElementById("rngJitter").value, pulse: document.getElementById("rngPulse").value, wave: document.getElementById("rngWave").value },
+                colors: { maskA: document.getElementById("colMaskGradA").value, maskB: document.getElementById("colMaskGradB").value, stem: document.getElementById("colStem").value, text: document.getElementById("colTextSolid").value, bgA: document.getElementById("colBgGradA").value, bgB: document.getElementById("colBgGradB").value, auto: document.getElementById("chkAutoContrast").checked },
+                geometry: { scale: parseFloat(document.getElementById("rngScale").value), fontSize: parseInt(document.getElementById("rngSize").value), font: document.getElementById("selFont").value },
+                style: { mask: document.getElementById("chkMask").checked, grad: document.getElementById("chkFillGradient").checked, outline: document.getElementById("chkOutline").checked, outlineW: document.getElementById("rngOutlineWidth").value },
+                background: { mode: document.getElementById("selBgMode").value, angle: document.getElementById("rngBgAngle").value }
             };
-            const dataStr =
-                "data:text/json;charset=utf-8," +
-                encodeURIComponent(JSON.stringify(currentState, null, 2));
-            const downloadAnchorNode = document.createElement("a");
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute(
-                "download",
-                "spora_state_" + new Date().getTime() + ".json",
-            );
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+            const a = document.createElement("a"); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(s, null, 2)); a.download = "spora_state.json"; a.click();
         }
 
-        function loadStateFromFile(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                try {
-                    const json = JSON.parse(e.target.result);
-                    applyVisualState(json);
-                    document.getElementById("statusText").innerText = "STATE LOADED";
-                } catch (err) {
-                    console.error(err);
-                    document.getElementById("statusText").innerText = "LOAD ERROR";
-                }
-            };
-            reader.readAsText(file);
-            input.value = "";
+        function loadStateFromFile(i) {
+            const f = i.files[0]; if (!f) return; const r = new FileReader();
+            r.onload = e => applyVisualState(JSON.parse(e.target.result)); r.readAsText(f);
         }
 
         const moodProfiles = {
-            positive: {
-                flowerSet: "daisy",
-                wind: { active: true, strength: 0.2 },
-                chaos: { scramble: false, scrambleForce: 0.1, jitter: false, jitterForce: 0.5, pulse: true, pulseForce: 0.3, wave: true, waveForce: 0.4 },
-                colors: { maskA: "#CCFF00", maskB: "#FFFFFF", stem: "#00FF00", bgA: "#0000FF", bgB: "#CCFF00" },
-                style: { fill: { active: true, gradient: false, dir: "radial" }, outline: { active: true, width: 2 } },
-                geometry: { scale: 1.1, fontSize: 18, font: "'Cormorant Garamond', serif" },
-            },
-            negative: {
-                flowerSet: "rose",
-                wind: { active: true, strength: 0.1 },
-                chaos: { scramble: false, scrambleForce: 0.1, jitter: true, jitterForce: 0.2, pulse: true, pulseForce: 0.8, wave: false, waveForce: 0.5 },
-                colors: { maskA: "#000000", maskB: "#FF0000", stem: "#00FF00", bgA: "#FF0000", bgB: "#000000" },
-                style: { fill: { active: true, gradient: true, dir: "vertical" }, outline: { active: true, width: 1 } },
-                geometry: { scale: 0.8, fontSize: 12, font: "'Grenze Gotisch', cursive" },
-            },
-            chaos: {
-                flowerSet: "carnation",
-                wind: { active: true, strength: 2.0 },
-                chaos: { scramble: true, scrambleForce: 0.8, jitter: true, jitterForce: 1.5, pulse: true, pulseForce: 1.2, wave: true, waveForce: 1.8 },
-                colors: { maskA: "#FF00FF", maskB: "#00FF00", stem: "#00FF00", bgA: "#1a1a1a", bgB: "#330033" },
-                style: { fill: { active: false, gradient: false, dir: "horizontal" }, outline: { active: true, width: 4 } },
-                geometry: { scale: 2, fontSize: 55, font: "'Space Mono', monospace" },
-            },
-            editorial: {
-                flowerSet: "rose",
-                wind: { active: true, strength: 0.15 },
-                chaos: { scramble: false, scrambleForce: 0, jitter: false, jitterForce: 0, pulse: false, pulseForce: 0.1, wave: true, waveForce: 0.2 },
-                colors: { maskA: "#D90429", maskB: "#FFCAD4", stem: "#2B2D42", text: "#2B2D42", bgA: "#F2F0E9", bgB: "#F2F0E9" },
-                style: { fill: { active: true, gradient: true, dir: "vertical" }, outline: { active: true, width: 1 } },
-                geometry: { scale: 1.0, fontSize: 24, font: "'Playfair Display', serif" },
-                background: { mode: "solid", url: "", angle: 0, stretchY: 100 },
-            },
-            system: {
-                flowerSet: "daisy",
-                wind: { active: true, strength: 2 },
-                chaos: { scramble: true, scrambleForce: 0.4, jitter: true, jitterForce: 0.5, pulse: false, pulseForce: 0.5, wave: true, waveForce: 1.2 },
-                colors: { maskA: "#bbf451", maskB: "#ffffff", stem: "#e6e6e6", text: "#e6e6e6", bgA: "#262626", bgB: "#262626" },
-                style: { fill: { active: true, gradient: false, dir: "radial" }, outline: { active: true, width: 2 } },
-                geometry: { scale: 1.2, fontSize: 16, font: "'JetBrains Mono', monospace" },
-                background: { mode: "solid", url: "", angle: 0, stretchY: 100 },
-            },
-            midnight: {
-                flowerSet: "orchid",
-                wind: { active: true, strength: 0.5 },
-                chaos: { scramble: false, scrambleForce: 0.1, jitter: true, jitterForce: 0.3, pulse: true, pulseForce: 0.5, wave: true, waveForce: 0.8 },
-                colors: { maskA: "#4361EE", maskB: "#4CC9F0", stem: "#4CC9F0", text: "#F8F9FA", bgA: "#050505", bgB: "#101020" },
-                style: { fill: { active: true, gradient: true, dir: "horizontal" }, outline: { active: false, width: 0 } },
-                geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" },
-                background: { mode: "gradient", url: "", angle: 135, stretchY: 100 },
-            },
-            warning: {
-                flowerSet: "carnation",
-                wind: { active: false, strength: 0 },
-                chaos: { scramble: false, scrambleForce: 0, jitter: false, jitterForce: 0, pulse: true, pulseForce: 1.5, wave: false, waveForce: 0 },
-                colors: { maskA: "#000000", maskB: "#262626", stem: "#000000", text: "#000000", bgA: "#FF5400", bgB: "#FF5400" },
-                style: { fill: { active: false, gradient: false, dir: "vertical" }, outline: { active: true, width: 3 } },
-                geometry: { scale: 1.8, fontSize: 60, font: "'BioRhyme', serif" },
-                background: { mode: "solid", url: "", angle: 0, stretchY: 100 },
-            },
+            positive: { flowerSet: "daisy", wind: { active: true, strength: 0.2 }, chaos: { pulse: 0.3, wave: 0.4 }, colors: { maskA: "#CCFF00", maskB: "#FFFFFF", stem: "#00FF00", bgA: "#0000FF", bgB: "#CCFF00", auto: true }, geometry: { scale: 1.1, fontSize: 18, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: false, outline: true, outlineW: 2 } },
+            negative: { flowerSet: "rose", wind: { active: true, strength: 0.1 }, chaos: { jitter: 0.2, pulse: 0.8 }, colors: { maskA: "#000000", maskB: "#FF0000", stem: "#330000", bgA: "#FF0000", bgB: "#000000", auto: true }, geometry: { scale: 0.8, fontSize: 12, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 1 } },
+            chaos: { flowerSet: "carnation", wind: { active: true, strength: 2.0 }, chaos: { scramble: true, scrambleForce: 0.8, jitter: 1.5, pulse: 1.2, wave: 1.8 }, colors: { maskA: "#FF00FF", maskB: "#00FF00", stem: "#00FF00", bgA: "#1a1a1a", bgB: "#330033", auto: true }, geometry: { scale: 2, fontSize: 55, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 4 } },
+            editorial: { flowerSet: "rose", wind: { active: true, strength: 0.15 }, chaos: { wave: 0.2 }, colors: { maskA: "#D90429", maskB: "#FFCAD4", stem: "#2B2D42", bgA: "#F2F0E9", bgB: "#F2F0E9", auto: true }, geometry: { scale: 1.0, fontSize: 24, font: "'Playfair Display', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 } },
+            system: { flowerSet: "daisy", wind: { active: true, strength: 2 }, chaos: { scramble: true, scrambleForce: 0.4, jitter: 0.5, wave: 1.2 }, colors: { maskA: "#bbf451", maskB: "#ffffff", stem: "#e6e6e6", bgA: "#262626", bgB: "#262626", auto: true }, geometry: { scale: 1.2, fontSize: 16, font: "'JetBrains Mono', monospace" }, style: { mask: true, grad: false, outline: true, outlineW: 2 } },
+            midnight: { flowerSet: "orchid", wind: { active: true, strength: 0.5 }, chaos: { jitter: 0.3, pulse: 0.5, wave: 0.8 }, colors: { maskA: "#4361EE", maskB: "#4CC9F0", stem: "#4CC9F0", bgA: "#050505", bgB: "#101020", auto: true }, geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 } },
+            warning: { flowerSet: "carnation", wind: { active: false, strength: 0 }, chaos: { pulse: 1.5 }, colors: { maskA: "#000000", maskB: "#262626", stem: "#000000", bgA: "#FF5400", bgB: "#FF5400", auto: true }, geometry: { scale: 1.8, fontSize: 60, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 3 } }
         };
 
         function randomizeState() {
-            const randomColor = () =>
-                "#" +
-                Math.floor(Math.random() * 16777215)
-                    .toString(16)
-                    .padStart(6, "0");
-            const sets = Object.keys(maskUrls);
-            const fonts = [
-                "'Playfair Display', serif",
-                "'Cormorant Garamond', serif",
-                "'Libre Baskerville', serif",
-                "'Inter', sans-serif",
-                "'DM Sans', sans-serif",
-                "'JetBrains Mono', monospace",
-                "'Space Mono', monospace",
-                "'Syne', sans-serif",
-                "'Xanh Mono', monospace",
-                "'BioRhyme', serif",
-                "'Gloock', serif",
-                "'Darker Grotesque', sans-serif",
-                "'Grenze Gotisch', cursive",
-                "'Eczar', serif",
-                "'BIZ UDMincho', serif"
-            ];
-            const bgModes = ["gradient", "solid"];
-
-            const randomProfile = {
-                flowerSet: sets[Math.floor(Math.random() * sets.length)],
-                wind: {
-                    active: Math.random() > 0.5,
-                    strength: parseFloat((Math.random() * 2).toFixed(1)),
-                },
-                chaos: { 
-                    scramble: Math.random() > 0.8, 
-                    scrambleForce: parseFloat((Math.random() * 1.0).toFixed(2)),
-                    jitter: Math.random() > 0.7,
-                    jitterForce: parseFloat((Math.random() * 2.0).toFixed(2)),
-                    pulse: Math.random() > 0.5,
-                    pulseForce: parseFloat((Math.random() * 1.5).toFixed(2)),
-                    wave: Math.random() > 0.4,
-                    waveForce: parseFloat((Math.random() * 1.5).toFixed(2))
-                },
-                colors: {
-                    maskA: randomColor(),
-                    maskB: randomColor(),
-                    stem: "#15ff00",
-                    bgA: randomColor(),
-                    bgB: randomColor(),
-                },
-                style: {
-                    fill: {
-                        active: Math.random() > 0.2,
-                        gradient: Math.random() > 0.5,
-                        dir: ["vertical", "horizontal", "radial"][
-                            Math.floor(Math.random() * 3)
-                        ],
-                    },
-                    outline: {
-                        active: Math.random() > 0.3,
-                        width: Math.floor(Math.random() * 6) + 1,
-                    },
-                },
-                geometry: {
-                    scale: parseFloat((Math.random() * 2 + 0.5).toFixed(1)),
-                    fontSize: Math.floor(Math.random() * 70) + 10,
-                    font: fonts[Math.floor(Math.random() * fonts.length)],
-                },
-                background: {
-                    mode: bgModes[Math.floor(Math.random() * bgModes.length)],
-                    url: document.getElementById("inpBgUrl").value,
-                    angle: Math.floor(Math.random() * 360),
-                    stretchY: 100,
-                },
-            };
-            applyVisualState(randomProfile);
-            document.getElementById("statusText").innerText =
-                "RANDOM MUTATION APPLIED";
+            const rC = () => "#" + floor(random(16777215)).toString(16).padStart(6, "0");
+            const f = ["'Playfair Display', serif", "'Cormorant Garamond', serif", "'Inter', sans-serif", "'JetBrains Mono', monospace", "'Syne', sans-serif", "'BioRhyme', serif"];
+            applyVisualState({
+                flowerSet: random(Object.keys(maskUrls)), wind: { active: random() > 0.5, strength: random(2) },
+                chaos: { scramble: random() > 0.8, scrambleForce: random(), jitter: random(2), pulse: random(1.5), wave: random(1.5) },
+                colors: { maskA: rC(), maskB: rC(), stem: rC(), bgA: rC(), bgB: rC(), auto: true },
+                geometry: { scale: random(0.5, 2.5), fontSize: random(10, 70), font: random(f) },
+                style: { mask: random() > 0.2, grad: random() > 0.5, outline: random() > 0.3, outlineW: floor(random(6)) + 1 },
+                background: { mode: random(["solid", "gradient"]), angle: random(360) }
+            });
         }
 
-        function applyVisualState(state) {
-            if (state.title !== undefined) document.getElementById("inpTitle").value = state.title;
-            if (state.text) document.getElementById("txtInp").value = state.text;
-            targetFlowerSet = state.flowerSet || "daisy";
-
-            document.getElementById("chkWind").checked = state.wind.active;
-            document.getElementById("rngWind").value = state.wind.strength;
-
-            document.getElementById("chkScramble").checked = state.chaos.scramble;
-            if (state.chaos.scrambleForce !== undefined) { document.getElementById("rngScramble").value = state.chaos.scrambleForce; }
-            
-            document.getElementById("chkJitter").checked = state.chaos.jitter;
-            if (state.chaos.jitterForce !== undefined) { document.getElementById("rngJitter").value = state.chaos.jitterForce; }
-            
-            if (document.getElementById("chkPulse")) document.getElementById("chkPulse").checked = state.chaos.pulse || false;
-            if (state.chaos.pulseForce !== undefined) { document.getElementById("rngPulse").value = state.chaos.pulseForce; }
-            
-            if (document.getElementById("chkWave")) document.getElementById("chkWave").checked = state.chaos.wave || false;
-            if (state.chaos.waveForce !== undefined) { document.getElementById("rngWave").value = state.chaos.waveForce; }
-
-
-
-            document.getElementById("colMaskGradA").value = state.colors.maskA;
-            document.getElementById("colMaskGradB").value = state.colors.maskB;
-            document.getElementById("colStem").value = state.colors.stem;
-            document.getElementById("colBgGradA").value = state.colors.bgA;
-            document.getElementById("colBgGradB").value = state.colors.bgB;
-
-            document.getElementById("chkMask").checked = state.style.fill.active;
-            document.getElementById("chkFillGradient").checked =
-                state.style.fill.gradient;
-            document.getElementById("selFillDir").value = state.style.fill.dir;
-
-            document.getElementById("chkOutline").checked =
-                state.style.outline.active;
-            document.getElementById("rngOutlineWidth").value =
-                state.style.outline.width;
-            updateUI("lblOutlineWidth", "WIDTH", state.style.outline.width, "px");
-
-            document.getElementById("rngScale").value = state.geometry.scale;
-            updateUI("lblScale", "SCALE", state.geometry.scale, "x");
-            document.getElementById("rngSize").value = state.geometry.fontSize;
-            updateUI("lblSize", "SIZE", state.geometry.fontSize, "px");
-            document.getElementById("selFont").value = state.geometry.font;
-
-            if (state.background) {
-                document.getElementById("selBgMode").value = state.background.mode;
-                document.getElementById("inpBgUrl").value = state.background.url;
-                document.getElementById("rngBgAngle").value = state.background.angle;
-                document.getElementById("rngBgStretchY").value =
-                    state.background.stretchY || 100;
-                updateUI("lblBgAngle", "ANGLE", state.background.angle, "deg");
-                updateUI(
-                    "lblBgStretchY",
-                    "V-STRETCH",
-                    state.background.stretchY || 100,
-                    "%",
-                );
-            }
-            updateBackground();
-            generateGarden();
+        function applyVisualState(s) {
+            const ui = id => document.getElementById(id);
+            if (s.title) ui("inpTitle").value = s.title; if (s.text) ui("txtInp").value = s.text;
+            targetFlowerSet = s.flowerSet; ui("chkWind").checked = s.wind.active; ui("rngWind").value = s.wind.strength;
+            ui("chkScramble").checked = s.chaos.scramble; ui("rngScramble").value = s.chaos.scrambleForce || 0.1;
+            ui("rngJitter").value = s.chaos.jitter || 0.5; ui("rngPulse").value = s.chaos.pulse || 1.0; ui("rngWave").value = s.chaos.wave || 1.0;
+            ui("colMaskGradA").value = s.colors.maskA; ui("colMaskGradB").value = s.colors.maskB; ui("colStem").value = s.colors.stem;
+            ui("colBgGradA").value = s.colors.bgA; ui("colBgGradB").value = s.colors.bgB; ui("chkAutoContrast").checked = s.colors.auto;
+            if (s.colors.text && !s.colors.auto) ui("colTextSolid").value = s.colors.text;
+            ui("chkMask").checked = s.style.mask; ui("chkFillGradient").checked = s.style.grad;
+            ui("chkOutline").checked = s.style.outline; ui("rngOutlineWidth").value = s.style.outlineW;
+            ui("rngScale").value = s.geometry.scale; ui("rngSize").value = s.geometry.fontSize; ui("selFont").value = s.geometry.font;
+            if (s.background) { ui("selBgMode").value = s.background.mode; ui("rngBgAngle").value = s.background.angle; }
+            updateBackground(); updateUI("lblScale", "SCALE", s.geometry.scale, "x"); updateUI("lblSize", "SIZE", s.geometry.fontSize, "px"); generateGarden();
         }
+
+        function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
+        window.addEventListener("DOMContentLoaded", updateCharCount);
     </script>
 </body>
-
 </html>
