@@ -113,7 +113,8 @@
         }
 
         textarea,
-        input[type="text"] {
+        input[type="text"],
+        [contenteditable="true"] {
             width: 100%;
             background: transparent;
             border: none;
@@ -128,14 +129,27 @@
             font-weight: 400;
         }
 
-        textarea {
+        textarea, [contenteditable="true"] {
             height: 100px;
         }
 
-        textarea::placeholder {
+        textarea::placeholder, [contenteditable="true"]:empty:before {
             color: #888;
             opacity: 1;
             font-style: italic;
+        }
+        
+        [contenteditable="true"]:empty:before {
+            content: attr(data-placeholder);
+        }
+        
+        .base-text {
+            color: #666;
+            opacity: 0.75;
+        }
+        
+        .new-text {
+            color: var(--spora-dark);
         }
 
         #txtInp::-webkit-scrollbar {
@@ -376,6 +390,22 @@
             border-style: dashed;
         }
 
+        input:disabled,
+        textarea:disabled,
+        select:disabled,
+        button:disabled {
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
+        textarea.append-only-mode {
+            /* No visual indicators */
+        }
+
+        .append-only-label {
+            display: none;
+        }
+
         details {
             border: 2px solid var(--spora-dark);
             margin-bottom: 12px;
@@ -474,8 +504,7 @@
         <section>
             <h2>YOUR WORDS</h2>
             <div class="control-box">
-                <textarea id="txtInp" oninput="triggerRegen(); updateCharCount();" placeholder="Write something meaningful..." style="resize: none">
-Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</textarea>
+                <div id="txtInp" contenteditable="true" oninput="triggerRegen(); updateCharCount();" data-placeholder="Write something meaningful..." style="resize: none; min-height: 120px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word;">Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</div>
             </div>
             <div id="charCount" style="text-align: left; font-family: var(--font-mono); font-size: 10px; color: var(--spora-dark); margin-top: 4px; opacity: 0.7;"></div>
         </section>
@@ -655,10 +684,10 @@ Look, this is where you plant your words. Words that transform, creating life fr
         <section style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark);">
             <h2>SYSTEM EXPORT</h2>
             <div class="btn-group" style="margin-bottom: 12px">
-                <button class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
-                <button class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
+                <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
+                <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
             </div>
-            <button class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
+            <button id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
             <div class="btn-group">
                 <button onclick="downloadState()">SAVE JSON</button>
                 <button onclick="saveFullArt()">RENDER PNG</button>
@@ -686,6 +715,11 @@ Look, this is where you plant your words. Words that transform, creating life fr
         let flowers = [];
         let targetFlowerSet = null;
         let lastUsedSet = "daisy";
+        let currentFlora = null;
+        let currentUser = null;
+        let lockedBaseText = "";
+        let appendHandlers = null;
+        let isBlossomingMode = false;
 
         function getQueryParam(key) {
             const params = new URLSearchParams(window.location.search);
@@ -697,6 +731,184 @@ Look, this is where you plant your words. Words that transform, creating life fr
             if (!ui) return;
             if (locked) ui.classList.add("is-locked");
             else ui.classList.remove("is-locked");
+        }
+
+        function setBlossomingMode(enabled) {
+            const ui = document.getElementById("ui");
+            if (!ui) return;
+            
+            isBlossomingMode = enabled;
+            const keepEnabled = new Set(["txtInp", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
+
+            ui.querySelectorAll("input, textarea, select, button").forEach((el) => {
+                const id = el.id || "";
+                if (keepEnabled.has(id)) {
+                    el.disabled = false;
+                    el.removeAttribute("disabled");
+                } else {
+                    el.disabled = enabled;
+                    if (enabled) {
+                        el.setAttribute("disabled", "true");
+                    } else {
+                        el.removeAttribute("disabled");
+                    }
+                }
+            });
+        }
+
+        function enableAppendOnlyText(baseText) {
+            const txt = document.getElementById("txtInp");
+            if (!txt) return;
+
+            lockedBaseText = baseText || "";
+            
+            // Ensure text ends with newline for separation
+            if (lockedBaseText && !lockedBaseText.endsWith('\n')) {
+                lockedBaseText += '\n';
+            }
+            
+            // Structure the content with styled spans ONCE
+            const currentText = txt.textContent;
+            const newTextPortion = currentText.substring(lockedBaseText.length);
+            txt.innerHTML = `<span class="base-text">${escapeHTML(lockedBaseText)}</span><span class="new-text" id="newTextSpan">${escapeHTML(newTextPortion)}</span>`;
+            
+            // Move cursor to end
+            moveCursorToEnd(txt);
+
+            if (appendHandlers) {
+                txt.removeEventListener("beforeinput", appendHandlers.onBeforeInput);
+                txt.removeEventListener("keydown", appendHandlers.onKeyDown);
+                txt.removeEventListener("input", appendHandlers.onInput);
+                txt.removeEventListener("paste", appendHandlers.onPaste);
+                txt.removeEventListener("cut", appendHandlers.onCut);
+                txt.removeEventListener("mouseup", appendHandlers.onMouseUp);
+                txt.removeEventListener("click", appendHandlers.onClick);
+                txt.removeEventListener("focus", appendHandlers.onFocus);
+            }
+
+            const getCursorPosition = () => {
+                const selection = window.getSelection();
+                if (!selection.rangeCount) return txt.textContent.length;
+                
+                const range = selection.getRangeAt(0);
+                const preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(txt);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                return preCaretRange.toString().length;
+            };
+
+            const onBeforeInput = (e) => {
+                const cursorPos = getCursorPosition();
+                
+                // Prevent editing in the base text area
+                if (cursorPos < lockedBaseText.length) {
+                    e.preventDefault();
+                    
+                    // If trying to insert, append at the end
+                    const newTextSpan = document.getElementById('newTextSpan');
+                    if (newTextSpan && (e.inputType === 'insertText' && e.data)) {
+                        newTextSpan.textContent += e.data;
+                        moveCursorToEnd(txt);
+                        updateCharCount();
+                        triggerRegen();
+                    } else if (newTextSpan && e.inputType === 'insertLineBreak') {
+                        newTextSpan.textContent += '\n';
+                        moveCursorToEnd(txt);
+                        updateCharCount();
+                        triggerRegen();
+                    }
+                }
+            };
+
+            const onKeyDown = (e) => {
+                const cursorPos = getCursorPosition();
+                
+                if (cursorPos < lockedBaseText.length) {
+                    const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown', 'Tab'];
+                    const isCopy = (e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C');
+                    
+                    if (!allowedKeys.includes(e.key) && !isCopy) {
+                        e.preventDefault();
+                        moveCursorToEnd(txt);
+                    }
+                }
+            };
+
+            const onPaste = (e) => {
+                const cursorPos = getCursorPosition();
+                if (cursorPos < lockedBaseText.length) {
+                    e.preventDefault();
+                    const pasteData = e.clipboardData.getData('text/plain');
+                    const newTextSpan = document.getElementById('newTextSpan');
+                    if (newTextSpan) {
+                        newTextSpan.textContent += pasteData;
+                        moveCursorToEnd(txt);
+                        updateCharCount();
+                        triggerRegen();
+                    }
+                }
+            };
+
+            const onCut = (e) => {
+                const cursorPos = getCursorPosition();
+                if (cursorPos < lockedBaseText.length) {
+                    e.preventDefault();
+                }
+            };
+
+            const onMouseUp = () => {
+                const cursorPos = getCursorPosition();
+                if (cursorPos < lockedBaseText.length) {
+                    setTimeout(() => moveCursorToEnd(txt), 0);
+                }
+            };
+
+            const onClick = () => {
+                const cursorPos = getCursorPosition();
+                if (cursorPos < lockedBaseText.length) {
+                    setTimeout(() => moveCursorToEnd(txt), 0);
+                }
+            };
+
+            const onInput = () => {
+                // Only update char count and trigger regen, don't rebuild HTML
+                updateCharCount();
+                triggerRegen();
+            };
+            
+            const onFocus = () => {
+                setTimeout(() => {
+                    const cursorPos = getCursorPosition();
+                    if (cursorPos < lockedBaseText.length) {
+                        moveCursorToEnd(txt);
+                    }
+                }, 0);
+            };
+
+            appendHandlers = { onBeforeInput, onKeyDown, onInput, onPaste, onCut, onMouseUp, onClick, onFocus };
+            txt.addEventListener("beforeinput", onBeforeInput);
+            txt.addEventListener("keydown", onKeyDown);
+            txt.addEventListener("input", onInput);
+            txt.addEventListener("paste", onPaste);
+            txt.addEventListener("cut", onCut);
+            txt.addEventListener("mouseup", onMouseUp);
+            txt.addEventListener("click", onClick);
+            txt.addEventListener("focus", onFocus);
+        }
+        
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+        
+        function moveCursorToEnd(element) {
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(element);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
 
         const maskUrls = {
@@ -843,7 +1055,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
         function generateGarden() {
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
-            const txt = document.getElementById("txtInp").value.trim(); if (!txt) return;
+            const txt = document.getElementById("txtInp").textContent.trim(); if (!txt) return;
             const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
             const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
@@ -867,6 +1079,13 @@ Look, this is where you plant your words. Words that transform, creating life fr
             }
             flowers.sort((a, b) => a.ty - b.ty);
             document.getElementById("statusText").innerText = `READY | BLOOMS: ${flowers.length}`;
+            
+            if (isBlossomingMode && lockedBaseText) {
+                setTimeout(() => {
+                    setBlossomingMode(true);
+                    enableAppendOnlyText(lockedBaseText);
+                }, 10);
+            }
         }
 
         function updateVisuals() {
@@ -878,6 +1097,10 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 const d = processImage(f.source, nSi, nSc, oW);
                 f.points = d.points; f.graphic = d.pg; f.graphicOutline = d.pgOutline; f.fontSize = nSi; f.radius = (BASE_SIZE * nSc) / 2 + 5;
             });
+            
+            if (isBlossomingMode) {
+                setTimeout(() => setBlossomingMode(true), 10);
+            }
         }
 
         function processImage(img, fz, sc, ow) {
@@ -908,7 +1131,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
         function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateGarden, 400); }
         function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
         function updateUI(id, t, v, u) { document.getElementById(id).innerText = `${t}: ${v}${u}`; }
-        function updateCharCount() { const t = document.getElementById("txtInp"); document.getElementById("charCount").textContent = t.value.length + " characters"; }
+        function updateCharCount() { const t = document.getElementById("txtInp"); document.getElementById("charCount").textContent = t.textContent.length + " characters"; }
 
         function saveFullArt() {
             const s = document.getElementById("statusText"); s.innerText = "RENDERING...";
@@ -920,7 +1143,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
         function collectState() {
             return {
                 title: document.getElementById("inpTitle").value,
-                text: document.getElementById("txtInp").value,
+                text: document.getElementById("txtInp").textContent,
                 flowerSet: lastUsedSet,
                 wind: { active: document.getElementById("chkWind").checked, strength: parseFloat(document.getElementById("rngWind").value) },
                 chaos: {
@@ -981,19 +1204,67 @@ Look, this is where you plant your words. Words that transform, creating life fr
             }
 
             s.innerText = "SAVING...";
+            const apiBase = window.location.hostname === "localhost"
+                ? "http://localhost:4000/api"
+                : "/api";
+
+            if (!currentUser) {
+                try {
+                    const meRes = await fetch(apiBase + "/auth/me", {
+                        headers: { "Authorization": "Bearer " + token },
+                    });
+                    if (meRes.ok) currentUser = await meRes.json();
+                } catch (err) {
+                    currentUser = null;
+                }
+            }
+
+            const lineageUsernames = new Set();
+            if (currentUser && currentUser.username) lineageUsernames.add(currentUser.username);
+            if (currentFlora && Array.isArray(currentFlora.coAuthors)) {
+                currentFlora.coAuthors.forEach((a) => a && a.username && lineageUsernames.add(a.username));
+            }
+            if (currentFlora && currentFlora.authorUsername) lineageUsernames.add(currentFlora.authorUsername);
 
             const payload = {
                 title: state.title || "Untitled Flora",
                 text: state.text,
                 status: status,
                 generative: {
-                    labState: state,
+                    labState: {
+                        ...state,
+                        lineageUsernames: Array.from(lineageUsernames),
+                    },
                 },
             };
 
-            const apiBase = window.location.hostname === "localhost"
-                ? "http://localhost:4000/api"
-                : "/api";
+            if (currentFlora && currentFlora.status === "blossoming") {
+                const baseGeneration = currentFlora.lineage && typeof currentFlora.lineage.generation === "number"
+                    ? currentFlora.lineage.generation
+                    : 0;
+                const rootId = currentFlora.lineage && currentFlora.lineage.rootFloraId
+                    ? currentFlora.lineage.rootFloraId
+                    : currentFlora._id;
+
+                const priorCoAuthors = Array.isArray(currentFlora.coAuthors) ? currentFlora.coAuthors : [];
+                const usernames = new Set();
+                priorCoAuthors.forEach((a) => a && a.username && usernames.add(a.username));
+                if (currentFlora.authorUsername) usernames.add(currentFlora.authorUsername);
+                if (currentUser && currentUser.username) usernames.delete(currentUser.username);
+
+                payload.lineage = {
+                    generation: baseGeneration + 1,
+                    parentFloraId: currentFlora._id,
+                    rootFloraId: rootId,
+                };
+
+                payload.coAuthors = Array.from(usernames).map((username) => ({
+                    username,
+                    generation: baseGeneration,
+                    contributedAt: new Date().toISOString(),
+                    isAnonymized: false,
+                }));
+            }
 
             try {
                 const res = await fetch(apiBase + "/floras", {
@@ -1012,6 +1283,9 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 }
 
                 s.innerText = status === "sealed" ? "SEALED" : "BLOSSOMING";
+                setTimeout(() => {
+                    window.open(`/?view=flora&id=${data._id}`, "_blank");
+                }, 800);
             } catch (err) {
                 s.innerText = "NETWORK ERROR";
             }
@@ -1046,17 +1320,34 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     ? flora.generative.labState
                     : null;
 
+                currentFlora = flora;
+
+                if (flora.status === "sealed") {
+                    setLockedState(true);
+                } else if (flora.status === "blossoming") {
+                    isBlossomingMode = true;
+                    lockedBaseText = flora.text || "";
+                }
+
                 if (labState) {
                     applyVisualState(labState);
                 } else {
                     document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
-                    document.getElementById("txtInp").value = flora.text || "";
+                    document.getElementById("txtInp").textContent = flora.text || "";
                     generateGarden();
                 }
 
-                const locked = flora.status === "sealed";
-                setLockedState(locked);
-                statusEl.innerText = locked ? "PREVIEW LOCKED" : "PREVIEW READY";
+                if (flora.status === "sealed") {
+                    statusEl.innerText = "PREVIEW LOCKED";
+                } else if (flora.status === "blossoming") {
+                    setLockedState(false);
+                    setBlossomingMode(true);
+                    enableAppendOnlyText(flora.text || "");
+                    statusEl.innerText = "BLOSSOMING MODE";
+                } else {
+                    setLockedState(false);
+                    statusEl.innerText = "PREVIEW READY";
+                }
             } catch (err) {
                 statusEl.innerText = "PREVIEW ERROR";
             }
@@ -1087,7 +1378,8 @@ Look, this is where you plant your words. Words that transform, creating life fr
 
         function applyVisualState(s) {
             const ui = id => document.getElementById(id);
-            if (s.title) ui("inpTitle").value = s.title; if (s.text) ui("txtInp").value = s.text;
+            if (s.title) ui("inpTitle").value = s.title; 
+            if (s.text) ui("txtInp").textContent = s.text;
             targetFlowerSet = s.flowerSet; ui("chkWind").checked = s.wind.active; ui("rngWind").value = s.wind.strength;
             ui("chkScramble").checked = s.chaos.scramble; ui("rngScramble").value = s.chaos.scrambleForce || 0.1;
             ui("rngJitter").value = s.chaos.jitter || 0.5; ui("rngPulse").value = s.chaos.pulse || 1.0; ui("rngWave").value = s.chaos.wave || 1.0;
@@ -1099,6 +1391,10 @@ Look, this is where you plant your words. Words that transform, creating life fr
             ui("rngScale").value = s.geometry.scale; ui("rngSize").value = s.geometry.fontSize; ui("selFont").value = s.geometry.font;
             if (s.background) { ui("selBgMode").value = s.background.mode; ui("rngBgAngle").value = s.background.angle; }
             updateBackground(); updateUI("lblScale", "SCALE", s.geometry.scale, "x"); updateUI("lblSize", "SIZE", s.geometry.fontSize, "px"); generateGarden();
+            
+            if (isBlossomingMode) {
+                setBlossomingMode(true);
+            }
         }
 
         function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
