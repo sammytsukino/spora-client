@@ -61,7 +61,7 @@ export default function Garden() {
     setIsLoading(true);
     setError(null);
 
-    listFloras()
+    listFloras({ status: "blossoming" })
       .then((data) => {
         if (!isActive) return;
         setFloras(data.map(mapFlora));
