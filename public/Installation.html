@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Are+You+Serious&family=BIZ+UDMincho&family=BioRhyme:wght@400;800&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Darker+Grotesque:wght@400;900&family=Eczar:wght@400;800&family=Gloock&family=Grenze+Gotisch:wght@400;700&family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Silkscreen:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;800&family=VT323&family=Wallpoet&family=Xanh+Mono:ital@0;1&display=swap"
+        href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho&family=BioRhyme:wght@400;800&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Darker+Grotesque:wght@400;900&family=Eczar:wght@400;800&family=Gloock&family=Grenze+Gotisch:wght@400;700&family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;800&family=Xanh+Mono:ital@0;1&display=swap"
         rel="stylesheet" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
@@ -462,7 +462,12 @@
             " />
             </a>
         </div>
-
+        <section>
+            <h2>ARTWORK TITLE</h2>
+            <div class="control-box">
+                <input type="text" id="inpTitle" placeholder="Name your flora..." />
+            </div>
+        </section>
         <section>
             <h2>YOUR WORDS</h2>
             <div class="control-box">
@@ -522,45 +527,26 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     <div class="control-box">
                         <div class="row-h"><label>FONT DNA</label></div>
                         <select id="selFont" onchange="triggerVisuals()">
+                            <option value="'JetBrains Mono', monospace">JetBrains Mono (Dev)</option>
                             <option value="'Inter', sans-serif">Inter (UI Standard)</option>
-                            <option value="'DM Sans', sans-serif">
-                                DM Sans (Geometric)
-                            </option>
-                            <option value="'Cormorant Garamond', serif">
-                                Cormorant (Elegant)
-                            </option>
-                            <option value="'Libre Baskerville', serif">
-                                Baskerville (Book)
-                            </option>
-                            <option value="'Playfair Display', serif">
-                                Playfair Display (Fashion)
-                            </option>
+                            <option value="'DM Sans', sans-serif">DM Sans (Geometric)</option>
 
-                            <option value="'JetBrains Mono', monospace">
-                                JetBrains Mono (Dev)
-                            </option>
-                            <option value="'VT323', monospace">VT323 (Retro)</option>
-                            <option value="'Wallpoet', cursive">Wallpoet (Cyber)</option>
+                            <option value="'Darker Grotesque', sans-serif">Darker Grotesque (Raw)</option>
 
-                            <option value="'Syne', sans-serif">Syne (Art House)</option>
-                            <option value="'Xanh Mono', monospace">
-                                Xanh Mono (Hybrid)
-                            </option>
-                            <option value="'Silkscreen', cursive">
-                                Silkscreen (Pixel)
-                            </option>
-                            <option value="'BioRhyme', serif">BioRhyme (Brutalist)</option>
+                            <option value="'Cormorant Garamond', serif">Cormorant (Elegant)</option>
+                            <option value="'Libre Baskerville', serif">Baskerville (Book)</option>
+                            <option value="'Playfair Display', serif">Playfair Display (Fashion)</option>
                             <option value="'Gloock', serif">Gloock (Contrast)</option>
-                            <option value="'Darker Grotesque', sans-serif">
-                                Darker Grotesque (Raw)
-                            </option>
-                            <option value="'Grenze Gotisch', cursive">
-                                Grenze Gotisch (Dark)
-                            </option>
+                            <option value="'BIZ UDMincho', serif">BIZ UDMincho (Mincho)</option>
+
+
+                            <option value="'Space Mono', monospace">Space Mono (Tech)</option>
+                            <option value="'Xanh Mono', monospace">Xanh Mono (Hybrid)</option>
+                            <option value="'Syne', sans-serif">Syne (Art House)</option>
+
+                            <option value="'BioRhyme', serif">BioRhyme (Brutalist)</option>
                             <option value="'Eczar', serif">Eczar (Spiky)</option>
-                            <option value="'Are You Serious', cursive">
-                                Serious (Hand)
-                            </option>
+                            <option value="'Grenze Gotisch', cursive">Grenze Gotisch (Dark)</option>
                         </select>
                     </div>
 
@@ -1345,6 +1331,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
 
         function downloadState() {
             const currentState = {
+                title: document.getElementById("inpTitle").value,
                 text: document.getElementById("txtInp").value,
                 flowerSet: lastUsedSet,
                 wind: {
@@ -1475,7 +1462,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
                     fill: { active: false, gradient: false, dir: "horizontal" },
                     outline: { active: true, width: 4 },
                 },
-                geometry: { scale: 2, fontSize: 55, font: "'Silkscreen', cursive" },
+                geometry: { scale: 2, fontSize: 55, font: "'Space Mono', monospace" }, // <-- Cambiado aquí
             },
 
             editorial: {
@@ -1581,17 +1568,15 @@ Look, this is where you plant your words. Words that transform, creating life fr
                 "'Inter', sans-serif",
                 "'DM Sans', sans-serif",
                 "'JetBrains Mono', monospace",
-                "'VT323', monospace",
-                "'Wallpoet', cursive",
+                "'Space Mono', monospace",
                 "'Syne', sans-serif",
                 "'Xanh Mono', monospace",
-                "'Silkscreen', cursive",
                 "'BioRhyme', serif",
                 "'Gloock', serif",
                 "'Darker Grotesque', sans-serif",
                 "'Grenze Gotisch', cursive",
                 "'Eczar', serif",
-                "'Are You Serious', cursive",
+                "'BIZ UDMincho', serif"
             ];
             const bgModes = ["gradient", "solid"];
 
@@ -1640,6 +1625,7 @@ Look, this is where you plant your words. Words that transform, creating life fr
         }
 
         function applyVisualState(state) {
+            if (state.title !== undefined) document.getElementById("inpTitle").value = state.title;
             if (state.text) document.getElementById("txtInp").value = state.text;
             targetFlowerSet = state.flowerSet || "daisy";
 
