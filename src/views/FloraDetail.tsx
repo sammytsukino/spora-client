@@ -78,6 +78,12 @@ export default function FloraDetail() {
         generation: formatGeneration(flora.lineage?.generation),
         image: floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
         text: flora.text,
+        lineageUsernames: [
+          ...(flora.coAuthors || [])
+            .map((item) => item.username)
+            .filter((value): value is string => Boolean(value)),
+          author,
+        ],
       };
     }
 
@@ -90,6 +96,7 @@ export default function FloraDetail() {
         generation: state.flora.generation,
         image: state.flora.image,
         text: state.flora.excerpt,
+        lineageUsernames: [state.flora.author],
       };
     }
 
@@ -144,13 +151,9 @@ export default function FloraDetail() {
   const noiseLevel = Math.round((0.3 + normSeed * 0.5) * 100) / 100;
   const paletteLabel = sentimentIndex < 0.5 ? "COOL-LEANING" : "WARM-LEANING";
 
-  const lineageHandles = [
-    "@FranBarreno",
-    "@SporaLab",
-    "@GenArtist",
-    "@FloraGen",
-    derived?.author ?? "@Anonymous",
-  ];
+  const lineageHandles = derived?.lineageUsernames?.length
+    ? derived.lineageUsernames
+    : ["@Anonymous"];
 
   const detailText = `${baseText}
 

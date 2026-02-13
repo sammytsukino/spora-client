@@ -6,9 +6,17 @@ export interface ApiFlora {
   text: string;
   authorId?: string;
   authorUsername?: string;
+  coAuthors?: Array<{
+    username?: string;
+    generation?: number;
+    contributedAt?: string;
+    isAnonymized?: boolean;
+  }>;
   status?: "blossoming" | "sealed" | "hidden";
   lineage?: {
     generation?: number;
+    parentFloraId?: string;
+    rootFloraId?: string;
   };
   generative?: {
     soilId?: string;
