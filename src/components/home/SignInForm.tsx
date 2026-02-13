@@ -1,15 +1,28 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
+import { signIn } from "@/lib/auth"
 
 export default function SignInForm() {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Login:", { email, password })
+    setError(null)
+    setIsSubmitting(true)
+
+    try {
+      await signIn(email, password)
+      navigate("/garden")
+    } catch (err) {
+      setError("Invalid credentials or server error.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -20,6 +33,12 @@ export default function SignInForm() {
         <p className="text-center text-[#262626] mb-8 font-supply-mono text-sm sm:text-base">
           Welcome back, cultivator
         </p>
+
+        {error ? (
+          <p className="mb-4 text-sm text-red-700 font-supply-mono">
+            {error}
+          </p>
+        ) : null}
 
         <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
           <div>
@@ -53,8 +72,9 @@ export default function SignInForm() {
           <MainButton
             type="submit"
             className="w-full h-11 sm:h-12 border-2 border-[#262626]"
+            disabled={isSubmitting}
           >
-            LOGIN
+            {isSubmitting ? "LOGGING IN..." : "LOGIN"}
           </MainButton>
         </form>
 

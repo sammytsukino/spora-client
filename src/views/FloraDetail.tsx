@@ -1,11 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
-import { generateFloraData, type FloraItem } from "@/data/flora-data";
+import { floraImages } from "@/data/flora-data";
+import { getFlora, type ApiFlora } from "@/lib/floras";
 
 interface FloraLocationState {
-  flora?: FloraItem;
+  flora?: {
+    id: string;
+    generation: string;
+    image: string;
+    title: string;
+    excerpt: string;
+    author: string;
+    seed: string;
+  };
+}
+
+function formatGeneration(value?: number) {
+  const safe = Number.isFinite(value) ? value : 0;
+  return `GEN_${safe}`;
+}
+
+function formatSeed(flora: ApiFlora) {
+  const seedSource = flora.generative?.soilId || flora.generative?.soilName || flora._id;
+  return `#${seedSource.slice(-6).toUpperCase()}`;
 }
 
 export default function FloraDetail() {
@@ -14,10 +33,70 @@ export default function FloraDetail() {
   const location = useLocation();
   const state = location.state as FloraLocationState | null;
 
-  const allFloras = generateFloraData(48);
-  const fallbackFlora = allFloras[0];
-  const flora =
-    state?.flora ?? allFloras.find((item) => item.id === id) ?? fallbackFlora;
+  const [flora, setFlora] = useState<ApiFlora | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+    let isActive = true;
+    setIsLoading(true);
+    setError(null);
+
+    getFlora(id)
+      .then((data) => {
+        if (!isActive) return;
+        setFlora(data);
+      })
+      .catch(() => {
+        if (!isActive) return;
+        setError("Could not load flora.");
+      })
+      .finally(() => {
+        if (!isActive) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [id]);
+
+  const derived = useMemo(() => {
+    if (flora) {
+      const author = flora.authorUsername
+        ? flora.authorUsername.startsWith("@")
+          ? flora.authorUsername
+          : `@${flora.authorUsername}`
+        : "@Anonymous";
+
+      return {
+        id: flora._id,
+        title: flora.title,
+        author,
+        seed: formatSeed(flora),
+        generation: formatGeneration(flora.lineage?.generation),
+        image: floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
+        text: flora.text,
+      };
+    }
+
+    if (state?.flora) {
+      return {
+        id: state.flora.id,
+        title: state.flora.title,
+        author: state.flora.author,
+        seed: state.flora.seed,
+        generation: state.flora.generation,
+        image: state.flora.image,
+        text: state.flora.excerpt,
+      };
+    }
+
+    return null;
+  }, [flora, state?.flora]);
+
+  const baseText = derived?.text ?? "";
 
   useEffect(() => {
     document.body.classList.add("hide-scrollbar");
@@ -29,7 +108,6 @@ export default function FloraDetail() {
     };
   }, []);
 
-  const baseText = flora.excerpt ?? "";
   const text = baseText.trim();
   const words =
     text.length > 0
@@ -41,7 +119,7 @@ export default function FloraDetail() {
   const avgWordsPerLine =
     lineCount > 0 ? Math.round((wordCount / lineCount) * 10) / 10 : wordCount;
 
-  const seedHex = flora.seed.replace("#", "").slice(0, 6);
+  const seedHex = (derived?.seed ?? "").replace("#", "").slice(0, 6);
   const seedInt = parseInt(seedHex, 16) || 0;
   const normSeed = seedInt / 0xffffff;
 
@@ -71,12 +149,40 @@ export default function FloraDetail() {
     "@SporaLab",
     "@GenArtist",
     "@FloraGen",
-    flora.author,
+    derived?.author ?? "@Anonymous",
   ];
 
-  const detailText = `${flora.excerpt}
+  const detailText = `${baseText}
 
 This flora was generated from a unique text input. Its morphology is influenced by sentiment, rhythm, and structural patterns in the original words. Variations can branch from this unit while keeping a shared lineage through its soil and generation metadata.`;
+
+  if (isLoading && !derived) {
+    return (
+      <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+        <TransparentNavbar showScrollBackground />
+        <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
+          <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
+            Loading flora...
+          </p>
+        </main>
+        <FooterAlter />
+      </div>
+    );
+  }
+
+  if (error || !derived) {
+    return (
+      <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+        <TransparentNavbar showScrollBackground />
+        <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
+          <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
+            Could not load this flora.
+          </p>
+        </main>
+        <FooterAlter />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
@@ -93,16 +199,24 @@ This flora was generated from a unique text input. Its morphology is influenced 
             <span>Back</span>
           </button>
 
+          <button
+            type="button"
+            onClick={() => navigate(`/laboratory?floraId=${encodeURIComponent(derived.id)}`)}
+            className="mb-4 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline"
+          >
+            <span>Open in laboratory</span>
+          </button>
+
           <div className="bg-[#262626] text-[#E9E9E9] border-2 border-[#262626] px-6 py-4 md:py-5">
             <h1 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-none mb-2">
-              {flora.title}
+              {derived.title}
             </h1>
             <p className="font-supply-mono text-[11px] sm:text-xs">
               by{" "}
               <span className="font-semibold">
-                {flora.author}
+                {derived.author}
               </span>{" "}
-              | ID {flora.id} | {flora.generation}
+              | ID {derived.id} | {derived.generation}
             </p>
           </div>
         </section>
@@ -113,7 +227,7 @@ This flora was generated from a unique text input. Its morphology is influenced 
               <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] flex items-center justify-between font-supply-mono text-[11px] uppercase tracking-[0.25em]">
                 <span>FLORA</span>
                 <span className="text-[9px] opacity-80">
-                  SEED {flora.seed}
+                  SEED {derived.seed}
                 </span>
               </div>
 
@@ -128,16 +242,16 @@ This flora was generated from a unique text input. Its morphology is influenced 
                 style={{ aspectRatio: "4 / 3" }}
               >
                 <img
-                  src={flora.image}
-                  alt={flora.title}
+                  src={derived.image}
+                  alt={derived.title}
                   className="w-full h-full object-cover"
                   style={{ filter: "grayscale(80%) contrast(120%)" }}
                 />
               </div>
 
               <div className="absolute bottom-4 right-4 bg-[#E3E3E3] border border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
-                <p>SOIL: {flora.seed}</p>
-                <p>GEN: {flora.generation}</p>
+                <p>SOIL: {derived.seed}</p>
+                <p>GEN: {derived.generation}</p>
               </div>
             </section>
           </div>
@@ -195,10 +309,10 @@ This flora was generated from a unique text input. Its morphology is influenced 
                   <span className="text-[#262626]">{seedHex.toUpperCase()}</span>
                 </p>
                 <p>
-                  UNIT: <span className="text-[#262626]">{flora.id}</span>
+                  UNIT: <span className="text-[#262626]">{derived.id}</span>
                 </p>
                 <p>
-                  GEN: <span className="text-[#262626]">{flora.generation}</span>
+                  GEN: <span className="text-[#262626]">{derived.generation}</span>
                 </p>
               </div>
             </div>
