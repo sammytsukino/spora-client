@@ -210,7 +210,7 @@ This flora was generated from a unique text input. Its morphology is influenced 
             }}
             className="mb-4 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline"
           >
-            <span>Open in laboratory</span>
+            <span>Open in {flora?.status === "sealed" ? "greenhouse" : "laboratory"}</span>
           </button>
 
           <div className="bg-[#262626] text-[#E9E9E9] border-2 border-[#262626] px-6 py-4 md:py-5">

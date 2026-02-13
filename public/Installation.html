@@ -397,6 +397,13 @@
             pointer-events: none;
             opacity: 0.45;
         }
+        
+        /* Ensure render button is always enabled in locked state */
+        #btnRenderPNG:not([disabled]) {
+            pointer-events: auto !important;
+            opacity: 1 !important;
+            cursor: pointer !important;
+        }
 
         textarea.append-only-mode {
             /* No visual indicators */
@@ -690,7 +697,7 @@
             <button id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
             <div class="btn-group">
                 <button onclick="downloadState()">SAVE JSON</button>
-                <button onclick="saveFullArt()">RENDER PNG</button>
+                <button id="btnRenderPNG" onclick="saveFullArt()">RENDER PNG</button>
             </div>
             <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display: none" />
             <button style="margin-top: 10px; border-style: dotted" onclick="document.getElementById('fileInput').click()">LOAD JSON FILE</button>
@@ -729,8 +736,40 @@
         function setLockedState(locked) {
             const ui = document.getElementById("ui");
             if (!ui) return;
-            if (locked) ui.classList.add("is-locked");
-            else ui.classList.remove("is-locked");
+            
+            if (locked) {
+                ui.classList.add("is-locked");
+                
+                // First, disable ALL elements
+                ui.querySelectorAll("input, textarea, select, button, [contenteditable]").forEach((el) => {
+                    el.disabled = true;
+                    if (el.hasAttribute("contenteditable")) {
+                        el.setAttribute("contenteditable", "false");
+                    }
+                });
+                
+                // Then, explicitly enable ONLY the RENDER PNG button
+                const renderBtn = document.getElementById("btnRenderPNG");
+                if (renderBtn) {
+                    renderBtn.disabled = false;
+                    renderBtn.removeAttribute("disabled");
+                    renderBtn.style.pointerEvents = "auto";
+                    renderBtn.style.opacity = "1";
+                    renderBtn.style.cursor = "pointer";
+                    console.log("Render button enabled:", renderBtn);
+                }
+            } else {
+                ui.classList.remove("is-locked");
+                
+                // Re-enable all elements
+                ui.querySelectorAll("input, textarea, select, button, [contenteditable]").forEach((el) => {
+                    el.disabled = false;
+                    el.removeAttribute("disabled");
+                    if (el.hasAttribute("contenteditable")) {
+                        el.setAttribute("contenteditable", "true");
+                    }
+                });
+            }
         }
 
         function setBlossomingMode(enabled) {
