@@ -56,6 +56,14 @@
             z-index: 10;
         }
 
+        #ui.is-locked input,
+        #ui.is-locked textarea,
+        #ui.is-locked select,
+        #ui.is-locked button {
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
         #ui::-webkit-scrollbar {
             width: 0px;
             background: transparent;
@@ -646,6 +654,10 @@ Look, this is where you plant your words. Words that transform, creating life fr
 
         <section style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark);">
             <h2>SYSTEM EXPORT</h2>
+            <div class="btn-group" style="margin-bottom: 12px">
+                <button class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
+                <button class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
+            </div>
             <button class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
             <div class="btn-group">
                 <button onclick="downloadState()">SAVE JSON</button>
@@ -674,6 +686,18 @@ Look, this is where you plant your words. Words that transform, creating life fr
         let flowers = [];
         let targetFlowerSet = null;
         let lastUsedSet = "daisy";
+
+        function getQueryParam(key) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(key);
+        }
+
+        function setLockedState(locked) {
+            const ui = document.getElementById("ui");
+            if (!ui) return;
+            if (locked) ui.classList.add("is-locked");
+            else ui.classList.remove("is-locked");
+        }
 
         const maskUrls = {
             daisy: [
@@ -893,22 +917,149 @@ Look, this is where you plant your words. Words that transform, creating life fr
             });
         }
 
-        function downloadState() {
-            const s = {
-                title: document.getElementById("inpTitle").value, text: document.getElementById("txtInp").value, flowerSet: lastUsedSet,
+        function collectState() {
+            return {
+                title: document.getElementById("inpTitle").value,
+                text: document.getElementById("txtInp").value,
+                flowerSet: lastUsedSet,
                 wind: { active: document.getElementById("chkWind").checked, strength: parseFloat(document.getElementById("rngWind").value) },
-                chaos: { scramble: document.getElementById("chkScramble").checked, scrambleForce: parseFloat(document.getElementById("rngScramble").value), jitter: document.getElementById("rngJitter").value, pulse: document.getElementById("rngPulse").value, wave: document.getElementById("rngWave").value },
-                colors: { maskA: document.getElementById("colMaskGradA").value, maskB: document.getElementById("colMaskGradB").value, stem: document.getElementById("colStem").value, text: document.getElementById("colTextSolid").value, bgA: document.getElementById("colBgGradA").value, bgB: document.getElementById("colBgGradB").value, auto: document.getElementById("chkAutoContrast").checked },
-                geometry: { scale: parseFloat(document.getElementById("rngScale").value), fontSize: parseInt(document.getElementById("rngSize").value), font: document.getElementById("selFont").value },
-                style: { mask: document.getElementById("chkMask").checked, grad: document.getElementById("chkFillGradient").checked, outline: document.getElementById("chkOutline").checked, outlineW: document.getElementById("rngOutlineWidth").value },
-                background: { mode: document.getElementById("selBgMode").value, angle: document.getElementById("rngBgAngle").value }
+                chaos: {
+                    scramble: document.getElementById("chkScramble").checked,
+                    scrambleForce: parseFloat(document.getElementById("rngScramble").value),
+                    jitter: document.getElementById("rngJitter").value,
+                    pulse: document.getElementById("rngPulse").value,
+                    wave: document.getElementById("rngWave").value,
+                },
+                colors: {
+                    maskA: document.getElementById("colMaskGradA").value,
+                    maskB: document.getElementById("colMaskGradB").value,
+                    stem: document.getElementById("colStem").value,
+                    text: document.getElementById("colTextSolid").value,
+                    bgA: document.getElementById("colBgGradA").value,
+                    bgB: document.getElementById("colBgGradB").value,
+                    auto: document.getElementById("chkAutoContrast").checked,
+                },
+                geometry: {
+                    scale: parseFloat(document.getElementById("rngScale").value),
+                    fontSize: parseInt(document.getElementById("rngSize").value),
+                    font: document.getElementById("selFont").value,
+                },
+                style: {
+                    mask: document.getElementById("chkMask").checked,
+                    grad: document.getElementById("chkFillGradient").checked,
+                    outline: document.getElementById("chkOutline").checked,
+                    outlineW: document.getElementById("rngOutlineWidth").value,
+                },
+                background: {
+                    mode: document.getElementById("selBgMode").value,
+                    angle: document.getElementById("rngBgAngle").value,
+                },
             };
-            const a = document.createElement("a"); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(s, null, 2)); a.download = "spora_state.json"; a.click();
+        }
+
+        function downloadState() {
+            const s = collectState();
+            const a = document.createElement("a");
+            a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(s, null, 2));
+            a.download = "spora_state.json";
+            a.click();
+        }
+
+        async function submitFlora(status) {
+            const s = document.getElementById("statusText");
+            const token = localStorage.getItem("spora_token");
+            const state = collectState();
+
+            if (!token) {
+                s.innerText = "LOGIN REQUIRED";
+                return;
+            }
+
+            if (!state.text || state.text.trim().length < 10) {
+                s.innerText = "ADD MORE TEXT";
+                return;
+            }
+
+            s.innerText = "SAVING...";
+
+            const payload = {
+                title: state.title || "Untitled Flora",
+                text: state.text,
+                status: status,
+                generative: {
+                    labState: state,
+                },
+            };
+
+            const apiBase = window.location.hostname === "localhost"
+                ? "http://localhost:4000/api"
+                : "/api";
+
+            try {
+                const res = await fetch(apiBase + "/floras", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token,
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    s.innerText = (data && data.error) ? data.error.toUpperCase() : "SAVE FAILED";
+                    return;
+                }
+
+                s.innerText = status === "sealed" ? "SEALED" : "BLOSSOMING";
+            } catch (err) {
+                s.innerText = "NETWORK ERROR";
+            }
         }
 
         function loadStateFromFile(i) {
             const f = i.files[0]; if (!f) return; const r = new FileReader();
             r.onload = e => applyVisualState(JSON.parse(e.target.result)); r.readAsText(f);
+        }
+
+        async function loadFloraPreview() {
+            const floraId = getQueryParam("floraId");
+            if (!floraId) return;
+
+            const statusEl = document.getElementById("statusText");
+            statusEl.innerText = "LOADING FLORA...";
+
+            const apiBase = window.location.hostname === "localhost"
+                ? "http://localhost:4000/api"
+                : "/api";
+
+            try {
+                const res = await fetch(apiBase + "/floras/" + floraId);
+                const flora = await res.json().catch(() => null);
+
+                if (!res.ok || !flora) {
+                    statusEl.innerText = "PREVIEW FAILED";
+                    return;
+                }
+
+                const labState = flora.generative && flora.generative.labState
+                    ? flora.generative.labState
+                    : null;
+
+                if (labState) {
+                    applyVisualState(labState);
+                } else {
+                    document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
+                    document.getElementById("txtInp").value = flora.text || "";
+                    generateGarden();
+                }
+
+                const locked = flora.status === "sealed";
+                setLockedState(locked);
+                statusEl.innerText = locked ? "PREVIEW LOCKED" : "PREVIEW READY";
+            } catch (err) {
+                statusEl.innerText = "PREVIEW ERROR";
+            }
         }
 
         const moodProfiles = {
@@ -951,7 +1102,10 @@ Look, this is where you plant your words. Words that transform, creating life fr
         }
 
         function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
-        window.addEventListener("DOMContentLoaded", updateCharCount);
+        window.addEventListener("DOMContentLoaded", () => {
+            updateCharCount();
+            loadFloraPreview();
+        });
     </script>
 </body>
 </html>

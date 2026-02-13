@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
+import { signUp } from "@/lib/auth"
 
 export default function SignUpForm() {
   const navigate = useNavigate()
@@ -10,8 +11,9 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
 
@@ -35,7 +37,20 @@ export default function SignUpForm() {
       return
     }
 
-    console.log("Sign up:", { username, name, email, password, confirmPassword })
+    setIsSubmitting(true)
+    try {
+      await signUp({
+        username,
+        displayName: name,
+        email,
+        password,
+      })
+      navigate("/garden")
+    } catch (err) {
+      setError("Could not create account. Try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -139,8 +154,9 @@ export default function SignUpForm() {
           <MainButton
             type="submit"
             className="w-full h-11 sm:h-12 border-2 border-[#262626]"
+            disabled={isSubmitting}
           >
-            CREATE ACCOUNT
+            {isSubmitting ? "CREATING..." : "CREATE ACCOUNT"}
           </MainButton>
         </form>
 
