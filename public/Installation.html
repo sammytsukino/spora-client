@@ -129,40 +129,68 @@
             font-weight: 400;
         }
 
-        textarea, [contenteditable="true"] {
-            height: 100px;
+        #txtInpContainer {
+            min-height: 120px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            line-height: normal;
+            display: block;
         }
 
-        textarea::placeholder, [contenteditable="true"]:empty:before {
-            color: #888;
-            opacity: 1;
-            font-style: italic;
-        }
-        
-        [contenteditable="true"]:empty:before {
-            content: attr(data-placeholder);
-        }
-        
-        .base-text {
+        #baseTextDisplay {
             color: #666;
             opacity: 0.75;
-        }
-        
-        .new-text {
-            color: var(--spora-dark);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            padding: 0;
+            margin: 0;
+            line-height: 1.5;
         }
 
-        #txtInp::-webkit-scrollbar {
+        #baseTextDisplay:empty {
+            display: none;
+        }
+
+        #newTextInput {
+            color: var(--spora-dark);
+            outline: none;
+            border: none;
+            padding: 0 !important;
+            margin: 0 !important;
+            min-height: 0 !important;
+            height: auto !important;
+            line-height: 1.5 !important;
+            display: inline-block;
+            width: 100%;
+            background: transparent;
+        }
+
+        #newTextInput:empty:before {
+            content: attr(data-placeholder);
+            color: #888;
+            opacity: 0.5;
+            font-style: italic;
+        }
+
+        #newTextInput:focus {
+            outline: none;
+        }
+
+        #txtInpContainer::-webkit-scrollbar {
             width: 8px;
             background: transparent;
         }
 
-        #txtInp::-webkit-scrollbar-thumb {
+        #txtInpContainer::-webkit-scrollbar-thumb {
             background: var(--spora-dark);
             border-radius: 8px;
         }
 
-        #txtInp {
+        #txtInpContainer {
             scrollbar-width: thin;
             scrollbar-color: var(--spora-dark) transparent;
         }
@@ -398,7 +426,6 @@
             opacity: 0.45;
         }
         
-        /* Ensure render button is always enabled in locked state */
         #btnRenderPNG:not([disabled]) {
             pointer-events: auto !important;
             opacity: 1 !important;
@@ -406,7 +433,6 @@
         }
 
         textarea.append-only-mode {
-            /* No visual indicators */
         }
 
         .append-only-label {
@@ -511,7 +537,10 @@
         <section>
             <h2>YOUR WORDS</h2>
             <div class="control-box">
-                <div id="txtInp" contenteditable="true" oninput="triggerRegen(); updateCharCount();" data-placeholder="Write something meaningful..." style="resize: none; min-height: 120px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word;">Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</div>
+                <div id="txtInpContainer">
+                    <div id="baseTextDisplay"></div>
+                    <div id="newTextInput" contenteditable="true" oninput="triggerRegen(); updateCharCount();" data-placeholder="Write something meaningful..." style="white-space: pre-wrap; word-wrap: break-word;">Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</div>
+                </div>
             </div>
             <div id="charCount" style="text-align: left; font-family: var(--font-mono); font-size: 10px; color: var(--spora-dark); margin-top: 4px; opacity: 0.7;"></div>
         </section>
@@ -740,7 +769,6 @@
             if (locked) {
                 ui.classList.add("is-locked");
                 
-                // First, disable ALL elements
                 ui.querySelectorAll("input, textarea, select, button, [contenteditable]").forEach((el) => {
                     el.disabled = true;
                     if (el.hasAttribute("contenteditable")) {
@@ -748,7 +776,6 @@
                     }
                 });
                 
-                // Then, explicitly enable ONLY the RENDER PNG button
                 const renderBtn = document.getElementById("btnRenderPNG");
                 if (renderBtn) {
                     renderBtn.disabled = false;
@@ -761,7 +788,6 @@
             } else {
                 ui.classList.remove("is-locked");
                 
-                // Re-enable all elements
                 ui.querySelectorAll("input, textarea, select, button, [contenteditable]").forEach((el) => {
                     el.disabled = false;
                     el.removeAttribute("disabled");
@@ -777,7 +803,7 @@
             if (!ui) return;
             
             isBlossomingMode = enabled;
-            const keepEnabled = new Set(["txtInp", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
+            const keepEnabled = new Set(["newTextInput", "baseTextDisplay", "txtInpContainer", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
 
             ui.querySelectorAll("input, textarea, select, button").forEach((el) => {
                 const id = el.id || "";
@@ -796,143 +822,29 @@
         }
 
         function enableAppendOnlyText(baseText) {
-            const txt = document.getElementById("txtInp");
-            if (!txt) return;
+            const baseTextDisplay = document.getElementById("baseTextDisplay");
+            const newTextInput = document.getElementById("newTextInput");
+            
+            if (!baseTextDisplay || !newTextInput) return;
 
             lockedBaseText = baseText || "";
             
-            // Ensure text ends with newline for separation
-            if (lockedBaseText && !lockedBaseText.endsWith('\n')) {
-                lockedBaseText += '\n';
+            baseTextDisplay.textContent = lockedBaseText;
+            newTextInput.setAttribute('data-placeholder', 'Continue here to make your flora grow...');
+            
+            if (newTextInput.textContent.includes("Look, this is where you plant your words")) {
+                newTextInput.textContent = "";
             }
             
-            // Structure the content with styled spans ONCE
-            const currentText = txt.textContent;
-            const newTextPortion = currentText.substring(lockedBaseText.length);
-            txt.innerHTML = `<span class="base-text">${escapeHTML(lockedBaseText)}</span><span class="new-text" id="newTextSpan">${escapeHTML(newTextPortion)}</span>`;
-            
-            // Move cursor to end
-            moveCursorToEnd(txt);
-
-            if (appendHandlers) {
-                txt.removeEventListener("beforeinput", appendHandlers.onBeforeInput);
-                txt.removeEventListener("keydown", appendHandlers.onKeyDown);
-                txt.removeEventListener("input", appendHandlers.onInput);
-                txt.removeEventListener("paste", appendHandlers.onPaste);
-                txt.removeEventListener("cut", appendHandlers.onCut);
-                txt.removeEventListener("mouseup", appendHandlers.onMouseUp);
-                txt.removeEventListener("click", appendHandlers.onClick);
-                txt.removeEventListener("focus", appendHandlers.onFocus);
-            }
-
-            const getCursorPosition = () => {
+            setTimeout(() => {
+                newTextInput.focus();
+                const range = document.createRange();
                 const selection = window.getSelection();
-                if (!selection.rangeCount) return txt.textContent.length;
-                
-                const range = selection.getRangeAt(0);
-                const preCaretRange = range.cloneRange();
-                preCaretRange.selectNodeContents(txt);
-                preCaretRange.setEnd(range.endContainer, range.endOffset);
-                return preCaretRange.toString().length;
-            };
-
-            const onBeforeInput = (e) => {
-                const cursorPos = getCursorPosition();
-                
-                // Prevent editing in the base text area
-                if (cursorPos < lockedBaseText.length) {
-                    e.preventDefault();
-                    
-                    // If trying to insert, append at the end
-                    const newTextSpan = document.getElementById('newTextSpan');
-                    if (newTextSpan && (e.inputType === 'insertText' && e.data)) {
-                        newTextSpan.textContent += e.data;
-                        moveCursorToEnd(txt);
-                        updateCharCount();
-                        triggerRegen();
-                    } else if (newTextSpan && e.inputType === 'insertLineBreak') {
-                        newTextSpan.textContent += '\n';
-                        moveCursorToEnd(txt);
-                        updateCharCount();
-                        triggerRegen();
-                    }
-                }
-            };
-
-            const onKeyDown = (e) => {
-                const cursorPos = getCursorPosition();
-                
-                if (cursorPos < lockedBaseText.length) {
-                    const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown', 'Tab'];
-                    const isCopy = (e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C');
-                    
-                    if (!allowedKeys.includes(e.key) && !isCopy) {
-                        e.preventDefault();
-                        moveCursorToEnd(txt);
-                    }
-                }
-            };
-
-            const onPaste = (e) => {
-                const cursorPos = getCursorPosition();
-                if (cursorPos < lockedBaseText.length) {
-                    e.preventDefault();
-                    const pasteData = e.clipboardData.getData('text/plain');
-                    const newTextSpan = document.getElementById('newTextSpan');
-                    if (newTextSpan) {
-                        newTextSpan.textContent += pasteData;
-                        moveCursorToEnd(txt);
-                        updateCharCount();
-                        triggerRegen();
-                    }
-                }
-            };
-
-            const onCut = (e) => {
-                const cursorPos = getCursorPosition();
-                if (cursorPos < lockedBaseText.length) {
-                    e.preventDefault();
-                }
-            };
-
-            const onMouseUp = () => {
-                const cursorPos = getCursorPosition();
-                if (cursorPos < lockedBaseText.length) {
-                    setTimeout(() => moveCursorToEnd(txt), 0);
-                }
-            };
-
-            const onClick = () => {
-                const cursorPos = getCursorPosition();
-                if (cursorPos < lockedBaseText.length) {
-                    setTimeout(() => moveCursorToEnd(txt), 0);
-                }
-            };
-
-            const onInput = () => {
-                // Only update char count and trigger regen, don't rebuild HTML
-                updateCharCount();
-                triggerRegen();
-            };
-            
-            const onFocus = () => {
-                setTimeout(() => {
-                    const cursorPos = getCursorPosition();
-                    if (cursorPos < lockedBaseText.length) {
-                        moveCursorToEnd(txt);
-                    }
-                }, 0);
-            };
-
-            appendHandlers = { onBeforeInput, onKeyDown, onInput, onPaste, onCut, onMouseUp, onClick, onFocus };
-            txt.addEventListener("beforeinput", onBeforeInput);
-            txt.addEventListener("keydown", onKeyDown);
-            txt.addEventListener("input", onInput);
-            txt.addEventListener("paste", onPaste);
-            txt.addEventListener("cut", onCut);
-            txt.addEventListener("mouseup", onMouseUp);
-            txt.addEventListener("click", onClick);
-            txt.addEventListener("focus", onFocus);
+                range.selectNodeContents(newTextInput);
+                range.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }, 100);
         }
         
         function escapeHTML(str) {
@@ -1091,20 +1003,25 @@
             });
         }
 
+        function getFullText() {
+            const baseTextDisplay = document.getElementById("baseTextDisplay");
+            const newTextInput = document.getElementById("newTextInput");
+            const baseText = baseTextDisplay ? baseTextDisplay.textContent : "";
+            const newText = newTextInput ? newTextInput.textContent : "";
+            return baseText + newText;
+        }
+
         function generateGarden() {
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
-            const txt = document.getElementById("txtInp").textContent.trim(); if (!txt) return;
+            const txt = getFullText().trim(); if (!txt) return;
             const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
             const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
             document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
             
-            // Calcular divisor adaptativo basado en tamaño de flor y fuente
-            // Flores pequeñas + fuente grande = más flores (divisor menor)
-            // Flores grandes + fuente pequeña = menos flores (divisor mayor)
-            const flowerSizeFactor = map(sS, 0.5, 2.5, 0.5, 2.0); // Flor grande = factor mayor
-            const fontSizeFactor = map(bS, 10, 80, 2.0, 0.5); // Fuente grande = factor menor
+            const flowerSizeFactor = map(sS, 0.5, 2.5, 0.5, 2.0);
+            const fontSizeFactor = map(bS, 10, 80, 2.0, 0.5);
             const adaptiveDivisor = constrain(12 * flowerSizeFactor * fontSizeFactor, 3, 50);
             
             const words = txt.split(/\s+/), count = constrain(ceil(words.length / adaptiveDivisor), 2, 20);
@@ -1178,7 +1095,7 @@
         function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateGarden, 400); }
         function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
         function updateUI(id, t, v, u) { document.getElementById(id).innerText = `${t}: ${v}${u}`; }
-        function updateCharCount() { const t = document.getElementById("txtInp"); document.getElementById("charCount").textContent = t.textContent.length + " characters"; }
+        function updateCharCount() { const fullText = getFullText(); document.getElementById("charCount").textContent = fullText.length + " characters"; }
 
         function saveFullArt() {
             const s = document.getElementById("statusText"); s.innerText = "RENDERING...";
@@ -1190,7 +1107,7 @@
         function collectState() {
             return {
                 title: document.getElementById("inpTitle").value,
-                text: document.getElementById("txtInp").textContent,
+                text: getFullText(),
                 flowerSet: lastUsedSet,
                 wind: { active: document.getElementById("chkWind").checked, strength: parseFloat(document.getElementById("rngWind").value) },
                 chaos: {
@@ -1380,7 +1297,10 @@
                     applyVisualState(labState);
                 } else {
                     document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
-                    document.getElementById("txtInp").textContent = flora.text || "";
+                    const newTextInput = document.getElementById("newTextInput");
+                    if (newTextInput) {
+                        newTextInput.textContent = flora.text || "";
+                    }
                     generateGarden();
                 }
 
@@ -1426,7 +1346,10 @@
         function applyVisualState(s) {
             const ui = id => document.getElementById(id);
             if (s.title) ui("inpTitle").value = s.title; 
-            if (s.text) ui("txtInp").textContent = s.text;
+            if (s.text) {
+                const newTextInput = ui("newTextInput");
+                if (newTextInput) newTextInput.textContent = s.text;
+            }
             targetFlowerSet = s.flowerSet; ui("chkWind").checked = s.wind.active; ui("rngWind").value = s.wind.strength;
             ui("chkScramble").checked = s.chaos.scramble; ui("rngScramble").value = s.chaos.scrambleForce || 0.1;
             ui("rngJitter").value = s.chaos.jitter || 0.5; ui("rngPulse").value = s.chaos.pulse || 1.0; ui("rngWave").value = s.chaos.wave || 1.0;
