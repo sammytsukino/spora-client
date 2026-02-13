@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
@@ -8,18 +8,84 @@ import LoadingIndicator from "@/components/common/LoadingIndicator";
 import EmptyState from "@/components/common/EmptyState";
 import FeaturedFlora from "@/components/greenhouse/FeaturedFlora";
 import GreenhouseFloraCard from "@/components/greenhouse/GreenhouseFloraCard";
-import { generateFloraData, floraFilters, ITEMS_PER_PAGE, type FloraItem } from "@/data/flora-data";
+import { floraFilters, ITEMS_PER_PAGE, floraImages } from "@/data/flora-data";
+import { listFloras, type ApiFlora } from "@/lib/floras";
 
-const allFloras = generateFloraData(48);
+interface UiFlora {
+  id: string;
+  generation: string;
+  image: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  seed: string;
+}
+
+function formatGeneration(value?: number) {
+  const safe = Number.isFinite(value) ? value : 0;
+  return `GEN_${safe}`;
+}
+
+function formatSeed(flora: ApiFlora) {
+  const seedSource = flora.generative?.soilId || flora.generative?.soilName || flora._id;
+  return `#${seedSource.slice(-6).toUpperCase()}`;
+}
+
+function mapFlora(flora: ApiFlora, index: number): UiFlora {
+  const author = flora.authorUsername
+    ? flora.authorUsername.startsWith("@")
+      ? flora.authorUsername
+      : `@${flora.authorUsername}`
+    : "@Anonymous";
+
+  return {
+    id: flora._id,
+    generation: formatGeneration(flora.lineage?.generation),
+    image: floraImages[index % floraImages.length],
+    title: flora.title,
+    excerpt: flora.text?.slice(0, 140) || "",
+    author,
+    seed: formatSeed(flora),
+  };
+}
 
 export default function Greenhouse() {
   const [activeFilter, setActiveFilter] = useState('All Units');
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const [floras, setFloras] = useState<UiFlora[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const filteredFloras = activeFilter === 'All Units'
-    ? allFloras
-    : allFloras.filter(flora => flora.generation === activeFilter);
+  useEffect(() => {
+    let isActive = true;
+    setIsLoading(true);
+    setError(null);
+
+    listFloras({ status: "sealed" })
+      .then((data) => {
+        if (!isActive) return;
+        setFloras(data.map(mapFlora));
+      })
+      .catch(() => {
+        if (!isActive) return;
+        setError("Could not load floras.");
+      })
+      .finally(() => {
+        if (!isActive) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  const filteredFloras = useMemo(() => {
+    return activeFilter === 'All Units'
+      ? floras
+      : floras.filter(flora => flora.generation === activeFilter);
+  }, [activeFilter, floras]);
 
   const loadMoreCards = useCallback(() => {
     if (visibleCount < filteredFloras.length) {
@@ -47,7 +113,7 @@ export default function Greenhouse() {
   const sideFloras = restFloras.slice(0, 2);
   const remainingFloras = restFloras.slice(2);
 
-  const handleCardClick = (flora: FloraItem) => {
+  const handleCardClick = (flora: UiFlora) => {
     navigate(`/flora/${encodeURIComponent(flora.id)}`, {
       state: { flora },
     });
@@ -90,7 +156,18 @@ export default function Greenhouse() {
         </div>
 
         <div className="border-l-2 border-t-2 border-[var(--spora-primary)]">
-          {visibleFloras.length === 0 ? (
+          {isLoading && floras.length === 0 ? (
+            <LoadingIndicator
+              current={0}
+              total={1}
+              message="LOADING SEALED FLORAS..."
+            />
+          ) : error ? (
+            <EmptyState
+              title="Could not load floras"
+              description={error}
+            />
+          ) : visibleFloras.length === 0 ? (
             <EmptyState
               title="No flora found"
               description="Try adjusting your filters to see more results."
