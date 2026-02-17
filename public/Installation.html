@@ -11,6 +11,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho&family=BioRhyme:wght@400;800&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Darker+Grotesque:wght@400;900&family=Eczar:wght@400;800&family=Gloock&family=Grenze+Gotisch:wght@400;700&family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;800&family=Xanh+Mono:ital@0;1&display=swap"
         rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho&family=BioRhyme:wght@400;800&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Darker+Grotesque:wght@400;900&family=Eczar:wght@400;800&family=Gloock&family=Grenze+Gotisch:wght@400;700&family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;800&family=Xanh+Mono:ital@0;1&display=swap"
+            rel="stylesheet" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -618,7 +623,7 @@
                     </div>
                     <div class="row-h">
                         <label>Show Fill</label>
-                        <input type="checkbox" id="chkMask" />
+                        <input type="checkbox" id="chkMask" onchange="triggerVisuals()" />
                     </div>
                     <div class="row-h">
                         <label>Gradient Active</label>
@@ -723,7 +728,7 @@
                 <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
                 <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
             </div>
-            <button id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
+            <button type="button" id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
             <div class="btn-group">
                 <button onclick="downloadState()">SAVE JSON</button>
                 <button id="btnRenderPNG" onclick="saveFullArt()">RENDER PNG</button>
@@ -756,10 +761,266 @@
         let lockedBaseText = "";
         let appendHandlers = null;
         let isBlossomingMode = false;
+        
 
         function getQueryParam(key) {
             const params = new URLSearchParams(window.location.search);
             return params.get(key);
+        }
+
+        // ==========================================
+        //  HERRAMIENTAS DE ARTE GENERATIVO (SEMILLAS)
+        
+        // ==========================================
+        
+        function getSeed(text, salt = 0) {
+            let h = salt;
+            for (let i = 0; i < text.length; i++) {
+                h = Math.imul(31, h) + text.charCodeAt(i) | 0;
+            }
+            const pseudo = Math.abs(Math.sin(h)) * 10000;
+            return pseudo - Math.floor(pseudo);
+        }
+
+function lerpHexColor(a, b, amount) {
+    const ah = parseInt(a.replace(/#/g, ''), 16),
+          ar = (ah >> 16) & 0xff, ag = (ah >> 8) & 0xff, ab = ah & 0xff,
+          bh = parseInt(b.replace(/#/g, ''), 16),
+          br = (bh >> 16) & 0xff, bg = (bh >> 8) & 0xff, bb = bh & 0xff,
+          rr = Math.round(ar + amount * (br - ar)),
+          rg = Math.round(ag + amount * (bg - ag)),
+          rb = Math.round(ab + amount * (bb - ab));
+    
+    // El .slice(1) es la clave que me faltó para que corte el exceso y genere el color web perfecto
+    return '#' + ((1 << 24) | (rr << 16) | (rg << 8) | rb).toString(16).slice(1);
+}
+
+        const sentimentLexicon = {
+            positive: ["amor", "luz", "paz", "feliz", "alegría", "vida", "crecer", "love", "light", "peace", "happy", "joy", "life", "grow", "bloom", "sun", "hope", "esperanza", "brillar", "shine", "smile", "sonrisa", "calma", "calm"],
+            negative: ["dolor", "muerte", "vacío", "triste", "oscuro", "miedo", "fin", "pain", "death", "void", "sad", "dark", "fear", "end", "bleed", "lost", "sangre", "llorar", "cry", "hate", "odio", "roto", "broken"]
+        };
+
+
+        const advancedLexicon = {
+    ethereal: ["cosmos", "alma", "infinito", "astral", "dios", "universo", "sueño", "aura", "espíritu", "etéreo", "ascender", "cielo", "tiempo", "eternidad", "magia", "milagro", "estrellas", "misterio", "niebla", "soul", "infinite", "god", "universe", "dream", "spirit", "ethereal", "ascend", "sky", "heaven", "time", "eternity", "magic", "miracle", "stars", "mystery", "mist", "beyond", "nada", "nothingness"],
+    melancholy: ["recuerdo", "olvido", "olvidar", "lágrima", "lluvia", "ayer", "ceniza", "polvo", "eco", "silencio", "nostalgia", "desvanecer", "otoño", "invierno", "triste", "tristeza", "soledad", "ausencia", "fantasma", "memory", "lost", "tears", "rain", "yesterday", "ash", "dust", "echo", "silence", "melancholy", "fade", "autumn", "winter", "sad", "sadness", "gone", "alone", "lonely", "ghost", "ruin"],
+    aggression: ["ira", "furia", "odio", "fuego", "arder", "romper", "sangre", "cuchillo", "grito", "golpear", "guerra", "dolor", "herida", "veneno", "rabia", "muerte", "matar", "destruir", "cruel", "anger", "rage", "hate", "fire", "burn", "break", "blood", "knife", "scream", "hit", "war", "pain", "wound", "poison", "death", "kill", "destroy", "cruel", "fury"],
+    passion: ["amor", "deseo", "corazón", "calor", "latir", "beso", "piel", "llama", "rojo", "florecer", "vida", "pulso", "fuego", "ardiente", "carne", "sangre", "amar", "love", "desire", "heart", "heat", "beat", "kiss", "skin", "flame", "red", "bloom", "life", "pulse", "burning", "flesh", "lover"],
+    anxiety: ["miedo", "temblor", "frío", "pánico", "vacío", "abismo", "oscuro", "monstruo", "terror", "huir", "ocultar", "ahogo", "ahogar", "sombra", "enfermo", "roto", "oscuridad", "caer", "fear", "shiver", "cold", "panic", "void", "abyss", "dark", "monster", "terror", "run", "hide", "choke", "drown", "shadow", "sick", "broken", "darkness", "fall", "trapped"],
+    serenity: ["paz", "calma", "respirar", "agua", "río", "brisa", "hoja", "árbol", "bosque", "suave", "lento", "fluir", "claro", "luz", "sanar", "tierra", "brillar", "sol", "peace", "calm", "breath", "breathe", "water", "river", "breeze", "leaf", "tree", "forest", "soft", "slow", "flow", "clear", "light", "heal", "earth", "shine", "sun", "quiet"]
+};
+
+function extractMorphology(text) {
+    if (!text || text.trim() === "") return null;
+    const words = text.trim().split(/\s+/);
+    const chars = text.replace(/\s/g, '');
+    const totalChars = chars.length;
+    const totalWords = words.length;
+    if (totalChars === 0) return null;
+    let categoryScores = { ethereal: 0, melancholy: 0, aggression: 0, passion: 0, anxiety: 0, serenity: 0 };
+    words.forEach(word => {
+        const clean = word.toLowerCase().replace(/[^a-záéíóúüñ]/g, '');
+        if(clean.length > 2) {
+            for (const [category, lexicon] of Object.entries(advancedLexicon)) {
+                if (lexicon.includes(clean)) categoryScores[category]++;
+            }
+        }
+    });
+    let dominantMood = "neutral";
+    let maxScore = 0;
+    for (const [category, score] of Object.entries(categoryScores)) {
+        if (score > maxScore) {
+            maxScore = score;
+            dominantMood = category;
+        }
+    }
+    const vowels = (text.match(/[aeiouáéíóúüAEIOUÁÉÍÓÚÜ]/g) || []).length;
+    const consonants = totalChars - vowels;
+    const uppercase = (text.match(/[A-ZÁÉÍÓÚÜ]/g) || []).length;
+    const punctuation = (text.match(/[.,;:!?()[\]{}"'-]/g) || []).length;
+    const sibilants = (text.match(/[szxfcSZXFC]/g) || []).length;
+    const uniqueChars = new Set(chars.toLowerCase().split('')).size;
+    let asciiSignature = 0;
+    for (let i = 0; i < totalChars; i++) asciiSignature += chars.charCodeAt(i);
+    let totalLengthDelta = 0;
+    let rhymeHits = 0;
+    let stopwordCount = 0;
+    const stopwords = new Set(["el","la","los","las","un","una","y","o","pero","de","en","a","por","para","con","the","and","of","in","to","a","is"]);
+    words.forEach((word, i) => {
+        const cleanWord = word.toLowerCase().replace(/[^a-záéíóúüñ]/g, '');
+        if (stopwords.has(cleanWord)) stopwordCount++;
+        if (i > 0) {
+            totalLengthDelta += Math.abs(word.length - words[i-1].length);
+            const prevWord = words[i-1].toLowerCase().replace(/[^a-záéíóúüñ]/g, '');
+            if (cleanWord.length > 2 && prevWord.length > 2) {
+                if (cleanWord.slice(-2) === prevWord.slice(-2)) rhymeHits++;
+            }
+        }
+    });
+    return {
+        dominantMood: dominantMood,
+        vowelDensity: vowels / totalChars,
+        consonantDensity: consonants / totalChars,
+        uppercaseDensity: uppercase / totalChars,
+        punctDensity: punctuation / totalChars,
+        sibilanceIndex: sibilants / totalChars,
+        entropy: uniqueChars / 30,
+        asciiSignature: asciiSignature,
+        asciiAngle: asciiSignature % 360,
+        avgLengthDelta: totalWords > 1 ? totalLengthDelta / (totalWords - 1) : 0,
+        rhymeDensity: totalWords > 1 ? rhymeHits / (totalWords - 1) : 0,
+        contentWordRatio: 1 - (stopwordCount / totalWords),
+        avgWordLength: totalChars / totalWords,
+        wordCount: totalWords
+    };
+}
+function generateOrganicProfile() {
+    const text = getFullText().trim();
+    const morph = extractMorphology(text);
+    
+    if (!morph) {
+        generateGarden(); 
+        return;
+    }
+
+    const seedColor = getSeed(text, 1);
+    const seedForm = getSeed(text, 2);
+    const seedPhysics = getSeed(text, 3);
+    const seedChaos = getSeed(text, 4);
+
+    const availableSets = Object.keys(maskUrls);
+    const targetSet = availableSets[Math.floor(seedForm * availableSets.length)];
+
+    let cMaskA, cMaskB, cBgA, cBgB;
+    const cStem = "#00FF00"; // Tallo biológico mutante intocable
+
+    // ========================================================
+    // 1. PALETAS NO OBIAS BASADAS EN MATICES (6 EJES + NEUTRO)
+    // ========================================================
+    switch (morph.dominantMood) {
+        case 'ethereal':
+            // Iridescencia, nacarado, espacio profundo, ultravioleta.
+            cBgA = lerpHexColor("#05001A", "#1A0033", seedColor);
+            cBgB = lerpHexColor("#000000", "#001133", getSeed(text, 6));
+            cMaskA = lerpHexColor("#00FFFF", "#E0B0FF", seedColor); // Cian a Malva
+            cMaskB = lerpHexColor("#FFFFFF", "#A3FFD6", getSeed(text, 5)); // Blanco a Menta
+            break;
+
+        case 'melancholy':
+            // Flores secas, papel viejo, fotografía sepia, índigo deslavado.
+            cBgA = lerpHexColor("#1A1815", "#2B2620", seedColor); // Marrón grisáceo abisal
+            cBgB = lerpHexColor("#0F0E0C", "#14120F", getSeed(text, 6));
+            cMaskA = lerpHexColor("#D9A05B", "#9E7A7A", seedColor); // Oro marchito a Rosa polvo
+            cMaskB = lerpHexColor("#8C92AC", "#C2B280", getSeed(text, 5)); // Azul índigo a Sepia
+            break;
+
+        case 'aggression':
+            // Contrastes violentos, amarillo tóxico, magenta crudo, sangre.
+            cBgA = lerpHexColor("#1A0000", "#111111", seedColor);
+            cBgB = "#000000";
+            cMaskA = lerpHexColor("#FF0000", "#FFD700", seedColor); // Sangre a Amarillo Warning
+            cMaskB = lerpHexColor("#FF00FF", "#FF5500", getSeed(text, 5)); // Magenta chillón a Naranja llama
+            break;
+
+        case 'passion':
+            // Terciopelo, tonos carne, rubor, vino profundo, carmesí.
+            cBgA = lerpHexColor("#330011", "#1A0005", seedColor);
+            cBgB = "#000000";
+            cMaskA = lerpHexColor("#FF0055", "#FF1493", seedColor); // Carmesí a Rosa Profundo
+            cMaskB = lerpHexColor("#FFB6C1", "#FFA07A", getSeed(text, 5)); // Rosa carne a Salmón vivo
+            break;
+
+        case 'anxiety':
+            // Hospitalario, verde enfermo, azul submarino ahogante, blanco clínico.
+            cBgA = lerpHexColor("#001A11", "#051100", seedColor);
+            cBgB = "#000000";
+            cMaskA = lerpHexColor("#BFFF00", "#00FFCC", seedColor); // Lima ácido a Cian tóxico
+            cMaskB = lerpHexColor("#FFFFFF", "#88FF88", getSeed(text, 5)); // Blanco a Verde pálido
+            break;
+
+        case 'serenity':
+            // Niebla matutina, verde salvia, arena, lavanda suave.
+            cBgA = lerpHexColor("#0A1A1A", "#0F1A24", seedColor);
+            cBgB = "#000000";
+            cMaskA = lerpHexColor("#7FFFD4", "#98FB98", seedColor); // Aguamarina a Verde menta
+            cMaskB = lerpHexColor("#E6E6FA", "#F0F8FF", getSeed(text, 5)); // Lavanda a Azul hielo
+            break;
+
+        default: // 'neutral'
+            // El fallback de la máquina: Glitch Ácido o Editorial Brutalista.
+            if (seedColor > 0.5) {
+                const wildColors = ["#FF00FF", "#00FFFF", "#CCFF00", "#FF5400"];
+                cMaskA = wildColors[Math.floor(getSeed(text, 10) * wildColors.length)];
+                cMaskB = wildColors[Math.floor(getSeed(text, 11) * wildColors.length)];
+                cBgA   = lerpHexColor("#111111", "#222222", seedColor);
+                cBgB   = lerpHexColor("#050505", "#1A1A1A", getSeed(text, 6));
+            } else {
+                cMaskA = lerpHexColor("#D90429", "#FFFFFF", seedColor);
+                cMaskB = lerpHexColor("#FFCAD4", "#E6E6E6", getSeed(text, 5));
+                cBgA   = lerpHexColor("#111111", "#1A1A1A", seedColor);
+                cBgB   = "#050505";
+            }
+            break;
+    }
+
+    // ========================================================
+    // 2. TIPOGRAFÍA Y EL RESTO (Continúa igual que antes...)
+    // ========================================================
+    let fontChoice = "'Inter', sans-serif";
+    const fontArray = ["'Space Mono', monospace", "'Grenze Gotisch', cursive", "'Playfair Display', serif", "'Syne', sans-serif", "'BioRhyme', serif"];
+    
+    // Hacemos que la fuente gótica sea más probable en ansiedad, melancolía y agresión
+    
+    if (["melancholy", "aggression", "anxiety"].includes(morph.dominantMood)) {
+        fontChoice = seedForm > 0.4 ? "'Grenze Gotisch', cursive" : "'Syne', sans-serif";
+    } else if (seedForm > 0.8) {
+        fontChoice = fontArray[Math.floor(seedChaos * fontArray.length)];
+    } else {
+        fontChoice = morph.avgWordLength > 5.5 ? "'Space Mono', monospace" : "'Playfair Display', serif"; 
+    }
+
+    // Geometría y Físicas
+    
+    
+    
+    let finalScale = constrain((0.5 + morph.vowelDensity) * map(seedForm, 0, 1, 0.5, 3.5), 0.5, 2.5);
+    let baseFontSize = map(morph.avgWordLength, 3, 8, 50, 15);
+    let finalFontSize = constrain(baseFontSize * map(seedChaos, 0, 1, 0.5, 2.0), 10, 80);
+
+    let finalWind = constrain((morph.punctDensity * 10) + (seedPhysics * 2.5), 0, 2.0);
+    let finalScrambleForce = constrain((morph.uppercaseDensity * 5) + (seedChaos * 1.5), 0, 1.0);
+    let isScrambled = finalScrambleForce > 0.3; 
+    let finalJitter = constrain((morph.avgLengthDelta * 0.5) + (seedPhysics * 2.0), 0, 2.0);
+    let finalOutlineW = Math.floor(map(seedChaos, 0, 1, 1, 6));
+    let hasOutline = seedChaos > 0.4 || morph.uppercaseDensity > 0.05;
+
+    let hasMask = seedColor > 0.5; 
+
+    const dynamicProfile = {
+        flowerSet: targetSet,
+        wind: { active: finalWind > 0.1, strength: finalWind },
+        chaos: {
+            scramble: isScrambled,
+            scrambleForce: finalScrambleForce,
+            jitter: finalJitter,
+            pulse: constrain((morph.rhymeDensity * 5) + (seedPhysics * 1.5), 0, 2), 
+            wave: constrain((morph.sibilanceIndex * 5) + (seedForm * 1.5), 0, 2) 
+        },
+        colors: {
+            maskA: cMaskA, maskB: cMaskB, stem: cStem, 
+            bgA: cBgA, bgB: cBgB, auto: true 
+        },
+        geometry: { scale: finalScale, fontSize: finalFontSize, font: fontChoice },
+        style: { mask: hasMask, grad: true, outline: hasOutline, outlineW: finalOutlineW },
+        background: { mode: seedColor > 0.8 ? "solid" : "gradient", angle: morph.asciiAngle }
+    };
+
+    applyVisualState(dynamicProfile);
+}
+
+
+        function map(n, start1, stop1, start2, stop2) {
+            return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
         }
 
         function setLockedState(locked) {
@@ -783,7 +1044,6 @@
                     renderBtn.style.pointerEvents = "auto";
                     renderBtn.style.opacity = "1";
                     renderBtn.style.cursor = "pointer";
-                    console.log("Render button enabled:", renderBtn);
                 }
             } else {
                 ui.classList.remove("is-locked");
@@ -852,15 +1112,6 @@
             div.textContent = str;
             return div.innerHTML;
         }
-        
-        function moveCursorToEnd(element) {
-            const range = document.createRange();
-            const selection = window.getSelection();
-            range.selectNodeContents(element);
-            range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
 
         const maskUrls = {
             daisy: [
@@ -917,10 +1168,18 @@
 
         function forceAlpha(c) { c.setAlpha(255); return c; }
 
+        // ========================================================
+        // NUEVO: Detector Luminancia Mejorado
+        // ========================================================
         function getContrastColor(hex) {
             if (!hex) return "#ffffff";
-            const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
-            return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? "#000000" : "#ffffff";
+            let cleanHex = hex.replace('#', '');
+            if(cleanHex.length === 3) cleanHex = cleanHex.split('').map(c => c+c).join('');
+            const r = parseInt(cleanHex.slice(0, 2), 16), g = parseInt(cleanHex.slice(2, 4), 16), b = parseInt(cleanHex.slice(4, 6), 16);
+            
+            // Fórmula estándar de luminancia percibida
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance > 0.5 ? "#000000" : "#ffffff";
         }
 
         function draw() {
@@ -939,6 +1198,7 @@
             const cFillA = forceAlpha(color(ui("colMaskGradA").value)), cFillB = forceAlpha(color(ui("colMaskGradB").value));
             const cOutline = forceAlpha(color(ui("colOutlineSolid").value));
 
+            // Detector dinámico (si no hay máscara, mira el fondo para contrastar)
             if (autoContrast) {
                 const ref = maskOn ? ui("colMaskGradA").value : ui("colBgGradA").value;
                 ui("colTextSolid").value = getContrastColor(ref);
@@ -1015,6 +1275,13 @@
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
             const txt = getFullText().trim(); if (!txt) return;
+
+            // ========================================================
+            // NUEVO: Aplicación de semilla P5 con layoutOffset
+            
+            // ========================================================
+
+
             const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
             const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
@@ -1092,7 +1359,7 @@
             cont.style.backgroundSize = mode === "tile" ? "100px 100px" : mode === "stretch" ? "100% 100%" : "auto";
         }
 
-        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateGarden, 400); }
+        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateOrganicProfile, 400); }
         function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
         function updateUI(id, t, v, u) { document.getElementById(id).innerText = `${t}: ${v}${u}`; }
         function updateCharCount() { const fullText = getFullText(); document.getElementById("charCount").textContent = fullText.length + " characters"; }
@@ -1262,7 +1529,10 @@
 
         async function loadFloraPreview() {
             const floraId = getQueryParam("floraId");
-            if (!floraId) return;
+            if (!floraId) {
+                generateOrganicProfile();
+                return;
+            }
 
             const statusEl = document.getElementById("statusText");
             statusEl.innerText = "LOADING FLORA...";
@@ -1301,7 +1571,7 @@
                     if (newTextInput) {
                         newTextInput.textContent = flora.text || "";
                     }
-                    generateGarden();
+                    generateOrganicProfile();
                 }
 
                 if (flora.status === "sealed") {
