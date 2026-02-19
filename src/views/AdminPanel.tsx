@@ -104,7 +104,7 @@ export default function AdminPanel({
             </h1>
             <Link
               to="/laboratory/full"
-              className="font-supply-mono text-xs uppercase underline hover:no-underline"
+              className="font-supply-mono text-xs uppercase underline hover:no-underline cursor-pointer"
             >
               Full laboratory
             </Link>

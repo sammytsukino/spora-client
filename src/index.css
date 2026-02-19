@@ -6,6 +6,11 @@
   color: #262626;
 }
 
+a,
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 body {
   @apply bg-background text-foreground;
 }

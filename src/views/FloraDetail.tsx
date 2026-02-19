@@ -37,6 +37,7 @@ export default function FloraDetail() {
   const [flora, setFlora] = useState<ApiFlora | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showAnalysis, setShowAnalysis] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -184,21 +185,10 @@ export default function FloraDetail() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="mb-2 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline"
+            className="mb-2 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
           >
             <span className="text-lg">←</span>
             <span>Back</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              const url = `/laboratory?floraId=${encodeURIComponent(derived.id)}`;
-              window.open(url, "_blank", "noopener,noreferrer");
-            }}
-            className="mb-4 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline"
-          >
-            <span>Open in {flora?.status === "sealed" ? "greenhouse" : "laboratory"}</span>
           </button>
 
           <div className="bg-[#262626] text-[#E9E9E9] border-2 border-[#262626] px-6 py-4 md:py-5">
@@ -216,8 +206,33 @@ export default function FloraDetail() {
         </section>
 
         <section className="border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
-          <div className="grid lg:grid-cols-[1.15fr,1.85fr]">
-            <article className="border-r-2 border-b-2 border-[#262626] p-4 md:p-6 flex flex-col gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(360px,520px)_1fr]">
+            <section className="border-r-2 border-b-2 border-[#262626] relative order-2 lg:order-1">
+              <div
+                className="w-full bg-[#E9E9E9]"
+                style={{ aspectRatio: "4 / 3" }}
+              >
+                <img
+                  src={derived.image}
+                  alt={derived.title}
+                  className="w-full h-full object-cover"
+                  style={{ filter: "grayscale(80%) contrast(120%)" }}
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const url = `/laboratory?floraId=${encodeURIComponent(derived.id)}`;
+                  window.open(url, "_blank", "noopener,noreferrer");
+                }}
+                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] bg-[#262626] text-[#E9E9E9] font-supply-mono text-xs sm:text-sm uppercase tracking-widest py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
+              >
+                Open in {flora?.status === "sealed" ? "greenhouse" : "laboratory"}
+              </button>
+            </section>
+
+            <article className="border-r-2 border-b-2 border-[#262626] p-4 md:p-6 flex flex-col gap-4 order-1 lg:order-2">
               <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] flex items-center justify-between font-supply-mono text-[11px] uppercase tracking-[0.25em]">
                 <span>FLORA</span>
                 <span className="text-[9px] opacity-80">
@@ -229,195 +244,182 @@ export default function FloraDetail() {
                 {baseText}
               </div>
             </article>
-
-            <section className="border-r-2 border-b-2 border-[#262626] relative">
-              <div
-                className="w-full h-full bg-[#E9E9E9]"
-                style={{ aspectRatio: "4 / 3" }}
-              >
-                <img
-                  src={derived.image}
-                  alt={derived.title}
-                  className="w-full h-full object-cover"
-                  style={{ filter: "grayscale(80%) contrast(120%)" }}
-                />
-              </div>
-
-              <div className="absolute bottom-4 right-4 bg-[#E3E3E3] border border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626]">
-                <p>SOIL: {derived.seed}</p>
-                <p>GEN: {derived.generation}</p>
-              </div>
-            </section>
           </div>
         </section>
 
         <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
           <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
-            <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] font-supply-mono text-[11px] uppercase tracking-[0.25em] mb-3">
-              GENERATION STATS
+            <div className="font-supply-mono text-[10px] uppercase tracking-[0.2em] text-[#262626]/80 mb-3">
+              Lineage
             </div>
 
-            <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 grid gap-4 sm:grid-cols-3 font-supply-mono text-[10px] sm:text-xs">
-              <div className="space-y-1">
-                <p>
-                  WORDS: <span className="text-[#262626]">{wordCount}</span>
-                </p>
-                <p>
-                  CHARS: <span className="text-[#262626]">{charCount}</span>
-                </p>
-                <p>
-                  LINES: <span className="text-[#262626]">{lineCount}</span>
-                </p>
-                <p>
-                  WORDS/LINE:{" "}
-                  <span className="text-[#262626]">{avgWordsPerLine}</span>
-                </p>
+            <div className="flex flex-wrap gap-2 font-supply-mono text-[11px] sm:text-xs">
+              {lineageHandles.map((handle) => (
+                <span
+                  key={handle}
+                  className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]"
+                >
+                  {handle}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
+          <button
+            type="button"
+            onClick={() => setShowAnalysis((v) => !v)}
+            className="w-full text-left border-r-2 border-b-2 border-[#262626] px-4 py-2 font-supply-mono text-[10px] uppercase tracking-widest text-[#262626]/70 hover:text-[#262626] hover:bg-[#E3E3E3] transition-colors"
+          >
+            {showAnalysis ? "− Hide analysis" : "+ Show analysis"}
+          </button>
+
+          {showAnalysis && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+              <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
+                Generation stats
               </div>
 
-              <div className="space-y-1">
-                <p>
-                  SEED HASH:{" "}
+              <div className="flex flex-col gap-1.5 font-supply-mono text-[10px] sm:text-xs text-[#262626]/90">
+                <div className="flex justify-between">
+                  <span className="opacity-70">WORDS</span>
+                  <span className="text-[#262626]">{wordCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">CHARS</span>
+                  <span className="text-[#262626]">{charCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">LINES</span>
+                  <span className="text-[#262626]">{lineCount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">WORDS/LINE</span>
+                  <span className="text-[#262626]">{avgWordsPerLine}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">SEED HASH</span>
                   <span className="text-[#262626]">{seedHex.toUpperCase()}</span>
-                </p>
-                <p>
-                  UNIT: <span className="text-[#262626]">{derived.id}</span>
-                </p>
-                <p>
-                  GEN: <span className="text-[#262626]">{derived.generation}</span>
-                </p>
-                <p>
-                  MOOD:{" "}
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">UNIT</span>
+                  <span className="text-[#262626]">{derived.id}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">GEN</span>
+                  <span className="text-[#262626]">{derived.generation}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">MOOD</span>
                   <span className="text-[#262626]">
                     {(morph?.dominantMood ?? "neutral").toUpperCase()}
                   </span>
-                </p>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
-          <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
-            <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] font-supply-mono text-[11px] uppercase tracking-[0.25em] mb-3">
-              MORPHOLOGY_ANALYSIS
-            </div>
+            <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+              <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
+                Morphology analysis
+              </div>
 
-            <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 grid gap-2 sm:grid-cols-2 md:grid-cols-3 font-supply-mono text-[10px] sm:text-xs">
-              <div className="flex justify-between">
-                <span className="opacity-70">SENTIMENT_FORCE</span>
-                <span className="text-[#262626]">
-                  {morph?.sentimentStrength != null
-                    ? String(morph.sentimentStrength)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">ENTROPY_INDEX</span>
-                <span className="text-[#262626]">
-                  {morph?.entropy != null
-                    ? morph.entropy.toFixed(3)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">VOCALIC_DENSITY</span>
-                <span className="text-[#262626]">
-                  {morph?.vowelDensity != null
-                    ? morph.vowelDensity.toFixed(3)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">SIBILANCE_LVL</span>
-                <span className="text-[#262626]">
-                  {morph?.sibilanceIndex != null
-                    ? morph.sibilanceIndex.toFixed(3)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">RHYTHM_DELTA</span>
-                <span className="text-[#262626]">
-                  {morph?.avgLengthDelta != null
-                    ? morph.avgLengthDelta.toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
-          <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
-            <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] font-supply-mono text-[11px] uppercase tracking-[0.25em] mb-3">
-              MAPPED_PARAMETERS
-            </div>
-
-            <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 grid gap-2 sm:grid-cols-2 md:grid-cols-3 font-supply-mono text-[10px] sm:text-xs">
-              <div className="flex justify-between">
-                <span className="opacity-70">GEOM_SCALE</span>
-                <span className="text-[#262626]">
-                  {labState?.geometry?.scale != null
-                    ? labState.geometry.scale.toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">WIND_FORCE</span>
-                <span className="text-[#262626]">
-                  {labState?.wind?.strength != null
-                    ? labState.wind.strength.toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">CHAOS_JITTER</span>
-                <span className="text-[#262626]">
-                  {labState?.chaos?.jitter != null
-                    ? labState.chaos.jitter.toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">SCRAMBLE_DNA</span>
-                <span className="text-[#262626]">
-                  {labState?.chaos?.scrambleForce != null
-                    ? labState.chaos.scrambleForce.toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-70">PULSE_WAVE</span>
-                <span className="text-[#262626]">
-                  {labState?.chaos?.pulse?.active &&
-                  labState?.chaos?.pulse?.strength != null
-                    ? labState.chaos.pulse.strength.toFixed(2)
-                    : "0"}
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
-          <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
-            <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] font-supply-mono text-[11px] uppercase tracking-[0.25em] mb-3">
-              LINEAGE
-            </div>
-
-            <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4">
-              <div className="flex flex-wrap gap-2 font-supply-mono text-[11px] sm:text-xs">
-                {lineageHandles.map((handle) => (
-                  <span
-                    key={handle}
-                    className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]"
-                  >
-                    {handle}
+              <div className="flex flex-col gap-1.5 font-supply-mono text-[10px] sm:text-xs text-[#262626]/90">
+                <div className="flex justify-between">
+                  <span className="opacity-70">SENTIMENT_FORCE</span>
+                  <span className="text-[#262626]">
+                    {morph?.sentimentStrength != null
+                      ? String(morph.sentimentStrength)
+                      : "-"}
                   </span>
-                ))}
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">ENTROPY_INDEX</span>
+                  <span className="text-[#262626]">
+                    {morph?.entropy != null
+                      ? morph.entropy.toFixed(3)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">VOCALIC_DENSITY</span>
+                  <span className="text-[#262626]">
+                    {morph?.vowelDensity != null
+                      ? morph.vowelDensity.toFixed(3)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">SIBILANCE_LVL</span>
+                  <span className="text-[#262626]">
+                    {morph?.sibilanceIndex != null
+                      ? morph.sibilanceIndex.toFixed(3)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">RHYTHM_DELTA</span>
+                  <span className="text-[#262626]">
+                    {morph?.avgLengthDelta != null
+                      ? morph.avgLengthDelta.toFixed(2)
+                      : "-"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+              <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
+                Mapped parameters
+              </div>
+
+              <div className="flex flex-col gap-1.5 font-supply-mono text-[10px] sm:text-xs text-[#262626]/90">
+                <div className="flex justify-between">
+                  <span className="opacity-70">GEOM_SCALE</span>
+                  <span className="text-[#262626]">
+                    {labState?.geometry?.scale != null
+                      ? labState.geometry.scale.toFixed(2)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">WIND_FORCE</span>
+                  <span className="text-[#262626]">
+                    {labState?.wind?.strength != null
+                      ? labState.wind.strength.toFixed(2)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">CHAOS_JITTER</span>
+                  <span className="text-[#262626]">
+                    {labState?.chaos?.jitter != null
+                      ? labState.chaos.jitter.toFixed(2)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">SCRAMBLE_DNA</span>
+                  <span className="text-[#262626]">
+                    {labState?.chaos?.scrambleForce != null
+                      ? labState.chaos.scrambleForce.toFixed(2)
+                      : "-"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="opacity-70">PULSE_WAVE</span>
+                  <span className="text-[#262626]">
+                    {labState?.chaos?.pulse?.active &&
+                    labState?.chaos?.pulse?.strength != null
+                      ? labState.chaos.pulse.strength.toFixed(2)
+                      : "0"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
+          )}
         </section>
       </main>
 

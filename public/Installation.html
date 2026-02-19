@@ -1748,9 +1748,23 @@ function extractMorphology(text) {
                 const canvasContainer = document.getElementById("canvas-container");
                 if (canvasContainer && typeof html2canvas === "function") {
                     const c = await html2canvas(canvasContainer, { scale: 2, useCORS: true });
-                    thumbnailData = c.toDataURL("image/png");
+                    const thumbW = 960, thumbH = 720;
+                    const thumb = document.createElement("canvas");
+                    thumb.width = thumbW;
+                    thumb.height = thumbH;
+                    const ctx = thumb.getContext("2d");
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = "high";
+                    const scale = Math.max(thumbW / c.width, thumbH / c.height);
+                    const sw = c.width, sh = c.height;
+                    const dw = sw * scale, dh = sh * scale;
+                    const dx = (thumbW - dw) / 2, dy = (thumbH - dh) / 2;
+                    ctx.fillStyle = "#111";
+                    ctx.fillRect(0, 0, thumbW, thumbH);
+                    ctx.drawImage(c, 0, 0, sw, sh, dx, dy, dw, dh);
+                    thumbnailData = thumb.toDataURL("image/jpeg", 0.92);
                 }
-            } catch (e) { /* capture failed, continue without thumbnail */ }
+            } catch (e) { console.warn("Thumbnail capture failed:", e); }
 
             const payload = {
                 title: state.title.trim(),

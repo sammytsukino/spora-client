@@ -13,6 +13,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import { getOptimizedThumbnailUrl } from "@/lib/cloudinary"
 import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 import MarqueeTextContent from "./MarqueeTextContent"
 
@@ -432,7 +433,7 @@ export function MarqueeBackground({
   items?: FloraThumbnail[]
 }) {
   const displayItems: FloraThumbnail[] =
-    items && items.length > 0 ? items : imgs.map((url) => ({ url }))
+    items && items.length > 0 ? items : imgs.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
   return (
     <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase
@@ -453,7 +454,7 @@ export function MarqueeBackground({
           displayItems.map((item, i) => (
             <div
               key={i}
-              className="w-24 h-32 sm:w-28 sm:h-40 md:w-36 md:h-48 hover:scale-110 duration-300 ease-in-out"
+              className="w-18 h-22 sm:w-20 sm:h-28 md:w-24 md:h-32 hover:scale-110 duration-300 ease-in-out"
             >
               <img
                 src={item.url}

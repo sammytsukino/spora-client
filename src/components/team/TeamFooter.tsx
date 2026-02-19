@@ -12,7 +12,7 @@ export default function TeamFooter() {
               href="https://www.linkedin.com/in/sammycabello/"
               target="_blank"
               rel="noreferrer"
-              className="hover:underline"
+              className="hover:underline cursor-pointer"
             >
               SAMMY CABELLO
             </a>

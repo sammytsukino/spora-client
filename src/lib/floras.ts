@@ -2,6 +2,7 @@ import { api } from "./api";
 
 export interface ApiFlora {
   _id: string;
+  shortId?: string;
   title: string;
   text: string;
   authorId?: string;

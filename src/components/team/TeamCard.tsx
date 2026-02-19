@@ -34,7 +34,7 @@ export default function TeamCard({ member }: TeamCardProps) {
           {member.social.twitter && (
             <a 
               href={`https://twitter.com/${member.social.twitter.replace('@', '')}`}
-              className="font-supply-mono text-xs hover:underline"
+              className="font-supply-mono text-xs hover:underline cursor-pointer"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -44,7 +44,7 @@ export default function TeamCard({ member }: TeamCardProps) {
           {member.social.github && (
             <a 
               href={`https://github.com/${member.social.github}`}
-              className="font-supply-mono text-xs hover:underline"
+              className="font-supply-mono text-xs hover:underline cursor-pointer"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -54,7 +54,7 @@ export default function TeamCard({ member }: TeamCardProps) {
           {member.social.linkedin && (
             <a 
               href={member.social.linkedin}
-              className="font-supply-mono text-xs hover:underline"
+              className="font-supply-mono text-xs hover:underline cursor-pointer"
               target="_blank"
               rel="noopener noreferrer"
             >

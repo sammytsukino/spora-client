@@ -9,6 +9,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import { getOptimizedThumbnailUrl } from "@/lib/cloudinary"
 import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 
 type SpringOptions = {
@@ -116,8 +117,8 @@ const MarqueeRow = ({
 export default function SimpleMarquee({
   items: floraItems = [],
   className = "",
-  direction = "left",
-  baseVelocity = 8,
+  direction = "right",
+  baseVelocity = 4,
   repeat = 4,
   slowdownOnHover = true,
   slowDownFactor = 0.1,
@@ -169,7 +170,8 @@ export default function SimpleMarquee({
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
   ]
 
-  const itemsToUse = floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url }))
+  const itemsToUse =
+    floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
   const minItemsForFill = 45
   const expandedItems =
     itemsToUse.length >= minItemsForFill
@@ -182,7 +184,7 @@ export default function SimpleMarquee({
           to={`/flora/${item.id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative block"
+          className="group relative block cursor-pointer"
         >
           <img
             src={item.url}
@@ -190,10 +192,10 @@ export default function SimpleMarquee({
             className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover"
           />
           <span
-            className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 transition-opacity duration-200 group-hover:opacity-100 pointer-events-none font-supply-mono text-[10px] sm:text-xs text-white uppercase tracking-wider"
+            className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 transition-opacity duration-200 group-hover:opacity-100 pointer-events-none font-supply-mono text-[8px] sm:text-[9px] text-white uppercase tracking-wider px-1 text-center break-all"
             aria-hidden
           >
-            FLORA ID: {item.id}
+            {item.id?.startsWith("flr-") ? item.id : item.id?.slice(0, 8) + "…"}
           </span>
         </Link>
       ) : (

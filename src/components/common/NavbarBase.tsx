@@ -105,7 +105,7 @@ export default function NavbarBase({
             <button
               type="button"
               onClick={() => navigate("/")}
-              className="md:hidden flex items-center"
+              className="md:hidden flex items-center cursor-pointer"
               aria-label="Go to home"
             >
               <img
