@@ -129,10 +129,10 @@ export default function FloraDetail() {
 
   const seedHex = (derived?.seed ?? "").replace("#", "").slice(0, 6);
 
-  // Morphology analysis (same as Installation.html HUD)
+
   const morph = useMemo(() => extractMorphology(text), [text]);
 
-  // Mapped parameters from labState (saved when flora was published)
+
   const labState = flora?.generative?.labState as {
     geometry?: { scale?: number };
     wind?: { strength?: number };
@@ -146,10 +146,6 @@ export default function FloraDetail() {
   const lineageHandles = derived?.lineageUsernames?.length
     ? derived.lineageUsernames
     : ["@Anonymous"];
-
-  const detailText = `${baseText}
-
-This flora was generated from a unique text input. Its morphology is influenced by sentiment, rhythm, and structural patterns in the original words. Variations can branch from this unit while keeping a shared lineage through its soil and generation metadata.`;
 
   if (isLoading && !derived) {
     return (
@@ -230,7 +226,7 @@ This flora was generated from a unique text input. Its morphology is influenced 
               </div>
 
               <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 md:p-5 font-supply-mono text-[11px] sm:text-xs leading-relaxed whitespace-pre-wrap">
-                {detailText}
+                {baseText}
               </div>
             </article>
 
