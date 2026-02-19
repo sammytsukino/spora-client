@@ -552,23 +552,44 @@
 
         <section>
             <h2>VISUAL MOODS</h2>
+            <p style="font-size:10px;opacity:0.8;margin-bottom:8px">También se activan por el sentimiento del texto</p>
             <div class="btn-group">
-                <button onclick="applyVisualState(moodProfiles.positive)">JOY</button>
-                <button onclick="applyVisualState(moodProfiles.negative)">VOID</button>
-                <button onclick="applyVisualState(moodProfiles.chaos)">GLITCH</button>
-            </div>
-            <div class="btn-group" style="margin-bottom: 5px">
+                <button onclick="applyVisualState(moodProfiles.joy)">JOY</button>
+                <button onclick="applyVisualState(moodProfiles.void)">VOID</button>
+                <button onclick="applyVisualState(moodProfiles.glitch)">GLITCH</button>
                 <button onclick="applyVisualState(moodProfiles.editorial)">EDITORIAL</button>
                 <button onclick="applyVisualState(moodProfiles.system)">SYSTEM</button>
             </div>
-            <div class="btn-group">
+            <div class="btn-group" style="margin-bottom: 5px">
                 <button onclick="applyVisualState(moodProfiles.midnight)">MIDNIGHT</button>
                 <button onclick="applyVisualState(moodProfiles.warning)">WARNING</button>
+                <button onclick="applyVisualState(moodProfiles.ethereal)">ETHEREAL</button>
+                <button onclick="applyVisualState(moodProfiles.melancholy)">MELANCHOLY</button>
+                <button onclick="applyVisualState(moodProfiles.rage)">RAGE</button>
+            </div>
+            <div class="btn-group">
+                <button onclick="applyVisualState(moodProfiles.passion)">PASSION</button>
+                <button onclick="applyVisualState(moodProfiles.horror)">HORROR</button>
+                <button onclick="applyVisualState(moodProfiles.serenity)">SERENITY</button>
+                <button onclick="applyVisualState(moodProfiles.ecstasy)">ECSTASY</button>
+                <button onclick="applyVisualState(moodProfiles.despair)">DESPAIR</button>
+                <button onclick="applyVisualState(moodProfiles.tenderness)">TENDERNESS</button>
+                <button onclick="applyVisualState(moodProfiles.zen)">ZEN</button>
             </div>
 
             <button class="btn-random" style="margin-top: 10px" onclick="randomizeState()">
                 RANDOM MUTATION
             </button>
+        </section>
+
+        <section>
+            <details>
+                <summary>REFERENCIA DE PALETAS</summary>
+                <div class="folder-body" style="font-size: 10px; font-family: var(--font-mono);">
+                    <p style="margin-bottom: 10px; opacity: 0.9;">Clic en el texto para aplicarlo y ver la salida visual.</p>
+                    <div id="paletteRefList"></div>
+                </div>
+            </details>
         </section>
 
         <section>
@@ -642,7 +663,7 @@
 
                     <div class="control-box">
                         <div class="row-h"><label>STEM COLOR</label></div>
-                        <input type="color" id="colStem" value="#15ff00" oninput="triggerVisuals()" />
+                        <input type="color" id="colStem" value="#00FF00" oninput="triggerVisuals()" />
                     </div>
                     <div class="control-box">
                         <div class="row-h"><label>TEXT COLOR</label></div>
@@ -795,20 +816,28 @@ function lerpHexColor(a, b, amount) {
     return '#' + ((1 << 24) | (rr << 16) | (rg << 8) | rb).toString(16).slice(1);
 }
 
-        const sentimentLexicon = {
-            positive: ["amor", "luz", "paz", "feliz", "alegría", "vida", "crecer", "love", "light", "peace", "happy", "joy", "life", "grow", "bloom", "sun", "hope", "esperanza", "brillar", "shine", "smile", "sonrisa", "calma", "calm"],
-            negative: ["dolor", "muerte", "vacío", "triste", "oscuro", "miedo", "fin", "pain", "death", "void", "sad", "dark", "fear", "end", "bleed", "lost", "sangre", "llorar", "cry", "hate", "odio", "roto", "broken"]
+        // Un léxico por cada perfil visual. El texto se clasifica al perfil con más hits.
+        const MOOD_LEXICONS = {
+            joy: ["alegría", "feliz", "sonrisa", "sol", "luz", "brillar", "esperanza", "vida", "crecer", "florecer", "happy", "joy", "smile", "sun", "light", "shine", "hope", "life", "grow", "bloom", "bright", "warm", "dance", "celebrate", "laugh", "play"],
+            void: ["vacío", "nada", "oscuro", "sombra", "negro", "silencio", "abismo", "fin", "muerto", "void", "empty", "dark", "shadow", "black", "silence", "abyss", "end", "dead", "nothing", "hollow", "bleak", "obscure", "fade", "gone"],
+            glitch: ["glitch", "error", "caos", "ruido", "fragmento", "distorsión", "digital", "pixel", "código", "bug", "random", "chaos", "noise", "fragment", "distort", "digital", "pixel", "code", "broken", "static", "glitchy", "corrupt", "scramble", "twisted"],
+            editorial: ["elegante", "refinado", "sofisticado", "estilo", "moda", "editorial", "portada", "vogue", "minimal", "elegant", "refined", "sophisticated", "style", "fashion", "cover", "minimalist", "clean", "curated", "aesthetic", "chic"],
+            system: ["sistema", "código", "digital", "máquina", "tecnología", "binario", "algoritmo", "data", "system", "code", "digital", "machine", "tech", "binary", "algorithm", "data", "logic", "compute", "network", "terminal", "bytes"],
+            midnight: ["noche", "luna", "estrellas", "oscuridad", "medianoche", "sueño", "nocturno", "night", "moon", "stars", "midnight", "darkness", "dream", "nocturnal", "twilight", "cosmos", "celestial", "vast", "infinite"],
+            warning: ["peligro", "alerta", "cuidado", "atención", "urgente", "emergencia", "stop", "danger", "warning", "caution", "attention", "urgent", "emergency", "stop", "alert", "critical", "fire", "hazard"],
+            ethereal: ["cosmos", "alma", "infinito", "astral", "universo", "aura", "espíritu", "ascender", "cielo", "eternidad", "magia", "estrellas", "misterio", "niebla", "soul", "infinite", "god", "universe", "dream", "spirit", "ethereal", "ascend", "sky", "heaven", "eternity", "magic", "miracle", "stars", "mystery", "mist", "beyond"],
+            melancholy: ["recuerdo", "olvido", "lágrima", "lluvia", "ayer", "ceniza", "eco", "silencio", "nostalgia", "otoño", "invierno", "triste", "soledad", "ausencia", "fantasma", "memory", "lost", "tears", "rain", "yesterday", "ash", "dust", "echo", "silence", "melancholy", "fade", "autumn", "winter", "sad", "sadness", "alone", "lonely", "ghost", "ruin"],
+            aggression: ["ira", "furia", "odio", "fuego", "arder", "romper", "sangre", "grito", "golpear", "guerra", "herida", "veneno", "rabia", "destruir", "cruel", "anger", "rage", "hate", "fire", "burn", "break", "blood", "scream", "hit", "war", "wound", "poison", "kill", "destroy", "cruel", "fury", "violent"],
+            passion: ["amor", "deseo", "corazón", "calor", "latir", "beso", "piel", "llama", "rojo", "florecer", "pulso", "ardiente", "carne", "amar", "love", "desire", "heart", "heat", "beat", "kiss", "skin", "flame", "red", "bloom", "pulse", "burning", "flesh", "lover", "intense", "crave"],
+            anxiety: ["miedo", "temblor", "frío", "pánico", "ahogo", "sombra", "enfermo", "oscuridad", "caer", "fear", "shiver", "cold", "panic", "void", "abyss", "shadow", "sick", "darkness", "fall", "trapped", "anxious", "nervous", "worry", "dread", "tremble"],
+            serenity: ["paz", "calma", "respirar", "agua", "río", "brisa", "hoja", "árbol", "bosque", "suave", "lento", "fluir", "claro", "luz", "sanar", "tierra", "sol", "peace", "calm", "breath", "breathe", "water", "river", "breeze", "leaf", "tree", "forest", "soft", "slow", "flow", "clear", "light", "heal", "earth", "shine", "sun", "quiet", "zen"],
+            rage: ["furia", "rabia", "ira", "odio", "violencia", "destruir", "grito", "sangre", "guerra", "matar", "fury", "rage", "hate", "violence", "destroy", "scream", "blood", "war", "kill", "rage", "outburst", "explode", "furious", "wrath"],
+            horror: ["miedo", "monstruo", "terror", "pesadilla", "sangre", "muerte", "sombra", "oscuro", "fantasma", "fear", "monster", "terror", "nightmare", "blood", "death", "shadow", "dark", "ghost", "horror", "dread", "creepy", "haunted", "evil"],
+            ecstasy: ["éxtasis", "euforia", "radiante", "brillante", "explosión", "intenso", "pico", "clímax", "ecstasy", "euphoria", "radiant", "brilliant", "explosion", "intense", "peak", "bliss", "rapture", "elation", "overwhelm", "transcend"],
+            despair: ["desesperanza", "abandono", "ruina", "fracaso", "fin", "perdido", "hundido", "despair", "hopeless", "abandoned", "ruin", "failure", "end", "lost", "sunk", "crushed", "defeated", "worthless", "misery"],
+            tenderness: ["ternura", "suave", "delicado", "acariciar", "abrazar", "dulce", "cariño", "tender", "soft", "gentle", "delicate", "caress", "hug", "sweet", "affection", "warm", "kind", "gentle", "loving", "care"],
+            zen: ["meditación", "respiración", "vacío", "presente", "calma", "equilibrio", "consciencia", "meditation", "breath", "empty", "present", "calm", "balance", "awareness", "zen", "mindful", "stillness", "inner", "tranquil"],
         };
-
-
-        const advancedLexicon = {
-    ethereal: ["cosmos", "alma", "infinito", "astral", "dios", "universo", "sueño", "aura", "espíritu", "etéreo", "ascender", "cielo", "tiempo", "eternidad", "magia", "milagro", "estrellas", "misterio", "niebla", "soul", "infinite", "god", "universe", "dream", "spirit", "ethereal", "ascend", "sky", "heaven", "time", "eternity", "magic", "miracle", "stars", "mystery", "mist", "beyond", "nada", "nothingness"],
-    melancholy: ["recuerdo", "olvido", "olvidar", "lágrima", "lluvia", "ayer", "ceniza", "polvo", "eco", "silencio", "nostalgia", "desvanecer", "otoño", "invierno", "triste", "tristeza", "soledad", "ausencia", "fantasma", "memory", "lost", "tears", "rain", "yesterday", "ash", "dust", "echo", "silence", "melancholy", "fade", "autumn", "winter", "sad", "sadness", "gone", "alone", "lonely", "ghost", "ruin"],
-    aggression: ["ira", "furia", "odio", "fuego", "arder", "romper", "sangre", "cuchillo", "grito", "golpear", "guerra", "dolor", "herida", "veneno", "rabia", "muerte", "matar", "destruir", "cruel", "anger", "rage", "hate", "fire", "burn", "break", "blood", "knife", "scream", "hit", "war", "pain", "wound", "poison", "death", "kill", "destroy", "cruel", "fury"],
-    passion: ["amor", "deseo", "corazón", "calor", "latir", "beso", "piel", "llama", "rojo", "florecer", "vida", "pulso", "fuego", "ardiente", "carne", "sangre", "amar", "love", "desire", "heart", "heat", "beat", "kiss", "skin", "flame", "red", "bloom", "life", "pulse", "burning", "flesh", "lover"],
-    anxiety: ["miedo", "temblor", "frío", "pánico", "vacío", "abismo", "oscuro", "monstruo", "terror", "huir", "ocultar", "ahogo", "ahogar", "sombra", "enfermo", "roto", "oscuridad", "caer", "fear", "shiver", "cold", "panic", "void", "abyss", "dark", "monster", "terror", "run", "hide", "choke", "drown", "shadow", "sick", "broken", "darkness", "fall", "trapped"],
-    serenity: ["paz", "calma", "respirar", "agua", "río", "brisa", "hoja", "árbol", "bosque", "suave", "lento", "fluir", "claro", "luz", "sanar", "tierra", "brillar", "sol", "peace", "calm", "breath", "breathe", "water", "river", "breeze", "leaf", "tree", "forest", "soft", "slow", "flow", "clear", "light", "heal", "earth", "shine", "sun", "quiet"]
-};
 
 function extractMorphology(text) {
     if (!text || text.trim() === "") return null;
@@ -817,21 +846,22 @@ function extractMorphology(text) {
     const totalChars = chars.length;
     const totalWords = words.length;
     if (totalChars === 0) return null;
-    let categoryScores = { ethereal: 0, melancholy: 0, aggression: 0, passion: 0, anxiety: 0, serenity: 0 };
+    const categoryScores = {};
+    for (const key of Object.keys(MOOD_LEXICONS)) categoryScores[key] = 0;
     words.forEach(word => {
         const clean = word.toLowerCase().replace(/[^a-záéíóúüñ]/g, '');
-        if(clean.length > 2) {
-            for (const [category, lexicon] of Object.entries(advancedLexicon)) {
-                if (lexicon.includes(clean)) categoryScores[category]++;
+        if (clean.length > 2) {
+            for (const [profileKey, lexicon] of Object.entries(MOOD_LEXICONS)) {
+                if (lexicon.includes(clean)) categoryScores[profileKey]++;
             }
         }
     });
     let dominantMood = "neutral";
     let maxScore = 0;
-    for (const [category, score] of Object.entries(categoryScores)) {
+    for (const [profileKey, score] of Object.entries(categoryScores)) {
         if (score > maxScore) {
             maxScore = score;
-            dominantMood = category;
+            dominantMood = profileKey;
         }
     }
     const vowels = (text.match(/[aeiouáéíóúüAEIOUÁÉÍÓÚÜ]/g) || []).length;
@@ -859,6 +889,7 @@ function extractMorphology(text) {
     });
     return {
         dominantMood: dominantMood,
+        sentimentStrength: maxScore,
         vowelDensity: vowels / totalChars,
         consonantDensity: consonants / totalChars,
         uppercaseDensity: uppercase / totalChars,
@@ -874,149 +905,170 @@ function extractMorphology(text) {
         wordCount: totalWords
     };
 }
-function generateOrganicProfile() {
-    const text = getFullText().trim();
-    const morph = extractMorphology(text);
-    
-    if (!morph) {
-        generateGarden(); 
-        return;
-    }
+// Mapa: perfil -> tipo de flor (para rama random)
+        const PROFILE_TO_FLOWER = {
+            joy: "daisy", void: "rose", glitch: "carnation", editorial: "rose", system: "daisy", midnight: "orchid", warning: "carnation",
+            ethereal: "orchid", melancholy: "rose", aggression: "carnation", passion: "rose", anxiety: "orchid", serenity: "daisy",
+            rage: "carnation", horror: "orchid", ecstasy: "daisy", despair: "rose", tenderness: "rose", zen: "daisy"
+        };
 
-    const seedColor = getSeed(text, 1);
-    const seedForm = getSeed(text, 2);
-    const seedPhysics = getSeed(text, 3);
-    const seedChaos = getSeed(text, 4);
+        // Umbral: sentimentStrength >= 3 = texto muy cargado -> aplicar perfil visual literal
+        const LITERAL_THRESHOLD = 3;
 
-    const availableSets = Object.keys(maskUrls);
-    const targetSet = availableSets[Math.floor(seedForm * availableSets.length)];
+        // Familias de color por perfil (para rama random)
+        const COLOR_FAMILIES = {
+            joy: { mask: ["#FACC15","#FEF08A","#FDE047","#FEF9C3"], bg: ["#0EA5E9","#38BDF8","#7DD3FC"], bgB: ["#FCD34D","#FDE047","#FEF08A"] },
+            void: { mask: ["#1f2937","#4b5563","#6b7280"], bg: ["#0a0a0a","#1f1f1f","#111827"], bgB: ["#374151","#4b5563"] },
+            glitch: { mask: ["#FF00FF","#00FF88","#FF0088","#88FF00"], bg: ["#0f0f0f","#1a0a2e","#0a0a14"], bgB: ["#330033","#1a1a2e"] },
+            editorial: { mask: ["#ffffff","#f5f5f5"], bg: ["#000000","#0a0a0a"], bgB: ["#171717","#262626"] },
+            system: { mask: ["#bbf451","#e0ff80","#86efac"], bg: ["#1a1a1a","#2d2d2d"], bgB: ["#404040","#525252"] },
+            midnight: { mask: ["#4CC9F0","#6366f1","#818cf8"], bg: ["#050510","#0f0f2a","#1e1b4b"], bgB: ["#312e81","#3730a3"] },
+            warning: { mask: ["#000000","#1a1a1a"], bg: ["#FF5400","#FF8c00","#ea580c"], bgB: ["#f97316","#fb923c"] },
+            ethereal: { mask: ["#00ffff","#e0b0ff","#4cc9f0","#c084fc"], bg: ["#312e81","#1e40af","#4c1d95","#0c4a6e"], bgB: ["#06b6d4","#38bdf8","#a78bfa","#22d3ee"] },
+            melancholy: { mask: ["#d9a05b","#c084fc","#9E7A7A","#c2b280"], bg: ["#78350f","#713f12","#475569","#44403c"], bgB: ["#94a3b8","#a78bfa","#ca8a04"] },
+            aggression: { mask: ["#ff4444","#ff8800","#ff5500","#ff6666"], bg: ["#b91c1c","#991b1b","#7c2d12"], bgB: ["#ea580c","#f97316","#dc2626"] },
+            passion: { mask: ["#ff69b4","#ff1493","#f472b6","#e879f9"], bg: ["#9f1239","#86198f","#7e22ce"], bgB: ["#d97706","#f472b6"] },
+            anxiety: { mask: ["#bfff00","#00ffcc","#22c55e","#2dd4bf"], bg: ["#0f766e","#134e4a","#14532d"], bgB: ["#84cc16","#22c55e","#4ade80"] },
+            serenity: { mask: ["#7fffd4","#98fb98","#34d399","#6ee7b7"], bg: ["#047857","#0f766e","#0c4a6e"], bgB: ["#0ea5e9","#2dd4bf","#22c55e"] },
+            rage: { mask: ["#DC2626","#B91C1C","#ef4444"], bg: ["#0a0000","#1a0000","#450a0a"], bgB: ["#991b1b","#b91c1c"] },
+            horror: { mask: ["#166534","#14532d","#15803d"], bg: ["#000806","#05110a","#052e16"], bgB: ["#166534","#15803d"] },
+            ecstasy: { mask: ["#FDE047","#FEF9C3","#FBBF24"], bg: ["#FBBF24","#FCD34D","#FDE047"], bgB: ["#FEF08A","#FEF9C3"] },
+            despair: { mask: ["#27272a","#3f3f46","#52525b"], bg: ["#000000","#09090b","#18181b"], bgB: ["#27272a","#3f3f46"] },
+            tenderness: { mask: ["#FBCFE8","#FCE7F3","#fecdd3"], bg: ["#FFF1F2","#FFE4E6","#fce7f3"], bgB: ["#fda4af","#f9a8d4"] },
+            zen: { mask: ["#99F6E4","#CCFBF1","#5eead4"], bg: ["#134E4A","#0F766E","#115e59"], bgB: ["#2dd4bf","#5eead4"] },
+            neutral: { mask: ["#ff00ff","#00ffff","#ffd700","#40e0d0","#e0b0ff","#98fb98"], bg: ["#4c1d95","#0f766e","#b91c1c","#6366f1"], bgB: ["#f59e0b","#06b6d4","#a78bfa","#22c55e"] }
+        };
 
-    let cMaskA, cMaskB, cBgA, cBgB;
-    const cStem = "#00FF00"; // Tallo biológico mutante intocable
+        function pickFromPool(pool, seed) {
+            return pool[Math.floor(seed * pool.length)];
+        }
 
-    // ========================================================
-    // 1. PALETAS NO OBIAS BASADAS EN MATICES (6 EJES + NEUTRO)
-    // ========================================================
-    switch (morph.dominantMood) {
-        case 'ethereal':
-            // Iridescencia, nacarado, espacio profundo, ultravioleta.
-            cBgA = lerpHexColor("#05001A", "#1A0033", seedColor);
-            cBgB = lerpHexColor("#000000", "#001133", getSeed(text, 6));
-            cMaskA = lerpHexColor("#00FFFF", "#E0B0FF", seedColor); // Cian a Malva
-            cMaskB = lerpHexColor("#FFFFFF", "#A3FFD6", getSeed(text, 5)); // Blanco a Menta
-            break;
+        function generateOrganicProfile() {
+            const text = getFullText().trim();
+            const morph = extractMorphology(text);
 
-        case 'melancholy':
-            // Flores secas, papel viejo, fotografía sepia, índigo deslavado.
-            cBgA = lerpHexColor("#1A1815", "#2B2620", seedColor); // Marrón grisáceo abisal
-            cBgB = lerpHexColor("#0F0E0C", "#14120F", getSeed(text, 6));
-            cMaskA = lerpHexColor("#D9A05B", "#9E7A7A", seedColor); // Oro marchito a Rosa polvo
-            cMaskB = lerpHexColor("#8C92AC", "#C2B280", getSeed(text, 5)); // Azul índigo a Sepia
-            break;
-
-        case 'aggression':
-            // Contrastes violentos, amarillo tóxico, magenta crudo, sangre.
-            cBgA = lerpHexColor("#1A0000", "#111111", seedColor);
-            cBgB = "#000000";
-            cMaskA = lerpHexColor("#FF0000", "#FFD700", seedColor); // Sangre a Amarillo Warning
-            cMaskB = lerpHexColor("#FF00FF", "#FF5500", getSeed(text, 5)); // Magenta chillón a Naranja llama
-            break;
-
-        case 'passion':
-            // Terciopelo, tonos carne, rubor, vino profundo, carmesí.
-            cBgA = lerpHexColor("#330011", "#1A0005", seedColor);
-            cBgB = "#000000";
-            cMaskA = lerpHexColor("#FF0055", "#FF1493", seedColor); // Carmesí a Rosa Profundo
-            cMaskB = lerpHexColor("#FFB6C1", "#FFA07A", getSeed(text, 5)); // Rosa carne a Salmón vivo
-            break;
-
-        case 'anxiety':
-            // Hospitalario, verde enfermo, azul submarino ahogante, blanco clínico.
-            cBgA = lerpHexColor("#001A11", "#051100", seedColor);
-            cBgB = "#000000";
-            cMaskA = lerpHexColor("#BFFF00", "#00FFCC", seedColor); // Lima ácido a Cian tóxico
-            cMaskB = lerpHexColor("#FFFFFF", "#88FF88", getSeed(text, 5)); // Blanco a Verde pálido
-            break;
-
-        case 'serenity':
-            // Niebla matutina, verde salvia, arena, lavanda suave.
-            cBgA = lerpHexColor("#0A1A1A", "#0F1A24", seedColor);
-            cBgB = "#000000";
-            cMaskA = lerpHexColor("#7FFFD4", "#98FB98", seedColor); // Aguamarina a Verde menta
-            cMaskB = lerpHexColor("#E6E6FA", "#F0F8FF", getSeed(text, 5)); // Lavanda a Azul hielo
-            break;
-
-        default: // 'neutral'
-            // El fallback de la máquina: Glitch Ácido o Editorial Brutalista.
-            if (seedColor > 0.5) {
-                const wildColors = ["#FF00FF", "#00FFFF", "#CCFF00", "#FF5400"];
-                cMaskA = wildColors[Math.floor(getSeed(text, 10) * wildColors.length)];
-                cMaskB = wildColors[Math.floor(getSeed(text, 11) * wildColors.length)];
-                cBgA   = lerpHexColor("#111111", "#222222", seedColor);
-                cBgB   = lerpHexColor("#050505", "#1A1A1A", getSeed(text, 6));
-            } else {
-                cMaskA = lerpHexColor("#D90429", "#FFFFFF", seedColor);
-                cMaskB = lerpHexColor("#FFCAD4", "#E6E6E6", getSeed(text, 5));
-                cBgA   = lerpHexColor("#111111", "#1A1A1A", seedColor);
-                cBgB   = "#050505";
+            if (!morph) {
+                generateGarden();
+                return;
             }
-            break;
-    }
 
-    // ========================================================
-    // 2. TIPOGRAFÍA Y EL RESTO (Continúa igual que antes...)
-    // ========================================================
-    let fontChoice = "'Inter', sans-serif";
-    const fontArray = ["'Space Mono', monospace", "'Grenze Gotisch', cursive", "'Playfair Display', serif", "'Syne', sans-serif", "'BioRhyme', serif"];
-    
-    // Hacemos que la fuente gótica sea más probable en ansiedad, melancolía y agresión
-    
-    if (["melancholy", "aggression", "anxiety"].includes(morph.dominantMood)) {
-        fontChoice = seedForm > 0.4 ? "'Grenze Gotisch', cursive" : "'Syne', sans-serif";
-    } else if (seedForm > 0.8) {
-        fontChoice = fontArray[Math.floor(seedChaos * fontArray.length)];
-    } else {
-        fontChoice = morph.avgWordLength > 5.5 ? "'Space Mono', monospace" : "'Playfair Display', serif"; 
-    }
+            // MODO HÍBRIDO: texto muy sentimental → perfil visual literal (dominantMood = clave de perfil); neutro → random
+            const isLiteral = morph.sentimentStrength >= LITERAL_THRESHOLD && morph.dominantMood !== "neutral";
+            const literalProfile = moodProfiles[morph.dominantMood];
 
-    // Geometría y Físicas
-    
-    
-    
-    let finalScale = constrain((0.5 + morph.vowelDensity) * map(seedForm, 0, 1, 0.5, 3.5), 0.5, 2.5);
-    let baseFontSize = map(morph.avgWordLength, 3, 8, 50, 15);
-    let finalFontSize = constrain(baseFontSize * map(seedChaos, 0, 1, 0.5, 2.0), 10, 80);
+            if (isLiteral && literalProfile && Object.keys(maskUrls).includes(literalProfile.flowerSet)) {
+                applyVisualState(literalProfile);
+                return;
+            }
 
-    let finalWind = constrain((morph.punctDensity * 10) + (seedPhysics * 2.5), 0, 2.0);
-    let finalScrambleForce = constrain((morph.uppercaseDensity * 5) + (seedChaos * 1.5), 0, 1.0);
-    let isScrambled = finalScrambleForce > 0.3; 
-    let finalJitter = constrain((morph.avgLengthDelta * 0.5) + (seedPhysics * 2.0), 0, 2.0);
-    let finalOutlineW = Math.floor(map(seedChaos, 0, 1, 1, 6));
-    let hasOutline = seedChaos > 0.4 || morph.uppercaseDensity > 0.05;
+            // HILO CONDUCTOR: una semilla maestra derivada del texto para toda la obra
+            const designSeed = getSeed(text, 0);
+            const seedColor = getSeed(text, 1);
+            const seedForm = getSeed(text, 2);
+            const seedPhysics = getSeed(text, 3);
+            const seedChaos = getSeed(text, 4);
+            const seedRand = getSeed(text, 5);
+            const seedRand2 = getSeed(text, 6);
+            const seedRand3 = getSeed(text, 7);
+            const seedRand4 = getSeed(text, 8);
+            const seedRand5 = getSeed(text, 9);
 
-    let hasMask = seedColor > 0.5; 
+            const availableSets = Object.keys(maskUrls);
 
-    const dynamicProfile = {
-        flowerSet: targetSet,
-        wind: { active: finalWind > 0.1, strength: finalWind },
-        chaos: {
-            scramble: isScrambled,
-            scrambleForce: finalScrambleForce,
-            jitter: finalJitter,
-            pulse: constrain((morph.rhymeDensity * 5) + (seedPhysics * 1.5), 0, 2), 
-            wave: constrain((morph.sibilanceIndex * 5) + (seedForm * 1.5), 0, 2) 
-        },
-        colors: {
-            maskA: cMaskA, maskB: cMaskB, stem: cStem, 
-            bgA: cBgA, bgB: cBgB, auto: true 
-        },
-        geometry: { scale: finalScale, fontSize: finalFontSize, font: fontChoice },
-        style: { mask: hasMask, grad: true, outline: hasOutline, outlineW: finalOutlineW },
-        background: { mode: seedColor > 0.8 ? "solid" : "gradient", angle: morph.asciiAngle }
-    };
+            // 1. FLOWER SET: controlado por perfil detectado (dominantMood)
+            let targetSet;
+            const profileFlower = PROFILE_TO_FLOWER[morph.dominantMood];
+            if (profileFlower && availableSets.includes(profileFlower)) {
+                targetSet = profileFlower;
+            } else {
+                targetSet = availableSets[Math.floor(seedForm * availableSets.length)];
+            }
 
-    applyVisualState(dynamicProfile);
-}
+            const cStem = "#00FF00";
+
+            // 2. COLORES: familia tonal por sentimiento, color concreto por semilla (coherencia + variedad)
+            const family = COLOR_FAMILIES[morph.dominantMood] || COLOR_FAMILIES.neutral;
+            const cMaskA = pickFromPool(family.mask, seedColor);
+            const cMaskB = pickFromPool(family.mask, seedRand);
+            const cBgA = pickFromPool(family.bg, seedRand2);
+            const cBgB = pickFromPool(family.bgB, seedRand3);
+
+            // 3. Tipografía: variada por morfología, no por mood obvio
+            const fontArray = ["'Space Mono', monospace", "'Grenze Gotisch', cursive", "'Playfair Display', serif", "'Syne', sans-serif", "'BioRhyme', serif", "'Inter', sans-serif", "'Cormorant Garamond', serif", "'DM Sans', sans-serif"];
+            const fontIdx = Math.floor((morph.vowelDensity * 3 + morph.entropy * 2 + morph.contentWordRatio * 2 + seedChaos) * fontArray.length) % fontArray.length;
+            const fontChoice = fontArray[fontIdx];
+
+            // 4. Parámetros mapeados MÁS SENSIBLES: pequeños cambios de texto = cambios notables
+            const sensitivity = 1.8;
+            const vowelContrib = morph.vowelDensity * 2 * sensitivity;
+            const punctContrib = morph.punctDensity * 12 * sensitivity;
+            const rhymeContrib = morph.rhymeDensity * 8 * sensitivity;
+            const sibilContrib = morph.sibilanceIndex * 10 * sensitivity;
+            const lengthDeltaContrib = morph.avgLengthDelta * 1.2 * sensitivity;
+            const entropyContrib = morph.entropy * 3 * sensitivity;
+            const asciiContrib = (morph.asciiSignature % 1000) / 1000 * sensitivity;
+
+            let finalScale = constrain((0.6 + vowelContrib * 0.4 + seedForm * 0.8) * (1 + entropyContrib * 0.3), 0.5, 2.5);
+            let baseFontSize = map(morph.avgWordLength, 2.5, 9, 55, 14);
+            let finalFontSize = constrain(baseFontSize * (0.6 + seedChaos * 1.2 + asciiContrib * 0.2), 10, 80);
+
+            let finalWind = constrain(punctContrib + seedPhysics * 2.8 + lengthDeltaContrib * 0.5, 0, 2.0);
+            let finalScrambleForce = constrain((morph.uppercaseDensity * 8) + (seedChaos * 1.8) + entropyContrib * 0.15, 0, 1.0);
+            let isScrambled = finalScrambleForce > 0.25;
+            let finalJitter = constrain(lengthDeltaContrib + seedPhysics * 2.2 + rhymeContrib * 0.3, 0, 2.0);
+
+            // MASK: factor = contenido + entropía + semilla. Umbral alto para que no sea casi siempre filled.
+            const maskFactor = morph.contentWordRatio * 0.4 + morph.entropy * 0.5 + seedColor * 0.5;
+            let hasMask = maskFactor > 0.62;
+
+            // OUTLINE: factor = puntuación + mayúsculas + semilla. Umbral para variedad real.
+            const outlineFactor = morph.punctDensity * 6 + morph.uppercaseDensity * 10 + seedRand * 0.6;
+            let hasOutline = outlineFactor > 0.7;
+            let finalOutlineW = hasOutline ? Math.floor(map(outlineFactor + asciiContrib, 0.4, 2.0, 1, 6)) : 1;
+            finalOutlineW = constrain(finalOutlineW, 1, 6);
+
+            // GRADIENTE EN MÁSCARA: no siempre. seedForm decide filled solid vs gradient.
+            let hasGradFill = seedForm > 0.45;
+
+            // FONDO: sólido vs degradado. Factor morfológico + semilla para variedad real.
+            const bgModeFactor = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + seedRand4 * 0.5;
+            let bgMode = bgModeFactor > 0.5 ? "gradient" : "solid";
+            const bgAngles = [0, 45, 90, 135, 180, 225, 270, 315];
+            let bgAngle = bgAngles[Math.floor((morph.asciiAngle / 45 + seedRand5 * 2) % 8)];
+
+            // 5. PULSE: métrica de ritmo (rhyme + contentWordRatio + pulsación del texto)
+            const pulseStrength = constrain(rhymeContrib * 0.6 + morph.contentWordRatio * 1.5 + seedPhysics * 1.8, 0, 2);
+            const pulseActive = pulseStrength > 0.15;
+
+            // 6. WAVE: métrica de fluidez (sibilancia + variación de longitud)
+            const waveStrength = constrain(sibilContrib * 0.5 + lengthDeltaContrib * 0.4 + seedForm * 1.6, 0, 2);
+            const waveActive = waveStrength > 0.12;
+
+            const dynamicProfile = {
+                flowerSet: targetSet,
+                wind: { active: finalWind > 0.08, strength: finalWind },
+                chaos: {
+                    scramble: isScrambled,
+                    scrambleForce: finalScrambleForce,
+                    jitter: finalJitter,
+                    pulse: { active: pulseActive, strength: pulseStrength },
+                    wave: { active: waveActive, strength: waveStrength }
+                },
+                colors: {
+                    maskA: cMaskA,
+                    maskB: cMaskB,
+                    stem: cStem,
+                    bgA: cBgA,
+                    bgB: cBgB,
+                    auto: true
+                },
+                geometry: { scale: finalScale, fontSize: finalFontSize, font: fontChoice },
+                style: { mask: hasMask, grad: hasGradFill, outline: hasOutline, outlineW: finalOutlineW },
+                background: { mode: bgMode, angle: bgAngle }
+            };
+
+            applyVisualState(dynamicProfile);
+        }
 
 
         function map(n, start1, stop1, start2, stop2) {
@@ -1359,7 +1411,7 @@ function generateOrganicProfile() {
             cont.style.backgroundSize = mode === "tile" ? "100px 100px" : mode === "stretch" ? "100% 100%" : "auto";
         }
 
-        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateOrganicProfile, 400); }
+        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateOrganicProfile, 500); }
         function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
         function updateUI(id, t, v, u) { document.getElementById(id).innerText = `${t}: ${v}${u}`; }
         function updateCharCount() { const fullText = getFullText(); document.getElementById("charCount").textContent = fullText.length + " characters"; }
@@ -1372,6 +1424,8 @@ function generateOrganicProfile() {
         }
 
         function collectState() {
+            const pulseVal = parseFloat(document.getElementById("rngPulse").value);
+            const waveVal = parseFloat(document.getElementById("rngWave").value);
             return {
                 title: document.getElementById("inpTitle").value,
                 text: getFullText(),
@@ -1380,9 +1434,9 @@ function generateOrganicProfile() {
                 chaos: {
                     scramble: document.getElementById("chkScramble").checked,
                     scrambleForce: parseFloat(document.getElementById("rngScramble").value),
-                    jitter: document.getElementById("rngJitter").value,
-                    pulse: document.getElementById("rngPulse").value,
-                    wave: document.getElementById("rngWave").value,
+                    jitter: parseFloat(document.getElementById("rngJitter").value),
+                    pulse: { active: document.getElementById("chkPulse").checked, strength: pulseVal },
+                    wave: { active: document.getElementById("chkWave").checked, strength: waveVal },
                 },
                 colors: {
                     maskA: document.getElementById("colMaskGradA").value,
@@ -1591,22 +1645,86 @@ function generateOrganicProfile() {
         }
 
         const moodProfiles = {
-            positive: { flowerSet: "daisy", wind: { active: true, strength: 0.2 }, chaos: { pulse: 0.3, wave: 0.4 }, colors: { maskA: "#CCFF00", maskB: "#FFFFFF", stem: "#00FF00", bgA: "#0000FF", bgB: "#CCFF00", auto: true }, geometry: { scale: 1.1, fontSize: 18, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: false, outline: true, outlineW: 2 } },
-            negative: { flowerSet: "rose", wind: { active: true, strength: 0.1 }, chaos: { jitter: 0.2, pulse: 0.8 }, colors: { maskA: "#000000", maskB: "#FF0000", stem: "#330000", bgA: "#FF0000", bgB: "#000000", auto: true }, geometry: { scale: 0.8, fontSize: 12, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 1 } },
-            chaos: { flowerSet: "carnation", wind: { active: true, strength: 2.0 }, chaos: { scramble: true, scrambleForce: 0.8, jitter: 1.5, pulse: 1.2, wave: 1.8 }, colors: { maskA: "#FF00FF", maskB: "#00FF00", stem: "#00FF00", bgA: "#1a1a1a", bgB: "#330033", auto: true }, geometry: { scale: 2, fontSize: 55, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 4 } },
-            editorial: { flowerSet: "rose", wind: { active: true, strength: 0.15 }, chaos: { wave: 0.2 }, colors: { maskA: "#D90429", maskB: "#FFCAD4", stem: "#2B2D42", bgA: "#F2F0E9", bgB: "#F2F0E9", auto: true }, geometry: { scale: 1.0, fontSize: 24, font: "'Playfair Display', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 } },
-            system: { flowerSet: "daisy", wind: { active: true, strength: 2 }, chaos: { scramble: true, scrambleForce: 0.4, jitter: 0.5, wave: 1.2 }, colors: { maskA: "#bbf451", maskB: "#ffffff", stem: "#e6e6e6", bgA: "#262626", bgB: "#262626", auto: true }, geometry: { scale: 1.2, fontSize: 16, font: "'JetBrains Mono', monospace" }, style: { mask: true, grad: false, outline: true, outlineW: 2 } },
-            midnight: { flowerSet: "orchid", wind: { active: true, strength: 0.5 }, chaos: { jitter: 0.3, pulse: 0.5, wave: 0.8 }, colors: { maskA: "#4361EE", maskB: "#4CC9F0", stem: "#4CC9F0", bgA: "#050505", bgB: "#101020", auto: true }, geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 } },
-            warning: { flowerSet: "carnation", wind: { active: false, strength: 0 }, chaos: { pulse: 1.5 }, colors: { maskA: "#000000", maskB: "#262626", stem: "#000000", bgA: "#FF5400", bgB: "#FF5400", auto: true }, geometry: { scale: 1.8, fontSize: 60, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 3 } }
+            joy: { flowerSet: "daisy", wind: { active: true, strength: 0.2 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.2, pulse: { active: true, strength: 0.3 }, wave: { active: true, strength: 0.4 } }, colors: { maskA: "#FFE135", maskB: "#FFD93D", stem: "#00FF00", bgA: "#2563EB", bgB: "#3B82F6", auto: true }, geometry: { scale: 1.2, fontSize: 22, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 135 } },
+            void: { flowerSet: "rose", wind: { active: true, strength: 0.08 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.15, pulse: { active: true, strength: 0.8 }, wave: { active: false, strength: 0.1 } }, colors: { maskA: "#FF006E", maskB: "#8338EC", stem: "#00FF00", bgA: "#000000", bgB: "#1a1a2e", auto: true }, geometry: { scale: 0.85, fontSize: 14, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 180 } },
+            glitch: { flowerSet: "carnation", wind: { active: true, strength: 1.8 }, chaos: { scramble: true, scrambleForce: 0.7, jitter: 1.4, pulse: { active: true, strength: 1.2 }, wave: { active: true, strength: 1.6 } }, colors: { maskA: "#FF00FF", maskB: "#00FF88", stem: "#00FF00", bgA: "#000000", bgB: "#1a0a2e", auto: true }, geometry: { scale: 1.8, fontSize: 52, font: "'Space Mono', monospace" }, style: { mask: true, grad: true, outline: true, outlineW: 4 }, background: { mode: "gradient", angle: 270 } },
+            editorial: { flowerSet: "rose", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.1, pulse: { active: false, strength: 0.1 }, wave: { active: false, strength: 0.1 } }, colors: { maskA: "#FFFFFF", maskB: "#FFFFFF", stem: "#00FF00", bgA: "#000000", bgB: "#000000", auto: true }, geometry: { scale: 1.4, fontSize: 48, font: "'Playfair Display', serif" }, style: { mask: false, grad: false, outline: false, outlineW: 0 }, background: { mode: "solid", angle: 0 } },
+            system: { flowerSet: "daisy", wind: { active: true, strength: 0.5 }, chaos: { scramble: true, scrambleForce: 0.35, jitter: 0.4, pulse: { active: true, strength: 0.6 }, wave: { active: true, strength: 1 } }, colors: { maskA: "#39FF14", maskB: "#00FF41", stem: "#00FF00", bgA: "#000000", bgB: "#1a2e1a", auto: true }, geometry: { scale: 1.15, fontSize: 16, font: "'JetBrains Mono', monospace" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 90 } },
+            midnight: { flowerSet: "orchid", wind: { active: true, strength: 0.45 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.25, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.75 } }, colors: { maskA: "#00D4FF", maskB: "#7B2CBF", stem: "#00FF00", bgA: "#00008B", bgB: "#4A0080", auto: true }, geometry: { scale: 1.4, fontSize: 30, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 }, background: { mode: "gradient", angle: 180 } },
+            warning: { flowerSet: "carnation", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.2, pulse: { active: true, strength: 1.4 }, wave: { active: false, strength: 0.1 } }, colors: { maskA: "#FF4500", maskB: "#FF6B35", stem: "#00FF00", bgA: "#FFFF00", bgB: "#FFD700", auto: true }, geometry: { scale: 1.7, fontSize: 58, font: "'BioRhyme', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 180 } },
+            ethereal: { flowerSet: "orchid", wind: { active: true, strength: 0.5 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.3, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.8 } }, colors: { maskA: "#00FFFF", maskB: "#E0B0FF", stem: "#00FF00", bgA: "#6A0DAD", bgB: "#9B59B6", auto: true }, geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 }, background: { mode: "gradient", angle: 180 } },
+            melancholy: { flowerSet: "rose", wind: { active: true, strength: 0.1 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.2, pulse: { active: true, strength: 0.8 }, wave: { active: false, strength: 0.2 } }, colors: { maskA: "#5D4E99", maskB: "#9B8DC2", stem: "#00FF00", bgA: "#0000CD", bgB: "#4B0082", auto: true }, geometry: { scale: 0.85, fontSize: 14, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 90 } },
+            aggression: { flowerSet: "carnation", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.3, pulse: { active: true, strength: 1.2 }, wave: { active: false, strength: 0.2 } }, colors: { maskA: "#FF0000", maskB: "#CC0000", stem: "#00FF00", bgA: "#8B0000", bgB: "#DC143C", auto: true }, geometry: { scale: 1.6, fontSize: 48, font: "'BioRhyme', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 180 } },
+            passion: { flowerSet: "rose", wind: { active: true, strength: 0.15 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.2, pulse: { active: true, strength: 0.4 }, wave: { active: true, strength: 0.3 } }, colors: { maskA: "#FF69B4", maskB: "#FF1493", stem: "#00FF00", bgA: "#8B0A50", bgB: "#FF007F", auto: true }, geometry: { scale: 1.1, fontSize: 22, font: "'Playfair Display', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 135 } },
+            anxiety: { flowerSet: "orchid", wind: { active: true, strength: 0.8 }, chaos: { scramble: true, scrambleForce: 0.3, jitter: 0.6, pulse: { active: true, strength: 0.9 }, wave: { active: true, strength: 0.7 } }, colors: { maskA: "#FFFF00", maskB: "#FFA500", stem: "#00FF00", bgA: "#006400", bgB: "#228B22", auto: true }, geometry: { scale: 1.0, fontSize: 18, font: "'Space Mono', monospace" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 270 } },
+            serenity: { flowerSet: "daisy", wind: { active: true, strength: 0.2 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.25, pulse: { active: true, strength: 0.3 }, wave: { active: true, strength: 0.5 } }, colors: { maskA: "#00FF7F", maskB: "#00CED1", stem: "#00FF00", bgA: "#008080", bgB: "#20B2AA", auto: true }, geometry: { scale: 1.2, fontSize: 20, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 45 } },
+            rage: { flowerSet: "carnation", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0.15, jitter: 0.35, pulse: { active: true, strength: 1.5 }, wave: { active: false, strength: 0.1 } }, colors: { maskA: "#DC143C", maskB: "#8B0000", stem: "#00FF00", bgA: "#FF0000", bgB: "#B22222", auto: true }, geometry: { scale: 1.7, fontSize: 56, font: "'BioRhyme', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 4 }, background: { mode: "gradient", angle: 0 } },
+            horror: { flowerSet: "orchid", wind: { active: true, strength: 0.9 }, chaos: { scramble: true, scrambleForce: 0.4, jitter: 0.7, pulse: { active: true, strength: 1 }, wave: { active: true, strength: 0.8 } }, colors: { maskA: "#8B0000", maskB: "#4B0000", stem: "#00FF00", bgA: "#000000", bgB: "#2d0000", auto: true }, geometry: { scale: 1.1, fontSize: 16, font: "'Space Mono', monospace" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 270 } },
+            ecstasy: { flowerSet: "daisy", wind: { active: true, strength: 0.4 }, chaos: { scramble: false, scrambleForce: 0.1, jitter: 0.4, pulse: { active: true, strength: 0.8 }, wave: { active: true, strength: 0.6 } }, colors: { maskA: "#FFD700", maskB: "#FFA500", stem: "#00FF00", bgA: "#FF4500", bgB: "#FF8C00", auto: true }, geometry: { scale: 1.5, fontSize: 36, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 90 } },
+            despair: { flowerSet: "rose", wind: { active: true, strength: 0.05 }, chaos: { scramble: false, scrambleForce: 0.05, jitter: 0.1, pulse: { active: true, strength: 0.9 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#0000FF", maskB: "#4169E1", stem: "#00FF00", bgA: "#000080", bgB: "#191970", auto: true }, geometry: { scale: 0.75, fontSize: 11, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 180 } },
+            tenderness: { flowerSet: "rose", wind: { active: true, strength: 0.12 }, chaos: { scramble: false, scrambleForce: 0.05, jitter: 0.15, pulse: { active: true, strength: 0.25 }, wave: { active: true, strength: 0.35 } }, colors: { maskA: "#FFB6C1", maskB: "#FFC0CB", stem: "#00FF00", bgA: "#FFE4E1", bgB: "#FFF0F5", auto: true }, geometry: { scale: 1.05, fontSize: 20, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 135 } },
+            zen: { flowerSet: "daisy", wind: { active: true, strength: 0.15 }, chaos: { scramble: false, scrambleForce: 0.05, jitter: 0.2, pulse: { active: true, strength: 0.2 }, wave: { active: true, strength: 0.4 } }, colors: { maskA: "#40E0D0", maskB: "#00FA9A", stem: "#00FF00", bgA: "#006D77", bgB: "#2EC4B6", auto: true }, geometry: { scale: 1.15, fontSize: 18, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 45 } }
         };
+
+        const PALETTE_EXAMPLES = {
+            joy: { text: "I feel so happy and excited! This day is amazing! Sunshine and laughter everywhere!", desc: "Amarillo + Azul" },
+            void: { text: "The void consumes me. Emptiness. Darkness. Nothing remains.", desc: "Magenta + Púrpura / Negro" },
+            glitch: { text: "ERROR ERROR CORRUPT DATA SYSTEM OVERLOAD crash reboot", desc: "Magenta + Verde neón / Negro" },
+            editorial: { text: "Minimal. Typography. Pure contrast.", desc: "Blanco / Negro" },
+            system: { text: "> execute.init() / root access granted / protocol active", desc: "Verde neón / Negro" },
+            midnight: { text: "Deep midnight blue, stars above, the night speaks in cyan.", desc: "Cian + Violeta / Azul oscuro" },
+            warning: { text: "Attention! Danger! Stop! Alert! Critical!", desc: "Naranja / Amarillo" },
+            ethereal: { text: "Dreamy, soft, otherworldly light. Floating in clouds of violet.", desc: "Cian + Lavanda / Violeta" },
+            melancholy: { text: "Sadness fills my heart. Tears fall. Sorrow and longing.", desc: "Azul lavanda / Azul índigo" },
+            aggression: { text: "Anger! Hatred! Destroy! Attack! Fight!", desc: "Rojo puro" },
+            passion: { text: "I love you deeply. Desire burns. Heart racing.", desc: "Rosa fucsia / Magenta" },
+            anxiety: { text: "Nervous stressed panic worry fear trembling", desc: "Amarillo + Naranja / Verde" },
+            serenity: { text: "Peace flows. Calm waters. Gentle breeze. Tranquility.", desc: "Aqua + Turquesa" },
+            rage: { text: "RAGE! FURY! WRATH! VENGEANCE! BLOOD!", desc: "Rojo intenso" },
+            horror: { text: "Scream. Blood. Terror. Monsters. Death.", desc: "Rojo oscuro / Negro" },
+            ecstasy: { text: "Euphoria! Joy! Glory! Triumph! Amazing!", desc: "Dorado + Naranja" },
+            despair: { text: "Hopeless. Lost. Drowning. No escape. Endless blue.", desc: "Azul puro / Azul oscuro" },
+            tenderness: { text: "Soft touch. Gentle hug. Sweet love. Warm embrace.", desc: "Rosa pastel" },
+            zen: { text: "Breathe. Stillness. Balance. Harmony. Inner peace.", desc: "Turquesa / Teal" }
+        };
+
+        function initPaletteRef() {
+            const list = document.getElementById("paletteRefList");
+            if (!list) return;
+            list.innerHTML = "";
+            Object.entries(PALETTE_EXAMPLES).forEach(([key, ex]) => {
+                const p = moodProfiles[key];
+                if (!p || !ex) return;
+                const row = document.createElement("div");
+                row.style.cssText = "margin-bottom:12px;padding:8px;border:1px solid var(--spora-dark);cursor:pointer;display:flex;gap:8px;flex-wrap:wrap;align-items:center";
+                row.title = "Clic para aplicar texto y perfil";
+                const swatch = document.createElement("div");
+                swatch.style.cssText = "display:flex;gap:2px;flex-shrink:0";
+                [p.colors.maskA, p.colors.maskB, p.colors.bgA, p.colors.bgB].forEach(c => {
+                    const s = document.createElement("span");
+                    s.style.cssText = `width:12px;height:12px;background:${c};border:1px solid #333`;
+                    swatch.appendChild(s);
+                });
+                const lbl = document.createElement("div");
+                lbl.innerHTML = `<strong>${key.toUpperCase()}</strong> — ${ex.desc}<br><span style="opacity:0.8">${ex.text.slice(0, 45)}…</span>`;
+                row.appendChild(swatch);
+                row.appendChild(lbl);
+                row.onclick = () => {
+                    applyVisualState({ ...p, text: ex.text });
+                    const inp = document.getElementById("newTextInput");
+                    if (inp) inp.textContent = ex.text;
+                };
+                list.appendChild(row);
+            });
+        }
 
         function randomizeState() {
             const rC = () => "#" + floor(random(16777215)).toString(16).padStart(6, "0");
             const f = ["'Playfair Display', serif", "'Cormorant Garamond', serif", "'Inter', sans-serif", "'JetBrains Mono', monospace", "'Syne', sans-serif", "'BioRhyme', serif"];
             applyVisualState({
                 flowerSet: random(Object.keys(maskUrls)), wind: { active: random() > 0.5, strength: random(2) },
-                chaos: { scramble: random() > 0.8, scrambleForce: random(), jitter: random(2), pulse: random(1.5), wave: random(1.5) },
-                colors: { maskA: rC(), maskB: rC(), stem: rC(), bgA: rC(), bgB: rC(), auto: true },
+                chaos: { scramble: random() > 0.8, scrambleForce: random(), jitter: random(2), pulse: { active: random() > 0.3, strength: random(1.5) }, wave: { active: random() > 0.3, strength: random(1.5) } },
+                colors: { maskA: rC(), maskB: rC(), stem: "#00FF00", bgA: rC(), bgB: rC(), auto: true },
                 geometry: { scale: random(0.5, 2.5), fontSize: random(10, 70), font: random(f) },
                 style: { mask: random() > 0.2, grad: random() > 0.5, outline: random() > 0.3, outlineW: floor(random(6)) + 1 },
                 background: { mode: random(["solid", "gradient"]), angle: random(360) }
@@ -1622,7 +1740,13 @@ function generateOrganicProfile() {
             }
             targetFlowerSet = s.flowerSet; ui("chkWind").checked = s.wind.active; ui("rngWind").value = s.wind.strength;
             ui("chkScramble").checked = s.chaos.scramble; ui("rngScramble").value = s.chaos.scrambleForce || 0.1;
-            ui("rngJitter").value = s.chaos.jitter || 0.5; ui("rngPulse").value = s.chaos.pulse || 1.0; ui("rngWave").value = s.chaos.wave || 1.0;
+            ui("rngJitter").value = s.chaos.jitter ?? 0.5;
+            const sp = s.chaos.pulse;
+            const sw = s.chaos.wave;
+            ui("chkPulse").checked = typeof sp === "object" ? sp.active : (parseFloat(sp) > 0);
+            ui("rngPulse").value = typeof sp === "object" ? sp.strength : (parseFloat(sp) || 1.0);
+            ui("chkWave").checked = typeof sw === "object" ? sw.active : (parseFloat(sw) > 0);
+            ui("rngWave").value = typeof sw === "object" ? sw.strength : (parseFloat(sw) || 1.0);
             ui("colMaskGradA").value = s.colors.maskA; ui("colMaskGradB").value = s.colors.maskB; ui("colStem").value = s.colors.stem;
             ui("colBgGradA").value = s.colors.bgA; ui("colBgGradB").value = s.colors.bgB; ui("chkAutoContrast").checked = s.colors.auto;
             if (s.colors.text && !s.colors.auto) ui("colTextSolid").value = s.colors.text;
@@ -1641,6 +1765,7 @@ function generateOrganicProfile() {
         window.addEventListener("DOMContentLoaded", () => {
             updateCharCount();
             loadFloraPreview();
+            initPaletteRef();
         });
     </script>
 </body>
