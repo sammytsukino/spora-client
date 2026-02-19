@@ -446,6 +446,7 @@
         #ui.installation-mode .laboratory-only {
             display: none !important;
         }
+        #ui.installation-mode #titleSection,
         #ui.installation-mode.blossoming-active #titleSection {
             display: flex !important;
             flex-direction: column;
@@ -569,7 +570,7 @@
         <section class="laboratory-only" id="titleSection">
             <h2>ARTWORK TITLE</h2>
             <div class="control-box">
-                <input type="text" id="inpTitle" placeholder="Name your flora..." />
+                <input type="text" id="inpTitle" placeholder="Name your flora (required)..." required />
             </div>
         </section>
         <section>
@@ -587,7 +588,6 @@
             <h2>SYSTEM_DIAGNOSTICS</h2>
             <div class="hud-container">
                 <div class="hud-header"><span>MORPHOLOGY_ANALYSIS</span><span id="hud-status">ACTIVE</span></div>
-                <div class="hud-row"><span class="hud-label">DOMINANT_MOOD</span><span id="v-mood" class="hud-value">-</span></div>
                 <div class="hud-row"><span class="hud-label">SENTIMENT_FORCE</span><span id="v-force" class="hud-value">-</span></div>
                 <div class="hud-row"><span class="hud-label">ENTROPY_INDEX</span><span id="v-entropy" class="hud-value">-</span></div>
                 <div class="hud-row"><span class="hud-label">VOCALIC_DENSITY</span><span id="v-vowels" class="hud-value">-</span></div>
@@ -847,14 +847,13 @@
         function updateHUD() {
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v != null && v !== "" ? String(v) : "-"; };
             if (currentMorph) {
-                set("v-mood", currentMorph.dominantMood);
                 set("v-force", currentMorph.sentimentStrength);
                 set("v-entropy", currentMorph.entropy != null ? currentMorph.entropy.toFixed(3) : "-");
                 set("v-vowels", currentMorph.vowelDensity != null ? currentMorph.vowelDensity.toFixed(3) : "-");
                 set("v-sibil", currentMorph.sibilanceIndex != null ? currentMorph.sibilanceIndex.toFixed(3) : "-");
                 set("v-rhythm", currentMorph.avgLengthDelta != null ? currentMorph.avgLengthDelta.toFixed(2) : "-");
             } else {
-                set("v-mood", "-"); set("v-force", "-"); set("v-entropy", "-"); set("v-vowels", "-"); set("v-sibil", "-"); set("v-rhythm", "-");
+                set("v-force", "-"); set("v-entropy", "-"); set("v-vowels", "-"); set("v-sibil", "-"); set("v-rhythm", "-");
             }
             if (currentLabState) {
                 const g = currentLabState.geometry || {};
@@ -872,8 +871,11 @@
         }
 
         function getQueryParam(key) {
-            const params = new URLSearchParams(window.location.search);
-            return params.get(key);
+            let search = window.location.search;
+            if (!search && window.parent && window.parent !== window) {
+                try { search = window.parent.location.search || ""; } catch (e) {}
+            }
+            return new URLSearchParams(search).get(key);
         }
 
         function getSeed(text, salt = 0) {
@@ -995,17 +997,33 @@ function extractMorphology(text) {
             "joy|despair": "melancholy", "despair|joy": "melancholy",
             "joy|rage": "passion", "rage|joy": "passion",
             "joy|melancholy": "tenderness", "melancholy|joy": "tenderness",
+            "joy|void": "midnight", "void|joy": "midnight",
+            "joy|horror": "passion", "horror|joy": "passion",
+            "joy|midnight": "ethereal", "midnight|joy": "ethereal",
+            "joy|serenity": "ecstasy", "serenity|joy": "ecstasy",
+            "joy|anxiety": "passion", "anxiety|joy": "passion",
             "despair|serenity": "melancholy", "serenity|despair": "melancholy",
             "despair|passion": "melancholy", "passion|despair": "melancholy",
+            "despair|ecstasy": "melancholy", "ecstasy|despair": "melancholy",
+            "despair|midnight": "void", "midnight|despair": "void",
+            "despair|void": "horror", "void|despair": "horror",
+            "despair|rage": "horror", "rage|despair": "horror",
+            "despair|zen": "melancholy", "zen|despair": "melancholy",
+            "despair|tenderness": "melancholy", "tenderness|despair": "melancholy",
             "void|ecstasy": "midnight", "ecstasy|void": "midnight",
             "rage|tenderness": "passion", "tenderness|rage": "passion",
             "serenity|anxiety": "zen", "anxiety|serenity": "zen",
             "horror|tenderness": "melancholy", "tenderness|horror": "melancholy",
-            "ecstasy|despair": "melancholy", "despair|ecstasy": "melancholy",
-            "void|joy": "midnight", "joy|void": "midnight",
             "aggression|serenity": "passion", "serenity|aggression": "passion",
-            "rage|despair": "horror", "despair|rage": "horror",
-            "joy|horror": "passion", "horror|joy": "passion"
+            "rage|anxiety": "aggression", "anxiety|rage": "aggression",
+            "midnight|passion": "ethereal", "passion|midnight": "ethereal",
+            "midnight|serenity": "ethereal", "serenity|midnight": "ethereal",
+            "ecstasy|melancholy": "tenderness", "melancholy|ecstasy": "tenderness",
+            "void|passion": "midnight", "passion|void": "midnight",
+            "glitch|joy": "ethereal", "joy|glitch": "ethereal",
+            "glitch|despair": "void", "despair|glitch": "void",
+            "warning|despair": "horror", "despair|warning": "horror",
+            "void|tenderness": "melancholy", "tenderness|void": "melancholy"
         };
 
         function blendMoods(baseMood, newMood) {
@@ -1320,7 +1338,7 @@ function extractMorphology(text) {
             } else {
                 ui.classList.remove("blossoming-active");
             }
-            const keepEnabled = new Set(["inpTitle", "newTextInput", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
+            const keepEnabled = new Set(["newTextInput", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate", "btnRenderPNG"]);
 
             ui.querySelectorAll("input, textarea, select, button").forEach((el) => {
                 const id = el.id || "";
@@ -1600,7 +1618,7 @@ function extractMorphology(text) {
 
         function saveFullArt() {
             const s = document.getElementById("statusText"); s.innerText = "RENDERING...";
-            html2canvas(document.getElementById("canvas-container"), { scale: 2, useCORS: true }).then(c => {
+            html2canvas(document.getElementById("canvas-container"), { scale: 4, useCORS: true }).then(c => {
                 const l = document.createElement("a"); l.download = "spora_" + Date.now() + ".png"; l.href = c.toDataURL(); l.click(); s.innerText = "DONE";
             });
         }
@@ -1681,6 +1699,10 @@ function extractMorphology(text) {
                 return;
             }
 
+            if (!state.title || !state.title.trim()) {
+                s.innerText = "ADD TITLE";
+                return;
+            }
             if (!state.text || state.text.trim().length < 10) {
                 s.innerText = "ADD MORE TEXT";
                 return;
@@ -1710,7 +1732,7 @@ function extractMorphology(text) {
             if (currentFlora && currentFlora.authorUsername) lineageUsernames.add(currentFlora.authorUsername);
 
             const payload = {
-                title: state.title || "Untitled Flora",
+                title: state.title.trim(),
                 text: state.text,
                 status: status,
                 generative: {
@@ -1779,8 +1801,8 @@ function extractMorphology(text) {
             r.onload = e => applyVisualState(JSON.parse(e.target.result)); r.readAsText(f);
         }
 
-        async function loadFloraPreview() {
-            const floraId = getQueryParam("floraId");
+        async function loadFloraPreview(floraIdFromMsg) {
+            const floraId = floraIdFromMsg || getQueryParam("floraId");
             if (!floraId) {
                 generateOrganicProfile();
                 return;
@@ -1983,6 +2005,11 @@ function extractMorphology(text) {
             updateCharCount();
             loadFloraPreview();
             initPaletteRef();
+        });
+        window.addEventListener("message", (e) => {
+            if (e.data?.type === "SPORA_LOAD_FLORA" && e.data?.floraId) {
+                loadFloraPreview(e.data.floraId);
+            }
         });
     </script>
 </body>
