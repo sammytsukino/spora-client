@@ -1863,6 +1863,13 @@ function extractMorphology(text) {
                     const baseMorph = fullText.trim() ? extractMorphology(fullText) : null;
                     currentMorph = baseMorph ? { ...baseMorph, dominantMood: savedMood || baseMorph.dominantMood } : (savedMood ? { dominantMood: savedMood, sentimentStrength: 0, vowelDensity: 0, consonantDensity: 0, uppercaseDensity: 0, punctDensity: 0, sibilanceIndex: 0, entropy: 0, asciiSignature: 0, asciiAngle: 0, avgLengthDelta: 0, rhymeDensity: 0, contentWordRatio: 0, avgWordLength: 0, wordCount: 0 } : null);
                     lastBlossomingContentSignature = getContentSignature(fullText);
+                    if (flora.status === "blossoming") {
+                        enableAppendOnlyText(blossomBase, blossomNew);
+                    } else {
+                        document.getElementById("inpTitle").value = labState.title || flora.title || "Untitled Flora";
+                        const newTextInput = document.getElementById("newTextInput");
+                        if (newTextInput) newTextInput.textContent = fullText || "";
+                    }
                     applyVisualState(labState);
                 } else {
                     document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
@@ -1878,7 +1885,7 @@ function extractMorphology(text) {
                 } else if (flora.status === "blossoming") {
                     setLockedState(false);
                     setBlossomingMode(true);
-                    enableAppendOnlyText(blossomBase, blossomNew);
+                    if (!labState) enableAppendOnlyText(blossomBase, blossomNew);
                     statusEl.innerText = "BLOSSOMING MODE";
                 } else {
                     setLockedState(false);
