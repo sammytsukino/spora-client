@@ -789,11 +789,6 @@
             return params.get(key);
         }
 
-        // ==========================================
-        //  HERRAMIENTAS DE ARTE GENERATIVO (SEMILLAS)
-        
-        // ==========================================
-        
         function getSeed(text, salt = 0) {
             let h = salt;
             for (let i = 0; i < text.length; i++) {
@@ -811,12 +806,9 @@ function lerpHexColor(a, b, amount) {
           rr = Math.round(ar + amount * (br - ar)),
           rg = Math.round(ag + amount * (bg - ag)),
           rb = Math.round(ab + amount * (bb - ab));
-    
-    // El .slice(1) es la clave que me faltó para que corte el exceso y genere el color web perfecto
     return '#' + ((1 << 24) | (rr << 16) | (rg << 8) | rb).toString(16).slice(1);
 }
 
-        // Un léxico por cada perfil visual. El texto se clasifica al perfil con más hits.
         const MOOD_LEXICONS = {
             joy: ["alegría", "feliz", "sonrisa", "sol", "luz", "brillar", "esperanza", "vida", "crecer", "florecer", "happy", "joy", "smile", "sun", "light", "shine", "hope", "life", "grow", "bloom", "bright", "warm", "dance", "celebrate", "laugh", "play"],
             void: ["vacío", "nada", "oscuro", "sombra", "negro", "silencio", "abismo", "fin", "muerto", "void", "empty", "dark", "shadow", "black", "silence", "abyss", "end", "dead", "nothing", "hollow", "bleak", "obscure", "fade", "gone"],
@@ -905,17 +897,13 @@ function extractMorphology(text) {
         wordCount: totalWords
     };
 }
-// Mapa: perfil -> tipo de flor (para rama random)
         const PROFILE_TO_FLOWER = {
             joy: "daisy", void: "rose", glitch: "carnation", editorial: "rose", system: "daisy", midnight: "orchid", warning: "carnation",
             ethereal: "orchid", melancholy: "rose", aggression: "carnation", passion: "rose", anxiety: "orchid", serenity: "daisy",
             rage: "carnation", horror: "orchid", ecstasy: "daisy", despair: "rose", tenderness: "rose", zen: "daisy"
         };
 
-        // Umbral: sentimentStrength >= 3 = texto muy cargado -> aplicar perfil visual literal
         const LITERAL_THRESHOLD = 3;
-
-        // Familias de color por perfil (para rama random)
         const COLOR_FAMILIES = {
             joy: { mask: ["#FACC15","#FEF08A","#FDE047","#FEF9C3"], bg: ["#0EA5E9","#38BDF8","#7DD3FC"], bgB: ["#FCD34D","#FDE047","#FEF08A"] },
             void: { mask: ["#1f2937","#4b5563","#6b7280"], bg: ["#0a0a0a","#1f1f1f","#111827"], bgB: ["#374151","#4b5563"] },
@@ -952,7 +940,6 @@ function extractMorphology(text) {
                 return;
             }
 
-            // MODO HÍBRIDO: texto muy sentimental → perfil visual literal (dominantMood = clave de perfil); neutro → random
             const isLiteral = morph.sentimentStrength >= LITERAL_THRESHOLD && morph.dominantMood !== "neutral";
             const literalProfile = moodProfiles[morph.dominantMood];
 
@@ -961,7 +948,6 @@ function extractMorphology(text) {
                 return;
             }
 
-            // HILO CONDUCTOR: una semilla maestra derivada del texto para toda la obra
             const designSeed = getSeed(text, 0);
             const seedColor = getSeed(text, 1);
             const seedForm = getSeed(text, 2);
@@ -974,8 +960,6 @@ function extractMorphology(text) {
             const seedRand5 = getSeed(text, 9);
 
             const availableSets = Object.keys(maskUrls);
-
-            // 1. FLOWER SET: controlado por perfil detectado (dominantMood)
             let targetSet;
             const profileFlower = PROFILE_TO_FLOWER[morph.dominantMood];
             if (profileFlower && availableSets.includes(profileFlower)) {
@@ -992,13 +976,9 @@ function extractMorphology(text) {
             const cMaskB = pickFromPool(family.mask, seedRand);
             const cBgA = pickFromPool(family.bg, seedRand2);
             const cBgB = pickFromPool(family.bgB, seedRand3);
-
-            // 3. Tipografía: variada por morfología, no por mood obvio
             const fontArray = ["'Space Mono', monospace", "'Grenze Gotisch', cursive", "'Playfair Display', serif", "'Syne', sans-serif", "'BioRhyme', serif", "'Inter', sans-serif", "'Cormorant Garamond', serif", "'DM Sans', sans-serif"];
             const fontIdx = Math.floor((morph.vowelDensity * 3 + morph.entropy * 2 + morph.contentWordRatio * 2 + seedChaos) * fontArray.length) % fontArray.length;
             const fontChoice = fontArray[fontIdx];
-
-            // 4. Parámetros mapeados MÁS SENSIBLES: pequeños cambios de texto = cambios notables
             const sensitivity = 1.8;
             const vowelContrib = morph.vowelDensity * 2 * sensitivity;
             const punctContrib = morph.punctDensity * 12 * sensitivity;
@@ -1016,31 +996,19 @@ function extractMorphology(text) {
             let finalScrambleForce = constrain((morph.uppercaseDensity * 8) + (seedChaos * 1.8) + entropyContrib * 0.15, 0, 1.0);
             let isScrambled = finalScrambleForce > 0.25;
             let finalJitter = constrain(lengthDeltaContrib + seedPhysics * 2.2 + rhymeContrib * 0.3, 0, 2.0);
-
-            // MASK: factor = contenido + entropía + semilla. Umbral alto para que no sea casi siempre filled.
             const maskFactor = morph.contentWordRatio * 0.4 + morph.entropy * 0.5 + seedColor * 0.5;
             let hasMask = maskFactor > 0.62;
-
-            // OUTLINE: factor = puntuación + mayúsculas + semilla. Umbral para variedad real.
             const outlineFactor = morph.punctDensity * 6 + morph.uppercaseDensity * 10 + seedRand * 0.6;
             let hasOutline = outlineFactor > 0.7;
             let finalOutlineW = hasOutline ? Math.floor(map(outlineFactor + asciiContrib, 0.4, 2.0, 1, 6)) : 1;
             finalOutlineW = constrain(finalOutlineW, 1, 6);
-
-            // GRADIENTE EN MÁSCARA: no siempre. seedForm decide filled solid vs gradient.
             let hasGradFill = seedForm > 0.45;
-
-            // FONDO: sólido vs degradado. Factor morfológico + semilla para variedad real.
             const bgModeFactor = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + seedRand4 * 0.5;
             let bgMode = bgModeFactor > 0.5 ? "gradient" : "solid";
             const bgAngles = [0, 45, 90, 135, 180, 225, 270, 315];
             let bgAngle = bgAngles[Math.floor((morph.asciiAngle / 45 + seedRand5 * 2) % 8)];
-
-            // 5. PULSE: métrica de ritmo (rhyme + contentWordRatio + pulsación del texto)
             const pulseStrength = constrain(rhymeContrib * 0.6 + morph.contentWordRatio * 1.5 + seedPhysics * 1.8, 0, 2);
             const pulseActive = pulseStrength > 0.15;
-
-            // 6. WAVE: métrica de fluidez (sibilancia + variación de longitud)
             const waveStrength = constrain(sibilContrib * 0.5 + lengthDeltaContrib * 0.4 + seedForm * 1.6, 0, 2);
             const waveActive = waveStrength > 0.12;
 
@@ -1219,17 +1187,11 @@ function extractMorphology(text) {
         }
 
         function forceAlpha(c) { c.setAlpha(255); return c; }
-
-        // ========================================================
-        // NUEVO: Detector Luminancia Mejorado
-        // ========================================================
         function getContrastColor(hex) {
             if (!hex) return "#ffffff";
             let cleanHex = hex.replace('#', '');
             if(cleanHex.length === 3) cleanHex = cleanHex.split('').map(c => c+c).join('');
             const r = parseInt(cleanHex.slice(0, 2), 16), g = parseInt(cleanHex.slice(2, 4), 16), b = parseInt(cleanHex.slice(4, 6), 16);
-            
-            // Fórmula estándar de luminancia percibida
             const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
             return luminance > 0.5 ? "#000000" : "#ffffff";
         }
@@ -1249,8 +1211,6 @@ function extractMorphology(text) {
             const cStem = color(ui("colStem").value);
             const cFillA = forceAlpha(color(ui("colMaskGradA").value)), cFillB = forceAlpha(color(ui("colMaskGradB").value));
             const cOutline = forceAlpha(color(ui("colOutlineSolid").value));
-
-            // Detector dinámico (si no hay máscara, mira el fondo para contrastar)
             if (autoContrast) {
                 const ref = maskOn ? ui("colMaskGradA").value : ui("colBgGradA").value;
                 ui("colTextSolid").value = getContrastColor(ref);
@@ -1327,13 +1287,6 @@ function extractMorphology(text) {
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
             const txt = getFullText().trim(); if (!txt) return;
-
-            // ========================================================
-            // NUEVO: Aplicación de semilla P5 con layoutOffset
-            
-            // ========================================================
-
-
             const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
             const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
