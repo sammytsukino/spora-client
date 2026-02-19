@@ -552,7 +552,7 @@
 
         <section>
             <h2>VISUAL MOODS</h2>
-            <p style="font-size:10px;opacity:0.8;margin-bottom:8px">También se activan por el sentimiento del texto</p>
+            <p style="font-size:10px;opacity:0.8;margin-bottom:8px">Also triggered by text sentiment</p>
             <div class="btn-group">
                 <button onclick="applyVisualState(moodProfiles.joy)">JOY</button>
                 <button onclick="applyVisualState(moodProfiles.void)">VOID</button>
@@ -584,9 +584,9 @@
 
         <section>
             <details>
-                <summary>REFERENCIA DE PALETAS</summary>
+                <summary>PALETTE REFERENCE</summary>
                 <div class="folder-body" style="font-size: 10px; font-family: var(--font-mono);">
-                    <p style="margin-bottom: 10px; opacity: 0.9;">Clic en el texto para aplicarlo y ver la salida visual.</p>
+                    <p style="margin-bottom: 10px; opacity: 0.9;">Click on a row to apply its text and profile.</p>
                     <div id="paletteRefList"></div>
                 </div>
             </details>
@@ -811,23 +811,23 @@ function lerpHexColor(a, b, amount) {
 
         const MOOD_LEXICONS = {
             joy: ["alegría", "feliz", "sonrisa", "sol", "luz", "brillar", "esperanza", "vida", "crecer", "florecer", "happy", "joy", "smile", "sun", "light", "shine", "hope", "life", "grow", "bloom", "bright", "warm", "dance", "celebrate", "laugh", "play"],
-            void: ["vacío", "nada", "oscuro", "sombra", "negro", "silencio", "abismo", "fin", "muerto", "void", "empty", "dark", "shadow", "black", "silence", "abyss", "end", "dead", "nothing", "hollow", "bleak", "obscure", "fade", "gone"],
-            glitch: ["glitch", "error", "caos", "ruido", "fragmento", "distorsión", "digital", "pixel", "código", "bug", "random", "chaos", "noise", "fragment", "distort", "digital", "pixel", "code", "broken", "static", "glitchy", "corrupt", "scramble", "twisted"],
+            void: ["vacío", "nada", "oscuro", "sombra", "negro", "silencio", "abismo", "fin", "muerto", "void", "empty", "dark", "shadow", "black", "silence", "abyss", "end", "dead", "nothing", "hollow", "bleak", "obscure", "fade", "gone", "consuming", "consumed", "nothingness", "emptiness", "inside"],
+            glitch: ["glitch", "error", "caos", "ruido", "fragmento", "distorsión", "digital", "pixel", "código", "bug", "random", "chaos", "noise", "fragment", "distort", "code", "broken", "static", "glitchy", "corrupt", "scramble", "twisted"],
             editorial: ["elegante", "refinado", "sofisticado", "estilo", "moda", "editorial", "portada", "vogue", "minimal", "elegant", "refined", "sophisticated", "style", "fashion", "cover", "minimalist", "clean", "curated", "aesthetic", "chic"],
-            system: ["sistema", "código", "digital", "máquina", "tecnología", "binario", "algoritmo", "data", "system", "code", "digital", "machine", "tech", "binary", "algorithm", "data", "logic", "compute", "network", "terminal", "bytes"],
+            system: ["sistema", "código", "digital", "máquina", "tecnología", "binario", "algoritmo", "data", "system", "code", "machine", "tech", "binary", "algorithm", "logic", "compute", "network", "terminal", "bytes"],
             midnight: ["noche", "luna", "estrellas", "oscuridad", "medianoche", "sueño", "nocturno", "night", "moon", "stars", "midnight", "darkness", "dream", "nocturnal", "twilight", "cosmos", "celestial", "vast", "infinite"],
-            warning: ["peligro", "alerta", "cuidado", "atención", "urgente", "emergencia", "stop", "danger", "warning", "caution", "attention", "urgent", "emergency", "stop", "alert", "critical", "fire", "hazard"],
+            warning: ["peligro", "alerta", "cuidado", "atención", "urgente", "emergencia", "stop", "danger", "warning", "caution", "attention", "urgent", "emergency", "alert", "critical", "fire", "hazard"],
             ethereal: ["cosmos", "alma", "infinito", "astral", "universo", "aura", "espíritu", "ascender", "cielo", "eternidad", "magia", "estrellas", "misterio", "niebla", "soul", "infinite", "god", "universe", "dream", "spirit", "ethereal", "ascend", "sky", "heaven", "eternity", "magic", "miracle", "stars", "mystery", "mist", "beyond"],
             melancholy: ["recuerdo", "olvido", "lágrima", "lluvia", "ayer", "ceniza", "eco", "silencio", "nostalgia", "otoño", "invierno", "triste", "soledad", "ausencia", "fantasma", "memory", "lost", "tears", "rain", "yesterday", "ash", "dust", "echo", "silence", "melancholy", "fade", "autumn", "winter", "sad", "sadness", "alone", "lonely", "ghost", "ruin"],
-            aggression: ["ira", "furia", "odio", "fuego", "arder", "romper", "sangre", "grito", "golpear", "guerra", "herida", "veneno", "rabia", "destruir", "cruel", "anger", "rage", "hate", "fire", "burn", "break", "blood", "scream", "hit", "war", "wound", "poison", "kill", "destroy", "cruel", "fury", "violent"],
+            aggression: ["ira", "furia", "odio", "fuego", "arder", "romper", "sangre", "grito", "golpear", "guerra", "herida", "veneno", "rabia", "destruir", "cruel", "anger", "rage", "hate", "hatred", "hating", "hated", "fire", "burn", "break", "blood", "scream", "hit", "war", "wound", "poison", "kill", "destroy", "fury", "violent"],
             passion: ["amor", "deseo", "corazón", "calor", "latir", "beso", "piel", "llama", "rojo", "florecer", "pulso", "ardiente", "carne", "amar", "love", "desire", "heart", "heat", "beat", "kiss", "skin", "flame", "red", "bloom", "pulse", "burning", "flesh", "lover", "intense", "crave"],
             anxiety: ["miedo", "temblor", "frío", "pánico", "ahogo", "sombra", "enfermo", "oscuridad", "caer", "fear", "shiver", "cold", "panic", "void", "abyss", "shadow", "sick", "darkness", "fall", "trapped", "anxious", "nervous", "worry", "dread", "tremble"],
             serenity: ["paz", "calma", "respirar", "agua", "río", "brisa", "hoja", "árbol", "bosque", "suave", "lento", "fluir", "claro", "luz", "sanar", "tierra", "sol", "peace", "calm", "breath", "breathe", "water", "river", "breeze", "leaf", "tree", "forest", "soft", "slow", "flow", "clear", "light", "heal", "earth", "shine", "sun", "quiet", "zen"],
-            rage: ["furia", "rabia", "ira", "odio", "violencia", "destruir", "grito", "sangre", "guerra", "matar", "fury", "rage", "hate", "violence", "destroy", "scream", "blood", "war", "kill", "rage", "outburst", "explode", "furious", "wrath"],
-            horror: ["miedo", "monstruo", "terror", "pesadilla", "sangre", "muerte", "sombra", "oscuro", "fantasma", "fear", "monster", "terror", "nightmare", "blood", "death", "shadow", "dark", "ghost", "horror", "dread", "creepy", "haunted", "evil"],
+            rage: ["furia", "rabia", "ira", "odio", "violencia", "destruir", "grito", "sangre", "guerra", "matar", "fury", "rage", "hate", "hatred", "hating", "hated", "violence", "destroy", "scream", "blood", "war", "kill", "outburst", "explode", "furious", "wrath"],
+            horror: ["miedo", "monstruo", "terror", "pesadilla", "sangre", "muerte", "sombra", "oscuro", "fantasma", "fear", "monster", "terror", "nightmare", "blood", "death", "shadow", "dark", "ghost", "horror", "dread", "creepy", "haunted", "evil", "cancer", "disease", "consuming", "consumed", "decay", "rot", "rotten"],
             ecstasy: ["éxtasis", "euforia", "radiante", "brillante", "explosión", "intenso", "pico", "clímax", "ecstasy", "euphoria", "radiant", "brilliant", "explosion", "intense", "peak", "bliss", "rapture", "elation", "overwhelm", "transcend"],
-            despair: ["desesperanza", "abandono", "ruina", "fracaso", "fin", "perdido", "hundido", "despair", "hopeless", "abandoned", "ruin", "failure", "end", "lost", "sunk", "crushed", "defeated", "worthless", "misery"],
-            tenderness: ["ternura", "suave", "delicado", "acariciar", "abrazar", "dulce", "cariño", "tender", "soft", "gentle", "delicate", "caress", "hug", "sweet", "affection", "warm", "kind", "gentle", "loving", "care"],
+            despair: ["desesperanza", "abandono", "ruina", "fracaso", "fin", "perdido", "hundido", "despair", "hopeless", "abandoned", "ruin", "failure", "end", "lost", "sunk", "crushed", "defeated", "worthless", "misery", "hatred", "hating", "hated", "cancer", "consuming", "consumed", "hollow", "suffering", "torment", "anguish", "rotten", "decay", "rot", "loathing"],
+            tenderness: ["ternura", "suave", "delicado", "acariciar", "abrazar", "dulce", "cariño", "tender", "soft", "gentle", "delicate", "caress", "hug", "sweet", "affection", "warm", "kind", "loving", "care"],
             zen: ["meditación", "respiración", "vacío", "presente", "calma", "equilibrio", "consciencia", "meditation", "breath", "empty", "present", "calm", "balance", "awareness", "zen", "mindful", "stillness", "inner", "tranquil"],
         };
 
@@ -1620,25 +1620,25 @@ function extractMorphology(text) {
         };
 
         const PALETTE_EXAMPLES = {
-            joy: { text: "I feel so happy and excited! This day is amazing! Sunshine and laughter everywhere!", desc: "Amarillo + Azul" },
-            void: { text: "The void consumes me. Emptiness. Darkness. Nothing remains.", desc: "Magenta + Púrpura / Negro" },
-            glitch: { text: "ERROR ERROR CORRUPT DATA SYSTEM OVERLOAD crash reboot", desc: "Magenta + Verde neón / Negro" },
-            editorial: { text: "Minimal. Typography. Pure contrast.", desc: "Blanco / Negro" },
-            system: { text: "> execute.init() / root access granted / protocol active", desc: "Verde neón / Negro" },
-            midnight: { text: "Deep midnight blue, stars above, the night speaks in cyan.", desc: "Cian + Violeta / Azul oscuro" },
-            warning: { text: "Attention! Danger! Stop! Alert! Critical!", desc: "Naranja / Amarillo" },
-            ethereal: { text: "Dreamy, soft, otherworldly light. Floating in clouds of violet.", desc: "Cian + Lavanda / Violeta" },
-            melancholy: { text: "Sadness fills my heart. Tears fall. Sorrow and longing.", desc: "Azul lavanda / Azul índigo" },
-            aggression: { text: "Anger! Hatred! Destroy! Attack! Fight!", desc: "Rojo puro" },
-            passion: { text: "I love you deeply. Desire burns. Heart racing.", desc: "Rosa fucsia / Magenta" },
-            anxiety: { text: "Nervous stressed panic worry fear trembling", desc: "Amarillo + Naranja / Verde" },
-            serenity: { text: "Peace flows. Calm waters. Gentle breeze. Tranquility.", desc: "Aqua + Turquesa" },
-            rage: { text: "RAGE! FURY! WRATH! VENGEANCE! BLOOD!", desc: "Rojo intenso" },
-            horror: { text: "Scream. Blood. Terror. Monsters. Death.", desc: "Rojo oscuro / Negro" },
-            ecstasy: { text: "Euphoria! Joy! Glory! Triumph! Amazing!", desc: "Dorado + Naranja" },
-            despair: { text: "Hopeless. Lost. Drowning. No escape. Endless blue.", desc: "Azul puro / Azul oscuro" },
-            tenderness: { text: "Soft touch. Gentle hug. Sweet love. Warm embrace.", desc: "Rosa pastel" },
-            zen: { text: "Breathe. Stillness. Balance. Harmony. Inner peace.", desc: "Turquesa / Teal" }
+            joy: { text: "I feel so happy and excited! This day is amazing! Sunshine and laughter everywhere!", desc: "Yellow + Blue" },
+            void: { text: "The void consumes me. Emptiness. Darkness. Nothing remains.", desc: "Magenta + Purple / Black" },
+            glitch: { text: "ERROR ERROR CORRUPT DATA SYSTEM OVERLOAD crash reboot", desc: "Magenta + Neon green / Black" },
+            editorial: { text: "Minimal. Typography. Pure contrast.", desc: "White / Black" },
+            system: { text: "> execute.init() / root access granted / protocol active", desc: "Neon green / Black" },
+            midnight: { text: "Deep midnight blue, stars above, the night speaks in cyan.", desc: "Cyan + Violet / Dark blue" },
+            warning: { text: "Attention! Danger! Stop! Alert! Critical!", desc: "Orange / Yellow" },
+            ethereal: { text: "Dreamy, soft, otherworldly light. Floating in clouds of violet.", desc: "Cyan + Lavender / Violet" },
+            melancholy: { text: "Sadness fills my heart. Tears fall. Sorrow and longing.", desc: "Lavender blue / Indigo" },
+            aggression: { text: "Anger! Hatred! Destroy! Attack! Fight!", desc: "Pure red" },
+            passion: { text: "I love you deeply. Desire burns. Heart racing.", desc: "Hot pink / Magenta" },
+            anxiety: { text: "Nervous stressed panic worry fear trembling", desc: "Yellow + Orange / Green" },
+            serenity: { text: "Peace flows. Calm waters. Gentle breeze. Tranquility.", desc: "Aqua + Turquoise" },
+            rage: { text: "RAGE! FURY! WRATH! VENGEANCE! BLOOD!", desc: "Intense red" },
+            horror: { text: "Scream. Blood. Terror. Monsters. Death.", desc: "Dark red / Black" },
+            ecstasy: { text: "Euphoria! Joy! Glory! Triumph! Amazing!", desc: "Gold + Orange" },
+            despair: { text: "Hopeless. Lost. Drowning. No escape. Endless blue.", desc: "Pure blue / Dark blue" },
+            tenderness: { text: "Soft touch. Gentle hug. Sweet love. Warm embrace.", desc: "Pastel pink" },
+            zen: { text: "Breathe. Stillness. Balance. Harmony. Inner peace.", desc: "Turquoise / Teal" }
         };
 
         function initPaletteRef() {
@@ -1650,7 +1650,7 @@ function extractMorphology(text) {
                 if (!p || !ex) return;
                 const row = document.createElement("div");
                 row.style.cssText = "margin-bottom:12px;padding:8px;border:1px solid var(--spora-dark);cursor:pointer;display:flex;gap:8px;flex-wrap:wrap;align-items:center";
-                row.title = "Clic para aplicar texto y perfil";
+                row.title = "Click to apply text and profile";
                 const swatch = document.createElement("div");
                 swatch.style.cssText = "display:flex;gap:2px;flex-shrink:0";
                 [p.colors.maskA, p.colors.maskB, p.colors.bgA, p.colors.bgB].forEach(c => {
