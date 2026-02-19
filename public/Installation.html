@@ -443,11 +443,9 @@
             display: none;
         }
 
-        /* Installation mode: hide lab controls */
         #ui.installation-mode .laboratory-only {
             display: none !important;
         }
-        /* When blossoming: only title (to publish). Mood and params come from sentiment, not manual controls */
         #ui.installation-mode.blossoming-active #titleSection {
             display: flex !important;
             flex-direction: column;
@@ -840,6 +838,7 @@
         let currentLabState = null;
         let currentMorph = null;
         let lastBlossomingContentSignature = "";
+        let lockedChainMood = null;
 
         function getContentSignature(txt) {
             return (txt || "").trim().toLowerCase().replace(/\s+/g, " ");
@@ -992,7 +991,6 @@ function extractMorphology(text) {
             rage: "carnation", horror: "orchid", ecstasy: "daisy", despair: "rose", tenderness: "rose", zen: "daisy"
         };
 
-        /* Blossoming mode: when base + contribution clash, produce a blended mood */
         const SENTIMENT_BLEND_MAP = {
             "joy|despair": "melancholy", "despair|joy": "melancholy",
             "joy|rage": "passion", "rage|joy": "passion",
@@ -1010,11 +1008,7 @@ function extractMorphology(text) {
             "joy|horror": "passion", "horror|joy": "passion"
         };
 
-        function getBlendedMoodForBlossoming(baseText, newText) {
-            const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
-            const newMorph = newText.trim() ? extractMorphology(newText) : null;
-            const baseMood = baseMorph && baseMorph.dominantMood !== "neutral" && baseMorph.sentimentStrength > 0 ? baseMorph.dominantMood : null;
-            const newMood = newMorph && newMorph.dominantMood !== "neutral" && newMorph.sentimentStrength > 0 ? newMorph.dominantMood : null;
+        function blendMoods(baseMood, newMood) {
             if (!baseMood && !newMood) return null;
             if (!baseMood) return newMood;
             if (!newMood) return baseMood;
@@ -1022,6 +1016,14 @@ function extractMorphology(text) {
             const key1 = baseMood + "|" + newMood;
             const key2 = newMood + "|" + baseMood;
             return SENTIMENT_BLEND_MAP[key1] || SENTIMENT_BLEND_MAP[key2] || null;
+        }
+
+        function getBlendedMoodForBlossoming(baseText, newText) {
+            const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
+            const newMorph = newText.trim() ? extractMorphology(newText) : null;
+            const baseMood = baseMorph && baseMorph.dominantMood !== "neutral" && baseMorph.sentimentStrength > 0 ? baseMorph.dominantMood : null;
+            const newMood = newMorph && newMorph.dominantMood !== "neutral" && newMorph.sentimentStrength > 0 ? newMorph.dominantMood : null;
+            return blendMoods(baseMood, newMood);
         }
 
         function interpolateHex(hex1, hex2, t) {
@@ -1094,7 +1096,6 @@ function extractMorphology(text) {
             const text = getFullText().trim();
             const contentSig = getContentSignature(text);
 
-            /* Blossoming: if content unchanged (e.g. only added space), keep current blended state */
             if (isBlossomingMode && lockedBaseText && currentLabState && contentSig === lastBlossomingContentSignature) {
                 return;
             }
@@ -1108,17 +1109,17 @@ function extractMorphology(text) {
                 return;
             }
 
-            /* Blossoming mode: blend base + contribution sentiments (e.g. joy + despair → melancholy) */
             if (isBlossomingMode && lockedBaseText) {
                 const baseTextDisplay = document.getElementById("baseTextDisplay");
                 const newTextInput = document.getElementById("newTextInput");
                 const baseText = baseTextDisplay ? baseTextDisplay.textContent : lockedBaseText;
                 const newText = newTextInput ? newTextInput.textContent : "";
-                const blendedMood = getBlendedMoodForBlossoming(baseText, newText);
                 const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
                 const newMorph = newText.trim() ? extractMorphology(newText) : null;
+                const newMood = newMorph && newMorph.dominantMood !== "neutral" && newMorph.sentimentStrength > 0 ? newMorph.dominantMood : null;
+                const effectiveBaseMood = lockedChainMood || (baseMorph && baseMorph.dominantMood !== "neutral" ? baseMorph.dominantMood : null);
+                const blendedMood = !newMood ? effectiveBaseMood : blendMoods(effectiveBaseMood, newMood);
                 const baseMood = baseMorph && baseMorph.dominantMood !== "neutral" ? baseMorph.dominantMood : null;
-                const newMood = newMorph && newMorph.dominantMood !== "neutral" ? newMorph.dominantMood : null;
 
                 if (blendedMood && moodProfiles[blendedMood]) {
                     lastBlossomingContentSignature = contentSig;
@@ -1141,11 +1142,11 @@ function extractMorphology(text) {
                     if (INSTALLATION_MODE) updateHUD();
                     return;
                 }
-                if (baseMood && newMood && baseMood !== newMood && moodProfiles[baseMood] && moodProfiles[newMood]) {
+                if (effectiveBaseMood && newMood && effectiveBaseMood !== newMood && moodProfiles[effectiveBaseMood] && moodProfiles[newMood]) {
                     lastBlossomingContentSignature = contentSig;
                     const weightB = newText.length / Math.max(1, baseText.length + newText.length);
-                    const blended = blendMoodProfiles(moodProfiles[baseMood], moodProfiles[newMood], weightB);
-                    blended.dominantMood = baseMood + "+" + newMood;
+                    const blended = blendMoodProfiles(moodProfiles[effectiveBaseMood], moodProfiles[newMood], weightB);
+                    blended.dominantMood = effectiveBaseMood + "+" + newMood;
                     currentMorph = { ...morph, dominantMood: blended.dominantMood };
                     currentLabState = blended;
                     lastUsedSet = blended.flowerSet;
@@ -1319,7 +1320,6 @@ function extractMorphology(text) {
             } else {
                 ui.classList.remove("blossoming-active");
             }
-            /* Base text: locked. New text: editable. Title: for publish. Mood/params: driven by sentiment only, no manual override */
             const keepEnabled = new Set(["inpTitle", "newTextInput", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
 
             ui.querySelectorAll("input, textarea, select, button").forEach((el) => {
@@ -1350,7 +1350,6 @@ function extractMorphology(text) {
             baseTextDisplay.setAttribute("contenteditable", "false");
             newTextInput.setAttribute("contenteditable", "true");
             newTextInput.setAttribute('data-placeholder', 'Continue here to make your flora grow...');
-            /* Restore previous contribution if provided, otherwise clear for new input */
             newTextInput.textContent = (newTextToRestore != null && newTextToRestore !== undefined) ? String(newTextToRestore) : "";
             
             setTimeout(() => {
@@ -1552,7 +1551,6 @@ function extractMorphology(text) {
             }
             flowers.sort((a, b) => a.ty - b.ty);
             document.getElementById("statusText").innerText = `READY | BLOOMS: ${flowers.length}`;
-            /* Do not call enableAppendOnlyText here - it would clear user's new text on every regen */
         }
 
         function updateVisuals() {
@@ -1608,7 +1606,6 @@ function extractMorphology(text) {
         }
 
         function collectState() {
-            /* In blossoming mode use currentLabState (blended profile) so we save the actual visual state */
             if (isBlossomingMode && currentLabState) {
                 const fullText = getFullText();
                 return {
@@ -1811,6 +1808,7 @@ function extractMorphology(text) {
 
                 currentFlora = flora;
                 lastBlossomingContentSignature = "";
+                lockedChainMood = null;
                 let blossomBase = flora.text || "";
                 let blossomNew = undefined;
 
@@ -1823,13 +1821,11 @@ function extractMorphology(text) {
 
                 if (labState) {
                     const fullText = labState.text || flora.text || "";
-                    const baseTextForDisplay = (labState.baseText != null && labState.baseText !== "") ? labState.baseText : fullText;
-                    const newTextToRestore = (labState.baseText != null && labState.text != null && labState.text.startsWith(labState.baseText))
-                        ? labState.text.slice(labState.baseText.length) : "";
-                    blossomBase = baseTextForDisplay;
-                    blossomNew = newTextToRestore;
-                    const baseMorph = baseTextForDisplay.trim() ? extractMorphology(baseTextForDisplay) : null;
+                    blossomBase = fullText;
+                    blossomNew = undefined;
                     const savedMood = labState.dominantMood;
+                    lockedChainMood = savedMood || null;
+                    const baseMorph = fullText.trim() ? extractMorphology(fullText) : null;
                     currentMorph = baseMorph ? { ...baseMorph, dominantMood: savedMood || baseMorph.dominantMood } : (savedMood ? { dominantMood: savedMood, sentimentStrength: 0, vowelDensity: 0, consonantDensity: 0, uppercaseDensity: 0, punctDensity: 0, sibilanceIndex: 0, entropy: 0, asciiSignature: 0, asciiAngle: 0, avgLengthDelta: 0, rhymeDensity: 0, contentWordRatio: 0, avgWordLength: 0, wordCount: 0 } : null);
                     lastBlossomingContentSignature = getContentSignature(fullText);
                     applyVisualState(labState);
@@ -1954,7 +1950,6 @@ function extractMorphology(text) {
             }
             const ui = id => document.getElementById(id);
             if (s.title) ui("inpTitle").value = s.title; 
-            /* Do not overwrite newTextInput with s.text when in blossoming mode - preserve user's new contribution */
             if (s.text && !isBlossomingMode) {
                 const newTextInput = ui("newTextInput");
                 if (newTextInput) newTextInput.textContent = s.text;
