@@ -1292,6 +1292,9 @@ function extractMorphology(text) {
         function map(n, start1, stop1, start2, stop2) {
             return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
         }
+        function constrain(val, low, high) {
+            return Math.max(low, Math.min(high, val));
+        }
 
         function setLockedState(locked) {
             const ui = document.getElementById("ui");
@@ -1731,6 +1734,15 @@ function extractMorphology(text) {
             }
             if (currentFlora && currentFlora.authorUsername) lineageUsernames.add(currentFlora.authorUsername);
 
+            let thumbnailData = null;
+            try {
+                const canvasContainer = document.getElementById("canvas-container");
+                if (canvasContainer && typeof html2canvas === "function") {
+                    const c = await html2canvas(canvasContainer, { scale: 2, useCORS: true });
+                    thumbnailData = c.toDataURL("image/png");
+                }
+            } catch (e) { /* capture failed, continue without thumbnail */ }
+
             const payload = {
                 title: state.title.trim(),
                 text: state.text,
@@ -1742,6 +1754,7 @@ function extractMorphology(text) {
                     },
                 },
             };
+            if (thumbnailData) payload.thumbnailData = thumbnailData;
 
             if (currentFlora && currentFlora.status === "blossoming") {
                 const baseGeneration = currentFlora.lineage && typeof currentFlora.lineage.generation === "number"

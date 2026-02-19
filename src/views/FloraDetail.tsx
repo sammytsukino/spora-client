@@ -77,7 +77,7 @@ export default function FloraDetail() {
         author,
         seed: formatSeed(flora),
         generation: formatGeneration(flora.lineage?.generation),
-        image: floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
+        image: flora.thumbnailUrl ?? floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
         text: flora.text,
         lineageUsernames: [
           ...(flora.coAuthors || [])

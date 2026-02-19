@@ -25,6 +25,7 @@ export interface ApiFlora {
   };
   publishedAt?: string;
   sealedAt?: string;
+  thumbnailUrl?: string;
 }
 
 export async function listFloras(params?: {

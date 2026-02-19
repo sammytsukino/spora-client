@@ -40,7 +40,7 @@ function mapFlora(flora: ApiFlora, index: number): UiFlora {
   return {
     id: flora._id,
     generation: formatGeneration(flora.lineage?.generation),
-    image: floraImages[index % floraImages.length],
+    image: flora.thumbnailUrl ?? floraImages[index % floraImages.length],
     title: flora.title,
     excerpt: flora.text?.slice(0, 140) || "",
     author,
