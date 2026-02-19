@@ -1618,7 +1618,7 @@ function extractMorphology(text) {
 
         function saveFullArt() {
             const s = document.getElementById("statusText"); s.innerText = "RENDERING...";
-            html2canvas(document.getElementById("canvas-container"), { scale: 4, useCORS: true }).then(c => {
+            html2canvas(document.getElementById("canvas-container"), { scale: 2, useCORS: true }).then(c => {
                 const l = document.createElement("a"); l.download = "spora_" + Date.now() + ".png"; l.href = c.toDataURL(); l.click(); s.innerText = "DONE";
             });
         }

@@ -4,6 +4,7 @@ import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
 import { floraImages } from "@/data/flora-data";
 import { getFlora, type ApiFlora } from "@/lib/floras";
+import { extractMorphology } from "@/lib/morphology";
 
 interface FloraLocationState {
   flora?: {
@@ -127,29 +128,20 @@ export default function FloraDetail() {
     lineCount > 0 ? Math.round((wordCount / lineCount) * 10) / 10 : wordCount;
 
   const seedHex = (derived?.seed ?? "").replace("#", "").slice(0, 6);
-  const seedInt = parseInt(seedHex, 16) || 0;
-  const normSeed = seedInt / 0xffffff;
 
-  const sentimentIndex = normSeed;
-  const sentimentLabel =
-    sentimentIndex < 0.33
-      ? "MELANCHOLIC"
-      : sentimentIndex < 0.66
-      ? "NEUTRAL"
-      : "BRIGHT";
+  // Morphology analysis (same as Installation.html HUD)
+  const morph = useMemo(() => extractMorphology(text), [text]);
 
-  const rhythmIndex =
-    avgWordsPerLine <= 6 ? "STACCATO" : avgWordsPerLine <= 12 ? "BALANCED" : "FLOWING";
-
-  const structureLabel =
-    lineCount <= 3
-      ? "FRAGMENTED"
-      : lineCount <= 6
-      ? "FREE VERSE"
-      : "DENSE STANZAS";
-
-  const noiseLevel = Math.round((0.3 + normSeed * 0.5) * 100) / 100;
-  const paletteLabel = sentimentIndex < 0.5 ? "COOL-LEANING" : "WARM-LEANING";
+  // Mapped parameters from labState (saved when flora was published)
+  const labState = flora?.generative?.labState as {
+    geometry?: { scale?: number };
+    wind?: { strength?: number };
+    chaos?: {
+      jitter?: number;
+      scrambleForce?: number;
+      pulse?: { active?: boolean; strength?: number };
+    };
+  } | undefined;
 
   const lineageHandles = derived?.lineageUsernames?.length
     ? derived.lineageUsernames
@@ -288,29 +280,6 @@ This flora was generated from a unique text input. Its morphology is influenced 
 
               <div className="space-y-1">
                 <p>
-                  SENTIMENT:{" "}
-                  <span className="text-[#262626]">{sentimentLabel}</span>
-                </p>
-                <p>
-                  RHYTHM:{" "}
-                  <span className="text-[#262626]">{rhythmIndex}</span>
-                </p>
-                <p>
-                  STRUCTURE:{" "}
-                  <span className="text-[#262626]">{structureLabel}</span>
-                </p>
-                <p>
-                  NOISE LEVEL:{" "}
-                  <span className="text-[#262626]">{noiseLevel}</span>
-                </p>
-              </div>
-
-              <div className="space-y-1">
-                <p>
-                  PALETTE:{" "}
-                  <span className="text-[#262626]">{paletteLabel}</span>
-                </p>
-                <p>
                   SEED HASH:{" "}
                   <span className="text-[#262626]">{seedHex.toUpperCase()}</span>
                 </p>
@@ -320,6 +289,115 @@ This flora was generated from a unique text input. Its morphology is influenced 
                 <p>
                   GEN: <span className="text-[#262626]">{derived.generation}</span>
                 </p>
+                <p>
+                  MOOD:{" "}
+                  <span className="text-[#262626]">
+                    {(morph?.dominantMood ?? "neutral").toUpperCase()}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
+          <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+            <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] font-supply-mono text-[11px] uppercase tracking-[0.25em] mb-3">
+              MORPHOLOGY_ANALYSIS
+            </div>
+
+            <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 grid gap-2 sm:grid-cols-2 md:grid-cols-3 font-supply-mono text-[10px] sm:text-xs">
+              <div className="flex justify-between">
+                <span className="opacity-70">SENTIMENT_FORCE</span>
+                <span className="text-[#262626]">
+                  {morph?.sentimentStrength != null
+                    ? String(morph.sentimentStrength)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">ENTROPY_INDEX</span>
+                <span className="text-[#262626]">
+                  {morph?.entropy != null
+                    ? morph.entropy.toFixed(3)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">VOCALIC_DENSITY</span>
+                <span className="text-[#262626]">
+                  {morph?.vowelDensity != null
+                    ? morph.vowelDensity.toFixed(3)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">SIBILANCE_LVL</span>
+                <span className="text-[#262626]">
+                  {morph?.sibilanceIndex != null
+                    ? morph.sibilanceIndex.toFixed(3)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">RHYTHM_DELTA</span>
+                <span className="text-[#262626]">
+                  {morph?.avgLengthDelta != null
+                    ? morph.avgLengthDelta.toFixed(2)
+                    : "-"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
+          <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+            <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] font-supply-mono text-[11px] uppercase tracking-[0.25em] mb-3">
+              MAPPED_PARAMETERS
+            </div>
+
+            <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 grid gap-2 sm:grid-cols-2 md:grid-cols-3 font-supply-mono text-[10px] sm:text-xs">
+              <div className="flex justify-between">
+                <span className="opacity-70">GEOM_SCALE</span>
+                <span className="text-[#262626]">
+                  {labState?.geometry?.scale != null
+                    ? labState.geometry.scale.toFixed(2)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">WIND_FORCE</span>
+                <span className="text-[#262626]">
+                  {labState?.wind?.strength != null
+                    ? labState.wind.strength.toFixed(2)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">CHAOS_JITTER</span>
+                <span className="text-[#262626]">
+                  {labState?.chaos?.jitter != null
+                    ? labState.chaos.jitter.toFixed(2)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">SCRAMBLE_DNA</span>
+                <span className="text-[#262626]">
+                  {labState?.chaos?.scrambleForce != null
+                    ? labState.chaos.scrambleForce.toFixed(2)
+                    : "-"}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="opacity-70">PULSE_WAVE</span>
+                <span className="text-[#262626]">
+                  {labState?.chaos?.pulse?.active &&
+                  labState?.chaos?.pulse?.strength != null
+                    ? labState.chaos.pulse.strength.toFixed(2)
+                    : "0"}
+                </span>
               </div>
             </div>
           </div>

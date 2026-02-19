@@ -50,7 +50,7 @@ export type Generation = typeof generations[number];
 
 export interface FloraItem {
   id: string;
-  generation: Generation;
+  generation: string;
   image: string;
   title: string;
   excerpt: string;
