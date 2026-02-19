@@ -2030,7 +2030,9 @@ function extractMorphology(text) {
 
         function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
         window.addEventListener("DOMContentLoaded", () => {
-            if (INSTALLATION_MODE) document.getElementById("ui").classList.add("installation-mode");
+            const fullLab = getQueryParam("full") === "1" || getQueryParam("admin") === "1";
+            if (INSTALLATION_MODE && !fullLab) document.getElementById("ui").classList.add("installation-mode");
+            if (fullLab) document.querySelectorAll("details").forEach(d => d.setAttribute("open", ""));
             updateCharCount();
             loadFloraPreview();
             initPaletteRef();

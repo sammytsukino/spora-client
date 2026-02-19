@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
 import FilterTabs from "@/components/common/FilterTabs";
@@ -97,9 +98,17 @@ export default function AdminPanel({
 
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
         <div className="flex items-end justify-between gap-4 mb-6">
-          <h1 className="font-supply-mono font-bold text-sm uppercase">
-            Admin panel
-          </h1>
+          <div className="flex items-center gap-4">
+            <h1 className="font-supply-mono font-bold text-sm uppercase">
+              Admin panel
+            </h1>
+            <Link
+              to="/laboratory/full"
+              className="font-supply-mono text-xs uppercase underline hover:no-underline"
+            >
+              Full laboratory
+            </Link>
+          </div>
           <FilterTabs
             filters={[...adminSectionTabs]}
             activeFilter={activeSection}

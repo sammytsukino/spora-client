@@ -68,7 +68,7 @@ export default function NavbarBase({
   const pathname = location.pathname.toLowerCase();
   const isGarden = pathname.startsWith("/garden");
   const isGreenhouse = pathname.startsWith("/greenhouse");
-  const isLaboratoryPath = pathname.startsWith("/laboratory");
+  const isLaboratoryPath = pathname.startsWith("/laboratory") || pathname.startsWith("/installation");
 
   const textColor = isDark
     ? "text-[var(--spora-text-secondary)]"

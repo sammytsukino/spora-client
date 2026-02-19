@@ -1,12 +1,18 @@
 import { useLocation } from "react-router-dom";
 import { useRef, useEffect } from "react";
 
-export default function Installation() {
+interface InstallationProps {
+  fullLab?: boolean;
+}
+
+export default function Installation({ fullLab = false }: InstallationProps) {
   const location = useLocation();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const params = new URLSearchParams(location.search || "");
   const floraId = params.get("floraId");
-  const src = `/Installation.html${location.search || ""}`;
+  const search = new URLSearchParams(location.search || "");
+  if (fullLab) search.set("full", "1");
+  const src = `/Installation.html${search.toString() ? "?" + search.toString() : ""}`;
 
   useEffect(() => {
     const iframe = iframeRef.current;
