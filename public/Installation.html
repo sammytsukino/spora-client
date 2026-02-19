@@ -441,6 +441,36 @@
             display: none;
         }
 
+        /* Installation mode: hide lab controls */
+        #ui.installation-mode .laboratory-only {
+            display: none !important;
+        }
+        .hud-container {
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--spora-dark);
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .hud-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            line-height: 1.8;
+            border-bottom: 1px dotted rgba(0,0,0,0.2);
+        }
+        .hud-label { font-weight: 700; opacity: 0.6; }
+        .hud-value { color: var(--spora-dark); text-transform: uppercase; }
+        .hud-header {
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--spora-dark);
+            padding-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
         details {
             border: 2px solid var(--spora-dark);
             margin-bottom: 12px;
@@ -530,24 +560,43 @@
                     alt="Logo" style="width: 200px; height: 138px; display: block; object-fit: cover;" />
             </a>
         </div>
-        <section>
+        <section class="laboratory-only">
             <h2>ARTWORK TITLE</h2>
             <div class="control-box">
                 <input type="text" id="inpTitle" placeholder="Name your flora..." />
             </div>
         </section>
         <section>
-            <h2>YOUR WORDS</h2>
+            <h2>INPUT_STREAM</h2>
             <div class="control-box">
                 <div id="txtInpContainer">
                     <div id="baseTextDisplay"></div>
-                    <div id="newTextInput" contenteditable="true" oninput="triggerRegen(); updateCharCount();" data-placeholder="Write something meaningful..." style="white-space: pre-wrap; word-wrap: break-word;">Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</div>
+                    <div id="newTextInput" contenteditable="true" oninput="triggerRegen(); updateCharCount(); updateHUD();" data-placeholder="Plant your seeds here..." style="white-space: pre-wrap; word-wrap: break-word;">Look, this is where you plant your words. Words that transform, creating life from code. These flowers take the sentiment of your verses, their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text mutates, growing into a unique form that echoes the feeling of what you just wrote.</div>
                 </div>
             </div>
             <div id="charCount" style="text-align: left; font-family: var(--font-mono); font-size: 10px; color: var(--spora-dark); margin-top: 4px; opacity: 0.7;"></div>
         </section>
 
         <section>
+            <h2>SYSTEM_DIAGNOSTICS</h2>
+            <div class="hud-container">
+                <div class="hud-header"><span>MORPHOLOGY_ANALYSIS</span><span id="hud-status">ACTIVE</span></div>
+                <div class="hud-row"><span class="hud-label">DOMINANT_MOOD</span><span id="v-mood" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">SENTIMENT_FORCE</span><span id="v-force" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">ENTROPY_INDEX</span><span id="v-entropy" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">VOCALIC_DENSITY</span><span id="v-vowels" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">SIBILANCE_LVL</span><span id="v-sibil" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">RHYTHM_DELTA</span><span id="v-rhythm" class="hud-value">-</span></div>
+                <div class="hud-header" style="margin-top:15px"><span>MAPPED_PARAMETERS</span></div>
+                <div class="hud-row"><span class="hud-label">GEOM_SCALE</span><span id="p-scale" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">WIND_FORCE</span><span id="p-wind" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">CHAOS_JITTER</span><span id="p-jitter" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">SCRAMBLE_DNA</span><span id="p-scramble" class="hud-value">-</span></div>
+                <div class="hud-row"><span class="hud-label">PULSE_WAVE</span><span id="p-pulse" class="hud-value">-</span></div>
+            </div>
+        </section>
+
+        <section class="laboratory-only">
             <h2>VISUAL MOODS</h2>
             <p style="font-size:10px;opacity:0.8;margin-bottom:8px">Also triggered by text sentiment</p>
             <div class="btn-group">
@@ -579,7 +628,7 @@
             </button>
         </section>
 
-        <section>
+        <section class="laboratory-only">
             <details>
                 <summary>PALETTE REFERENCE</summary>
                 <div class="folder-body" style="font-size: 10px; font-family: var(--font-mono);">
@@ -589,7 +638,7 @@
             </details>
         </section>
 
-        <section>
+        <section class="laboratory-only">
             <h2>PARAMETERS</h2>
 
             <details open>
@@ -741,12 +790,12 @@
         </section>
 
         <section style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark);">
-            <h2>SYSTEM EXPORT</h2>
+            <h2>SYSTEM_EXPORT</h2>
             <div class="btn-group" style="margin-bottom: 12px">
                 <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
                 <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
             </div>
-            <button type="button" id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED</button>
+            <button type="button" id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED (RE-POSITION)</button>
             <div class="btn-group">
                 <button onclick="downloadState()">SAVE JSON</button>
                 <button id="btnRenderPNG" onclick="saveFullArt()">RENDER PNG</button>
@@ -771,6 +820,7 @@
     </div>
 
     <script>
+        const INSTALLATION_MODE = true;
         let flowers = [];
         let targetFlowerSet = null;
         let lastUsedSet = "daisy";
@@ -779,7 +829,35 @@
         let lockedBaseText = "";
         let appendHandlers = null;
         let isBlossomingMode = false;
-        
+        let currentLabState = null;
+        let currentMorph = null;
+
+        function updateHUD() {
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v != null && v !== "" ? String(v) : "-"; };
+            if (currentMorph) {
+                set("v-mood", currentMorph.dominantMood);
+                set("v-force", currentMorph.sentimentStrength);
+                set("v-entropy", currentMorph.entropy != null ? currentMorph.entropy.toFixed(3) : "-");
+                set("v-vowels", currentMorph.vowelDensity != null ? currentMorph.vowelDensity.toFixed(3) : "-");
+                set("v-sibil", currentMorph.sibilanceIndex != null ? currentMorph.sibilanceIndex.toFixed(3) : "-");
+                set("v-rhythm", currentMorph.avgLengthDelta != null ? currentMorph.avgLengthDelta.toFixed(2) : "-");
+            } else {
+                set("v-mood", "-"); set("v-force", "-"); set("v-entropy", "-"); set("v-vowels", "-"); set("v-sibil", "-"); set("v-rhythm", "-");
+            }
+            if (currentLabState) {
+                const g = currentLabState.geometry || {};
+                const w = currentLabState.wind || {};
+                const ch = currentLabState.chaos || {};
+                set("p-scale", g.scale != null ? g.scale.toFixed(2) : "-");
+                set("p-wind", w.strength != null ? w.strength.toFixed(2) : "-");
+                set("p-jitter", ch.jitter != null ? ch.jitter.toFixed(2) : "-");
+                set("p-scramble", ch.scrambleForce != null ? ch.scrambleForce.toFixed(2) : "-");
+                const sp = ch.pulse && ch.pulse.active && ch.pulse.strength != null ? ch.pulse.strength.toFixed(2) : "0";
+                set("p-pulse", sp);
+            } else {
+                set("p-scale", "-"); set("p-wind", "-"); set("p-jitter", "-"); set("p-scramble", "-"); set("p-pulse", "-");
+            }
+        }
 
         function getQueryParam(key) {
             const params = new URLSearchParams(window.location.search);
@@ -933,6 +1011,8 @@ function extractMorphology(text) {
             const morph = extractMorphology(text);
 
             if (!morph) {
+                currentMorph = null;
+                if (INSTALLATION_MODE) updateHUD();
                 generateGarden();
                 return;
             }
@@ -1040,6 +1120,8 @@ function extractMorphology(text) {
                 };
             }
 
+            currentMorph = morph;
+            currentLabState = dynamicProfile;
             applyVisualState(dynamicProfile);
         }
 
@@ -1576,6 +1658,8 @@ function extractMorphology(text) {
                 }
 
                 if (labState) {
+                    const text = flora.text || "";
+                    currentMorph = text.trim() ? extractMorphology(text) : null;
                     applyVisualState(labState);
                 } else {
                     document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
@@ -1690,6 +1774,7 @@ function extractMorphology(text) {
         }
 
         function applyVisualState(s) {
+            currentLabState = s;
             const ui = id => document.getElementById(id);
             if (s.title) ui("inpTitle").value = s.title; 
             if (s.text) {
@@ -1713,7 +1798,7 @@ function extractMorphology(text) {
             ui("rngScale").value = s.geometry.scale; ui("rngSize").value = s.geometry.fontSize; ui("selFont").value = s.geometry.font;
             if (s.background) { ui("selBgMode").value = s.background.mode; ui("rngBgAngle").value = s.background.angle; }
             updateBackground(); updateUI("lblScale", "SCALE", s.geometry.scale, "x"); updateUI("lblSize", "SIZE", s.geometry.fontSize, "px"); generateGarden();
-            
+            if (INSTALLATION_MODE) updateHUD();
             if (isBlossomingMode) {
                 setBlossomingMode(true);
             }
@@ -1721,6 +1806,7 @@ function extractMorphology(text) {
 
         function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
         window.addEventListener("DOMContentLoaded", () => {
+            if (INSTALLATION_MODE) document.getElementById("ui").classList.add("installation-mode");
             updateCharCount();
             loadFloraPreview();
             initPaletteRef();
