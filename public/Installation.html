@@ -839,6 +839,11 @@
         let isBlossomingMode = false;
         let currentLabState = null;
         let currentMorph = null;
+        let lastBlossomingContentSignature = "";
+
+        function getContentSignature(txt) {
+            return (txt || "").trim().toLowerCase().replace(/\s+/g, " ");
+        }
 
         function updateHUD() {
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v != null && v !== "" ? String(v) : "-"; };
@@ -965,6 +970,7 @@ function extractMorphology(text) {
     return {
         dominantMood: dominantMood,
         sentimentStrength: maxScore,
+        categoryScores: categoryScores,
         vowelDensity: vowels / totalChars,
         consonantDensity: consonants / totalChars,
         uppercaseDensity: uppercase / totalChars,
@@ -985,6 +991,76 @@ function extractMorphology(text) {
             ethereal: "orchid", melancholy: "rose", aggression: "carnation", passion: "rose", anxiety: "orchid", serenity: "daisy",
             rage: "carnation", horror: "orchid", ecstasy: "daisy", despair: "rose", tenderness: "rose", zen: "daisy"
         };
+
+        /* Blossoming mode: when base + contribution clash, produce a blended mood */
+        const SENTIMENT_BLEND_MAP = {
+            "joy|despair": "melancholy", "despair|joy": "melancholy",
+            "joy|rage": "passion", "rage|joy": "passion",
+            "joy|melancholy": "tenderness", "melancholy|joy": "tenderness",
+            "despair|serenity": "melancholy", "serenity|despair": "melancholy",
+            "despair|passion": "melancholy", "passion|despair": "melancholy",
+            "void|ecstasy": "midnight", "ecstasy|void": "midnight",
+            "rage|tenderness": "passion", "tenderness|rage": "passion",
+            "serenity|anxiety": "zen", "anxiety|serenity": "zen",
+            "horror|tenderness": "melancholy", "tenderness|horror": "melancholy",
+            "ecstasy|despair": "melancholy", "despair|ecstasy": "melancholy",
+            "void|joy": "midnight", "joy|void": "midnight",
+            "aggression|serenity": "passion", "serenity|aggression": "passion",
+            "rage|despair": "horror", "despair|rage": "horror",
+            "joy|horror": "passion", "horror|joy": "passion"
+        };
+
+        function getBlendedMoodForBlossoming(baseText, newText) {
+            const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
+            const newMorph = newText.trim() ? extractMorphology(newText) : null;
+            const baseMood = baseMorph && baseMorph.dominantMood !== "neutral" && baseMorph.sentimentStrength > 0 ? baseMorph.dominantMood : null;
+            const newMood = newMorph && newMorph.dominantMood !== "neutral" && newMorph.sentimentStrength > 0 ? newMorph.dominantMood : null;
+            if (!baseMood && !newMood) return null;
+            if (!baseMood) return newMood;
+            if (!newMood) return baseMood;
+            if (baseMood === newMood) return baseMood;
+            const key1 = baseMood + "|" + newMood;
+            const key2 = newMood + "|" + baseMood;
+            return SENTIMENT_BLEND_MAP[key1] || SENTIMENT_BLEND_MAP[key2] || null;
+        }
+
+        function interpolateHex(hex1, hex2, t) {
+            const parse = (h) => {
+                const n = h.replace("#","");
+                return [parseInt(n.slice(0,2),16), parseInt(n.slice(2,4),16), parseInt(n.slice(4,6),16)];
+            };
+            const [r1,g1,b1] = parse(hex1), [r2,g2,b2] = parse(hex2);
+            const r = Math.round(r1 + (r2-r1)*t), g = Math.round(g1 + (g2-g1)*t), b = Math.round(b1 + (b2-b1)*t);
+            return "#" + [r,g,b].map(x => Math.max(0,Math.min(255,x)).toString(16).padStart(2,"0")).join("");
+        }
+
+        function blendMoodProfiles(profileA, profileB, weightB) {
+            const w = Math.max(0, Math.min(1, weightB));
+            const lerp = (a, b) => (a !== undefined && b !== undefined) ? a + (b - a) * w : (b !== undefined ? b : a);
+            const flowerSet = w > 0.5 ? profileB.flowerSet : profileA.flowerSet;
+            const colors = {};
+            for (const k of ["maskA","maskB","stem","bgA","bgB"]) {
+                if (profileA.colors && profileA.colors[k] && profileB.colors && profileB.colors[k])
+                    colors[k] = interpolateHex(profileA.colors[k], profileB.colors[k], w);
+                else colors[k] = (profileB.colors && profileB.colors[k]) || (profileA.colors && profileA.colors[k]) || "#00FF00";
+            }
+            colors.auto = true;
+            return {
+                flowerSet,
+                wind: { active: w > 0.5 ? profileB.wind.active : profileA.wind.active, strength: lerp(profileA.wind.strength, profileB.wind.strength) },
+                chaos: {
+                    scramble: w > 0.5 ? profileB.chaos.scramble : profileA.chaos.scramble,
+                    scrambleForce: lerp(profileA.chaos.scrambleForce, profileB.chaos.scrambleForce),
+                    jitter: lerp(profileA.chaos.jitter, profileB.chaos.jitter),
+                    pulse: { active: w > 0.5 ? profileB.chaos.pulse.active : profileA.chaos.pulse.active, strength: lerp(profileA.chaos.pulse.strength, profileB.chaos.pulse.strength) },
+                    wave: { active: w > 0.5 ? profileB.chaos.wave.active : profileA.chaos.wave.active, strength: lerp(profileA.chaos.wave.strength, profileB.chaos.wave.strength) }
+                },
+                colors,
+                geometry: { scale: lerp(profileA.geometry.scale, profileB.geometry.scale), fontSize: lerp(profileA.geometry.fontSize, profileB.geometry.fontSize), font: w > 0.5 ? profileB.geometry.font : profileA.geometry.font },
+                style: { mask: w > 0.5 ? profileB.style.mask : profileA.style.mask, grad: w > 0.5 ? profileB.style.grad : profileA.style.grad, outline: w > 0.5 ? profileB.style.outline : profileA.style.outline, outlineW: lerp(profileA.style.outlineW, profileB.style.outlineW) },
+                background: { mode: w > 0.5 ? profileB.background.mode : profileA.background.mode, angle: lerp(profileA.background.angle, profileB.background.angle) }
+            };
+        }
 
         const LITERAL_THRESHOLD = 5;
         const COLOR_FAMILIES = {
@@ -1016,6 +1092,13 @@ function extractMorphology(text) {
 
         function generateOrganicProfile() {
             const text = getFullText().trim();
+            const contentSig = getContentSignature(text);
+
+            /* Blossoming: if content unchanged (e.g. only added space), keep current blended state */
+            if (isBlossomingMode && lockedBaseText && currentLabState && contentSig === lastBlossomingContentSignature) {
+                return;
+            }
+
             const morph = extractMorphology(text);
 
             if (!morph) {
@@ -1023,6 +1106,53 @@ function extractMorphology(text) {
                 if (INSTALLATION_MODE) updateHUD();
                 generateGarden();
                 return;
+            }
+
+            /* Blossoming mode: blend base + contribution sentiments (e.g. joy + despair → melancholy) */
+            if (isBlossomingMode && lockedBaseText) {
+                const baseTextDisplay = document.getElementById("baseTextDisplay");
+                const newTextInput = document.getElementById("newTextInput");
+                const baseText = baseTextDisplay ? baseTextDisplay.textContent : lockedBaseText;
+                const newText = newTextInput ? newTextInput.textContent : "";
+                const blendedMood = getBlendedMoodForBlossoming(baseText, newText);
+                const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
+                const newMorph = newText.trim() ? extractMorphology(newText) : null;
+                const baseMood = baseMorph && baseMorph.dominantMood !== "neutral" ? baseMorph.dominantMood : null;
+                const newMood = newMorph && newMorph.dominantMood !== "neutral" ? newMorph.dominantMood : null;
+
+                if (blendedMood && moodProfiles[blendedMood]) {
+                    lastBlossomingContentSignature = contentSig;
+                    currentMorph = { ...morph, dominantMood: blendedMood };
+                    const literalProfile = moodProfiles[blendedMood];
+                    const designSeed = getSeed(text, 0);
+                    const family = COLOR_FAMILIES[blendedMood] || COLOR_FAMILIES.neutral;
+                    const cMaskA = pickFromPool(family.mask, designSeed);
+                    const cMaskB = pickFromPool(family.mask, getSeed(text, 1));
+                    const cBgA = pickFromPool(family.bg, getSeed(text, 2));
+                    const cBgB = pickFromPool(family.bgB, getSeed(text, 3));
+                    const dynamicProfile = {
+                        ...literalProfile,
+                        dominantMood: blendedMood,
+                        colors: { maskA: cMaskA, maskB: cMaskB, stem: "#00FF00", bgA: cBgA, bgB: cBgB, auto: true }
+                    };
+                    currentLabState = dynamicProfile;
+                    lastUsedSet = dynamicProfile.flowerSet;
+                    applyVisualState(dynamicProfile);
+                    if (INSTALLATION_MODE) updateHUD();
+                    return;
+                }
+                if (baseMood && newMood && baseMood !== newMood && moodProfiles[baseMood] && moodProfiles[newMood]) {
+                    lastBlossomingContentSignature = contentSig;
+                    const weightB = newText.length / Math.max(1, baseText.length + newText.length);
+                    const blended = blendMoodProfiles(moodProfiles[baseMood], moodProfiles[newMood], weightB);
+                    blended.dominantMood = baseMood + "+" + newMood;
+                    currentMorph = { ...morph, dominantMood: blended.dominantMood };
+                    currentLabState = blended;
+                    lastUsedSet = blended.flowerSet;
+                    applyVisualState(blended);
+                    if (INSTALLATION_MODE) updateHUD();
+                    return;
+                }
             }
 
             if (morph.dominantMood === "neutral") {
@@ -1208,7 +1338,7 @@ function extractMorphology(text) {
             });
         }
 
-        function enableAppendOnlyText(baseText) {
+        function enableAppendOnlyText(baseText, newTextToRestore) {
             const baseTextDisplay = document.getElementById("baseTextDisplay");
             const newTextInput = document.getElementById("newTextInput");
             
@@ -1220,8 +1350,8 @@ function extractMorphology(text) {
             baseTextDisplay.setAttribute("contenteditable", "false");
             newTextInput.setAttribute("contenteditable", "true");
             newTextInput.setAttribute('data-placeholder', 'Continue here to make your flora grow...');
-            /* Always clear so user adds their new text; mood will re-analyze from base + their text */
-            newTextInput.textContent = "";
+            /* Restore previous contribution if provided, otherwise clear for new input */
+            newTextInput.textContent = (newTextToRestore != null && newTextToRestore !== undefined) ? String(newTextToRestore) : "";
             
             setTimeout(() => {
                 newTextInput.focus();
@@ -1478,6 +1608,23 @@ function extractMorphology(text) {
         }
 
         function collectState() {
+            /* In blossoming mode use currentLabState (blended profile) so we save the actual visual state */
+            if (isBlossomingMode && currentLabState) {
+                const fullText = getFullText();
+                return {
+                    title: document.getElementById("inpTitle").value,
+                    text: fullText,
+                    baseText: lockedBaseText || (document.getElementById("baseTextDisplay")?.textContent ?? ""),
+                    dominantMood: (currentMorph && currentMorph.dominantMood) || currentLabState.dominantMood || "neutral",
+                    flowerSet: currentLabState.flowerSet || lastUsedSet,
+                    wind: currentLabState.wind || { active: false, strength: 0.5 },
+                    chaos: currentLabState.chaos || { scramble: false, scrambleForce: 0.1, jitter: 0.5, pulse: { active: false, strength: 1 }, wave: { active: false, strength: 1 } },
+                    colors: currentLabState.colors || {},
+                    geometry: currentLabState.geometry || { scale: 1.5, fontSize: 16, font: "'Inter', sans-serif" },
+                    style: currentLabState.style || { mask: true, grad: true, outline: true, outlineW: 1 },
+                    background: currentLabState.background || { mode: "gradient", angle: 180 },
+                };
+            }
             const pulseVal = parseFloat(document.getElementById("rngPulse").value);
             const waveVal = parseFloat(document.getElementById("rngWave").value);
             return {
@@ -1663,6 +1810,9 @@ function extractMorphology(text) {
                     : null;
 
                 currentFlora = flora;
+                lastBlossomingContentSignature = "";
+                let blossomBase = flora.text || "";
+                let blossomNew = undefined;
 
                 if (flora.status === "sealed") {
                     setLockedState(true);
@@ -1672,8 +1822,16 @@ function extractMorphology(text) {
                 }
 
                 if (labState) {
-                    const text = flora.text || "";
-                    currentMorph = text.trim() ? extractMorphology(text) : null;
+                    const fullText = labState.text || flora.text || "";
+                    const baseTextForDisplay = (labState.baseText != null && labState.baseText !== "") ? labState.baseText : fullText;
+                    const newTextToRestore = (labState.baseText != null && labState.text != null && labState.text.startsWith(labState.baseText))
+                        ? labState.text.slice(labState.baseText.length) : "";
+                    blossomBase = baseTextForDisplay;
+                    blossomNew = newTextToRestore;
+                    const baseMorph = baseTextForDisplay.trim() ? extractMorphology(baseTextForDisplay) : null;
+                    const savedMood = labState.dominantMood;
+                    currentMorph = baseMorph ? { ...baseMorph, dominantMood: savedMood || baseMorph.dominantMood } : (savedMood ? { dominantMood: savedMood, sentimentStrength: 0, vowelDensity: 0, consonantDensity: 0, uppercaseDensity: 0, punctDensity: 0, sibilanceIndex: 0, entropy: 0, asciiSignature: 0, asciiAngle: 0, avgLengthDelta: 0, rhymeDensity: 0, contentWordRatio: 0, avgWordLength: 0, wordCount: 0 } : null);
+                    lastBlossomingContentSignature = getContentSignature(fullText);
                     applyVisualState(labState);
                 } else {
                     document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
@@ -1689,7 +1847,7 @@ function extractMorphology(text) {
                 } else if (flora.status === "blossoming") {
                     setLockedState(false);
                     setBlossomingMode(true);
-                    enableAppendOnlyText(flora.text || "");
+                    enableAppendOnlyText(blossomBase, blossomNew);
                     statusEl.innerText = "BLOSSOMING MODE";
                 } else {
                     setLockedState(false);
@@ -1789,6 +1947,11 @@ function extractMorphology(text) {
 
         function applyVisualState(s) {
             currentLabState = s;
+            if (s.dominantMood && currentMorph) {
+                currentMorph = { ...currentMorph, dominantMood: s.dominantMood };
+            } else if (s.dominantMood) {
+                currentMorph = { dominantMood: s.dominantMood, sentimentStrength: 0, vowelDensity: 0, consonantDensity: 0, uppercaseDensity: 0, punctDensity: 0, sibilanceIndex: 0, entropy: 0, asciiSignature: 0, asciiAngle: 0, avgLengthDelta: 0, rhymeDensity: 0, contentWordRatio: 0, avgWordLength: 0, wordCount: 0 };
+            }
             const ui = id => document.getElementById(id);
             if (s.title) ui("inpTitle").value = s.title; 
             /* Do not overwrite newTextInput with s.text when in blossoming mode - preserve user's new contribution */
