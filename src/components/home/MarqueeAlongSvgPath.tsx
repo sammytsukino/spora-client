@@ -424,13 +424,14 @@ const imgs = [
 export function MarqueeBackground({
   className,
   children,
+  images,
 }: {
   className?: string
   children?: React.ReactNode
+  images?: string[]
 }) {
+  const displayImages = images && images.length > 0 ? images : imgs
   return (
-    
-    
     <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase
         path={path}
@@ -447,10 +448,10 @@ export function MarqueeBackground({
         grabCursor
       >
         {children ||
-          imgs.map((src, i) => (
+          displayImages.map((src, i) => (
             <div
               key={i}
-              className="w-14 h-20 hover:scale-150 duration-300 ease-in-out"
+              className="w-24 h-32 sm:w-28 sm:h-40 md:w-36 md:h-48 hover:scale-110 duration-300 ease-in-out"
             >
               <img
                 src={src}
@@ -467,13 +468,15 @@ export function MarqueeBackground({
 
 export default function MarqueeAlongSvgPath({
   showText = false,
+  images,
 }: {
   showText?: boolean
+  images?: string[]
 }) {
   return (
     <div className="w-full relative overflow-hidden min-h-[36vh] sm:min-h-[50vh] md:min-h-[80vh]">
       <div className="absolute inset-0 w-full h-full md:hidden bg-linear-to-b from-(--spora-accent-secondary) to-(--spora-secondary)" />
-      <MarqueeBackground className="absolute inset-0 w-full h-full overflow-hidden" />
+      <MarqueeBackground className="absolute inset-0 w-full h-full overflow-hidden" images={images} />
       {showText && <MarqueeTextContent />}
     </div>
   )

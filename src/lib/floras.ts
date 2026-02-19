@@ -32,6 +32,8 @@ export async function listFloras(params?: {
   status?: string;
   authorId?: string;
   generation?: number;
+  limit?: number;
+  skip?: number;
 }) {
   const { data } = await api.get<ApiFlora[]>("/floras", { params });
   return data;

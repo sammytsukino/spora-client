@@ -180,7 +180,7 @@ export const ImageTrailItem = ({
   )
 }
 
-const images = [
+const defaultImages = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-21_dzwlna.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-20_fww5yp.png",
@@ -200,7 +200,12 @@ const images = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532645/img-6_qmsbif.png",
 ]
 
-export default function ImageTrail() {
+interface ImageTrailComponentProps {
+  images?: string[]
+}
+
+export default function ImageTrail({ images }: ImageTrailComponentProps = {}) {
+  const displayImages = images && images.length > 0 ? images : defaultImages
   return (
     <div className="w-full h-full relative z-0 text-foreground dark:text-muted overflow-hidden" style={{ backgroundColor: "transparent" }}>
       <ImageTrailBase
@@ -213,7 +218,7 @@ export default function ImageTrail() {
         repeatChildren={1}
         baseZIndex={-10}
       >
-        {images.map((url, index) => (
+        {displayImages.map((url, index) => (
           <ImageTrailItem key={index}>
             <div className="w-20 sm:w-28 h-full relative overflow-hidden">
               <img src={url} alt="image" className="object-cover" />

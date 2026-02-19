@@ -21,6 +21,7 @@ const wrap = (min: number, max: number, value: number): number => {
 
 interface SimpleMarqueeProps {
   items?: React.ReactNode[]
+  images?: string[]
   className?: string
   direction?: "left" | "right"
   baseVelocity?: number
@@ -113,6 +114,7 @@ const MarqueeRow = ({
 
 export default function SimpleMarquee({
   items = [],
+  images,
   className = "",
   direction = "left",
   baseVelocity = 8,
@@ -167,13 +169,19 @@ export default function SimpleMarquee({
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
   ]
 
+  const imagesToUse = images && images.length > 0 ? images : defaultImages
+  const minItemsForFill = 45
+  const expandedImages =
+    imagesToUse.length >= minItemsForFill
+      ? imagesToUse
+      : Array.from({ length: minItemsForFill }, (_, i) => imagesToUse[i % imagesToUse.length])
   const displayItems = items.length > 0 
     ? items 
-    : defaultImages.map((src, i) => (
+    : expandedImages.map((src, i) => (
         <MarqueeItem key={i}>
           <img
             src={src}
-            alt={`Image ${i + 1}`}
+            alt={`Flora ${i + 1}`}
             className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover"
           />
         </MarqueeItem>

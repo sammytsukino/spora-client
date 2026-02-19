@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
+import { useFloraThumbnails } from '@/hooks/useFloraThumbnails'
 import MarqueeAlongSvgPath from '../components/home/MarqueeAlongSvgPath'
 import VideoTextSection from '../components/home/VideoTextSection'
 import SimpleMarquee from '../components/home/SimpleMarquee'
@@ -17,6 +18,7 @@ import QuoteSection from '@/components/home/QuoteSection'
 
 export default function Home() {
   const navigate = useNavigate()
+  const { images: floraThumbnails } = useFloraThumbnails(50)
 
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
@@ -55,7 +57,7 @@ export default function Home() {
         containerized={false}
         className="items-stretch"
       >
-        <MarqueeAlongSvgPath showText={true} />
+        <MarqueeAlongSvgPath showText={true} images={floraThumbnails} />
       </Section>
 
       <Section
@@ -83,7 +85,7 @@ export default function Home() {
           </div>
 
           <div className="flex-1 overflow-hidden">
-            <SimpleMarquee />
+            <SimpleMarquee images={floraThumbnails} />
           </div>
         </div>
       </Section>
