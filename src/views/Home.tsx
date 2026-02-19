@@ -89,7 +89,7 @@ export default function Home() {
       </Section>
 
       <Section
-        variant="large"
+        variant="medium"
         containerized={false}
         className="items-stretch justify-start"
       >
