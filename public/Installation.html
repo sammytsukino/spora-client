@@ -1017,6 +1017,12 @@ function extractMorphology(text) {
                 return;
             }
 
+            if (morph.dominantMood === "neutral") {
+                currentMorph = morph;
+                randomizeState();
+                return;
+            }
+
             const isLiteral = morph.sentimentStrength >= LITERAL_THRESHOLD && morph.dominantMood !== "neutral";
             const literalProfile = moodProfiles[morph.dominantMood];
 
