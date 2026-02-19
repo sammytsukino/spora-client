@@ -154,6 +154,8 @@
             padding: 0;
             margin: 0;
             line-height: 1.5;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         #baseTextDisplay:empty {
@@ -445,6 +447,12 @@
         #ui.installation-mode .laboratory-only {
             display: none !important;
         }
+        /* When blossoming: only title (to publish). Mood and params come from sentiment, not manual controls */
+        #ui.installation-mode.blossoming-active #titleSection {
+            display: flex !important;
+            flex-direction: column;
+            gap: 8px;
+        }
         .hud-container {
             font-family: var(--font-mono);
             background: rgba(0, 0, 0, 0.05);
@@ -560,7 +568,7 @@
                     alt="Logo" style="width: 200px; height: 138px; display: block; object-fit: cover;" />
             </a>
         </div>
-        <section class="laboratory-only">
+        <section class="laboratory-only" id="titleSection">
             <h2>ARTWORK TITLE</h2>
             <div class="control-box">
                 <input type="text" id="inpTitle" placeholder="Name your flora..." />
@@ -596,7 +604,7 @@
             </div>
         </section>
 
-        <section class="laboratory-only">
+        <section class="laboratory-only" id="moodSection">
             <h2>VISUAL MOODS</h2>
             <p style="font-size:10px;opacity:0.8;margin-bottom:8px">Also triggered by text sentiment</p>
             <div class="btn-group">
@@ -638,7 +646,7 @@
             </details>
         </section>
 
-        <section class="laboratory-only">
+        <section class="laboratory-only" id="parametersSection">
             <h2>PARAMETERS</h2>
 
             <details open>
@@ -1176,7 +1184,13 @@ function extractMorphology(text) {
             if (!ui) return;
             
             isBlossomingMode = enabled;
-            const keepEnabled = new Set(["newTextInput", "baseTextDisplay", "txtInpContainer", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
+            if (enabled) {
+                ui.classList.add("blossoming-active");
+            } else {
+                ui.classList.remove("blossoming-active");
+            }
+            /* Base text: locked. New text: editable. Title: for publish. Mood/params: driven by sentiment only, no manual override */
+            const keepEnabled = new Set(["inpTitle", "newTextInput", "btnPublishBlossoming", "btnPublishSealed", "btnRegenerate"]);
 
             ui.querySelectorAll("input, textarea, select, button").forEach((el) => {
                 const id = el.id || "";
@@ -1203,11 +1217,11 @@ function extractMorphology(text) {
             lockedBaseText = baseText || "";
             
             baseTextDisplay.textContent = lockedBaseText;
+            baseTextDisplay.setAttribute("contenteditable", "false");
+            newTextInput.setAttribute("contenteditable", "true");
             newTextInput.setAttribute('data-placeholder', 'Continue here to make your flora grow...');
-            
-            if (newTextInput.textContent.includes("Look, this is where you plant your words")) {
-                newTextInput.textContent = "";
-            }
+            /* Always clear so user adds their new text; mood will re-analyze from base + their text */
+            newTextInput.textContent = "";
             
             setTimeout(() => {
                 newTextInput.focus();
@@ -1408,13 +1422,7 @@ function extractMorphology(text) {
             }
             flowers.sort((a, b) => a.ty - b.ty);
             document.getElementById("statusText").innerText = `READY | BLOOMS: ${flowers.length}`;
-            
-            if (isBlossomingMode && lockedBaseText) {
-                setTimeout(() => {
-                    setBlossomingMode(true);
-                    enableAppendOnlyText(lockedBaseText);
-                }, 10);
-            }
+            /* Do not call enableAppendOnlyText here - it would clear user's new text on every regen */
         }
 
         function updateVisuals() {
@@ -1783,7 +1791,8 @@ function extractMorphology(text) {
             currentLabState = s;
             const ui = id => document.getElementById(id);
             if (s.title) ui("inpTitle").value = s.title; 
-            if (s.text) {
+            /* Do not overwrite newTextInput with s.text when in blossoming mode - preserve user's new contribution */
+            if (s.text && !isBlossomingMode) {
                 const newTextInput = ui("newTextInput");
                 if (newTextInput) newTextInput.textContent = s.text;
             }
