@@ -969,8 +969,6 @@ function extractMorphology(text) {
             }
 
             const cStem = "#00FF00";
-
-            // 2. COLORES: familia tonal por sentimiento, color concreto por semilla (coherencia + variedad)
             const family = COLOR_FAMILIES[morph.dominantMood] || COLOR_FAMILIES.neutral;
             const cMaskA = pickFromPool(family.mask, seedColor);
             const cMaskB = pickFromPool(family.mask, seedRand);
