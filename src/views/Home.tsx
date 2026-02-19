@@ -18,7 +18,7 @@ import QuoteSection from '@/components/home/QuoteSection'
 
 export default function Home() {
   const navigate = useNavigate()
-  const { images: floraThumbnails } = useFloraThumbnails(50)
+  const { items: floraThumbnails } = useFloraThumbnails(50)
 
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
@@ -57,7 +57,7 @@ export default function Home() {
         containerized={false}
         className="items-stretch"
       >
-        <MarqueeAlongSvgPath showText={true} images={floraThumbnails} />
+        <MarqueeAlongSvgPath showText={true} items={floraThumbnails} />
       </Section>
 
       <Section
@@ -85,7 +85,7 @@ export default function Home() {
           </div>
 
           <div className="flex-1 overflow-hidden">
-            <SimpleMarquee images={floraThumbnails} />
+            <SimpleMarquee items={floraThumbnails} />
           </div>
         </div>
       </Section>

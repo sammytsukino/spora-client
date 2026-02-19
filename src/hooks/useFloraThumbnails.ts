@@ -4,8 +4,15 @@ import { floraImages } from "@/data/flora-data";
 
 const MIN_THUMBNAILS = 6;
 
+export interface FloraThumbnail {
+  url: string;
+  id?: string;
+}
+
 export function useFloraThumbnails(limit = 40) {
-  const [images, setImages] = useState<string[]>(floraImages);
+  const [items, setItems] = useState<FloraThumbnail[]>(() =>
+    floraImages.map((url) => ({ url }))
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,17 +22,18 @@ export function useFloraThumbnails(limit = 40) {
     listFloras({ limit })
       .then((floras) => {
         if (cancelled) return;
-        const urls = floras
-          .map((f) => f.thumbnailUrl)
-          .filter((url): url is string => !!url);
+        const withThumb = floras
+          .filter((f) => f.thumbnailUrl)
+          .map((f) => ({ url: f.thumbnailUrl!, id: f._id }));
+        const fallback = floraImages.map((url) => ({ url }));
         const combined =
-          urls.length >= MIN_THUMBNAILS
-            ? urls
-            : [...urls, ...floraImages].slice(0, Math.max(urls.length, floraImages.length));
-        setImages(combined.length > 0 ? combined : floraImages);
+          withThumb.length >= MIN_THUMBNAILS
+            ? withThumb
+            : [...withThumb, ...fallback].slice(0, Math.max(withThumb.length, fallback.length));
+        setItems(combined.length > 0 ? combined : fallback);
       })
       .catch(() => {
-        if (!cancelled) setImages(floraImages);
+        if (!cancelled) setItems(floraImages.map((url) => ({ url })));
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);
@@ -36,5 +44,5 @@ export function useFloraThumbnails(limit = 40) {
     };
   }, [limit]);
 
-  return { images, isLoading };
+  return { items, isLoading };
 }

@@ -1,4 +1,5 @@
 import React, { useRef } from "react"
+import { Link } from "react-router-dom"
 import {
   motion,
   useAnimationFrame,
@@ -8,6 +9,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 
 type SpringOptions = {
   damping?: number
@@ -20,8 +22,7 @@ const wrap = (min: number, max: number, value: number): number => {
 }
 
 interface SimpleMarqueeProps {
-  items?: React.ReactNode[]
-  images?: string[]
+  items?: FloraThumbnail[]
   className?: string
   direction?: "left" | "right"
   baseVelocity?: number
@@ -113,8 +114,7 @@ const MarqueeRow = ({
 }
 
 export default function SimpleMarquee({
-  items = [],
-  images,
+  items: floraItems = [],
   className = "",
   direction = "left",
   baseVelocity = 8,
@@ -169,23 +169,42 @@ export default function SimpleMarquee({
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
   ]
 
-  const imagesToUse = images && images.length > 0 ? images : defaultImages
+  const itemsToUse = floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url }))
   const minItemsForFill = 45
-  const expandedImages =
-    imagesToUse.length >= minItemsForFill
-      ? imagesToUse
-      : Array.from({ length: minItemsForFill }, (_, i) => imagesToUse[i % imagesToUse.length])
-  const displayItems = items.length > 0 
-    ? items 
-    : expandedImages.map((src, i) => (
-        <MarqueeItem key={i}>
+  const expandedItems =
+    itemsToUse.length >= minItemsForFill
+      ? itemsToUse
+      : Array.from({ length: minItemsForFill }, (_, i) => itemsToUse[i % itemsToUse.length])
+  const displayItems = expandedItems.map((item, i) => (
+    <MarqueeItem key={i}>
+      {item.id ? (
+        <Link
+          to={`/flora/${item.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative block"
+        >
           <img
-            src={src}
+            src={item.url}
             alt={`Flora ${i + 1}`}
             className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover"
           />
-        </MarqueeItem>
-      ))
+          <span
+            className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 transition-opacity duration-200 group-hover:opacity-100 pointer-events-none font-supply-mono text-[10px] sm:text-xs text-white uppercase tracking-wider"
+            aria-hidden
+          >
+            FLORA ID: {item.id}
+          </span>
+        </Link>
+      ) : (
+        <img
+          src={item.url}
+          alt={`Flora ${i + 1}`}
+          className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover"
+        />
+      )}
+    </MarqueeItem>
+  ))
 
   const firstThird = displayItems.slice(0, Math.floor(displayItems.length / 3))
   const secondThird = displayItems.slice(

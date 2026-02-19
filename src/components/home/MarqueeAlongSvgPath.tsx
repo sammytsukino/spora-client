@@ -13,6 +13,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 import MarqueeTextContent from "./MarqueeTextContent"
 
 type SpringOptions = {
@@ -424,13 +425,14 @@ const imgs = [
 export function MarqueeBackground({
   className,
   children,
-  images,
+  items,
 }: {
   className?: string
   children?: React.ReactNode
-  images?: string[]
+  items?: FloraThumbnail[]
 }) {
-  const displayImages = images && images.length > 0 ? images : imgs
+  const displayItems: FloraThumbnail[] =
+    items && items.length > 0 ? items : imgs.map((url) => ({ url }))
   return (
     <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase
@@ -448,13 +450,13 @@ export function MarqueeBackground({
         grabCursor
       >
         {children ||
-          displayImages.map((src, i) => (
+          displayItems.map((item, i) => (
             <div
               key={i}
               className="w-24 h-32 sm:w-28 sm:h-40 md:w-36 md:h-48 hover:scale-110 duration-300 ease-in-out"
             >
               <img
-                src={src}
+                src={item.url}
                 alt={`Gallery ${i + 1}`}
                 className="w-full h-full object-cover"
                 draggable={false}
@@ -468,15 +470,15 @@ export function MarqueeBackground({
 
 export default function MarqueeAlongSvgPath({
   showText = false,
-  images,
+  items,
 }: {
   showText?: boolean
-  images?: string[]
+  items?: FloraThumbnail[]
 }) {
   return (
     <div className="w-full relative overflow-hidden min-h-[36vh] sm:min-h-[50vh] md:min-h-[80vh]">
       <div className="absolute inset-0 w-full h-full md:hidden bg-linear-to-b from-(--spora-accent-secondary) to-(--spora-secondary)" />
-      <MarqueeBackground className="absolute inset-0 w-full h-full overflow-hidden" images={images} />
+      <MarqueeBackground className="absolute inset-0 w-full h-full overflow-hidden" items={items} />
       {showText && <MarqueeTextContent />}
     </div>
   )
