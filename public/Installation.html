@@ -773,7 +773,8 @@
                     <div class="control-box">
                         <label>MODE</label>
                         <select id="selBgMode" onchange="updateBackground(); triggerVisuals();">
-                            <option value="gradient">Gradient</option>
+                            <option value="gradient">Linear Gradient</option>
+                            <option value="gradient-radial">Radial Gradient</option>
                             <option value="solid">Solid Color</option>
                             <option value="tile">Image Pattern</option>
                             <option value="stretch">Image Stretch</option>
@@ -1237,7 +1238,7 @@ function extractMorphology(text) {
             finalOutlineW = constrain(finalOutlineW, 1, 6);
             let hasGradFill = seedForm > 0.45;
             const bgModeFactor = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + seedRand4 * 0.5;
-            let bgMode = bgModeFactor > 0.5 ? "gradient" : "solid";
+            let bgMode = bgModeFactor > 0.66 ? "gradient" : bgModeFactor > 0.33 ? "gradient-radial" : "solid";
             const bgAngles = [0, 45, 90, 135, 180, 225, 270, 315];
             let bgAngle = bgAngles[Math.floor((morph.asciiAngle / 45 + seedRand5 * 2) % 8)];
             const pulseStrength = constrain(rhymeContrib * 0.6 + morph.contentWordRatio * 1.5 + seedPhysics * 1.8, 0, 2);
@@ -1608,8 +1609,16 @@ function extractMorphology(text) {
         }
 
         function updateBackground() {
-            const ui = id => document.getElementById(id), mode = ui("selBgMode").value, cA = ui("colBgGradA").value, cB = ui("colBgGradB").value, ang = ui("rngBgAngle").value, url = ui("inpBgUrl").value, cont = ui("canvas-container");
-            cont.style.background = mode === "solid" ? cA : mode === "gradient" ? `linear-gradient(${ang}deg, ${cA}, ${cB})` : `url('${url}')`;
+            const ui = id => document.getElementById(id), mode = ui("selBgMode").value, cA = ui("colBgGradA").value, cB = ui("colBgGradB").value, ang = parseFloat(ui("rngBgAngle").value) || 180, url = ui("inpBgUrl").value, cont = ui("canvas-container");
+            let bg = cA;
+            if (mode === "gradient") bg = `linear-gradient(${ang}deg, ${cA}, ${cB})`;
+            else if (mode === "gradient-radial") {
+                const rad = (ang - 90) * Math.PI / 180;
+                const cx = 50 + 40 * Math.cos(rad);
+                const cy = 50 + 40 * Math.sin(rad);
+                bg = `radial-gradient(circle at ${cx}% ${cy}%, ${cA}, ${cB})`;
+            } else if (mode !== "solid") bg = `url('${url}')`;
+            cont.style.background = bg;
             cont.style.backgroundRepeat = mode === "tile" ? "repeat" : "no-repeat";
             cont.style.backgroundSize = mode === "tile" ? "100px 100px" : mode === "stretch" ? "100% 100%" : "auto";
         }
