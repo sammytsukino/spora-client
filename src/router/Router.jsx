@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "../views/Home";
 import Installation from "../views/Installation";
 import ProtectedRoute from "../components/common/ProtectedRoute";
@@ -6,7 +6,7 @@ import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
 import Laboratory from "../views/Laboratory";
 import Team from "../views/Team";
-import Research from "../views/Research";
+import TermsConditions from "../views/TermsConditions";
 import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
@@ -32,7 +32,8 @@ export default function Router() {
         <Route path="/laboratory" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
         <Route path="/installation" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
         <Route path="/team" element={<Team />} />
-        <Route path="/research" element={<Research />} />
+        <Route path="/terms" element={<TermsConditions />} />
+        <Route path="/research" element={<Navigate to="/terms" replace />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

@@ -49,9 +49,9 @@ export default function FooterAlter() {
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
-                  onClick={() => navigate("/research")}
+                  onClick={() => navigate("/terms")}
                 >
-                  Research
+                  Terms & Conditions
                 </button>
                 <button
                   type="button"
