@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
@@ -46,8 +46,10 @@ export default function FloraDetail() {
   useEffect(() => {
     if (!id) return;
     let isActive = true;
-    setIsLoading(true);
-    setError(null);
+    queueMicrotask(() => {
+      setIsLoading(true);
+      setError(null);
+    });
 
     getFlora(id)
       .then((data) => {
@@ -68,7 +70,7 @@ export default function FloraDetail() {
     };
   }, [id]);
 
-  const derived = useMemo(() => {
+  const derived = (() => {
     if (flora) {
       const authorName =
         flora.authorUsername ??
@@ -133,13 +135,13 @@ export default function FloraDetail() {
         generation: state.flora.generation,
         image: state.flora.image,
         text: state.flora.excerpt,
-        lineageItems: [{ handle: state.flora.author }],
+        lineageItems: [{ handle: state.flora.author, floraId: state.flora.id }],
         status: "blossoming",
       };
     }
 
     return null;
-  }, [flora, state?.flora]);
+  })();
 
   const baseText = derived?.text ?? "";
 
@@ -167,7 +169,7 @@ export default function FloraDetail() {
   const seedHex = (derived?.seed ?? "").replace("#", "").slice(0, 6);
 
 
-  const morph = useMemo(() => extractMorphology(text), [text]);
+  const morph = extractMorphology(text);
 
 
   const labState = flora?.generative?.labState as {
