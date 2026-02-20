@@ -3,6 +3,18 @@ import { api } from "./api";
 export const TOKEN_KEY = "spora_token";
 export const USER_KEY = "spora_user";
 
+/** Easter egg: cultivators unlock lab/full via /laboratory/full/grow (acrostic in HeroSection) */
+export const LAB_FULL_SECRET = "grow";
+export const LAB_FULL_UNLOCK_KEY = "spora_lab_full_unlocked";
+
+export function isLabFullUnlocked(): boolean {
+  return localStorage.getItem(LAB_FULL_UNLOCK_KEY) === "1";
+}
+
+export function setLabFullUnlocked(): void {
+  localStorage.setItem(LAB_FULL_UNLOCK_KEY, "1");
+}
+
 export interface AuthUser {
   id: string;
   username: string;

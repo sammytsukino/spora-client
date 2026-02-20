@@ -24,7 +24,7 @@ export default function VideoTextSection() {
 
           
 
-          <div className="space-y-3 md:space-y-4 text-justify wrap-break-word">
+          <div className="space-y-3 md:space-y-4 text-left wrap-break-word">
             <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-sm leading-relaxed">
               <span className="font-bold">1.</span> The collective plant life of a particular region, habitat, or geological period. "the flora of the rainforest includes thousands of species"
             </p>
@@ -43,6 +43,15 @@ export default function VideoTextSection() {
 
             <p className="text-stone-200 font-bizud-mincho-bold text-xs md:text-sm lg:text-base leading-relaxed italic">
               "her flora evolved through three generations of cuttings"
+            </p>
+
+            <div className="w-full border-t border-stone-400/50 my-4 md:my-6" />
+
+            <p className="text-stone-200 font-bizud-mincho text-xs md:text-sm lg:text-base leading-relaxed italic">
+              Growing from each seed we plant.<br />
+              Reclaimed by those who cultivate.<br />
+              Open to all.<br />
+              Where form follows word.
             </p>
           </div>
         </div>

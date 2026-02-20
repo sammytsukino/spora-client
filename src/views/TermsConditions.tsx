@@ -2,6 +2,16 @@ import { useEffect } from "react";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
 import PageTitle from "@/components/ui/PageTitle";
+import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/Bubble";
+
+const termsBubbleColors = {
+  first: "180,210,170",
+  second: "200,220,185",
+  third: "163,230,53",
+  fourth: "190,215,175",
+  fifth: "210,225,195", 
+  sixth: "175,205,165", 
+};
 
 export default function TermsConditions() {
   useEffect(() => {
@@ -14,10 +24,20 @@ export default function TermsConditions() {
   }, []);
 
   return (
-    <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-[#E9E9E9]">
-      <TransparentNavbar showScrollBackground />
+    <div className="relative w-full overflow-x-hidden min-h-screen flex flex-col">
+      <div className="fixed inset-0 z-0">
+        <BubbleBackground
+          className="w-full h-full"
+          interactive={false}
+          colors={termsBubbleColors}
+        />
+      </div>
 
-      <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16">
+      <div className="relative z-10 flex flex-col flex-1">
+        <TransparentNavbar showScrollBackground />
+
+        <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16 flex">
+          <div className="max-w-2xl w-full">
         <PageTitle
           supertitle="(04) LEGAL"
           title="TERMS & CONDITIONS"
@@ -25,7 +45,7 @@ export default function TermsConditions() {
           className="mb-12"
         />
 
-        <div className="max-w-2xl space-y-10 font-supply-mono text-sm text-[#262626]">
+        <div className="space-y-10 font-supply-mono text-sm text-[#262626]">
           <section>
             <h2 className="font-bizud-mincho-bold text-lg border-b-2 border-[#262626] pb-2 mb-4">
               1. Acceptance of Terms
@@ -72,8 +92,7 @@ export default function TermsConditions() {
             <p className="leading-relaxed">
               You retain ownership of the content you create on SPORA. By publishing a Flora, you
               grant SPORA a non-exclusive license to host, display, and promote your work within the
-              platform. Derivative works (cuttings) maintain a connection to the original and must
-              respect attribution as defined in our licensing guidelines.
+              platform. Derivative works (cuttings) maintain a connection to the original and must respect attribution as defined in our licensing guidelines.
             </p>
           </section>
 
@@ -134,10 +153,12 @@ export default function TermsConditions() {
             </p>
           </section>
         </div>
-      </main>
+          </div>
+        </main>
 
-      <div className="relative z-10">
-        <FooterAlter />
+        <div className="relative z-10">
+          <FooterAlter />
+        </div>
       </div>
     </div>
   );

@@ -504,6 +504,13 @@
             display: none !important;
         }
 
+        .laboratory-full-only {
+            display: none !important;
+        }
+        #ui.lab-full .laboratory-full-only {
+            display: block !important;
+        }
+
         #ui.installation-mode #titleSection,
         #ui.installation-mode.blossoming-active #titleSection {
             display: flex !important;
@@ -734,6 +741,15 @@
             <details open>
                 <summary>GEOMETRY</summary>
                 <div class="folder-body">
+                    <div class="control-box laboratory-full-only">
+                        <div class="row-h"><label>FLORA MASK</label></div>
+                        <select id="selFlowerSet" onchange="applyFlowerSet(this.value)">
+                            <option value="daisy">Daisy</option>
+                            <option value="rose">Rose</option>
+                            <option value="orchid">Orchid</option>
+                            <option value="carnation">Carnation</option>
+                        </select>
+                    </div>
                     <div class="control-box">
                         <div class="row-h"><label>FONT DNA</label></div>
                         <select id="selFont" onchange="triggerVisuals()">
@@ -1759,6 +1775,15 @@
 
         function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateOrganicProfile, 500); }
         function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
+        function applyFlowerSet(val) {
+            if (!val || !Object.keys(maskUrls).includes(val)) return;
+            targetFlowerSet = val;
+            lastUsedSet = val;
+            if (currentLabState) currentLabState = { ...currentLabState, flowerSet: val };
+            generateGarden();
+            if (INSTALLATION_MODE) updateHUD();
+        }
+
         function updateUI(id, t, v, u) { document.getElementById(id).innerText = `${t}: ${v}${u}`; }
         function updateCharCount() { const fullText = getFullText(); document.getElementById("charCount").textContent = fullText.length + " characters"; }
 
@@ -2156,7 +2181,10 @@
                 const newTextInput = ui("newTextInput");
                 if (newTextInput) newTextInput.textContent = s.text;
             }
-            targetFlowerSet = s.flowerSet; ui("chkWind").checked = s.wind.active; ui("rngWind").value = s.wind.strength;
+            targetFlowerSet = s.flowerSet;
+            const selFlower = ui("selFlowerSet");
+            if (selFlower && s.flowerSet) selFlower.value = s.flowerSet;
+            ui("chkWind").checked = s.wind.active; ui("rngWind").value = s.wind.strength;
             ui("chkScramble").checked = s.chaos.scramble; ui("rngScramble").value = s.chaos.scrambleForce || 0.1;
             ui("rngJitter").value = s.chaos.jitter ?? 0.5;
             const sp = s.chaos.pulse;
@@ -2183,7 +2211,10 @@
         window.addEventListener("DOMContentLoaded", () => {
             const fullLab = getQueryParam("full") === "1" || getQueryParam("admin") === "1";
             if (INSTALLATION_MODE && !fullLab) document.getElementById("ui").classList.add("installation-mode");
-            if (fullLab) document.querySelectorAll("details").forEach(d => d.setAttribute("open", ""));
+            if (fullLab) {
+                document.getElementById("ui").classList.add("lab-full");
+                document.querySelectorAll("details").forEach(d => d.setAttribute("open", ""));
+            }
             updateCharCount();
             loadFloraPreview();
             initPaletteRef();

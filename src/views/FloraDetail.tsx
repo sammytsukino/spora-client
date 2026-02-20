@@ -259,7 +259,8 @@ export default function FloraDetail() {
               <button
                 type="button"
                 onClick={() => {
-                  const url = `/laboratory?floraId=${encodeURIComponent(derived.id)}`;
+                  const labPath = "/laboratory";
+                  const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
                   window.open(url, "_blank", "noopener,noreferrer");
                 }}
                 className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"

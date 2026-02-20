@@ -13,7 +13,7 @@ interface NavbarBaseProps {
   position?: NavbarPosition;
   showScrollProgress?: boolean;
   showScrollBackground?: boolean;
-  onNavigateRequest?: (path: "/garden" | "/greenhouse" | "/laboratory") => void;
+  onNavigateRequest?: (path: "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full") => void;
   className?: string;
 }
 
@@ -84,7 +84,7 @@ export default function NavbarBase({
     };
   }, [showScrollProgress, showScrollBackground]);
 
-  const handleClick = (path: "/garden" | "/greenhouse" | "/laboratory") => {
+  const handleClick = (path: "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full") => {
     if (onNavigateRequest) {
       onNavigateRequest(path);
     } else {
@@ -261,7 +261,7 @@ export default function NavbarBase({
                         type="button"
                         onClick={() => {
                           setMenuOpen(false);
-                          navigate("/licensing");
+                          navigate("/terms");
                         }}
                         className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
