@@ -425,6 +425,58 @@
             border-style: dashed;
         }
 
+        .btn-group.publish-buttons {
+            align-items: stretch;
+        }
+        .publish-tooltip-wrap {
+            position: relative;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+        .publish-tooltip-wrap button {
+            width: 100%;
+            min-width: 0;
+            height: 100%;
+            min-height: 48px;
+        }
+        .publish-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 12px;
+            background: var(--spora-dark);
+            color: var(--spora-bg-ui);
+            font-family: var(--font-mono);
+            font-size: 9px;
+            line-height: 1.5;
+            text-transform: none;
+            letter-spacing: 0.05em;
+            white-space: normal;
+            width: 140px;
+            max-height: none;
+            border: 2px solid var(--spora-dark);
+            box-shadow: 4px 4px 0 var(--spora-lime);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .publish-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--spora-dark);
+        }
+        .publish-tooltip-wrap:hover .publish-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
         input:disabled,
         textarea:disabled,
         select:disabled,
@@ -796,19 +848,29 @@
             </details>
         </section>
 
-        <section style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark);">
+        <section style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark); overflow: visible;">
             <h2>SYSTEM_EXPORT</h2>
-            <div class="btn-group" style="margin-bottom: 12px">
-                <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
-                <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
+            <div class="btn-group publish-buttons" style="margin-bottom: 12px">
+                <span class="publish-tooltip-wrap">
+                    <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH BLOSSOMING</button>
+                    <span class="publish-tooltip" role="tooltip">Blossoming — Your flora stays open for editing and can receive cuttings from other cultivators.</span>
+                </span>
+                <span class="publish-tooltip-wrap">
+                    <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH SEALED</button>
+                    <span class="publish-tooltip" role="tooltip">Sealed — Your flora is finalized and immutable. No more edits, no more cuttings.</span>
+                </span>
             </div>
             <button type="button" id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px" onclick="generateGarden()">REGENERATE SEED (RE-POSITION)</button>
             <div class="btn-group">
-                <button onclick="downloadState()">SAVE JSON</button>
                 <button id="btnRenderPNG" onclick="saveFullArt()">RENDER PNG</button>
             </div>
-            <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display: none" />
-            <button style="margin-top: 10px; border-style: dotted" onclick="document.getElementById('fileInput').click()">LOAD JSON FILE</button>
+            <div id="jsonExportGroup" style="display: none;">
+                <div class="btn-group" style="margin-top: 10px;">
+                    <button onclick="downloadState()">SAVE JSON</button>
+                </div>
+                <input type="file" id="fileInput" accept=".json" onchange="loadStateFromFile(this)" style="display: none" />
+                <button style="margin-top: 10px; border-style: dotted" onclick="document.getElementById('fileInput').click()">LOAD JSON FILE</button>
+            </div>
             <div class="status" id="statusText" style="margin-top: 15px; font-family: var(--font-mono); font-size: 9px; text-align: center; color: var(--spora-dark); opacity: 0.6;">SYSTEM READY</div>
         </section>
     </aside>
@@ -827,6 +889,14 @@
     </div>
 
     <script>
+        (function(){
+            var search = window.location.search || "";
+            if (!search && window.parent && window.parent !== window) { try { search = (window.parent.location && window.parent.location.search) || ""; } catch(e) {} }
+            if (new URLSearchParams(search).get("full") === "1") {
+                var el = document.getElementById("jsonExportGroup");
+                if (el) el.style.display = "";
+            }
+        })();
         const INSTALLATION_MODE = true;
         let flowers = [];
         let targetFlowerSet = null;

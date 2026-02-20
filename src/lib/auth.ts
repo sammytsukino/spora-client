@@ -7,6 +7,8 @@ export interface AuthUser {
   id: string;
   username: string;
   displayName?: string;
+  avatar?: string;
+  bio?: string;
   email: string;
   role: "cultivator" | "admin";
 }
@@ -38,6 +40,12 @@ export function getStoredUser(): AuthUser | null {
 
 export function getStoredToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
+}
+
+export function updateStoredUser(updates: Partial<AuthUser>) {
+  const current = getStoredUser();
+  if (!current) return;
+  localStorage.setItem(USER_KEY, JSON.stringify({ ...current, ...updates }));
 }
 
 export async function signIn(email: string, password: string) {

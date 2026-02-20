@@ -7,6 +7,7 @@ export interface ApiFlora {
   text: string;
   authorId?: string;
   authorUsername?: string;
+  author?: { username?: string; displayName?: string };
   coAuthors?: Array<{
     username?: string;
     generation?: number;

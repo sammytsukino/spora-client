@@ -1,0 +1,144 @@
+import { api } from "./api";
+import type { ProfileUser, ProfileFloraItem, ProfileMetricsData, ProfileSocialData } from "@/data/profile-data";
+import type { ProfileFloraStatus } from "@/data/profile-data";
+
+export interface MeUser {
+  id: string;
+  username: string;
+  displayName?: string;
+  avatar?: string;
+  bio?: string;
+  followersCount?: number;
+  followingCount?: number;
+  email: string;
+  role: string;
+  accountStatus: string;
+  stats?: {
+    florasCreated: number;
+    cuttingsTaken: number;
+    totalFloras: number;
+  };
+}
+
+export interface ApiFlora {
+  _id: string;
+  title: string;
+  text: string;
+  authorUsername?: string;
+  isAuthorAnonymized?: boolean;
+  status?: string;
+  lineage?: { generation?: number };
+  thumbnailUrl?: string;
+  generative?: { seed?: { sentiment?: { label?: string } } };
+  stats?: { views?: number; cuttingsTaken?: number; downloads?: number };
+}
+
+const DEFAULT_AVATAR =
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
+
+function statusToProfileStatus(status?: string): ProfileFloraStatus | undefined {
+  if (!status) return undefined;
+  const map: Record<string, ProfileFloraStatus> = {
+    blossoming: "Blossoming",
+    sealed: "Sealed",
+    hidden: "Hidden",
+  };
+  return map[status] ?? "Blossoming";
+}
+
+export function mapMeToProfileUser(me: MeUser, floras: ApiFlora[]): ProfileUser {
+  const originals = floras.filter((f) => (f.lineage?.generation ?? 0) === 0);
+  const cuttings = floras.filter((f) => (f.lineage?.generation ?? 0) > 0);
+  return {
+    avatar: me.avatar || DEFAULT_AVATAR,
+    username: me.username.startsWith("@") ? me.username : `@${me.username}`,
+    fullName: me.displayName || me.username,
+    bio: me.bio || "",
+    florasCount: floras.length,
+    originalsCount: originals.length,
+    cuttingsCount: cuttings.length,
+  };
+}
+
+export function mapApiFloraToProfileItem(flora: ApiFlora, fallbackUsername: string): ProfileFloraItem {
+  const gen = flora.lineage?.generation ?? 0;
+  const excerpt = flora.text?.length > 80 ? flora.text.slice(0, 80) + "…" : flora.text || "";
+  const author = flora.isAuthorAnonymized
+    ? "Anonymous"
+    : `@${flora.authorUsername || fallbackUsername}`;
+  const seed = flora.generative?.seed?.sentiment?.label
+    ? `#${flora.generative.seed.sentiment.label.slice(0, 6).toUpperCase()}`
+    : `#${String(flora._id).slice(-6).toUpperCase()}`;
+  return {
+    id: flora._id,
+    generation: `GEN_${gen}`,
+    image: flora.thumbnailUrl || "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
+    title: flora.title,
+    excerpt,
+    author,
+    seed,
+    status: statusToProfileStatus(flora.status),
+  };
+}
+
+export function mapFlorasToMetrics(floras: ApiFlora[]): ProfileMetricsData {
+  let totalViews = 0;
+  let totalCuttings = 0;
+  let totalShares = 0;
+  for (const f of floras) {
+    totalViews += f.stats?.views ?? 0;
+    totalCuttings += f.stats?.cuttingsTaken ?? 0;
+    totalShares += f.stats?.downloads ?? 0;
+  }
+  return { totalViews, totalCuttings, totalShares };
+}
+
+export async function fetchProfileData(): Promise<{
+  user: ProfileUser;
+  floras: ProfileFloraItem[];
+  metrics: ProfileMetricsData;
+  social: ProfileSocialData;
+}> {
+  const meRes = await api.get<MeUser>("/auth/me");
+  const me = meRes.data;
+  const userId = String(me.id ?? "");
+  const florasRes = await api.get<ApiFlora[]>("/floras", { params: { authorId: userId } });
+  const floras = florasRes.data ?? [];
+  const user = mapMeToProfileUser(me, floras);
+  const profileFloras = floras.map((f) => mapApiFloraToProfileItem(f, me.username));
+  const metrics = mapFlorasToMetrics(floras);
+  const social: ProfileSocialData = {
+    followersCount: me.followersCount ?? 0,
+    followingCount: me.followingCount ?? 0,
+    recentInteractions: [],
+  };
+  return { user, floras: profileFloras, metrics, social };
+}
+
+export interface UpdateProfilePayload {
+  displayName?: string;
+  bio?: string;
+  avatar?: string;
+  avatarData?: string;
+}
+
+export async function updateProfile(payload: UpdateProfilePayload): Promise<MeUser> {
+  const { data } = await api.patch<MeUser>("/auth/me", payload);
+  return data;
+}
+
+export function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === "string" && result.startsWith("data:")) {
+        resolve(result);
+      } else {
+        reject(new Error("Invalid file format"));
+      }
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}

@@ -10,6 +10,7 @@ import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
 import Profile from "../views/Profile";
+import Licensing from "../views/Licensing";
 import AdminPanel from "../views/AdminPanel";
 import Background from "../views/Background";
 import FloraDetail from "../views/FloraDetail";
@@ -35,6 +36,7 @@ export default function Router() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/licensing" element={<Licensing />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/background" element={<Background />} />
       </Routes>

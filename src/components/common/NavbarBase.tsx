@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Menu, X, User, LogOut, FileText } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
 import CyclingLogo from "@/components/home/CyclingLogo";
+import { getStoredToken, clearSession } from "@/lib/auth";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
 type NavbarPosition = "fixed" | "sticky";
@@ -28,8 +30,33 @@ export default function NavbarBase({
   const positionClass = position === "sticky" ? "sticky top-0" : "fixed top-0";
   const [scrollProgress, setScrollProgress] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!getStoredToken());
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const isDark = variant === "default";
+
+  useEffect(() => {
+    setIsLoggedIn(!!getStoredToken());
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
+
+  const handleLogout = () => {
+    clearSession();
+    setMenuOpen(false);
+    setIsLoggedIn(false);
+    navigate("/");
+  };
   const isTransparent = variant === "transparent";
   const isLaboratory = variant === "laboratory";
   const isTeam = variant === "team";
@@ -87,7 +114,7 @@ export default function NavbarBase({
 
   return (
     <header
-      className={`${positionClass} left-0 w-full z-40 ${bgColor} ${textColor} font-supply-mono overflow-hidden ${className}`}
+      className={`${positionClass} left-0 w-full z-40 ${bgColor} ${textColor} font-supply-mono ${className}`}
     >
       {showScrollBackground && (
         <div
@@ -196,16 +223,75 @@ export default function NavbarBase({
           )}
 
           {!isTeam && !isLaboratory && (
-            <div className="flex items-center">
-              <MainButton
-                variant={isDark ? "navbar" : "compact"}
-                size="sm"
-                type="button"
-                onClick={() => navigate("/signin")}
-                className={isTransparent ? "bg-transparent" : ""}
-              >
-                SIGN IN
-              </MainButton>
+            <div className="flex items-center" ref={menuRef}>
+              {isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    className={`p-2 rounded-md hover:bg-black/5 transition-colors ${isDark ? "hover:bg-white/10" : ""}`}
+                    aria-label="Menú de usuario"
+                    aria-expanded={menuOpen}
+                  >
+                    {menuOpen ? (
+                      <X className="w-5 h-5" strokeWidth={2} />
+                    ) : (
+                      <Menu className="w-5 h-5" strokeWidth={2} />
+                    )}
+                  </button>
+                  {menuOpen && (
+                    <div
+                      className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] rounded-md border-2 shadow-lg font-supply-mono text-xs uppercase tracking-wider ${
+                        isDark
+                          ? "bg-[var(--spora-primary)] border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)]"
+                          : "bg-[#E9E9E9] border-[#262626] text-[#262626]"
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate("/profile");
+                        }}
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                      >
+                        <User className="w-4 h-4 shrink-0" />
+                        Profile
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate("/licensing");
+                        }}
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                      >
+                        <FileText className="w-4 h-4 shrink-0" />
+                        More info about licensing
+                      </button>
+                      <hr className={isDark ? "border-[var(--spora-text-secondary)]/30" : "border-[#262626]/30"} />
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                      >
+                        <LogOut className="w-4 h-4 shrink-0" />
+                        Log out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <MainButton
+                  variant={isDark ? "navbar" : "compact"}
+                  size="sm"
+                  type="button"
+                  onClick={() => navigate("/signin")}
+                  className={isTransparent ? "bg-transparent" : ""}
+                >
+                  SIGN IN
+                </MainButton>
+              )}
             </div>
           )}
         </div>

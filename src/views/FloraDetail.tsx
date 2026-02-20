@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
 import { floraImages } from "@/data/flora-data";
@@ -26,6 +26,10 @@ function formatGeneration(value?: number) {
 function formatSeed(flora: ApiFlora) {
   const seedSource = flora.generative?.soilId || flora.generative?.soilName || flora._id;
   return `#${seedSource.slice(-6).toUpperCase()}`;
+}
+
+function ensureHandle(username: string): string {
+  return username.startsWith("@") ? username : `@${username}`;
 }
 
 export default function FloraDetail() {
@@ -66,11 +70,46 @@ export default function FloraDetail() {
 
   const derived = useMemo(() => {
     if (flora) {
-      const author = flora.authorUsername
-        ? flora.authorUsername.startsWith("@")
-          ? flora.authorUsername
-          : `@${flora.authorUsername}`
+      const authorName =
+        flora.authorUsername ??
+        (typeof flora.author === "object" && flora.author && "username" in flora.author
+          ? (flora.author as { username: string }).username
+          : null);
+      const author = authorName
+        ? authorName.startsWith("@")
+          ? authorName
+          : `@${authorName}`
         : "@Anonymous";
+
+      const coAuthorHandles = (flora.coAuthors || [])
+        .map((item) => item.username)
+        .filter((value): value is string => Boolean(value))
+        .map(ensureHandle);
+      const allHandles = [...coAuthorHandles, author];
+      const rootFloraId = flora.lineage?.rootFloraId
+        ? String(flora.lineage.rootFloraId)
+        : undefined;
+      const parentFloraId = flora.lineage?.parentFloraId
+        ? String(flora.lineage.parentFloraId)
+        : undefined;
+
+      const lineageItems: { handle: string; floraId?: string }[] = allHandles.map(
+        (handle, i) => {
+          let floraId: string | undefined;
+          if (i === 0 && rootFloraId) {
+            floraId = rootFloraId;
+          } else if (
+            i === coAuthorHandles.length - 1 &&
+            coAuthorHandles.length > 1 &&
+            parentFloraId
+          ) {
+            floraId = parentFloraId;
+          } else if (coAuthorHandles.length === 1 && i === 0 && parentFloraId && !rootFloraId) {
+            floraId = parentFloraId;
+          }
+          return { handle, floraId };
+        }
+      );
 
       return {
         id: flora._id,
@@ -80,12 +119,8 @@ export default function FloraDetail() {
         generation: formatGeneration(flora.lineage?.generation),
         image: flora.thumbnailUrl ?? floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
         text: flora.text,
-        lineageUsernames: [
-          ...(flora.coAuthors || [])
-            .map((item) => item.username)
-            .filter((value): value is string => Boolean(value)),
-          author,
-        ],
+        lineageItems,
+        status: flora.status ?? "blossoming",
       };
     }
 
@@ -98,7 +133,8 @@ export default function FloraDetail() {
         generation: state.flora.generation,
         image: state.flora.image,
         text: state.flora.excerpt,
-        lineageUsernames: [state.flora.author],
+        lineageItems: [{ handle: state.flora.author }],
+        status: "blossoming",
       };
     }
 
@@ -144,9 +180,9 @@ export default function FloraDetail() {
     };
   } | undefined;
 
-  const lineageHandles = derived?.lineageUsernames?.length
-    ? derived.lineageUsernames
-    : ["@Anonymous"];
+  const lineageItems = derived?.lineageItems?.length
+    ? derived.lineageItems
+    : [{ handle: "@Anonymous" }];
 
   if (isLoading && !derived) {
     return (
@@ -226,9 +262,15 @@ export default function FloraDetail() {
                   const url = `/laboratory?floraId=${encodeURIComponent(derived.id)}`;
                   window.open(url, "_blank", "noopener,noreferrer");
                 }}
-                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] bg-[#262626] text-[#E9E9E9] font-supply-mono text-xs sm:text-sm uppercase tracking-widest py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
+                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
               >
-                Open in laboratory
+                <span className="text-xs sm:text-sm uppercase tracking-widest">
+                  Open in laboratory
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold leading-tight text-center opacity-90">
+                  Full bloom in the lab.
+                  {derived.status === "blossoming" && " Cuttings allowed."}
+                </span>
               </button>
             </section>
 
@@ -253,13 +295,28 @@ export default function FloraDetail() {
               Lineage
             </div>
 
-            <div className="flex flex-wrap gap-2 font-supply-mono text-[11px] sm:text-xs">
-              {lineageHandles.map((handle) => (
-                <span
-                  key={handle}
-                  className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]"
-                >
-                  {handle}
+            <div className="flex flex-wrap items-center gap-0 font-supply-mono text-[11px] sm:text-xs">
+              {lineageItems.map((item, i) => (
+                <span key={`${item.handle}-${i}`} className="flex items-center">
+                  {item.floraId ? (
+                    <Link
+                      to={`/flora/${encodeURIComponent(item.floraId)}`}
+                      className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#E9E9E9] hover:text-[#262626] transition-colors cursor-pointer no-underline"
+                      title="View original flora"
+                    >
+                      {item.handle}
+                    </Link>
+                  ) : (
+                    <span className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]">
+                      {item.handle}
+                    </span>
+                  )}
+                  {i < lineageItems.length - 1 && (
+                    <span
+                      className="w-4 sm:w-6 h-px bg-[#262626] mx-1 shrink-0"
+                      aria-hidden
+                    />
+                  )}
                 </span>
               ))}
             </div>
