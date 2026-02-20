@@ -11,6 +11,13 @@ import AdminFlaggedContent from "@/components/admin/AdminFlaggedContent";
 import { adminSectionTabs } from "@/data/admin-data";
 import { useAdminPanel } from "@/hooks/useAdminPanel";
 import { getStoredUser } from "@/lib/auth";
+import {
+  exportMetricsToPdf,
+  exportUsersToPdf,
+  exportUserToPdf,
+  exportReportToPdf,
+  exportFlaggedToPdf,
+} from "@/lib/admin-pdf-export";
 
 const defaultMetrics = {
   totalUsers: 0,
@@ -112,7 +119,9 @@ export default function AdminPanel() {
               <div className="space-y-6">
                 <AdminMetrics
                   metrics={metrics ?? defaultMetrics}
-                  onExportMetrics={() => {}}
+                  onExportMetrics={() =>
+                    exportMetricsToPdf(metrics ?? defaultMetrics)
+                  }
                 />
                 <AdminUsageCharts
                   florasByDay={florasByDay}
@@ -153,6 +162,7 @@ export default function AdminPanel() {
                       window.open(`/flora/${item.contentId}`, "_blank")
                     }
                     onHideFlora={onHideFlora}
+                    onDownload={(item) => exportFlaggedToPdf(item)}
                   />
                 ) : (
                   <AdminReports
@@ -163,7 +173,7 @@ export default function AdminPanel() {
                     }
                     onReportClick={(r) => navigate(`/flora/${r.targetId}`)}
                     onStatusChange={onReportStatusChange}
-                    onDownloadReport={() => {}}
+                    onDownloadReport={(r) => exportReportToPdf(r)}
                     onViewTarget={(r) => navigate(`/flora/${r.targetId}`)}
                     onViewPreview={(r) =>
                       window.open(`/flora/${r.targetId}`, "_blank")
@@ -194,8 +204,8 @@ export default function AdminPanel() {
                 onRoleChange={onUserRoleChange}
                 onStatusChange={onUserStatusChange}
                 onUnsign={onUnsignUser}
-                onExportUsers={() => {}}
-                onExportUser={() => {}}
+                onExportUsers={() => exportUsersToPdf(users)}
+                onExportUser={(u) => exportUserToPdf(u)}
                 onSuspend={(u) => onUserStatusChange(u.id, "suspended")}
                 onBan={(u) => onUserStatusChange(u.id, "banned")}
                 onActivate={(u) => onUserStatusChange(u.id, "active")}
