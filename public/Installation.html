@@ -650,10 +650,7 @@
                     <div id="newTextInput" contenteditable="true"
                         oninput="triggerRegen(); updateCharCount(); updateHUD();"
                         data-placeholder="Plant your seeds here..."
-                        style="white-space: pre-wrap; word-wrap: break-word;">Look, this is where you plant your words.
-                        Words that transform, creating life from code. These flowers take the sentiment of your verses,
-                        their shape, their rhythm, and turn them into a strange, digital bloom. As you type, the text
-                        mutates, growing into a unique form that echoes the feeling of what you just wrote.</div>
+                        style="white-space: pre-wrap; word-wrap: break-word;">Add your text below. Replace this placeholder with your writing.</div>
                 </div>
             </div>
             <div id="charCount"
@@ -966,6 +963,18 @@
         let currentMorph = null;
         let lastBlossomingContentSignature = "";
         let lockedChainMood = null;
+
+        const DEFAULT_LAB_STATE = {
+            title: "",
+            text: "Add your text below. Replace this placeholder with your writing.",
+            flowerSet: "daisy",
+            wind: { active: true, strength: 1.3 },
+            chaos: { scramble: false, scrambleForce: 1, jitter: 2, pulse: { active: false, strength: 2 }, wave: { active: false, strength: 2 } },
+            colors: { maskA: "#fef08a", maskB: "#fef9c3", stem: "#00ff00", text: "#ffffff", bgA: "#0000ff", bgB: "#ffffff", auto: false },
+            geometry: { scale: 2.1, fontSize: 28, font: "'JetBrains Mono', monospace" },
+            style: { mask: false, grad: false, outline: false, outlineW: "2" },
+            background: { mode: "gradient", angle: "0" }
+        };
 
         function getContentSignature(txt) {
             return (txt || "").trim().toLowerCase().replace(/\s+/g, " ");
@@ -1882,8 +1891,11 @@
                     ctx.imageSmoothingQuality = "high";
                     const scale = Math.max(thumbW / c.width, thumbH / c.height);
                     const sw = c.width, sh = c.height;
-                    const dw = sw * scale, dh = sh * scale;
-                    const dx = (thumbW - dw) / 2, dy = (thumbH - dh) / 2;
+                    const overdraw = 4;
+                    const dw = sw * scale + overdraw;
+                    const dh = sh * scale + overdraw;
+                    const dx = Math.floor((thumbW - dw) / 2);
+                    const dy = Math.floor((thumbH - dh) / 2);
                     ctx.fillStyle = "#111";
                     ctx.fillRect(0, 0, thumbW, thumbH);
                     ctx.drawImage(c, 0, 0, sw, sh, dx, dy, dw, dh);
@@ -1965,7 +1977,7 @@
         async function loadFloraPreview(floraIdFromMsg) {
             const floraId = floraIdFromMsg || getQueryParam("floraId");
             if (!floraId) {
-                generateOrganicProfile();
+                applyVisualState(DEFAULT_LAB_STATE);
                 return;
             }
 

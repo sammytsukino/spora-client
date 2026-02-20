@@ -32,7 +32,7 @@ export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraC
         <img
           src={flora.image}
           alt={flora.title}
-          className="w-full h-full object-cover transition-all duration-600 ease-[cubic-bezier(0.165,0.84,0.44,1)] relative z-10"
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-600 ease-[cubic-bezier(0.165,0.84,0.44,1)] z-10"
           style={{
             filter: "grayscale(100%) contrast(120%)",
           }}

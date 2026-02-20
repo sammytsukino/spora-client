@@ -29,7 +29,7 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
         <img
           src={flora.image}
           alt={flora.title}
-          className="w-full h-full object-cover transition-all duration-700 ease-out relative z-10"
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out z-10"
           style={{
             filter: "grayscale(100%) contrast(120%)",
           }}
