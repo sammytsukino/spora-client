@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { isLabFullAccessible } from "@/lib/auth";
 export default function TeamFooter() {
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ export default function TeamFooter() {
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate("/laboratory")}
+              onClick={() => navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
             >
               Laboratory
             </button>

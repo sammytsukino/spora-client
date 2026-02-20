@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { useNavigate } from "react-router-dom"
+import { isLabFullAccessible } from "@/lib/auth"
 interface MarqueeTextContentProps {
   className?: string
 }
@@ -36,7 +37,7 @@ export default function MarqueeTextContent({
         navigate("/greenhouse")
         break
       case "LABORATORY":
-        navigate("/laboratory")
+        navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")
         break
       default:
         break

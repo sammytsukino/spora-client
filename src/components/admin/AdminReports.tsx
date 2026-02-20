@@ -15,6 +15,7 @@ interface AdminReportsProps {
 
 const statusStyles: Record<ReportStatus, string> = {
   pending: "bg-amber-200 border-amber-700",
+  reviewing: "bg-sky-100 border-sky-700",
   reviewed: "bg-sky-100 border-sky-700",
   resolved: "bg-lime-300 border-lime-300",
   dismissed: "bg-stone-200 border-[#262626]",

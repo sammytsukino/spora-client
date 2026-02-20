@@ -11,6 +11,12 @@ export function isLabFullUnlocked(): boolean {
   return localStorage.getItem(LAB_FULL_UNLOCK_KEY) === "1";
 }
 
+/** Admins always have lab full access; cultivators need to unlock via Easter egg */
+export function isLabFullAccessible(): boolean {
+  const user = getStoredUser();
+  return user?.role === "admin" || isLabFullUnlocked();
+}
+
 export function setLabFullUnlocked(): void {
   localStorage.setItem(LAB_FULL_UNLOCK_KEY, "1");
 }

@@ -16,6 +16,7 @@ interface AdminUserManagementProps {
 const roleStyles: Record<UserRole, string> = {
   user: "border-[#262626] bg-[#E9E9E9]",
   creator: "border-lime-300 bg-lime-300",
+  cultivator: "border-lime-300 bg-lime-300",
   moderator: "border-sky-600 bg-sky-100",
   admin: "border-amber-600 bg-amber-100",
 };
@@ -24,6 +25,7 @@ const statusStyles: Record<UserStatus, string> = {
   active: "border-lime-300 bg-lime-300",
   suspended: "border-amber-600 bg-amber-100",
   banned: "border-red-600 bg-red-100",
+  deleted: "border-red-600 bg-red-100",
 };
 
 export default function AdminUserManagement({
@@ -170,7 +172,7 @@ export default function AdminUserManagement({
                     )}
                     {onRoleChange && (
                       <span className="flex flex-wrap gap-1">
-                        {(["user", "creator", "moderator", "admin"] as const).map(
+                        {(["cultivator", "admin"] as const).map(
                           (role) =>
                             role !== user.role && (
                               <button

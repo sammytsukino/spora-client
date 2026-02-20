@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { isLabFullAccessible } from "@/lib/auth"
 import CyclingLogo from "./CyclingLogo"
 
 export default function FooterMain() {
@@ -93,7 +94,7 @@ export default function FooterMain() {
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate("/laboratory")}
+                onClick={() => navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
               >
                 Laboratory
               </button>

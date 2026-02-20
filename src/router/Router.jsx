@@ -43,7 +43,7 @@ export default function Router() {
         <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/licensing" element={<Licensing />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
         <Route path="/background" element={<Background />} />
       </Routes>
     </BrowserRouter>

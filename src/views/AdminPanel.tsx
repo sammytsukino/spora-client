@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
 import FilterTabs from "@/components/common/FilterTabs";
@@ -8,89 +8,51 @@ import AdminUsageCharts from "@/components/admin/AdminUsageCharts";
 import AdminReports from "@/components/admin/AdminReports";
 import AdminUserManagement from "@/components/admin/AdminUserManagement";
 import AdminFlaggedContent from "@/components/admin/AdminFlaggedContent";
-import {
-  adminSectionTabs,
-  defaultAdminMetrics,
-  defaultAdminReports,
-  defaultAdminUsers,
-  defaultAdminFlagged,
-  defaultUsageFlorasByDay,
-  defaultUsageNewUsersByWeek,
-  type AdminMetricsData,
-  type AdminReport,
-  type AdminUserSummary,
-  type AdminFlaggedItem,
-  type AdminUsageDataPoint,
-  type ReportStatus,
-  type UserRole,
-  type UserStatus,
-  type FlaggedStatus,
-} from "@/data/admin-data";
+import { adminSectionTabs } from "@/data/admin-data";
+import { useAdminPanel } from "@/hooks/useAdminPanel";
+import { getStoredUser } from "@/lib/auth";
 
-export interface AdminPanelViewProps {
-  metrics?: AdminMetricsData;
-  reports?: AdminReport[];
-  users?: AdminUserSummary[];
-  flagged?: AdminFlaggedItem[];
-  florasByDay?: AdminUsageDataPoint[];
-  newUsersByWeek?: AdminUsageDataPoint[];
-  onExportMetrics?: () => void;
-  onReportClick?: (report: AdminReport) => void;
-  onReportStatusChange?: (reportId: string, status: ReportStatus) => void;
-  onDownloadReport?: (report: AdminReport) => void;
-  onViewReportTarget?: (report: AdminReport) => void;
-  onViewReportPreview?: (report: AdminReport) => void;
-  onRemoveReportTarget?: (report: AdminReport) => void;
-  onContactReportTarget?: (report: AdminReport) => void;
-  onSuspendReportTarget?: (report: AdminReport) => void;
-  onUserClick?: (user: AdminUserSummary) => void;
-  onUserRoleChange?: (userId: string, role: UserRole) => void;
-  onUserStatusChange?: (userId: string, status: UserStatus) => void;
-  onExportUsers?: () => void;
-  onExportUser?: (user: AdminUserSummary) => void;
-  onSuspendUser?: (user: AdminUserSummary) => void;
-  onBanUser?: (user: AdminUserSummary) => void;
-  onActivateUser?: (user: AdminUserSummary) => void;
-  onFlaggedClick?: (item: AdminFlaggedItem) => void;
-  onFlaggedStatusChange?: (itemId: string, status: FlaggedStatus) => void;
-  onViewFlaggedContent?: (item: AdminFlaggedItem) => void;
-  onDownloadFlagged?: (item: AdminFlaggedItem) => void;
-  onSuspendFlaggedAuthor?: (item: AdminFlaggedItem) => void;
-}
+const defaultMetrics = {
+  totalUsers: 0,
+  totalFloras: 0,
+  totalBlossoming: 0,
+  totalSealed: 0,
+  totalHidden: 0,
+  pendingReports: 0,
+  flaggedContent: 0,
+};
 
-export default function AdminPanel({
-  metrics = defaultAdminMetrics,
-  reports = defaultAdminReports,
-  users = defaultAdminUsers,
-  flagged = defaultAdminFlagged,
-  florasByDay = defaultUsageFlorasByDay,
-  newUsersByWeek = defaultUsageNewUsersByWeek,
-  onExportMetrics,
-  onReportClick,
-  onReportStatusChange,
-  onDownloadReport,
-  onViewReportTarget,
-  onViewReportPreview,
-  onRemoveReportTarget,
-  onContactReportTarget,
-  onSuspendReportTarget,
-  onUserClick,
-  onUserRoleChange,
-  onUserStatusChange,
-  onExportUsers,
-  onExportUser,
-  onSuspendUser,
-  onBanUser,
-  onActivateUser,
-  onFlaggedClick,
-  onFlaggedStatusChange,
-  onViewFlaggedContent,
-  onDownloadFlagged,
-  onSuspendFlaggedAuthor,
-}: AdminPanelViewProps) {
+export default function AdminPanel() {
+  const navigate = useNavigate();
+  const user = getStoredUser();
   const [activeSection, setActiveSection] = useState<string>(adminSectionTabs[0]);
 
+  const {
+    metrics,
+    florasByDay,
+    newUsersByWeek,
+    users,
+    reports,
+    flagged,
+    loading,
+    error,
+    refresh,
+    onUserRoleChange,
+    onUserStatusChange,
+    onReportStatusChange,
+  } = useAdminPanel();
+
   const pendingReports = reports.filter((r) => r.status === "pending");
+
+  if (!user || user.role !== "admin") {
+    return (
+      <div className="w-full min-h-screen bg-[#E9E9E9] flex items-center justify-center">
+        <p className="font-supply-mono text-sm uppercase">
+          Admin access required.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
@@ -116,71 +78,98 @@ export default function AdminPanel({
           />
         </div>
 
-        {activeSection === "Overview" && (
-          <div className="space-y-6">
-            <AdminMetrics
-              metrics={metrics}
-              onExportMetrics={onExportMetrics}
-            />
-            <AdminUsageCharts
-              florasByDay={florasByDay}
-              newUsersByWeek={newUsersByWeek}
-              title="Usage"
-            />
+        {error && (
+          <div className="mb-6 p-4 border-2 border-red-600 bg-red-50 font-supply-mono text-xs">
+            {error}
+            <button
+              type="button"
+              onClick={() => refresh()}
+              className="ml-4 underline"
+            >
+              Retry
+            </button>
           </div>
         )}
 
-        {activeSection === "Reports" && (
-          <AdminReports
-            reports={reports}
-            onReportClick={onReportClick}
-            onStatusChange={onReportStatusChange}
-            onDownloadReport={onDownloadReport}
-            onViewTarget={onViewReportTarget}
-            onViewPreview={onViewReportPreview}
-            onRemoveTarget={onRemoveReportTarget}
-            onContactTarget={onContactReportTarget}
-            onSuspendTarget={onSuspendReportTarget}
-          />
-        )}
+        {loading && !metrics ? (
+          <p className="font-supply-mono text-sm uppercase opacity-80">
+            Loading…
+          </p>
+        ) : (
+          <>
+            {activeSection === "Overview" && (
+              <div className="space-y-6">
+                <AdminMetrics
+                  metrics={metrics ?? defaultMetrics}
+                  onExportMetrics={() => {}}
+                />
+                <AdminUsageCharts
+                  florasByDay={florasByDay}
+                  newUsersByWeek={newUsersByWeek}
+                  title="Usage"
+                />
+              </div>
+            )}
 
-        {activeSection === "Pending" && (
-          <AdminReports
-            reports={pendingReports}
-            onReportClick={onReportClick}
-            onStatusChange={onReportStatusChange}
-            onDownloadReport={onDownloadReport}
-            onViewTarget={onViewReportTarget}
-            onViewPreview={onViewReportPreview}
-            onRemoveTarget={onRemoveReportTarget}
-            onContactTarget={onContactReportTarget}
-            onSuspendTarget={onSuspendReportTarget}
-          />
-        )}
+            {activeSection === "Reports" && (
+              <AdminReports
+                reports={reports}
+                onReportClick={(r) => navigate(`/flora/${r.targetId}`)}
+                onStatusChange={onReportStatusChange}
+                onDownloadReport={() => {}}
+                onViewTarget={(r) => navigate(`/flora/${r.targetId}`)}
+                onViewPreview={(r) =>
+                  window.open(`/flora/${r.targetId}`, "_blank")
+                }
+                onRemoveTarget={() => {}}
+                onContactTarget={() => {}}
+                onSuspendTarget={() => {}}
+              />
+            )}
 
-        {activeSection === "Users" && (
-          <AdminUserManagement
-            users={users}
-            onUserClick={onUserClick}
-            onRoleChange={onUserRoleChange}
-            onStatusChange={onUserStatusChange}
-            onExportUsers={onExportUsers}
-            onExportUser={onExportUser}
-            onSuspend={onSuspendUser}
-            onBan={onBanUser}
-            onActivate={onActivateUser}
-          />
-        )}
+            {activeSection === "Pending" && (
+              <AdminReports
+                reports={pendingReports}
+                onReportClick={(r) => navigate(`/flora/${r.targetId}`)}
+                onStatusChange={onReportStatusChange}
+                onDownloadReport={() => {}}
+                onViewTarget={(r) => navigate(`/flora/${r.targetId}`)}
+                onViewPreview={(r) =>
+                  window.open(`/flora/${r.targetId}`, "_blank")
+                }
+                onRemoveTarget={() => {}}
+                onContactTarget={() => {}}
+                onSuspendTarget={() => {}}
+              />
+            )}
 
-        {activeSection === "Flagged" && (
-          <AdminFlaggedContent
-            items={flagged}
-            onItemClick={onFlaggedClick}
-            onStatusChange={onFlaggedStatusChange}
-            onViewContent={onViewFlaggedContent}
-            onDownload={onDownloadFlagged}
-            onSuspendAuthor={onSuspendFlaggedAuthor}
-          />
+            {activeSection === "Users" && (
+              <AdminUserManagement
+                users={users}
+                onUserClick={() => {}}
+                onRoleChange={onUserRoleChange}
+                onStatusChange={onUserStatusChange}
+                onExportUsers={() => {}}
+                onExportUser={() => {}}
+                onSuspend={(u) => onUserStatusChange(u.id, "suspended")}
+                onBan={(u) => onUserStatusChange(u.id, "banned")}
+                onActivate={(u) => onUserStatusChange(u.id, "active")}
+              />
+            )}
+
+            {activeSection === "Flagged" && (
+              <AdminFlaggedContent
+                items={flagged}
+                onItemClick={(item) => navigate(`/flora/${item.contentId}`)}
+                onStatusChange={() => {}}
+                onViewContent={(item) =>
+                  window.open(`/flora/${item.contentId}`, "_blank")
+                }
+                onDownload={() => {}}
+                onSuspendAuthor={() => {}}
+              />
+            )}
+          </>
         )}
       </section>
 

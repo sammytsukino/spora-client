@@ -8,7 +8,7 @@ export interface AdminMetricsData {
   flaggedContent: number;
 }
 
-export type ReportStatus = "pending" | "reviewed" | "resolved" | "dismissed";
+export type ReportStatus = "pending" | "reviewing" | "reviewed" | "resolved" | "dismissed";
 export type ReportType = "spam" | "abuse" | "copyright" | "other";
 
 export interface AdminReport {
@@ -22,8 +22,8 @@ export interface AdminReport {
   createdAt: string;
 }
 
-export type UserRole = "user" | "creator" | "moderator" | "admin";
-export type UserStatus = "active" | "suspended" | "banned";
+export type UserRole = "user" | "creator" | "cultivator" | "moderator" | "admin";
+export type UserStatus = "active" | "suspended" | "banned" | "deleted";
 
 export interface AdminUserSummary {
   id: string;

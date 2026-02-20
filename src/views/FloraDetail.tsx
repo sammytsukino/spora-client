@@ -5,6 +5,7 @@ import FooterAlter from "@/components/home/FooterAlter";
 import { floraImages } from "@/data/flora-data";
 import { getFlora, type ApiFlora } from "@/lib/floras";
 import { extractMorphology } from "@/lib/morphology";
+import { isLabFullAccessible } from "@/lib/auth";
 
 interface FloraLocationState {
   flora?: {
@@ -261,7 +262,7 @@ export default function FloraDetail() {
               <button
                 type="button"
                 onClick={() => {
-                  const labPath = "/laboratory";
+                  const labPath = isLabFullAccessible() ? "/laboratory/full" : "/laboratory";
                   const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
                   window.open(url, "_blank", "noopener,noreferrer");
                 }}

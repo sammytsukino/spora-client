@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, User, LogOut, FileText } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
 import CyclingLogo from "@/components/home/CyclingLogo";
-import { getStoredToken, clearSession } from "@/lib/auth";
+import { getStoredToken, clearSession, isLabFullAccessible } from "@/lib/auth";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
 type NavbarPosition = "fixed" | "sticky";
@@ -192,7 +192,7 @@ export default function NavbarBase({
               <button
                 type="button"
                 className={`${isLaboratoryPath && isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
-                onClick={() => handleClick("/laboratory")}
+                onClick={() => handleClick(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
               >
                 <span className="md:hidden">LAB</span>
                 <span className="hidden md:inline">(03)LABORATORY</span>
