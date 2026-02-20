@@ -5,7 +5,7 @@ import { signIn } from "@/lib/auth"
 
 export default function SignInForm() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -16,7 +16,7 @@ export default function SignInForm() {
     setIsSubmitting(true)
 
     try {
-      await signIn(email, password)
+      await signIn(username, password)
       navigate("/garden")
     } catch (err) {
       setError("Invalid credentials or server error.")
@@ -43,12 +43,13 @@ export default function SignInForm() {
         <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
           <div>
             <label className="block text-sm font-supply-mono mb-2">
-              Email
+              Username
             </label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder=""
               className="w-full px-4 py-3 border-2 border-[#262626] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
               required

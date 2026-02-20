@@ -48,9 +48,9 @@ export function updateStoredUser(updates: Partial<AuthUser>) {
   localStorage.setItem(USER_KEY, JSON.stringify({ ...current, ...updates }));
 }
 
-export async function signIn(email: string, password: string) {
+export async function signIn(username: string, password: string) {
   const { data } = await api.post<AuthResponse>("/auth/signin", {
-    email,
+    username,
     password,
   });
   saveSession(data);

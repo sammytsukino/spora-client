@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../views/Home";
 import Installation from "../views/Installation";
+import ProtectedRoute from "../components/common/ProtectedRoute";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
 import Laboratory from "../views/Laboratory";
@@ -27,9 +28,9 @@ export default function Router() {
         <Route path="/greenhouse" element={<Greenhouse />} />
         <Route path="/flora/:id" element={<FloraDetail />} />
       {/*  <Route path="/laboratory" element={<Laboratory />} />*/}
-        <Route path="/laboratory/full" element={<Installation fullLab />} />
-        <Route path="/laboratory" element={<Installation />} />
-        <Route path="/installation" element={<Installation />} />
+        <Route path="/laboratory/full" element={<ProtectedRoute><Installation fullLab /></ProtectedRoute>} />
+        <Route path="/laboratory" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
+        <Route path="/installation" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
         <Route path="/team" element={<Team />} />
         <Route path="/research" element={<Research />} />
         <Route path="/contact" element={<Contact />} />

@@ -222,14 +222,13 @@ export default function NavbarBase({
             </button>
           )}
 
-          {!isTeam && !isLaboratory && (
-            <div className="flex items-center" ref={menuRef}>
+          <div className="flex items-center" ref={menuRef}>
               {isLoggedIn ? (
                 <div className="relative">
                   <button
                     type="button"
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className={`p-2 rounded-md hover:bg-black/5 transition-colors ${isDark ? "hover:bg-white/10" : ""}`}
+                    className={`p-2 hover:bg-black/5 transition-colors ${isDark ? "hover:bg-white/10" : ""}`}
                     aria-label="Menú de usuario"
                     aria-expanded={menuOpen}
                   >
@@ -241,7 +240,7 @@ export default function NavbarBase({
                   </button>
                   {menuOpen && (
                     <div
-                      className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] rounded-md border-2 shadow-lg font-supply-mono text-xs uppercase tracking-wider ${
+                      className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] border-2 font-supply-mono text-xs uppercase tracking-wider ${
                         isDark
                           ? "bg-[var(--spora-primary)] border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)]"
                           : "bg-[#E9E9E9] border-[#262626] text-[#262626]"
@@ -293,7 +292,6 @@ export default function NavbarBase({
                 </MainButton>
               )}
             </div>
-          )}
         </div>
       </div>
       {showScrollProgress && (
