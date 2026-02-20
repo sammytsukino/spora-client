@@ -86,7 +86,7 @@ export default function AdminPanel() {
               to="/laboratory/full"
               className="font-supply-mono text-xs uppercase underline hover:no-underline cursor-pointer"
             >
-              Full laboratory
+              Full Laboratory
             </Link>
           </div>
           <FilterTabs

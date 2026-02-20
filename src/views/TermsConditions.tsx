@@ -64,8 +64,8 @@ export default function TermsConditions() {
             </h2>
             <p className="leading-relaxed mb-4">
               SPORA is a platform for creating, sharing, and evolving generative artworks we call Floras.
-              You may browse public content, create your own Floras in the Laboratory, take cuttings
-              from existing works, and participate in the community. You agree to use the platform
+              You may browse public content, create your own Floras in the Laboratory, take Cuttings
+              from Blossoming Floras, and participate in the community. You agree to use the platform
               in a lawful manner and respect the rights of other users.
             </p>
             <p className="leading-relaxed">
@@ -92,7 +92,7 @@ export default function TermsConditions() {
             <p className="leading-relaxed">
               You retain ownership of the content you create on SPORA. By publishing a Flora, you
               grant SPORA a non-exclusive license to host, display, and promote your work within the
-              platform. Derivative works (cuttings) maintain a connection to the original and must respect attribution as defined in our licensing guidelines.
+              platform. Derivative works (Cuttings) maintain a connection to the original and must respect attribution as defined in our licensing guidelines.
             </p>
           </section>
 
@@ -106,14 +106,14 @@ export default function TermsConditions() {
               personal data to third parties.
             </p>
             <p className="leading-relaxed mb-4">
-              <strong>Unsign Flora — Forgotten Author:</strong> You may choose to unsign your Floras
+              <strong>Unsign (Withdraw Signature / Anonymization):</strong> You may choose to unsign your Floras
               at any time from your profile settings. When you unsign a Flora:
             </p>
             <ul className="list-disc list-inside ml-2 space-y-2 mb-4">
               <li>The Flora remains visible and accessible on the platform.</li>
               <li>Your authorship is removed; the work is attributed to <em>Forgotten Author</em>.</li>
               <li>This process is irreversible. You cannot reclaim authorship once unsigned.</li>
-              <li>Cuttings derived from your Flora will continue to show their lineage, but your
+              <li>Cuttings derived from your Flora will continue to show their Lineage, but your
                 identity will not be associated with the original.</li>
             </ul>
             <p className="leading-relaxed">

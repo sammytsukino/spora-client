@@ -68,7 +68,7 @@ export default function FloraDetail() {
       })
       .catch(() => {
         if (!isActive) return;
-        setError("Could not load flora.");
+        setError("Could not load Flora.");
       })
       .finally(() => {
         if (!isActive) return;
@@ -214,7 +214,7 @@ export default function FloraDetail() {
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
           <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
-            Loading flora...
+            Loading Flora...
           </p>
         </main>
         <FooterAlter />
@@ -228,7 +228,7 @@ export default function FloraDetail() {
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
           <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
-            Could not load this flora.
+            Could not load this Flora.
           </p>
         </main>
         <FooterAlter />
@@ -309,10 +309,10 @@ export default function FloraDetail() {
                 className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
               >
                 <span className="text-xs sm:text-sm uppercase tracking-widest">
-                  Open in laboratory
+                  Open in Laboratory
                 </span>
                 <span className="text-[9px] sm:text-[10px] font-bold leading-tight text-center opacity-90">
-                  Full bloom in the lab.
+                  Full bloom in the Laboratory.
                   {derived.status === "blossoming" && " Cuttings allowed."}
                 </span>
               </button>

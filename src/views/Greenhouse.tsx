@@ -144,11 +144,11 @@ export default function Greenhouse() {
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
         <PageTitle
           supertitle="(02)GREENHOUSE"
-          title={authorId ? `FLORAS BY ${authorLabel ?? "USER"}` : "DISCOVER TIMELESS ARTWORKS"}
+          title={authorId ? `FLORAS BY ${authorLabel ?? "USER"}` : "SEALED FLORAS"}
           description={
             authorId
-              ? `Sealed floras by this cultivator.`
-              : "Explore our curated collection of sealed flora, each piece a unique digital organism."
+              ? "Sealed Floras by this Cultivator."
+              : "The exhibition space for Sealed Floras—completed and finalized creations."
           }
           className="mb-6"
         />

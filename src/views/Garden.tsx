@@ -133,8 +133,8 @@ export default function Garden() {
         <div className="mb-6">
           <PageTitle
             supertitle="(01)GARDEN"
-            title="OPEN FLORAS READY TO BE CUT"
-            description="Create your own versions of these flora. Tweak them to your liking and create new ones."
+            title="BLOSSOMING FLORAS READY FOR CUTTINGS"
+            description="The main public gallery where Blossoming Floras are exhibited. Find Floras from which to take Cuttings and create your own."
           />
         </div>
 

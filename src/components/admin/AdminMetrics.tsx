@@ -18,10 +18,10 @@ const metricKeys: (keyof AdminMetricsData)[] = [
 
 const metricLabels: Record<keyof AdminMetricsData, string> = {
   totalUsers: "users",
-  totalFloras: "floras",
-  totalBlossoming: "blossoming",
-  totalSealed: "sealed",
-  totalHidden: "hidden",
+  totalFloras: "Floras",
+  totalBlossoming: "Blossoming",
+  totalSealed: "Sealed",
+  totalHidden: "Hidden",
   pendingReports: "pending reports",
   flaggedContent: "flagged",
 };

@@ -147,7 +147,7 @@ export default function AdminUserManagement({
                         type="button"
                         onClick={() => onUnsign(user)}
                         className="inline-flex items-center gap-1 px-2 py-1 border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
-                        title="Anonymize all floras by this user (Unsign)"
+                        title="Withdraw signature: anonymize author on all Floras by this user while preserving content and Lineage"
                       >
                         <UserMinus className="size-3" aria-hidden />
                         Unsign

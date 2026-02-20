@@ -6,7 +6,7 @@ interface ProfileMetricsProps {
 
 const metricLabels: Record<keyof ProfileMetricsData, string> = {
   totalViews: "views",
-  totalCuttings: "cuttings",
+  totalCuttings: "Cuttings",
   totalShares: "shares",
 };
 

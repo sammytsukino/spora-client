@@ -9,7 +9,7 @@ interface ProfileSocialProps {
 }
 
 const actionLabels: Record<ProfileSocialInteraction["action"], string> = {
-  cutting: "made a cutting of",
+  cutting: "made a Cutting of",
   view: "viewed",
   share: "shared",
 };

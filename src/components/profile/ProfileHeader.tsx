@@ -45,7 +45,7 @@ export default function ProfileHeader({
         <p className="font-supply-mono text-sm italic mt-1">{bio}</p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 font-supply-mono text-[11px] opacity-90">
           <span>
-            {florasCount} Floras · {originalsCount} originals · {cuttingsCount} cuttings
+            {florasCount} Floras · {originalsCount} originals · {cuttingsCount} Cuttings
           </span>
           {showSocial && (
             <>
