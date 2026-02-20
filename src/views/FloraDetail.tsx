@@ -228,7 +228,7 @@ export default function FloraDetail() {
                 }}
                 className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] bg-[#262626] text-[#E9E9E9] font-supply-mono text-xs sm:text-sm uppercase tracking-widest py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
               >
-                Open in {flora?.status === "sealed" ? "greenhouse" : "laboratory"}
+                Open in laboratory
               </button>
             </section>
 
