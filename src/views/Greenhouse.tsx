@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/home/FooterAlter";
@@ -50,6 +50,10 @@ function mapFlora(flora: ApiFlora, index: number): UiFlora {
 }
 
 export default function Greenhouse() {
+  const [searchParams] = useSearchParams();
+  const authorId = searchParams.get("authorId") ?? undefined;
+  const authorLabel = searchParams.get("username") ?? undefined;
+
   const [activeFilter, setActiveFilter] = useState('All Units');
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [floras, setFloras] = useState<UiFlora[]>([]);
@@ -61,8 +65,12 @@ export default function Greenhouse() {
     let isActive = true;
     setIsLoading(true);
     setError(null);
+    setVisibleCount(ITEMS_PER_PAGE);
 
-    listFloras({ status: "sealed" })
+    const params: Parameters<typeof listFloras>[0] = { status: "sealed" };
+    if (authorId) params.authorId = authorId;
+
+    listFloras(params)
       .then((data) => {
         if (!isActive) return;
         setFloras(data.map(mapFlora));
@@ -79,7 +87,7 @@ export default function Greenhouse() {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [authorId]);
 
   const filteredFloras = useMemo(() => {
     return activeFilter === 'All Units'
@@ -136,8 +144,12 @@ export default function Greenhouse() {
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
         <PageTitle
           supertitle="(02)GREENHOUSE"
-          title="DISCOVER TIMELESS ARTWORKS"
-          description="Explore our curated collection of sealed flora, each piece a unique digital organism."
+          title={authorId ? `FLORAS BY ${authorLabel ?? "USER"}` : "DISCOVER TIMELESS ARTWORKS"}
+          description={
+            authorId
+              ? `Sealed floras by this cultivator.`
+              : "Explore our curated collection of sealed flora, each piece a unique digital organism."
+          }
           className="mb-6"
         />
 

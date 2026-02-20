@@ -3,11 +3,13 @@ import type { AdminFlaggedItem, FlaggedStatus } from "@/data/admin-data";
 
 interface AdminFlaggedContentProps {
   items: AdminFlaggedItem[];
+  title?: string;
   onItemClick?: (item: AdminFlaggedItem) => void;
   onStatusChange?: (itemId: string, status: FlaggedStatus) => void;
   onViewContent?: (item: AdminFlaggedItem) => void;
   onDownload?: (item: AdminFlaggedItem) => void;
   onSuspendAuthor?: (item: AdminFlaggedItem) => void;
+  onHideFlora?: (floraId: string) => void;
 }
 
 const statusStyles: Record<FlaggedStatus, string> = {
@@ -29,17 +31,19 @@ function formatDate(iso: string) {
 
 export default function AdminFlaggedContent({
   items,
+  title = "Flagged content",
   onItemClick,
   onStatusChange,
   onViewContent,
   onDownload,
   onSuspendAuthor,
+  onHideFlora,
 }: AdminFlaggedContentProps) {
   if (items.length === 0) {
     return (
       <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
-          Flagged content
+          {title}
         </h2>
         <p className="font-supply-mono text-[11px] opacity-80">
           No flagged content.
@@ -52,7 +56,7 @@ export default function AdminFlaggedContent({
     <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
       <div className="flex items-center justify-between gap-4 mb-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase">
-          Flagged content
+          {title}
         </h2>
         <span className="font-supply-mono text-[11px] opacity-80">
           {items.length} item{items.length !== 1 ? "s" : ""}
@@ -121,6 +125,15 @@ export default function AdminFlaggedContent({
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
+                  </button>
+                )}
+                {item.contentType === "flora" && onHideFlora && (
+                  <button
+                    type="button"
+                    onClick={() => onHideFlora(item.contentId)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                  >
+                    Hide flora
                   </button>
                 )}
                 {onSuspendAuthor && item.status === "pending" && (

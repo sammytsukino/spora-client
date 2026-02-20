@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, User, LogOut, FileText } from "lucide-react";
+import { Menu, X, User, LogOut, FileText, Shield } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
 import CyclingLogo from "@/components/home/CyclingLogo";
-import { getStoredToken, clearSession, isLabFullAccessible } from "@/lib/auth";
+import { getStoredToken, clearSession, isLabFullAccessible, getStoredUser } from "@/lib/auth";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
 type NavbarPosition = "fixed" | "sticky";
@@ -229,7 +229,7 @@ export default function NavbarBase({
                     type="button"
                     onClick={() => setMenuOpen(!menuOpen)}
                     className={`p-2 hover:bg-black/5 transition-colors ${isDark ? "hover:bg-white/10" : ""}`}
-                    aria-label="Menú de usuario"
+                    aria-label="User menu"
                     aria-expanded={menuOpen}
                   >
                     {menuOpen ? (
@@ -268,6 +268,19 @@ export default function NavbarBase({
                         <FileText className="w-4 h-4 shrink-0" />
                         More info about licensing
                       </button>
+                      {getStoredUser()?.role === "admin" && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMenuOpen(false);
+                            navigate("/admin");
+                          }}
+                          className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                        >
+                          <Shield className="w-4 h-4 shrink-0" />
+                          Admin panel
+                        </button>
+                      )}
                       <hr className={isDark ? "border-[var(--spora-text-secondary)]/30" : "border-[#262626]/30"} />
                       <button
                         type="button"

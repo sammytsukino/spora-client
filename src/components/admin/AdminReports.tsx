@@ -11,6 +11,7 @@ interface AdminReportsProps {
   onViewPreview?: (report: AdminReport) => void;
   onRemoveTarget?: (report: AdminReport) => void;
   onContactTarget?: (report: AdminReport) => void;
+  onHideFlora?: (floraId: string) => void;
 }
 
 const statusStyles: Record<ReportStatus, string> = {
@@ -42,6 +43,7 @@ export default function AdminReports({
   onViewPreview,
   onRemoveTarget,
   onContactTarget,
+  onHideFlora,
 }: AdminReportsProps) {
   if (reports.length === 0) {
     return (
@@ -140,6 +142,15 @@ export default function AdminReports({
                   <Eye className="size-3.5" aria-hidden />
                   Preview
                 </button>
+                {report.targetType === "flora" && onHideFlora && (
+                  <button
+                    type="button"
+                    onClick={() => onHideFlora(report.targetId)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                  >
+                    Hide flora
+                  </button>
+                )}
                 {(report.targetType === "flora" || report.targetType === "comment") && (
                   <button
                     type="button"

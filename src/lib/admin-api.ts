@@ -10,6 +10,26 @@ export interface AdminMetricsResponse {
   };
   reports: { total: number; pending: number };
   flaggedContent?: number;
+  growth?: {
+    usersLast7Days: number;
+    usersPrev7Days: number;
+    usersGrowth: number;
+    florasLast7Days: number;
+    florasPrev7Days: number;
+    florasGrowth: number;
+  };
+}
+
+export interface ApiFlora {
+  _id: string;
+  title: string;
+  text: string;
+  author?: { username?: string };
+  authorUsername?: string;
+  status?: string;
+  isHidden?: boolean;
+  thumbnailUrl?: string;
+  createdAt?: string;
 }
 
 export interface AdminUsageChartsResponse {
@@ -105,5 +125,35 @@ export async function updateReportStatus(
     status,
     adminNotes,
   });
+  return data;
+}
+
+export async function unsignUser(userId: string, reason?: string): Promise<{ florasAnonymized: number }> {
+  const { data } = await api.post<{ florasAnonymized: number }>(`/admin/users/${userId}/unsign`, {
+    reason,
+  });
+  return data;
+}
+
+export async function hideFlora(floraId: string, reason?: string): Promise<void> {
+  await api.patch(`/admin/floras/${floraId}/status`, { isHidden: true, reason });
+}
+
+export async function unhideFlora(floraId: string, reason?: string): Promise<void> {
+  await api.patch(`/admin/floras/${floraId}/status`, { isHidden: false, reason });
+}
+
+export async function fetchAdminFloras(params?: {
+  limit?: number;
+  skip?: number;
+  status?: string;
+  hidden?: boolean;
+}): Promise<ApiFlora[]> {
+  const q = new URLSearchParams();
+  if (params?.limit) q.set("limit", String(params.limit));
+  if (params?.skip) q.set("skip", String(params.skip));
+  if (params?.status) q.set("status", params.status);
+  if (params?.hidden !== undefined) q.set("hidden", String(params.hidden));
+  const { data } = await api.get<ApiFlora[]>(`/admin/floras?${q}`);
   return data;
 }

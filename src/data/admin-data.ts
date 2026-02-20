@@ -6,6 +6,14 @@ export interface AdminMetricsData {
   totalHidden: number;
   pendingReports: number;
   flaggedContent: number;
+  growth?: {
+    usersLast7Days: number;
+    usersPrev7Days: number;
+    usersGrowth: number;
+    florasLast7Days: number;
+    florasPrev7Days: number;
+    florasGrowth: number;
+  };
 }
 
 export type ReportStatus = "pending" | "reviewing" | "reviewed" | "resolved" | "dismissed";
@@ -56,9 +64,7 @@ export interface AdminUsageDataPoint {
 export const adminSectionTabs = [
   "Overview",
   "Reports",
-  "Pending",
   "Users",
-  "Flagged",
 ] as const;
 
 export type AdminSection = (typeof adminSectionTabs)[number];

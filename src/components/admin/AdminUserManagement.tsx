@@ -1,4 +1,4 @@
-import { Download, User, UserX, Ban, CheckCircle } from "lucide-react";
+import { Download, User, UserX, Ban, CheckCircle, UserMinus } from "lucide-react";
 import type { AdminUserSummary, UserRole, UserStatus } from "@/data/admin-data";
 
 interface AdminUserManagementProps {
@@ -6,6 +6,7 @@ interface AdminUserManagementProps {
   onUserClick?: (user: AdminUserSummary) => void;
   onRoleChange?: (userId: string, role: UserRole) => void;
   onStatusChange?: (userId: string, status: UserStatus) => void;
+  onUnsign?: (user: AdminUserSummary) => void;
   onExportUsers?: () => void;
   onExportUser?: (user: AdminUserSummary) => void;
   onSuspend?: (user: AdminUserSummary) => void;
@@ -32,6 +33,7 @@ export default function AdminUserManagement({
   users,
   onUserClick,
   onRoleChange,
+  onUnsign,
   onExportUsers,
   onExportUser,
   onSuspend,
@@ -138,6 +140,17 @@ export default function AdminUserManagement({
                       >
                         <Download className="size-3" aria-hidden />
                         Export
+                      </button>
+                    )}
+                    {onUnsign && user.florasCount > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => onUnsign(user)}
+                        className="inline-flex items-center gap-1 px-2 py-1 border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                        title="Anonymize all floras by this user (Unsign)"
+                      >
+                        <UserMinus className="size-3" aria-hidden />
+                        Unsign
                       </button>
                     )}
                     {onSuspend && user.status === "active" && (

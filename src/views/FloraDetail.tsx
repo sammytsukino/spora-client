@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Flag, X } from "lucide-react";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import FooterAlter from "@/components/home/FooterAlter";
 import { floraImages } from "@/data/flora-data";
 import { getFlora, type ApiFlora } from "@/lib/floras";
 import { extractMorphology } from "@/lib/morphology";
-import { isLabFullAccessible } from "@/lib/auth";
+import { isLabFullAccessible, getStoredToken, getStoredUser } from "@/lib/auth";
+import { createReport, type ReportCategory } from "@/lib/reports-api";
 
 interface FloraLocationState {
   flora?: {
@@ -43,6 +45,13 @@ export default function FloraDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportCategory, setReportCategory] = useState<ReportCategory>("other");
+  const [reportReason, setReportReason] = useState("");
+  const [reportDescription, setReportDescription] = useState("");
+  const [reportSubmitting, setReportSubmitting] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
+  const [reportError, setReportError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -187,6 +196,18 @@ export default function FloraDetail() {
     ? derived.lineageItems
     : [{ handle: "@Anonymous" }];
 
+  const currentUser = getStoredUser();
+  const authorId =
+    flora?.authorId ??
+    (flora?.author && typeof flora.author === "object" && "_id" in flora.author
+      ? String((flora.author as { _id: string })._id)
+      : null);
+  const isAuthor = Boolean(
+    currentUser?.id && authorId && authorId === currentUser.id
+  );
+  const canReport =
+    Boolean(getStoredToken()) && !isAuthor && derived && flora;
+
   if (isLoading && !derived) {
     return (
       <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
@@ -221,14 +242,33 @@ export default function FloraDetail() {
 
       <main className="pt-20 pb-8 px-6 md:px-12 lg:px-16">
         <section className="mb-6">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="mb-2 font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
-          >
-            <span className="text-lg">←</span>
-            <span>Back</span>
-          </button>
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
+            >
+              <span className="text-lg">←</span>
+              <span>Back</span>
+            </button>
+            {canReport && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(true);
+                  setReportCategory("other");
+                  setReportReason("");
+                  setReportDescription("");
+                  setReportSuccess(false);
+                  setReportError(null);
+                }}
+                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] transition-colors cursor-pointer"
+              >
+                <Flag className="size-3.5" aria-hidden />
+                Report
+              </button>
+            )}
+          </div>
 
           <div className="bg-[#262626] text-[#E9E9E9] border-2 border-[#262626] px-6 py-4 md:py-5">
             <h1 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-none mb-2">
@@ -483,6 +523,152 @@ export default function FloraDetail() {
           )}
         </section>
       </main>
+
+      {showReportModal && flora && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="report-modal-title"
+        >
+          <div className="w-full max-w-md border-2 border-[#262626] bg-[#E9E9E9] p-6 font-supply-mono">
+            <div className="flex items-center justify-between mb-4">
+              <h2
+                id="report-modal-title"
+                className="text-sm font-bold uppercase tracking-wider"
+              >
+                Report flora
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowReportModal(false)}
+                className="p-1 hover:bg-[#262626]/10 transition-colors"
+                aria-label="Close"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+
+            {reportSuccess ? (
+              <p className="text-xs text-[#262626]/80 mb-4">
+                Report submitted. Thank you for helping keep the community safe.
+              </p>
+            ) : (
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!reportReason.trim()) return;
+                  setReportSubmitting(true);
+                  setReportError(null);
+                  try {
+                    await createReport(
+                      flora._id,
+                      reportCategory,
+                      reportReason.trim(),
+                      reportDescription.trim() || undefined
+                    );
+                    setReportSuccess(true);
+                    setTimeout(() => setShowReportModal(false), 2000);
+                  } catch (err) {
+                    setReportError(
+                      err instanceof Error ? err.message : "Failed to submit report"
+                    );
+                  } finally {
+                    setReportSubmitting(false);
+                  }
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label
+                    htmlFor="report-category"
+                    className="block text-[10px] uppercase tracking-wider mb-1"
+                  >
+                    Category
+                  </label>
+                  <select
+                    id="report-category"
+                    value={reportCategory}
+                    onChange={(e) =>
+                      setReportCategory(e.target.value as ReportCategory)
+                    }
+                    className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-xs"
+                  >
+                    <option value="spam">Spam</option>
+                    <option value="harassment">Harassment</option>
+                    <option value="inappropriate">Inappropriate</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="report-reason"
+                    className="block text-[10px] uppercase tracking-wider mb-1"
+                  >
+                    Reason (required, max 100 chars)
+                  </label>
+                  <input
+                    id="report-reason"
+                    type="text"
+                    value={reportReason}
+                    onChange={(e) =>
+                      setReportReason(e.target.value.slice(0, 100))
+                    }
+                    maxLength={100}
+                    required
+                    className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-xs"
+                    placeholder="Brief reason for this report"
+                  />
+                  <span className="text-[9px] opacity-70">
+                    {reportReason.length}/100
+                  </span>
+                </div>
+                <div>
+                  <label
+                    htmlFor="report-description"
+                    className="block text-[10px] uppercase tracking-wider mb-1"
+                  >
+                    Additional details (optional, max 500 chars)
+                  </label>
+                  <textarea
+                    id="report-description"
+                    value={reportDescription}
+                    onChange={(e) =>
+                      setReportDescription(e.target.value.slice(0, 500))
+                    }
+                    maxLength={500}
+                    rows={3}
+                    className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-xs resize-none"
+                    placeholder="Any additional context"
+                  />
+                  <span className="text-[9px] opacity-70">
+                    {reportDescription.length}/500
+                  </span>
+                </div>
+                {reportError && (
+                  <p className="text-[10px] text-red-600">{reportError}</p>
+                )}
+                <div className="flex gap-2 justify-end pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowReportModal(false)}
+                    className="px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] text-[10px] uppercase"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={reportSubmitting || !reportReason.trim()}
+                    className="px-3 py-1.5 border-2 border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#1a1a1a] text-[10px] uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {reportSubmitting ? "Submitting…" : "Submit report"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       <FooterAlter />
     </div>

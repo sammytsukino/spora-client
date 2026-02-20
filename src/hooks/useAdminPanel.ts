@@ -8,6 +8,8 @@ import {
   updateUserRole,
   updateUserStatus,
   updateReportStatus,
+  unsignUser,
+  hideFlora,
 } from "@/lib/admin-api";
 import type {
   AdminMetricsData,
@@ -51,7 +53,8 @@ function mapApiUser(u: {
 function mapApiReport(r: {
   _id: string;
   reportedBy: { username?: string } | string;
-  reportedFlora: { title?: string; author?: string } | string;
+  reportedFlora?: { _id?: string; title?: string; author?: string } | string;
+  reportedFloraId?: { _id?: string } | string;
   category: string;
   reason: string;
   status: string;
@@ -63,11 +66,11 @@ function mapApiReport(r: {
         ? r.reportedBy.username
         : `@${r.reportedBy.username}`
       : "@Unknown";
-  const flora = r.reportedFlora as { _id?: string } | string;
+  const flora = (r.reportedFlora ?? r.reportedFloraId) as { _id?: string } | string;
   const targetId =
     typeof flora === "object" && flora?._id
       ? String(flora._id)
-      : String(r.reportedFlora);
+      : String(flora);
   const categoryMap: Record<string, "spam" | "abuse" | "copyright" | "other"> = {
     spam: "spam",
     harassment: "abuse",
@@ -128,29 +131,58 @@ export function useAdminPanel() {
     setLoading(true);
     setError(null);
     try {
-      const [metricsRes, chartsRes, usersRes, reportsRes, flaggedRes] =
-        await Promise.all([
-          fetchAdminMetrics(),
-          fetchAdminUsageCharts(),
-          fetchAdminUsers(),
-          fetchAdminReports(),
-          fetchAdminFlagged(),
-        ]);
+      const results = await Promise.allSettled([
+        fetchAdminMetrics(),
+        fetchAdminUsageCharts(),
+        fetchAdminUsers({ limit: 500 }),
+        fetchAdminReports(),
+        fetchAdminFlagged(),
+      ]);
 
-      setMetrics({
-        totalUsers: metricsRes.users.total,
-        totalFloras: metricsRes.floras.total,
-        totalBlossoming: metricsRes.floras.blossoming ?? 0,
-        totalSealed: metricsRes.floras.sealed ?? 0,
-        totalHidden: metricsRes.floras.hidden ?? 0,
-        pendingReports: metricsRes.reports.pending,
-        flaggedContent: metricsRes.flaggedContent ?? 0,
-      });
-      setFlorasByDay(chartsRes.florasByDay);
-      setNewUsersByWeek(chartsRes.newUsersByWeek);
-      setUsers(usersRes.map(mapApiUser));
-      setReports(reportsRes.map(mapApiReport));
-      setFlagged(flaggedRes.map(mapApiFlagged));
+      const [metricsRes, chartsRes, usersRes, reportsRes, flaggedRes] =
+        results.map((r) => (r.status === "fulfilled" ? r.value : null));
+
+      const errs = results
+        .map((r, i) => (r.status === "rejected" ? r.reason : null))
+        .filter(Boolean);
+      if (errs.length > 0) {
+        const firstErr = errs[0] as Error & { response?: { status?: number } };
+        const msg =
+          firstErr?.response?.status === 404
+            ? "Admin API not found (404). Ensure the backend is running and uses the latest routes."
+            : firstErr instanceof Error
+              ? firstErr.message
+              : "Failed to load admin data";
+        setError(msg);
+      }
+
+      if (metricsRes && "users" in metricsRes && "floras" in metricsRes) {
+        setMetrics({
+          totalUsers: metricsRes.users.total,
+          totalFloras: metricsRes.floras.total,
+          totalBlossoming: metricsRes.floras.blossoming ?? 0,
+          totalSealed: metricsRes.floras.sealed ?? 0,
+          totalHidden: metricsRes.floras.hidden ?? 0,
+          pendingReports: metricsRes.reports.pending,
+          flaggedContent: metricsRes.flaggedContent ?? 0,
+          growth: metricsRes.growth,
+        });
+      } else if (metricsRes && "totalUsers" in metricsRes) {
+        setMetrics({
+          totalUsers: metricsRes.totalUsers ?? 0,
+          totalFloras: metricsRes.totalFloras ?? 0,
+          totalBlossoming: 0,
+          totalSealed: 0,
+          totalHidden: 0,
+          pendingReports: metricsRes.pendingReports ?? 0,
+          flaggedContent: 0,
+        });
+      }
+      if (chartsRes?.florasByDay) setFlorasByDay(chartsRes.florasByDay);
+      if (chartsRes?.newUsersByWeek) setNewUsersByWeek(chartsRes.newUsersByWeek);
+      if (Array.isArray(usersRes)) setUsers(usersRes.map(mapApiUser));
+      if (Array.isArray(reportsRes)) setReports(reportsRes.map(mapApiReport));
+      if (Array.isArray(flaggedRes)) setFlagged(flaggedRes.map(mapApiFlagged));
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Failed to load admin data";
       setError(msg);
@@ -213,6 +245,29 @@ export function useAdminPanel() {
     [load]
   );
 
+  const handleUnsignUser = useCallback(
+    async (user: AdminUserSummary) => {
+      await unsignUser(user.id);
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === user.id ? { ...u, florasCount: 0 } : u
+        )
+      );
+      load();
+    },
+    [load]
+  );
+
+  const handleHideFlora = useCallback(
+    async (floraId: string) => {
+      await hideFlora(floraId);
+      setFlagged((prev) => prev.filter((f) => f.contentId !== floraId));
+      setReports((prev) => prev.filter((r) => r.targetId !== floraId));
+      load();
+    },
+    [load]
+  );
+
   return {
     metrics,
     florasByDay,
@@ -227,5 +282,7 @@ export function useAdminPanel() {
     onUserStatusChange: handleUserStatusChange,
     onReportStatusChange: handleReportStatusChange,
     onFlaggedStatusChange: handleFlaggedStatusChange,
+    onUnsignUser: handleUnsignUser,
+    onHideFlora: handleHideFlora,
   };
 }
