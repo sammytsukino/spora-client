@@ -240,7 +240,7 @@ export default function FloraDetail() {
     <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
       <TransparentNavbar showScrollBackground />
 
-      <main className="pt-20 pb-8 px-6 md:px-12 lg:px-16">
+      <main className="pt-20 pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
         <section className="mb-6">
           <div className="mb-2 flex items-center justify-between gap-4">
             <button
@@ -262,7 +262,7 @@ export default function FloraDetail() {
                   setReportSuccess(false);
                   setReportError(null);
                 }}
-                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] transition-colors cursor-pointer"
+                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 px-3 py-1.5 border border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] transition-colors cursor-pointer"
               >
                 <Flag className="size-3.5" aria-hidden />
                 Report
@@ -270,7 +270,7 @@ export default function FloraDetail() {
             )}
           </div>
 
-          <div className="bg-[#262626] text-[#E9E9E9] border-2 border-[#262626] px-6 py-4 md:py-5">
+          <div className="bg-[#262626] text-[#E9E9E9] border border-[#262626] px-6 py-4 md:py-5">
             <h1 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-none mb-2">
               {derived.title}
             </h1>
@@ -284,9 +284,9 @@ export default function FloraDetail() {
           </div>
         </section>
 
-        <section className="border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
+        <section className="border border-[var(--spora-primary)] bg-[#E9E9E9]">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(360px,520px)_1fr]">
-            <section className="border-r-2 border-b-2 border-[#262626] relative order-2 lg:order-1">
+            <section className="border border-[var(--spora-primary)] relative order-2 lg:order-1 ">
               <div
                 className="w-full bg-[#E9E9E9]"
                 style={{ aspectRatio: "4 / 3" }}
@@ -306,7 +306,7 @@ export default function FloraDetail() {
                   const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
                   window.open(url, "_blank", "noopener,noreferrer");
                 }}
-                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border-2 border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
+                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
               >
                 <span className="text-xs sm:text-sm uppercase tracking-widest">
                   Open in Laboratory
@@ -318,23 +318,23 @@ export default function FloraDetail() {
               </button>
             </section>
 
-            <article className="border-r-2 border-b-2 border-[#262626] p-4 md:p-6 flex flex-col gap-4 order-1 lg:order-2">
-              <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] flex items-center justify-between font-supply-mono text-[11px] uppercase tracking-[0.25em]">
+            <article className="border border-[var(--spora-primary)] p-4 md:p-6 flex flex-col gap-4 order-1 lg:order-2 ">
+              <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] flex items-center justify-between font-supply-mono text-[11px] uppercase tracking-[0.25em] ">
                 <span>FLORA</span>
                 <span className="text-[9px] opacity-80">
                   SEED {derived.seed}
                 </span>
               </div>
 
-              <div className="border-2 border-[#262626] bg-[#E9E9E9] p-4 md:p-5 font-supply-mono text-[11px] sm:text-xs leading-relaxed whitespace-pre-wrap">
+              <div className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-5 md:p-6 font-supply-mono text-[11px] sm:text-xs leading-loose tracking-wide whitespace-pre-wrap">
                 {baseText}
               </div>
             </article>
           </div>
         </section>
 
-        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
-          <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+        <section className="mt-6 border border-[var(--spora-primary)] bg-[#E9E9E9]">
+          <div className="border border-[var(--spora-primary)] p-5 md:p-6">
             <div className="font-supply-mono text-[10px] uppercase tracking-[0.2em] text-[#262626]/80 mb-3">
               Lineage
             </div>
@@ -367,18 +367,18 @@ export default function FloraDetail() {
           </div>
         </section>
 
-        <section className="mt-4 border-l-2 border-t-2 border-[#262626] bg-[#E9E9E9]">
+        <section className="mt-6 border border-[var(--spora-primary)] bg-[#E9E9E9]">
           <button
             type="button"
             onClick={() => setShowAnalysis((v) => !v)}
-            className="w-full text-left border-r-2 border-b-2 border-[#262626] px-4 py-2 font-supply-mono text-[10px] uppercase tracking-widest text-[#262626]/70 hover:text-[#262626] hover:bg-[#E3E3E3] transition-colors"
+            className="w-full text-left border border-[var(--spora-primary)] px-4 py-2 font-supply-mono text-[10px] uppercase tracking-widest text-[#262626]/70 hover:text-[#262626] hover:bg-[#E3E3E3] transition-colors"
           >
             {showAnalysis ? "− Hide analysis" : "+ Show analysis"}
           </button>
 
           {showAnalysis && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+            <div className="border border-[var(--spora-primary)] p-4 md:p-5 ">
               <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
                 Generation stats
               </div>
@@ -421,7 +421,7 @@ export default function FloraDetail() {
               </div>
             </div>
 
-            <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+            <div className="border border-[var(--spora-primary)] p-4 md:p-5 ">
               <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
                 Morphology analysis
               </div>
@@ -470,7 +470,7 @@ export default function FloraDetail() {
               </div>
             </div>
 
-            <div className="border-r-2 border-b-2 border-[#262626] p-4 md:p-5">
+            <div className="border border-[var(--spora-primary)] p-4 md:p-5 ">
               <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
                 Mapped parameters
               </div>
@@ -531,7 +531,7 @@ export default function FloraDetail() {
           aria-modal="true"
           aria-labelledby="report-modal-title"
         >
-          <div className="w-full max-w-md border-2 border-[#262626] bg-[#E9E9E9] p-6 font-supply-mono">
+          <div className="w-full max-w-md border border-[var(--spora-primary)]  bg-[#E9E9E9] p-6 font-supply-mono">
             <div className="flex items-center justify-between mb-4">
               <h2
                 id="report-modal-title"
@@ -592,7 +592,7 @@ export default function FloraDetail() {
                     onChange={(e) =>
                       setReportCategory(e.target.value as ReportCategory)
                     }
-                    className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-xs"
+                    className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-xs"
                   >
                     <option value="spam">Spam</option>
                     <option value="harassment">Harassment</option>
@@ -616,7 +616,7 @@ export default function FloraDetail() {
                     }
                     maxLength={100}
                     required
-                    className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-xs"
+                    className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-xs"
                     placeholder="Brief reason for this report"
                   />
                   <span className="text-[9px] opacity-70">
@@ -638,7 +638,7 @@ export default function FloraDetail() {
                     }
                     maxLength={500}
                     rows={3}
-                    className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-xs resize-none"
+                    className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-xs resize-none"
                     placeholder="Any additional context"
                   />
                   <span className="text-[9px] opacity-70">
@@ -652,14 +652,14 @@ export default function FloraDetail() {
                   <button
                     type="button"
                     onClick={() => setShowReportModal(false)}
-                    className="px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] text-[10px] uppercase"
+                    className="px-3 py-1.5 border border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] text-[10px] uppercase"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={reportSubmitting || !reportReason.trim()}
-                    className="px-3 py-1.5 border-2 border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#1a1a1a] text-[10px] uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 border border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#1a1a1a] text-[10px] uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {reportSubmitting ? "Submitting…" : "Submit report"}
                   </button>

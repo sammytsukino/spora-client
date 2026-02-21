@@ -41,7 +41,7 @@ export default function AdminFlaggedContent({
 }: AdminFlaggedContentProps) {
   if (items.length === 0) {
     return (
-      <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
+      <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
           {title}
         </h2>
@@ -53,7 +53,7 @@ export default function AdminFlaggedContent({
   }
 
   return (
-    <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
       <div className="flex items-center justify-between gap-4 mb-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase">
           {title}
@@ -66,7 +66,7 @@ export default function AdminFlaggedContent({
         {items.map((item) => (
           <li key={item.id}>
             <article
-              className="border-2 border-[#262626] bg-[#E9E9E9] p-4 font-supply-mono text-[11px]"
+              className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-4 font-supply-mono text-[11px]"
               onClick={() => onItemClick?.(item)}
               onKeyDown={(e) =>
                 onItemClick &&
@@ -82,7 +82,7 @@ export default function AdminFlaggedContent({
                   <span className="uppercase opacity-80">{item.contentType}</span>
                   <span className="opacity-80">{item.contentId}</span>
                   <span
-                    className={`px-2 py-0.5 border-2 uppercase shrink-0 ${statusStyles[item.status]}`}
+                    className={`px-2 py-0.5 border uppercase shrink-0 ${statusStyles[item.status]}`}
                   >
                     {item.status}
                   </span>
@@ -99,19 +99,19 @@ export default function AdminFlaggedContent({
                 <span className="opacity-80 font-medium">{item.reason}</span>
               </div>
               {item.contentPreview && (
-                <p className="mb-4 opacity-80 italic border-l-2 border-[#262626] pl-3 py-1">
+                <p className="mb-4 opacity-80 italic border-l border-[var(--spora-primary)] pl-3 py-1">
                   {item.contentPreview}
                 </p>
               )}
               <div
-                className="flex flex-wrap items-center gap-2 pt-3 border-t-2 border-[#262626]"
+                className="flex flex-wrap items-center gap-2 pt-3 border-t border-[var(--spora-primary)]"
                 onClick={(e) => e.stopPropagation()}
               >
                 {onViewContent && (
                   <button
                     type="button"
                     onClick={() => onViewContent(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                   >
                     <ExternalLink className="size-3.5" aria-hidden />
                     View content
@@ -121,7 +121,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onDownload(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
@@ -131,7 +131,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onHideFlora(item.contentId)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
                   >
                     Hide flora
                   </button>
@@ -140,7 +140,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onSuspendAuthor(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
                   >
                     <UserX className="size-3.5" aria-hidden />
                     Suspend author
@@ -151,7 +151,7 @@ export default function AdminFlaggedContent({
                     <button
                       type="button"
                       onClick={() => onStatusChange(item.id, "approved")}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
                     >
                       <Check className="size-3.5" aria-hidden />
                       Approve
@@ -159,7 +159,7 @@ export default function AdminFlaggedContent({
                     <button
                       type="button"
                       onClick={() => onStatusChange(item.id, "removed")}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
                     >
                       <Trash2 className="size-3.5" aria-hidden />
                       Remove content

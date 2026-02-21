@@ -33,7 +33,7 @@ export default function EmptyState({
         <button
           type="button"
           onClick={action.onClick}
-          className="px-6 py-2 border-2 border-[var(--spora-primary)] text-[var(--spora-primary)] font-supply-mono text-xs uppercase tracking-[0.3em] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
+          className="px-6 py-2 border border-[var(--spora-primary)] text-[var(--spora-primary)] font-supply-mono text-xs uppercase tracking-[0.3em] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
         >
           {action.label}
         </button>

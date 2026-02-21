@@ -3,22 +3,18 @@ import { api } from "./api";
 export const TOKEN_KEY = "spora_token";
 export const USER_KEY = "spora_user";
 
-/** Easter egg: cultivators unlock lab/full via /laboratory/full/grow (acrostic in HeroSection) */
+/** Easter egg: /grow is the only way for cultivators to see lab full; no localStorage persistence */
 export const LAB_FULL_SECRET = "grow";
-export const LAB_FULL_UNLOCK_KEY = "spora_lab_full_unlocked";
 
-export function isLabFullUnlocked(): boolean {
-  return localStorage.getItem(LAB_FULL_UNLOCK_KEY) === "1";
+const LEGACY_LAB_FULL_KEY = "spora_lab_full_unlocked";
+if (typeof localStorage !== "undefined") {
+  localStorage.removeItem(LEGACY_LAB_FULL_KEY);
 }
 
-/** Admins always have lab full access; cultivators need to unlock via Easter egg */
+/** Only admins get "full" lab from nav/links; cultivators only via /grow redirect */
 export function isLabFullAccessible(): boolean {
   const user = getStoredUser();
-  return user?.role === "admin" || isLabFullUnlocked();
-}
-
-export function setLabFullUnlocked(): void {
-  localStorage.setItem(LAB_FULL_UNLOCK_KEY, "1");
+  return user?.role === "admin";
 }
 
 export interface AuthUser {

@@ -47,7 +47,7 @@ export default function AdminReports({
 }: AdminReportsProps) {
   if (reports.length === 0) {
     return (
-      <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
+      <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
           Reports
         </h2>
@@ -59,7 +59,7 @@ export default function AdminReports({
   }
 
   return (
-    <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
       <div className="flex items-center justify-between gap-4 mb-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase">
           Reports
@@ -72,7 +72,7 @@ export default function AdminReports({
         {reports.map((report) => (
           <li key={report.id}>
             <article
-              className="border-2 border-[#262626] bg-[#E9E9E9] p-4 font-supply-mono text-[11px]"
+              className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-4 font-supply-mono text-[11px]"
               onClick={() => onReportClick?.(report)}
               onKeyDown={(e) =>
                 onReportClick &&
@@ -87,7 +87,7 @@ export default function AdminReports({
                   <span className="font-bold">{report.id}</span>
                   <span className="uppercase opacity-80">{report.type}</span>
                   <span
-                    className={`px-2 py-0.5 border-2 uppercase shrink-0 ${statusStyles[report.status]}`}
+                    className={`px-2 py-0.5 border uppercase shrink-0 ${statusStyles[report.status]}`}
                   >
                     {report.status}
                   </span>
@@ -106,19 +106,19 @@ export default function AdminReports({
                 </span>
               </div>
               {report.reason && (
-                <p className="mb-4 opacity-90 italic border-l-2 border-[#262626] pl-3 py-1">
+                <p className="mb-4 opacity-90 italic border-l border-[var(--spora-primary)] pl-3 py-1">
                   {report.reason}
                 </p>
               )}
               <div
-                className="flex flex-wrap items-center gap-2 pt-3 border-t-2 border-[#262626]"
+                className="flex flex-wrap items-center gap-2 pt-3 border-t border-[var(--spora-primary)]"
                 onClick={(e) => e.stopPropagation()}
               >
                 {onDownloadReport && (
                   <button
                     type="button"
                     onClick={() => onDownloadReport(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
@@ -128,7 +128,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onViewTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                   >
                     <ExternalLink className="size-3.5" aria-hidden />
                     View target
@@ -137,7 +137,7 @@ export default function AdminReports({
                 <button
                   type="button"
                   onClick={() => onViewPreview?.(report)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                 >
                   <Eye className="size-3.5" aria-hidden />
                   Preview
@@ -146,7 +146,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onHideFlora(report.targetId)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
                   >
                     Hide flora
                   </button>
@@ -155,7 +155,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onRemoveTarget?.(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
                   >
                     <Trash2 className="size-3.5" aria-hidden />
                     Remove content
@@ -164,7 +164,7 @@ export default function AdminReports({
                 <button
                   type="button"
                   onClick={() => onContactTarget?.(report)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                 >
                   <Mail className="size-3.5" aria-hidden />
                   Contact
@@ -173,7 +173,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onSuspendTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
                   >
                     <UserX className="size-3.5" aria-hidden />
                     Suspend user
@@ -184,14 +184,14 @@ export default function AdminReports({
                     <button
                       type="button"
                       onClick={() => onStatusChange(report.id, "resolved")}
-                      className="px-3 py-1.5 border-2 border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
+                      className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
                     >
                       Resolve
                     </button>
                     <button
                       type="button"
                       onClick={() => onStatusChange(report.id, "dismissed")}
-                      className="px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                      className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                     >
                       Dismiss
                     </button>

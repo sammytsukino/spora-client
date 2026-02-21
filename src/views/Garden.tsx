@@ -129,8 +129,8 @@ export default function Garden() {
     <div className="w-full overflow-x-hidden bg-[var(--spora-primary-light)]">
       <TransparentNavbar showScrollBackground />
 
-      <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
-        <div className="mb-6">
+      <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
+        <div className="mb-8">
           <PageTitle
             supertitle="(01)GARDEN"
             title="BLOSSOMING FLORAS READY FOR CUTTINGS"
@@ -138,9 +138,9 @@ export default function Garden() {
           />
         </div>
 
-        <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex items-center justify-between gap-4 mb-8">
           <div className="flex-1">
-            <div className="w-full border-b-2 border-[var(--spora-primary)]" />
+            <div className="w-full border-b border-[var(--spora-primary)]" />
           </div>
 
           <div className="flex items-center justify-end">
@@ -152,7 +152,7 @@ export default function Garden() {
           </div>
         </div>
 
-        <div className="border-l-2 border-t-2 border-[var(--spora-primary)]">
+        <div>
           {isLoading && floras.length === 0 ? (
             <LoadingIndicator
               current={0}
@@ -170,7 +170,7 @@ export default function Garden() {
               description="Try adjusting your filters to see more results."
             />
           ) : (
-            <main className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-0">
+            <main className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
               {visibleFloras.map((flora) => (
                 <FloraCard
                   key={flora.id}

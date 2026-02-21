@@ -156,7 +156,7 @@ export default function Profile({
     <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
       <TransparentNavbar showScrollBackground />
 
-      <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
+      <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
         <ProfileHeader
           user={effectiveUser}
           followersCount={effectiveSocial.followersCount}
@@ -173,12 +173,12 @@ export default function Profile({
           />
         )}
 
-        <div className="mt-4">
+        <div className="mt-6">
           <ProfileMetrics metrics={effectiveMetrics} />
         </div>
 
-        <div className="mt-8">
-          <div className="flex items-end justify-between gap-4 mb-4">
+        <div className="mt-10">
+          <div className="flex items-end justify-between gap-4 mb-6">
             <h2 className="font-supply-mono font-bold text-sm uppercase">
               My Floras
             </h2>
@@ -188,8 +188,8 @@ export default function Profile({
               onFilterChange={setActiveFilter}
             />
           </div>
-          <div className="border-l-2 border-t-2 border-[#262626]">
-            <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))]">
+          <div>
+            <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
               {filteredFloras.map((flora) => (
                 <FloraCard
                   key={flora.id}
@@ -207,7 +207,7 @@ export default function Profile({
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-10">
           <ProfileSocial
             social={effectiveSocial}
             showFollowCounts={false}
@@ -215,7 +215,7 @@ export default function Profile({
           />
         </div>
 
-        <div className="mt-8">
+        <div className="mt-10">
           <ProfileDangerZone
             {...dangerZoneConfig}
             onUnsign={onUnsign}

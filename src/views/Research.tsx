@@ -37,7 +37,7 @@ export default function Research() {
 
         <div className="flex items-center justify-between gap-4 mb-8">
           <div className="flex-1">
-            <div className="w-full border-b-2 border-[#262626]" />
+            <div className="w-full border-b border-[var(--spora-primary)]" />
           </div>
 
           <div className="flex items-center justify-end">

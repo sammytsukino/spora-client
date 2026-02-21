@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Home from "../views/Home";
 import Installation from "../views/Installation";
 import ProtectedRoute from "../components/common/ProtectedRoute";
@@ -20,9 +21,22 @@ import FloraDetail from "../views/FloraDetail";
 import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/ScrollToTop";
 
+const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
+
+function ClearLabFullSessionOnLeave() {
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname !== "/laboratory/full" && typeof sessionStorage !== "undefined") {
+      sessionStorage.removeItem(LAB_FULL_SESSION_KEY);
+    }
+  }, [location.pathname]);
+  return null;
+}
+
 export default function Router() {
   return (
     <BrowserRouter>
+      <ClearLabFullSessionOnLeave />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />

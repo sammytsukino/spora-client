@@ -27,7 +27,7 @@ export default function FloraCardBase({
     <article
       className={`group bg-[var(--spora-primary-light)] flex flex-col relative transition-all duration-200 cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 ${
         isGarden ? 'active:scale-[0.98]' : ''
-      } border-r-2 border-b-2 border-[var(--spora-primary)]`}
+      } border border-[var(--spora-primary)]`}
       style={{ aspectRatio: '4/5' }}
       onClick={onClick}
       tabIndex={0}
@@ -43,7 +43,7 @@ export default function FloraCardBase({
           {id}
         </span>
         <span
-          className={`font-supply-mono border-2 border-[var(--spora-primary)] uppercase ${
+          className={`font-supply-mono border border-[var(--spora-primary)] uppercase ${
             isGarden
               ? 'text-[10px] px-2 py-0.5'
               : 'text-[9px] px-1.5 py-0.5'
@@ -54,7 +54,7 @@ export default function FloraCardBase({
       </div>
 
       <div
-        className={`relative overflow-hidden border-2 border-[var(--spora-primary)] ${
+        className={`relative overflow-hidden border border-[var(--spora-primary)] ${
           isGarden ? 'flex-1 mx-6 mb-4' : 'mb-3'
         }`}
         style={{ aspectRatio: '4/5' }}

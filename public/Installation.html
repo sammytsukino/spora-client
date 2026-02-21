@@ -979,6 +979,8 @@
         let currentMorph = null;
         let lastBlossomingContentSignature = "";
         let lockedChainMood = null;
+        /** Visual state when this flora was loaded; restored when user clears new text in blossoming mode */
+        let loadedFloraLabState = null;
 
         const DEFAULT_LAB_STATE = {
             title: "",
@@ -999,7 +1001,7 @@
         function updateHUD() {
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v != null && v !== "" ? String(v) : "-"; };
             if (currentMorph) {
-                set("v-force", currentMorph.sentimentStrength);
+                set("v-force", currentMorph.sentimentStrength != null ? currentMorph.sentimentStrength.toFixed(3) : "-");
                 set("v-entropy", currentMorph.entropy != null ? currentMorph.entropy.toFixed(3) : "-");
                 set("v-vowels", currentMorph.vowelDensity != null ? currentMorph.vowelDensity.toFixed(3) : "-");
                 set("v-sibil", currentMorph.sibilanceIndex != null ? currentMorph.sibilanceIndex.toFixed(3) : "-");
@@ -1283,6 +1285,12 @@
                 const newTextInput = document.getElementById("newTextInput");
                 const baseText = baseTextDisplay ? baseTextDisplay.textContent : lockedBaseText;
                 const newText = newTextInput ? newTextInput.textContent : "";
+                if (newText.trim() === "" && loadedFloraLabState) {
+                    lastBlossomingContentSignature = getContentSignature(baseText);
+                    applyVisualState(loadedFloraLabState);
+                    if (INSTALLATION_MODE) updateHUD();
+                    return;
+                }
                 const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
                 const newMorph = newText.trim() ? extractMorphology(newText) : null;
                 const newMood = newMorph && newMorph.dominantMood !== "neutral" && newMorph.sentimentStrength > 0 ? newMorph.dominantMood : null;
@@ -1700,11 +1708,12 @@
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
             document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
 
-            const flowerSizeFactor = map(sS, 0.5, 2.5, 0.5, 2.0);
-            const fontSizeFactor = map(bS, 10, 80, 2.0, 0.5);
-            const adaptiveDivisor = constrain(12 * flowerSizeFactor * fontSizeFactor, 3, 50);
+            // Bloom count: more chars → more blooms; big bloom + small char → fewer blooms; small bloom + big char → more blooms.
+            // Chars per bloom ∝ scale/fontSize (scale up or font down → each bloom "holds" more chars → fewer blooms).
+            const charsPerBloom = 12000 * (sS / max(bS, 10));
+            const count = constrain(ceil(txt.length / charsPerBloom), 2, 20);
 
-            const words = txt.split(/\s+/), count = constrain(ceil(words.length / adaptiveDivisor), 2, 20);
+            const words = txt.split(/\s+/);
             let dF = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0, eS = sS * dF;
             let chunks = [];
             if (words.length < count) for (let i = 0; i < count; i++) chunks.push(txt.split(""));
@@ -2029,6 +2038,11 @@
                 currentFlora = flora;
                 lastBlossomingContentSignature = "";
                 lockedChainMood = null;
+                loadedFloraLabState = null;
+                clearTimeout(debounceTimer);
+                clearTimeout(visualDebounce);
+                debounceTimer = null;
+                visualDebounce = null;
                 let blossomBase = flora.text || "";
                 let blossomNew = undefined;
 
@@ -2056,13 +2070,12 @@
                         if (newTextInput) newTextInput.textContent = fullText || "";
                     }
                     applyVisualState(labState);
+                    loadedFloraLabState = labState;
                 } else {
                     document.getElementById("inpTitle").value = flora.title || "Untitled Flora";
-                    const newTextInput = document.getElementById("newTextInput");
-                    if (newTextInput) {
-                        newTextInput.textContent = flora.text || "";
-                    }
+                    enableAppendOnlyText(blossomBase, blossomNew);
                     generateOrganicProfile();
+                    loadedFloraLabState = currentLabState ? { ...currentLabState } : null;
                 }
 
                 if (flora.status === "sealed") {
@@ -2070,7 +2083,6 @@
                 } else if (flora.status === "blossoming") {
                     setLockedState(false);
                     setBlossomingMode(true);
-                    if (!labState) enableAppendOnlyText(blossomBase, blossomNew);
                     statusEl.innerText = "BLOSSOMING MODE";
                 } else {
                     setLockedState(false);

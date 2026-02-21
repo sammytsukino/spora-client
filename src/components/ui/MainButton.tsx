@@ -20,9 +20,9 @@ export default function MainButton({
 
   const variantStyles: Record<NonNullable<MainButtonProps["variant"]>, string> = {
     default: "border border-[var(--spora-primary)] text-[var(--spora-primary)] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] focus-visible:ring-[var(--spora-primary)]",
-    compact: "border-2 border-[var(--spora-primary)] text-[var(--spora-primary)] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] focus-visible:ring-[var(--spora-primary)]",
+    compact: "border border-[var(--spora-primary)] text-[var(--spora-primary)] hover:bg-[var(--spora-primary)] hover:text-[var(--spora-text-secondary)] focus-visible:ring-[var(--spora-primary)]",
     navbar:
-      "border-2 border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)] hover:bg-[var(--spora-text-secondary)] hover:text-[var(--spora-primary)] focus-visible:ring-[var(--spora-text-secondary)]",
+      "border border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)] hover:bg-[var(--spora-text-secondary)] hover:text-[var(--spora-primary)] focus-visible:ring-[var(--spora-text-secondary)]",
   }
 
   const sizeStyles: Record<NonNullable<MainButtonProps["size"]>, string> = {

@@ -141,7 +141,7 @@ export default function Greenhouse() {
     <div className="w-full overflow-x-hidden bg-[var(--spora-primary-light)]">
       <TransparentNavbar showScrollBackground />
 
-      <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
+      <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
         <PageTitle
           supertitle="(02)GREENHOUSE"
           title={authorId ? `FLORAS BY ${authorLabel ?? "USER"}` : "SEALED FLORAS"}
@@ -150,12 +150,12 @@ export default function Greenhouse() {
               ? "Sealed Floras by this Cultivator."
               : "The exhibition space for Sealed Floras—completed and finalized creations."
           }
-          className="mb-6"
+          className="mb-8"
         />
 
-        <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex items-center justify-between gap-4 mb-8">
           <div className="flex-1">
-            <div className="w-full border-b-2 border-[var(--spora-primary)]" />
+            <div className="w-full border-b border-[var(--spora-primary)]" />
           </div>
 
           <div className="flex items-center justify-end">
@@ -167,7 +167,7 @@ export default function Greenhouse() {
           </div>
         </div>
 
-        <div className="border-l-2 border-t-2 border-[var(--spora-primary)]">
+        <div>
           {isLoading && floras.length === 0 ? (
             <LoadingIndicator
               current={0}
@@ -185,12 +185,12 @@ export default function Greenhouse() {
               description="Try adjusting your filters to see more results."
             />
           ) : (
-            <main>
+            <main className="flex flex-col gap-6">
               {featured && (
-                <div className="grid lg:grid-cols-[2fr_1fr]">
+                <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
                   <FeaturedFlora flora={featured} onClick={() => handleCardClick(featured)} />
 
-                  <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1">
+                  <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1 gap-6">
                     {sideFloras.map((flora) => (
                       <GreenhouseFloraCard
                         key={flora.id}
@@ -203,7 +203,7 @@ export default function Greenhouse() {
               )}
 
               {remainingFloras.length > 0 && (
-                <div className="grid md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {remainingFloras.map((flora) => (
                     <GreenhouseFloraCard
                       key={flora.id}

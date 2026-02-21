@@ -12,7 +12,7 @@ export default function ProfileDangerZone({
   onUnsign,
 }: ProfileDangerZoneProps) {
   return (
-    <section className="border-2 border-[#262626] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
       <h2 className="font-supply-mono font-bold text-sm uppercase mb-2">
         {title}
       </h2>
@@ -21,7 +21,7 @@ export default function ProfileDangerZone({
         <button
           type="button"
           onClick={() => onUnsign?.()}
-          className="font-supply-mono text-[11px] px-4 py-2 border-2 border-red-600 text-red-600 bg-[#E9E9E9] uppercase hover:bg-red-600 hover:text-white transition-colors"
+          className="font-supply-mono text-[11px] px-4 py-2 border border-red-600 text-red-600 bg-[#E9E9E9] uppercase hover:bg-red-600 hover:text-white transition-colors"
         >
           {buttonLabel}
         </button>

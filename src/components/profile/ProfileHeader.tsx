@@ -33,11 +33,11 @@ export default function ProfileHeader({
     followersCount !== undefined && followingCount !== undefined;
 
   return (
-    <header className="border-2 border-[#262626] bg-[#E9E9E9] p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+    <header className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
       <img
         src={avatar}
         alt={fullName}
-        className="w-24 h-24 rounded-full object-cover border-2 border-[#262626] shrink-0"
+        className="w-24 h-24 rounded-full object-cover border border-[var(--spora-primary)] shrink-0"
       />
       <div className="flex-1 min-w-0">
         <p className="font-supply-mono text-lg font-bold">{username}</p>

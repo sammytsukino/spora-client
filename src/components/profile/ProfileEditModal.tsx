@@ -73,7 +73,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
       aria-labelledby="profile-edit-title"
     >
       <div
-        className="relative w-full max-w-md border-2 border-[#262626] bg-[#E9E9E9] p-6 font-supply-mono"
+        className="relative w-full max-w-md border border-[var(--spora-primary)] bg-[#E9E9E9] p-6 font-supply-mono"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -100,7 +100,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
               <img
                 src={avatarPreview}
                 alt="Avatar"
-                className="w-24 h-24 rounded-full object-cover border-2 border-[#262626]"
+                className="w-24 h-24 rounded-full object-cover border border-[var(--spora-primary)]"
               />
               <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera className="w-6 h-6 text-white" />
@@ -127,7 +127,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#262626]"
+              className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#262626]"
               maxLength={100}
             />
           </div>
@@ -141,7 +141,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               rows={3}
-              className="w-full border-2 border-[#262626] bg-white px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#262626]"
+              className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#262626]"
               maxLength={500}
             />
             <p className="text-[10px] opacity-70 mt-0.5">{bio.length}/500</p>

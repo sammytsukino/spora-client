@@ -44,7 +44,7 @@ export default function ConfirmModal({
       style={{ animation: 'fadeIn 0.2s ease-out' }}
     >
       <div 
-        className="bg-[var(--spora-primary-light)] border-2 border-[var(--spora-primary)] max-w-md w-[90%] px-6 py-5 shadow-[0_0_0_4px_var(--spora-primary)] transition-transform duration-300"
+        className="bg-[var(--spora-primary-light)] border border-[var(--spora-primary)] max-w-md w-[90%] px-6 py-5 shadow-[0_4px_24px_rgba(38,38,38,0.08)] transition-transform duration-300"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'slideUp 0.3s ease-out' }}
       >
@@ -57,14 +57,14 @@ export default function ConfirmModal({
         <div className="flex justify-end gap-3 font-supply-mono text-[11px] sm:text-xs">
           <button
             type="button"
-            className="px-4 py-2 border-2 border-[var(--spora-primary)] bg-[var(--spora-primary-light)] text-[var(--spora-primary)] uppercase tracking-[0.25em] hover:bg-[#f5f5f5] cursor-pointer"
+            className="px-4 py-2 border border-[var(--spora-primary)] bg-[var(--spora-primary-light)] text-[var(--spora-primary)] uppercase tracking-[0.25em] hover:bg-[#f5f5f5] cursor-pointer"
             onClick={onCancel}
           >
             {cancelLabel}
           </button>
           <button
             type="button"
-            className="px-4 py-2 border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
+            className="px-4 py-2 border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
             onClick={onConfirm}
           >
             {confirmLabel}

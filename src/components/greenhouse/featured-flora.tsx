@@ -8,7 +8,7 @@ interface FeaturedFloraProps {
 export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
   return (
     <section 
-      className="group bg-[var(--spora-primary-light)] p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 border-r-2 border-b-2 border-[var(--spora-primary)]"
+      className="group bg-[var(--spora-primary-light)] p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 border border-[var(--spora-primary)]"
       onClick={onClick}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -22,7 +22,7 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
         S-TIER // FEATURED
       </div>
       <div
-        className="w-full overflow-hidden mb-6 border-2 border-[var(--spora-primary)] relative"
+        className="w-full overflow-hidden mb-6 border border-[var(--spora-primary)] relative"
         style={{ aspectRatio: "4 / 5" }}
       >
         <div className="absolute inset-0 bg-[var(--spora-primary-light)] animate-pulse" />
@@ -55,7 +55,7 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
         <p className="font-supply-mono text-[11px] md:text-xs italic opacity-90 line-clamp-2 mb-3 text-[var(--spora-primary)]">
           "{flora.excerpt}"
         </p>
-        <div className="grid grid-cols-3 border-t-2 border-[var(--spora-primary)] pt-2 font-supply-mono text-[10px] md:text-xs text-[var(--spora-primary)]">
+        <div className="grid grid-cols-3 border-t border-[var(--spora-primary)] pt-2 font-supply-mono text-[10px] md:text-xs text-[var(--spora-primary)]">
           <span>ID: {flora.id}</span>
           <span>GEN: {flora.generation}</span>
           <span>SEED: {flora.seed}</span>

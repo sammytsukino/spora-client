@@ -30,7 +30,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
   const growth = metrics.growth;
   return (
     <section
-      className="border-2 border-[#262626] bg-[#E9E9E9] px-6 py-4"
+      className="border border-[var(--spora-primary)] bg-[#E9E9E9] px-6 py-4"
       aria-label="Admin metrics"
     >
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -50,7 +50,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
           <button
             type="button"
             onClick={onExportMetrics}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#262626] hover:bg-[#262626] hover:text-lime-300 font-supply-mono text-[10px] uppercase shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#262626] hover:bg-[#262626] hover:text-lime-300 font-supply-mono text-[10px] uppercase shrink-0"
           >
             <Download className="size-3.5" aria-hidden />
             Export metrics
@@ -58,7 +58,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
         )}
       </div>
       {growth && (
-        <div className="flex flex-wrap gap-6 pt-3 border-t-2 border-[#262626]/30 font-supply-mono text-[11px]">
+        <div className="flex flex-wrap gap-6 pt-3 border-t border-[var(--spora-primary)] font-supply-mono text-[11px]">
           <div className="flex items-center gap-2">
             <span className="uppercase opacity-80">Users (7d):</span>
             <span className="font-bold">{growth.usersLast7Days}</span>

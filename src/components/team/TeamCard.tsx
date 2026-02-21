@@ -6,9 +6,9 @@ interface TeamCardProps {
 
 export default function TeamCard({ member }: TeamCardProps) {
   return (
-    <article className="group bg-[#E9E9E9] p-6 md:p-8 flex flex-col border-2 border-[#262626] hover:bg-lime-300 transition-colors duration-200">
+    <article className="group bg-[#E9E9E9] p-6 md:p-8 flex flex-col border border-[var(--spora-primary)] hover:bg-lime-300 transition-colors duration-200">
       {member.image && (
-        <div className="w-full aspect-square mb-6 border-2 border-[#262626] overflow-hidden">
+        <div className="w-full aspect-square mb-6 border border-[var(--spora-primary)] overflow-hidden">
           <img
             src={member.image}
             alt={member.name}

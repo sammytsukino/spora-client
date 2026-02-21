@@ -240,7 +240,7 @@ export default function NavbarBase({
                   </button>
                   {menuOpen && (
                     <div
-                      className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] border-2 font-supply-mono text-xs uppercase tracking-wider ${
+                      className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] border font-supply-mono text-xs uppercase tracking-wider ${
                         isDark
                           ? "bg-[var(--spora-primary)] border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)]"
                           : "bg-[#E9E9E9] border-[#262626] text-[#262626]"

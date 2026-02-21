@@ -26,7 +26,7 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="w-full max-w-[520px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border-2 border-[#262626]">
+    <div className="w-full max-w-[520px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border border-[var(--spora-primary)]">
         <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold text-center mb-2 font-bizud-mincho-bold">
           Enter SPORA
         </h1>
@@ -51,7 +51,7 @@ export default function SignInForm() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder=""
-              className="w-full px-4 py-3 border-2 border-[#262626] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
+              className="w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:border-[var(--spora-primary)] font-supply-mono"
               required
             />
           </div>
@@ -65,14 +65,14 @@ export default function SignInForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder=""
-              className="w-full px-4 py-3 border-2 border-[#262626] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
+              className="w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:border-[var(--spora-primary)] font-supply-mono"
               required
             />
           </div>
 
           <MainButton
             type="submit"
-            className="w-full h-11 sm:h-12 border-2 border-[#262626]"
+            className="w-full h-11 sm:h-12 border border-[#262626]"
             disabled={isSubmitting}
           >
             {isSubmitting ? "LOGGING IN..." : "LOGIN"}

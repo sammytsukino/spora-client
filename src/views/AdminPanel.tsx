@@ -97,7 +97,7 @@ export default function AdminPanel() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 border-2 border-red-600 bg-red-50 font-supply-mono text-xs">
+          <div className="mb-6 p-4 border border-red-600 bg-red-50 font-supply-mono text-xs">
             {error}
             <button
               type="button"

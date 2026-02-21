@@ -97,7 +97,7 @@ export default function Laboratory() {
         }}
       />
 
-      <aside className="relative w-full bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] border-b-2 md:border-b-0 md:border-r-2 border-[var(--spora-primary)] z-20 md:fixed md:top-0 md:left-0 md:bottom-0 md:w-[20vw] md:min-w-[260px] md:max-w-sm">
+      <aside className="relative w-full bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] border-b md:border-b-0 md:border-r border-[var(--spora-primary)] z-20 md:fixed md:top-0 md:left-0 md:bottom-0 md:w-[20vw] md:min-w-[260px] md:max-w-sm">
         <div
           ref={sidebarRef}
           className="flex flex-col md:h-full md:lab-scroll"
@@ -141,7 +141,7 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 TITLE
               </h2>
-              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary-lighter)] transition-colors duration-200 focus-within:border-[var(--spora-accent-secondary)]">
+              <div className="border border-[var(--spora-primary)] bg-[var(--spora-primary-lighter)] transition-colors duration-200 focus-within:border-[var(--spora-accent-secondary)]">
                 <input
                   type="text"
                   value={title}
@@ -168,7 +168,7 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 TWEAKS
               </h2>
-              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)]">
+              <div className="border border-[var(--spora-primary)] bg-[var(--spora-primary)]">
                 <textarea
                   value={tweaks}
                   onChange={(e) => setTweaks(e.target.value)}
@@ -182,7 +182,7 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 STATS
               </h2>
-              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-lighter)] font-supply-mono text-[10px] sm:text-xs px-3 py-2 space-y-1">
+              <div className="border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-lighter)] font-supply-mono text-[10px] sm:text-xs px-3 py-2 space-y-1">
                 <p>WORDS: <span className="text-stone-300">{wordCount}</span></p>
                 <p>CHARS: <span className="text-stone-300">{inputText.length}</span></p>
                 <p>LINES: <span className="text-stone-300">{lineCount}</span></p>
@@ -195,7 +195,7 @@ export default function Laboratory() {
               <h2 className="font-supply-mono text-xs uppercase tracking-[0.3em] mb-2">
                 RENDER CONTROLS
               </h2>
-              <div className="border-2 border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[10px] sm:text-xs px-3 py-3 space-y-3">
+              <div className="border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[10px] sm:text-xs px-3 py-3 space-y-3">
                 <label className="flex items-center justify-between gap-2 cursor-pointer">
                   <span>High contrast</span>
                   <input
@@ -225,7 +225,7 @@ export default function Laboratory() {
                 </label>
                 <button
                   type="button"
-                  className="w-full mt-1 border-2 border-[var(--spora-primary-lighter)] text-[var(--spora-primary-lighter)] py-1.5 hover:bg-[var(--spora-primary-lighter)] hover:text-[var(--spora-primary)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--spora-primary-lighter)]"
+                  className="w-full mt-1 border border-[var(--spora-primary-lighter)] text-[var(--spora-primary-lighter)] py-1.5 hover:bg-[var(--spora-primary-lighter)] hover:text-[var(--spora-primary)] transition-colors focus-visible:ring-2 focus-visible:ring-[var(--spora-primary-lighter)]"
                   onClick={() =>
                     setSeed(
                       Math.random().toString(16).substr(2, 6).toUpperCase()
@@ -238,10 +238,10 @@ export default function Laboratory() {
             </section>
           </div>
 
-          <div className="p-4 sm:p-5 md:p-6 flex gap-2 border-t-2 border-[var(--spora-primary)] mt-2 sm:mt-3">
+          <div className="p-4 sm:p-5 md:p-6 flex gap-2 border-t border-[var(--spora-primary)] mt-2 sm:mt-3">
             <button
               type="button"
-              className="flex-1 py-4 sm:py-5 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)]"
+              className="flex-1 py-4 sm:py-5 bg-[var(--spora-primary)] text-[var(--spora-text-secondary)] font-supply-mono text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase border border-[var(--spora-primary)] hover:bg-[#1c1c1c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-text-secondary)]"
               disabled={isGenerating || inputText.trim().length < 10}
               onClick={() => handleGenerate("/greenhouse")}
             >
@@ -249,7 +249,7 @@ export default function Laboratory() {
             </button>
             <button
               type="button"
-              className="flex-1 py-4 sm:py-5 bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] font-supply-mono text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase border-2 border-[var(--spora-primary)] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)]"
+              className="flex-1 py-4 sm:py-5 bg-[var(--spora-primary-lighter)] text-[var(--spora-primary)] font-supply-mono text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase border border-[var(--spora-primary)] hover:bg-[#f5f5f5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)]"
               onClick={() => handleGenerate("/garden")}
               disabled={isGenerating || inputText.trim().length < 10}
             >
@@ -292,17 +292,17 @@ export default function Laboratory() {
             <img
               src={generatedFlora}
               alt="Generated Flora"
-              className="max-h-[52vh] sm:max-h-[60vh] md:max-h-[70vh] w-auto border-2 border-[#262626] shadow-[0_0_0_4px_#e3e3e3]"
+              className="max-h-[52vh] sm:max-h-[60vh] md:max-h-[70vh] w-auto border border-[var(--spora-primary)] shadow-[0_4px_24px_var(--spora-primary)]"
             />
           ) : (
-            <div className="border-2 border-[#e3e3e3] bg-black backdrop-blur-sm px-6 py-4 font-supply-mono text-xs text-stone-200">
+            <div className="border border-[var(--spora-primary)] bg-black backdrop-blur-sm px-6 py-4 font-supply-mono text-xs text-stone-200">
               TYPE YOUR WORDS ON THE LEFT AND PUBLISH BLOSSOMING TO GROW A NEW
               FLORA.
             </div>
           )}
         </div>
 
-        <div className="relative md:absolute md:bottom-6 md:right-6 bg-[#e3e3e3] border-2 border-[#262626] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626] mx-5 sm:mx-6 md:mx-0 mb-6 md:mb-0">
+        <div className="relative md:absolute md:bottom-6 md:right-6 bg-[#e3e3e3] border border-[var(--spora-primary)] px-4 py-3 font-supply-mono text-[10px] sm:text-xs text-[#262626] mx-5 sm:mx-6 md:mx-0 mb-6 md:mb-0">
           <p>SOIL: LAB/ALPHA</p>
           <p>SENTIMENT: PENDING</p>
           <p>GEN: {generatedFlora ? `GEN_${generation}` : "—"}</p>

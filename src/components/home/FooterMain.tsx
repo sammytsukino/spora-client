@@ -44,7 +44,7 @@ export default function FooterMain() {
         </div>
 
         <div className="flex-1 flex flex-col items-end justify-center ml-4 sm:ml-8">
-          <div className="w-1/2 border-t-2 border-[var(--spora-primary)]" />
+          <div className="w-1/2 border-t border-[var(--spora-primary)]" />
         </div>
       </div>
 

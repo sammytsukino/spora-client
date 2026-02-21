@@ -8,7 +8,7 @@ interface GreenhouseFloraCardProps {
 export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraCardProps) {
   return (
     <article
-      className="group bg-[var(--spora-primary-light)] p-4 md:p-5 flex flex-col relative transition-colors duration-200 cursor-pointer hover:bg-[var(--spora-accent-secondary)] border-r-2 border-b-2 border-[var(--spora-primary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
+      className="group bg-[var(--spora-primary-light)] p-4 md:p-5 flex flex-col relative transition-colors duration-200 cursor-pointer hover:bg-[var(--spora-accent-secondary)] border border-[var(--spora-primary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
       onClick={onClick}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -20,12 +20,12 @@ export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraC
     >
       <div className="flex justify-between items-start mb-4">
         <span className="font-supply-mono text-[10px]">{flora.id}</span>
-        <span className="font-supply-mono text-[9px] border-2 border-[var(--spora-primary)] px-1.5 py-0.5 uppercase">
+        <span className="font-supply-mono text-[9px] border border-[var(--spora-primary)] px-1.5 py-0.5 uppercase">
           {flora.generation}
         </span>
       </div>
       <div
-        className="mb-3 overflow-hidden border-2 border-[var(--spora-primary)] relative"
+        className="mb-3 overflow-hidden border border-[var(--spora-primary)] relative"
         style={{ aspectRatio: "4 / 5" }}
       >
         <div className="absolute inset-0 bg-[var(--spora-primary-light)] animate-pulse" />

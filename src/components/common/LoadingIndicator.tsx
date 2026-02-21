@@ -16,7 +16,7 @@ export default function LoadingIndicator({
       <div className="inline-flex flex-col items-center gap-3 font-supply-mono text-xs text-[var(--spora-primary)]">
         <div className="flex items-center gap-2">
           <div className="relative w-8 h-8">
-            <div className="absolute inset-0 border-2 border-[var(--spora-primary)] border-t-transparent rounded-full animate-spin" />
+            <div className="absolute inset-0 border border-[var(--spora-primary)] border-t-transparent rounded-full animate-spin" />
           </div>
           <span className="uppercase tracking-[0.2em]">{message}</span>
         </div>

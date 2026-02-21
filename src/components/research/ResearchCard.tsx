@@ -12,7 +12,7 @@ export default function ResearchCard({ project }: ResearchCardProps) {
   };
 
   return (
-    <article className="group bg-[#E9E9E9] p-6 flex flex-col border-2 border-[#262626] hover:bg-lime-300 transition-colors duration-200">
+    <article className="group bg-[#E9E9E9] p-6 flex flex-col border border-[var(--spora-primary)] hover:bg-lime-300 transition-colors duration-200">
       <div className="flex justify-between items-start mb-4">
         <span className="font-supply-mono text-xs opacity-75">{project.id}</span>
         <span className={`font-supply-mono text-[10px] px-2 py-1 uppercase ${statusColors[project.status]}`}>
