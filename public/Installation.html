@@ -655,6 +655,7 @@
                 <div id="txtInpContainer">
                     <div id="baseTextDisplay"></div>
                     <div id="newTextInput" contenteditable="true"
+                        onpaste="pastePlainText(event)"
                         oninput="triggerRegen(); updateCharCount(); updateHUD();"
                         data-placeholder="Plant your seeds here..."
                         style="white-space: pre-wrap; word-wrap: break-word;">Add your text below. Replace this placeholder with your writing.</div>
@@ -1308,10 +1309,15 @@
                     const cMaskB = pickFromPool(family.mask, getSeed(text, 1));
                     const cBgA = pickFromPool(family.bg, getSeed(text, 2));
                     const cBgB = pickFromPool(family.bgB, getSeed(text, 3));
+                    const _sr4 = getSeed(text, 8), _sr5 = getSeed(text, 9);
+                    const _bgF = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + _sr4 * 0.5;
+                    const _bgM = _bgF > 0.66 ? "gradient" : _bgF > 0.33 ? "gradient-radial" : "solid";
+                    const _bgA = [0, 45, 90, 135, 180, 225, 270, 315][Math.floor((morph.asciiAngle / 45 + _sr5 * 2) % 8)];
                     const dynamicProfile = {
                         ...literalProfile,
                         dominantMood: blendedMood,
-                        colors: { maskA: cMaskA, maskB: cMaskB, stem: "#00FF00", bgA: cBgA, bgB: cBgB, auto: true }
+                        colors: { maskA: cMaskA, maskB: cMaskB, stem: "#00FF00", bgA: cBgA, bgB: cBgB, auto: true },
+                        background: { mode: _bgM, angle: _bgA }
                     };
                     currentLabState = dynamicProfile;
                     lastUsedSet = dynamicProfile.flowerSet;
@@ -1324,6 +1330,9 @@
                     const weightB = newText.length / Math.max(1, baseText.length + newText.length);
                     const blended = blendMoodProfiles(moodProfiles[effectiveBaseMood], moodProfiles[newMood], weightB);
                     blended.dominantMood = effectiveBaseMood + "+" + newMood;
+                    const _sr4 = getSeed(text, 8), _sr5 = getSeed(text, 9);
+                    const _bgF = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + _sr4 * 0.5;
+                    blended.background = { mode: _bgF > 0.66 ? "gradient" : _bgF > 0.33 ? "gradient-radial" : "solid", angle: [0, 45, 90, 135, 180, 225, 270, 315][Math.floor((morph.asciiAngle / 45 + _sr5 * 2) % 8)] };
                     currentMorph = { ...morph, dominantMood: blended.dominantMood };
                     currentLabState = blended;
                     lastUsedSet = blended.flowerSet;
@@ -1415,7 +1424,8 @@
                         bgA: cBgA,
                         bgB: cBgB,
                         auto: true
-                    }
+                    },
+                    background: { mode: bgMode, angle: bgAngle }
                 };
             } else {
                 dynamicProfile = {
@@ -1700,6 +1710,31 @@
             return baseText + newText;
         }
 
+        function pastePlainText(e) {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData).getData("text/plain") || "";
+            if (document.execCommand("insertText", false, text)) {
+                triggerRegen();
+                updateCharCount();
+                updateHUD();
+            } else {
+                const sel = window.getSelection();
+                if (sel && sel.rangeCount) {
+                    const range = sel.getRangeAt(0);
+                    range.deleteContents();
+                    const node = document.createTextNode(text);
+                    range.insertNode(node);
+                    range.setStartAfter(node);
+                    range.setEndAfter(node);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                    triggerRegen();
+                    updateCharCount();
+                    updateHUD();
+                }
+            }
+        }
+
         function generateGarden() {
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
@@ -1709,9 +1744,8 @@
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
             document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
 
-            // Bloom count: more chars → more blooms; big bloom + small char → fewer blooms; small bloom + big char → more blooms.
-            // Chars per bloom ∝ scale/fontSize (scale up or font down → each bloom "holds" more chars → fewer blooms).
-            const charsPerBloom = 12000 * (sS / max(bS, 10));
+
+            const charsPerBloom = 600 * (sS / max(bS, 10));
             const count = constrain(ceil(txt.length / charsPerBloom), 2, 20);
 
             const words = txt.split(/\s+/);
@@ -1884,7 +1918,7 @@
                 s.innerText = "ADD TITLE";
                 return;
             }
-            if (!state.text || state.text.trim().length < 10) {
+            if (!state.text || state.text.trim().length < 5) {
                 s.innerText = "ADD MORE TEXT";
                 return;
             }
