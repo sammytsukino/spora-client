@@ -1696,6 +1696,7 @@
             const newTextInput = document.getElementById("newTextInput");
             const baseText = baseTextDisplay ? baseTextDisplay.textContent : "";
             const newText = newTextInput ? newTextInput.textContent : "";
+            if (baseText && newText) return baseText + "\n" + newText;
             return baseText + newText;
         }
 
