@@ -46,7 +46,7 @@ export default function SignUpForm() {
         password,
       })
       navigate("/garden")
-    } catch (err) {
+    } catch {
       setError("Could not create account. Try again.")
     } finally {
       setIsSubmitting(false)

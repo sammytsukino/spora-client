@@ -1,11 +1,3 @@
-/** @paper-design/shaders-react@0.0.71 */
-
-
-/**
- * from Paper
- * https://app.paper.design/file/01KGPT4ZY9MCZ73NJPPTJHRRW7?node=01KGPT661B4X650ST1N5YCWEFW
- * on Feb 5, 2026
- */
 export default function MeshGradient() {
   return (
     <video

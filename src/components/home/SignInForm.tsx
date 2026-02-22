@@ -18,7 +18,7 @@ export default function SignInForm() {
     try {
       await signIn(username, password)
       navigate("/garden")
-    } catch (err) {
+    } catch {
       setError("Invalid credentials or server error.")
     } finally {
       setIsSubmitting(false)

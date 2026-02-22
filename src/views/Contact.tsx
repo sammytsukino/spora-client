@@ -15,7 +15,6 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // TODO: wire up to backend / email service
     setTimeout(() => setIsSubmitting(false), 1000);
   };
 

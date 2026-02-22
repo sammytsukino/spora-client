@@ -143,7 +143,7 @@ export function useAdminPanel() {
         results.map((r) => (r.status === "fulfilled" ? r.value : null));
 
       const errs = results
-        .map((r, i) => (r.status === "rejected" ? r.reason : null))
+        .map((r) => (r.status === "rejected" ? r.reason : null))
         .filter(Boolean);
       if (errs.length > 0) {
         const firstErr = errs[0] as Error & { response?: { status?: number } };

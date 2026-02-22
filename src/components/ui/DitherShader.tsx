@@ -6,43 +6,25 @@ type DitheringMode = "bayer" | "halftone" | "noise" | "crosshatch";
 type ColorMode = "original" | "grayscale" | "duotone" | "custom";
 
 interface DitherShaderProps {
-  /** Source image URL */
   src: string;
-  /** Size of the dithering grid cells */
   gridSize?: number;
-  /** Type of dithering pattern */
   ditherMode?: DitheringMode;
-  /** Color processing mode */
   colorMode?: ColorMode;
-  /** Invert the dithered output colors */
   invert?: boolean;
-  /** Pixelation multiplier (1 = no pixelation, higher = more pixelated) */
   pixelRatio?: number;
-  /** Primary color for duotone mode */
   primaryColor?: string;
-  /** Secondary color for duotone mode */
   secondaryColor?: string;
-  /** Custom color palette array for custom mode */
   customPalette?: string[];
-  /** Brightness adjustment (-1 to 1) */
   brightness?: number;
-  /** Contrast adjustment (0 to 2, 1 = normal) */
   contrast?: number;
-  /** Background color behind the dithered image */
   backgroundColor?: string;
-  /** Object fit behavior */
   objectFit?: "cover" | "contain" | "fill" | "none";
-  /** Threshold bias for dithering (0 to 1) */
   threshold?: number;
-  /** Enable animation effect */
   animated?: boolean;
-  /** Animation speed (lower = slower) */
   animationSpeed?: number;
-  /** Additional CSS classes for the container (use this to set size via Tailwind) */
   className?: string;
 }
 
-// 4x4 Bayer matrix for ordered dithering
 const BAYER_MATRIX_4x4 = [
   [0, 8, 2, 10],
   [12, 4, 14, 6],
@@ -50,7 +32,6 @@ const BAYER_MATRIX_4x4 = [
   [15, 7, 13, 5],
 ];
 
-// 8x8 Bayer matrix for finer dithering
 const BAYER_MATRIX_8x8 = [
   [0, 32, 8, 40, 2, 34, 10, 42],
   [48, 16, 56, 24, 50, 18, 58, 26],

@@ -44,7 +44,6 @@ export default function Router() {
         <Route path="/garden" element={<Garden />} />
         <Route path="/greenhouse" element={<Greenhouse />} />
         <Route path="/flora/:id" element={<FloraDetail />} />
-      {/*  <Route path="/laboratory" element={<Laboratory />} />*/}
         <Route path="/grow" element={<LabFullUnlock />} />
         <Route path="/laboratory/full" element={<LabFullRoute><Installation fullLab /></LabFullRoute>} />
         <Route path="/laboratory" element={<ProtectedRoute><Installation /></ProtectedRoute>} />

@@ -20,7 +20,9 @@ export default function Installation({ fullLab = false }: InstallationProps) {
     const send = () => {
       try {
         iframe.contentWindow?.postMessage({ type: "SPORA_LOAD_FLORA", floraId }, "*");
-      } catch {}
+      } catch {
+        void 0;
+      }
     };
     iframe.addEventListener("load", send);
     send();

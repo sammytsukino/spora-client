@@ -2,8 +2,6 @@ import FooterAlter from "@/components/home/FooterAlter";
 import SignUpForm from "@/components/home/SignUpForm";
 import TransparentNavbar from "@/components/home/TransparentNavbar";
 import Section from "@/components/Section";
-//import Grainient from "@/components/Grainient";
-
 
 export default function SignUp() {
   return (
@@ -15,23 +13,6 @@ export default function SignUp() {
         containerized={false}
         className="relative flex flex-col justify-between"
       >
-        {/* Fondo anterior en vídeo, comentado temporalmente */}
-        {/*
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="fixed inset-0 w-full h-full object-cover z-0"
-        >
-          <source
-            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770048737/BACKGROUND-COLORS_pm0nlf.mp4"
-            type="video/mp4"
-          />
-        </video>
-        */}
-
-
         <div className="fixed inset-0 w-full h-full z-0">
           <video
             autoPlay

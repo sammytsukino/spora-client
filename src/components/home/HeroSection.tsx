@@ -1,5 +1,4 @@
 import CyclingLogo from './CyclingLogo';
-//import Grainient from '@/components/Grainient';
 import { sporaLogos } from '@/data/logo-data';
 
 

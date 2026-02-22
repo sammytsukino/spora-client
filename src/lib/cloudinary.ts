@@ -1,8 +1,3 @@
-/**
- * Returns a Cloudinary URL optimized for small display (marquees, thumbnails).
- * Reduces payload and GPU load by requesting a resized image from Cloudinary.
- * Non-Cloudinary URLs are returned unchanged.
- */
 export function getOptimizedThumbnailUrl(
   url: string | undefined,
   width = 200,

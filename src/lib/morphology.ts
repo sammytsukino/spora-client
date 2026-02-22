@@ -9,9 +9,6 @@ export interface MorphologyResult {
   avgLengthDelta: number;
 }
 
-/**
- * Extracts morphology metrics from text (mirrors Installation.html HUD logic).
- */
 export function extractMorphology(text: string | null | undefined): MorphologyResult | null {
   if (!text || text.trim() === "") return null;
 

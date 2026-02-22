@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import { useRef, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import {
   motion,
@@ -33,7 +33,7 @@ interface SimpleMarqueeProps {
   slowDownSpringConfig?: SpringOptions
 }
 
-const MarqueeItem = ({ children }: { children: React.ReactNode }) => (
+const MarqueeItem = ({ children }: { children: ReactNode }) => (
   <div className="mx-2 sm:mx-3 md:mx-4 hover:scale-105 cursor-pointer duration-300 ease-in-out">
     {children}
   </div>

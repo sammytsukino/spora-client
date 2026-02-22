@@ -8,10 +8,6 @@ interface LabFullRouteProps {
   children: React.ReactNode;
 }
 
-/**
- * Lab Full: admins always; cultivators only when coming from /grow (?from=grow).
- * No localStorage. Session-only flag so we can strip ?from=grow and not redirect; cleared on leave so refresh/direct /laboratory/full → normal lab.
- */
 export default function LabFullRoute({ children }: LabFullRouteProps) {
   const location = useLocation();
   const navigate = useNavigate();
