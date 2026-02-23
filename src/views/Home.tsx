@@ -59,7 +59,7 @@ export default function Home() {
       </Section>
 
       <Section
-        variant="medium"
+        variant="large"
         containerized={false}
         className="bg-[var(--spora-primary)] items-stretch"
       >

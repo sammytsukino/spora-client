@@ -18,26 +18,26 @@ export default function VideoTextSection() {
 
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-start px-6 md:px-10 lg:px-16 py-8 md:py-12 space-y-6">
         <div className="space-y-4 md:space-y-6">
-          <p className="text-stone-200 font-bizud-mincho-bold text-xs md:text-sm lg:text-base leading-relaxed">
+          <p className="text-stone-200 font-bizud-mincho-bold text-xs md:text-xs lg:text-base leading-relaxed">
             <span className="font-bold">flo·ra</span> | /ˈflɔːrə/ | <span className="italic">noun</span>
           </p>
 
           
 
           <div className="space-y-3 md:space-y-4 text-left wrap-break-word">
-            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-sm leading-relaxed">
+            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-xs leading-relaxed">
               <span className="font-bold">1.</span> The collective plant life of a particular region, habitat, or geological period. "the flora of the rainforest includes thousands of species"
             </p>
 
-            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-sm leading-relaxed">
+            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-xs leading-relaxed">
               <span className="font-bold">2.</span> A systematic treatise or catalog describing the plants of a region.
             </p>
 
-            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-sm leading-relaxed">
+            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-xs leading-relaxed">
               <span className="font-bold">3.</span> [SPORA] The fundamental content unit on the platform: full text, genealogical Lineage, and generated visual creation. The central organism of the ecosystem.
             </p>
 
-            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-sm leading-relaxed mt-3">
+            <p className="text-stone-200 font-supply-mono text-[10px] md:text-xs lg:text-xs leading-relaxed mt-3">
               Each Flora contains the complete textual DNA of its Lineage and blooms into an unrepeatable visual form.
             </p>
 

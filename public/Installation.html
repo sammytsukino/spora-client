@@ -1770,15 +1770,18 @@
             let chunks = [];
             if (words.length < count) for (let i = 0; i < count; i++) chunks.push(txt.split(""));
             else { let wPF = ceil(words.length / count); for (let i = 0; i < count; i++) chunks.push(words.slice(i * wPF, (i + 1) * wPF).join(" ").split("")); }
+            chunks = chunks.filter(c => c.length > 0);
+            if (chunks.length === 0) return;
+            const bloomCount = chunks.length;
             const maxW = min(width, 1400);
-            for (let i = 0; i < count; i++) {
+            for (let i = 0; i < bloomCount; i++) {
                 let best = null, att = 0;
                 while (!best && att++ < 100) {
                     const sc = eS * random(0.9, 1.1), rad = (BASE_SIZE * sc) / 2 + 5, spr = maxW * map(eS, 0.5, 2.5, 0.35, 0.5);
-                    const tx = width / 2 + random(-spr, spr), ty = height - height * random(0.15, map(i / (count - 1 || 1), 0, 1, 0.4, 0.85));
+                    const tx = width / 2 + random(-spr, spr), ty = height - height * random(0.15, map(i / (bloomCount - 1 || 1), 0, 1, 0.4, 0.85));
                     if (flowers.some(f => dist(tx, ty, f.tx, f.ty) < rad + f.radius)) continue;
                     const img = random(imgs), fz = bS * random(0.9, 1.1), data = processImage(img, fz, sc, oW);
-                    best = { x: width / 2, tx, ty, h: height - ty, bend: random(-100, 100), chars: chunks[i] || chunks[0], points: data.points, graphic: data.pg, graphicOutline: data.pgOutline, source: img, fontSize: fz, radius: rad, relScale: sc / sS, relFont: fz / bS };
+                    best = { x: width / 2, tx, ty, h: height - ty, bend: random(-100, 100), chars: chunks[i], points: data.points, graphic: data.pg, graphicOutline: data.pgOutline, source: img, fontSize: fz, radius: rad, relScale: sc / sS, relFont: fz / bS };
                 }
                 if (best) flowers.push(best);
             }
