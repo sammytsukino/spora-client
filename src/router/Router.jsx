@@ -20,6 +20,7 @@ import Background from "../views/Background";
 import FloraDetail from "../views/FloraDetail";
 import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/ScrollToTop";
+import AccentColorOnRouteChange from "../components/common/AccentColorOnRouteChange";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
 
@@ -37,6 +38,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <ClearLabFullSessionOnLeave />
+      <AccentColorOnRouteChange />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />

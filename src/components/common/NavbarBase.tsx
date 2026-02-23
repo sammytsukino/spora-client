@@ -121,7 +121,7 @@ export default function NavbarBase({
           className="absolute inset-0 -z-10 transition-opacity duration-500 ease-in-out"
           style={{
             opacity: hasScrolled ? 1 : 0,
-            background: "oklch(89.7% 0.196 126.665)",
+            background: "var(--spora-accent-secondary)",
             borderBottom: "2px solid var(--spora-primary)",
           }}
         />
@@ -313,7 +313,7 @@ export default function NavbarBase({
             className="h-full transition-all duration-150 ease-out"
             style={{
               width: `${scrollProgress}%`,
-              backgroundColor: isDark ? "#bbf451" : "oklch(65.6% 0.241 354.308)",
+              backgroundColor: isDark ? "var(--spora-accent-secondary)" : "oklch(65.6% 0.241 354.308)",
             }}
           />
         </div>

@@ -441,7 +441,7 @@ export function MarqueeBackground({
         baseVelocity={3}
         slowdownOnHover={true}
         draggable={true}
-        repeat={5}
+        repeat={3}
         dragSensitivity={0.1}
         viewBox="0 -160 2500 1100"
         width="100%"

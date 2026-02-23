@@ -306,7 +306,7 @@ export default function FloraDetail() {
                   const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
                   window.open(url, "_blank", "noopener,noreferrer");
                 }}
-                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border border-[#262626] hover:bg-[#bbf451] hover:text-[#262626] hover:border-[#bbf451] transition-colors cursor-pointer"
+                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border border-[#262626] hover:bg-[var(--spora-accent-secondary)] hover:text-[#262626] hover:border-[var(--spora-accent-secondary)] transition-colors cursor-pointer"
               >
                 <span className="text-xs sm:text-sm uppercase tracking-widest">
                   Open in Laboratory
