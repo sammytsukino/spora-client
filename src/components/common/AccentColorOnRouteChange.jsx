@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const ACCENT_COLORS = [
-  "#bbf451", // lima (original)
-  "#B1E200",
-  "#DE00EA",
+  "#bbf451",
+  "#F97EFF",
   "#E8D700",
-  "#00E000",
-  "#00C0ED",
-  "#7A00EF",
+  "#8FFF8F",
+  "#63E2FF",
+  "#C282FF",
 ];
 
 function getRandomAccentColor() {
