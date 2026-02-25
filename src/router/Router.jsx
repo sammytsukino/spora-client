@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Home from "../views/Home";
 import Installation from "../views/Installation";
-import ProtectedRoute from "../components/common/ProtectedRoute";
-import GuestRoute from "../components/common/GuestRoute";
-import LabFullRoute from "../components/common/LabFullRoute";
+import ProtectedRoute from "../components/shared/ProtectedRoute";
+import GuestRoute from "../components/shared/GuestRoute";
+import LabFullRoute from "../components/shared/LabFullRoute";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
 import Laboratory from "../views/Laboratory";
@@ -19,8 +19,8 @@ import AdminPanel from "../views/AdminPanel";
 import Background from "../views/Background";
 import FloraDetail from "../views/FloraDetail";
 import LabFullUnlock from "../views/LabFullUnlock";
-import ScrollToTop from "../components/ScrollToTop";
-import AccentColorOnRouteChange from "../components/common/AccentColorOnRouteChange";
+import ScrollToTop from "../components/layout/ScrollToTop";
+import AccentColorOnRouteChange from "../components/shared/AccentColorOnRouteChange";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
 

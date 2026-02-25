@@ -1,7 +1,7 @@
-import FooterAlter from "@/components/home/FooterAlter";
+import FooterAlter from "@/components/layout/FooterAlter";
 import SignUpForm from "@/components/home/SignUpForm";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import Section from "@/components/Section";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import Section from "@/components/layout/Section";
 
 export default function SignUp() {
   return (

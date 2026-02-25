@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import LaboratoryNavbar from "@/components/laboratory/LaboratoryNavbar";
-import Grainient from "@/components/Grainient";
+import Grainient from "@/components/laboratory/Grainient";
 import { floraImages } from "@/data/flora-data";
 import TextInput from "@/components/laboratory/TextInput";
-import CyclingLogo from "@/components/home/CyclingLogo";
-import ConfirmModal from "@/components/common/ConfirmModal";
+import CyclingLogo from "@/components/layout/CyclingLogo";
+import ConfirmModal from "@/components/shared/ConfirmModal";
 
 const LAB_COLOR1 = ["#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3", "#e3e3e3"] as const;
 const LAB_COLOR2 = ["#dd4aff", "#dd4aff", "#00dcff", "#f4ef40", "#ff64ff", "#52ff5a"] as const;

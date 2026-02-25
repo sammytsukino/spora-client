@@ -1,4 +1,4 @@
-import FloraCardBase from '@/components/common/FloraCardBase';
+import FloraCardBase from '@/components/shared/FloraCardBase';
 
 interface FloraCardProps {
   id: string;

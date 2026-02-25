@@ -1,8 +1,8 @@
 import { useState } from "react";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import FooterAlter from "@/components/home/FooterAlter";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import FooterAlter from "@/components/layout/FooterAlter";
 import MainButton from "@/components/ui/MainButton";
-import Section from "@/components/Section";
+import Section from "@/components/layout/Section";
 import { Mail, X, Instagram } from "lucide-react";
 
 export default function Contact() {

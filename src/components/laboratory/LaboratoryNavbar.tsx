@@ -1,4 +1,4 @@
-import NavbarBase from "@/components/common/NavbarBase";
+import NavbarBase from "@/components/layout/NavbarBase";
 
 type NavTarget = "/garden" | "/greenhouse" | "/laboratory";
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import TeamFooter from "@/components/team/TeamFooter";
 import Lanyard from "@/components/laboratory/Lanyard";
 

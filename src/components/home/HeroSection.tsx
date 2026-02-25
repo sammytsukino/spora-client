@@ -1,4 +1,4 @@
-import CyclingLogo from './CyclingLogo';
+import CyclingLogo from '@/components/layout/CyclingLogo';
 import { sporaLogos } from '@/data/logo-data';
 
 

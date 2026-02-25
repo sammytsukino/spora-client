@@ -1,4 +1,4 @@
-export const ACCENT_COLOR_CYCLING_ENABLED = true;
+export const ACCENT_COLOR_CYCLING_ENABLED = false;
 
 const ACCENT_HUE_SPEED = 30;
 const ACCENT_HUE_RANGE: [number, number] = [60, 180];

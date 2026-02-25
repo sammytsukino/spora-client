@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Flag, X } from "lucide-react";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import FooterAlter from "@/components/home/FooterAlter";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import FooterAlter from "@/components/layout/FooterAlter";
 import { floraImages } from "@/data/flora-data";
 import { getFlora, type ApiFlora } from "@/lib/floras";
 import { extractMorphology } from "@/lib/morphology";

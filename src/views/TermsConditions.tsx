@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import FooterAlter from "@/components/home/FooterAlter";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import FooterAlter from "@/components/layout/FooterAlter";
 import PageTitle from "@/components/ui/PageTitle";
-import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/Bubble";
+import { BubbleBackground } from "@/components/backgrounds/BubbleBackground";
 
 const termsBubbleColors = {
   first: "180,210,170",

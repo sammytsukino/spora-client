@@ -1,5 +1,5 @@
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import FooterAlter from "@/components/home/FooterAlter";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import FooterAlter from "@/components/layout/FooterAlter";
 import PageTitle from "@/components/ui/PageTitle";
 
 export default function Licensing() {

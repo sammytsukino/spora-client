@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import FooterAlter from "@/components/home/FooterAlter";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import FooterAlter from "@/components/layout/FooterAlter";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileMetrics from "@/components/profile/ProfileMetrics";
 import ProfileSocial from "@/components/profile/ProfileSocial";
 import ProfileDangerZone from "@/components/profile/ProfileDangerZone";
 import ProfileEditModal from "@/components/profile/ProfileEditModal";
-import FilterTabs from "@/components/common/FilterTabs";
-import FloraCard from "@/components/garden/FloraCard";
+import FilterTabs from "@/components/shared/FilterTabs";
+import FloraCard from "@/components/flora/FloraCard";
 import {
   profileGalleryFilters,
   defaultProfileUser,

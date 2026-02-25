@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { isLabFullAccessible } from "@/lib/auth"
-import CyclingLogo from "./CyclingLogo"
+import CyclingLogo from "@/components/layout/CyclingLogo"
 
 export default function FooterMain() {
   const navigate = useNavigate()
@@ -105,4 +105,3 @@ export default function FooterMain() {
     </footer>
   )
 }
-

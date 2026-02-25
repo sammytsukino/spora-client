@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, User, LogOut, FileText, Shield } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
-import CyclingLogo from "@/components/home/CyclingLogo";
+import CyclingLogo from "@/components/layout/CyclingLogo";
 import { getStoredToken, clearSession, isLabFullAccessible, getStoredUser } from "@/lib/auth";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";

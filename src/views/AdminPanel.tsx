@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import TransparentNavbar from "@/components/home/TransparentNavbar";
-import FooterAlter from "@/components/home/FooterAlter";
-import FilterTabs from "@/components/common/FilterTabs";
+import TransparentNavbar from "@/components/layout/TransparentNavbar";
+import FooterAlter from "@/components/layout/FooterAlter";
+import FilterTabs from "@/components/shared/FilterTabs";
 import AdminMetrics from "@/components/admin/AdminMetrics";
 import AdminUsageCharts from "@/components/admin/AdminUsageCharts";
 import AdminReports from "@/components/admin/AdminReports";
