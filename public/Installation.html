@@ -1479,6 +1479,18 @@
         function constrain(val, low, high) {
             return Math.max(low, Math.min(high, val));
         }
+        function ceil(x) { return Math.ceil(x); }
+        function floor(x) { return Math.floor(x); }
+        function random(...args) {
+            if (args.length === 0) return Math.random();
+            if (args.length === 1) {
+                const a = args[0];
+                if (Array.isArray(a)) return a[Math.floor(Math.random() * a.length)];
+                return Math.random() * a;
+            }
+            return args[0] + Math.random() * (args[1] - args[0]);
+        }
+        function dist(x1, y1, x2, y2) { return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2); }
 
         function setLockedState(locked) {
             const ui = document.getElementById("ui");
@@ -1584,7 +1596,9 @@
             Object.keys(maskUrls).forEach(s => loadedAssets[s] = maskUrls[s].map(u => loadImage(u)));
         }
 
+        let _createGraphics;
         function setup() {
+            _createGraphics = createGraphics;
             const cnv = createCanvas(1, 1);
             cnv.parent("canvas-container");
             pixelDensity(1);
@@ -1717,6 +1731,10 @@
         }
 
         function generateGarden() {
+            const cnv = document.getElementById("canvas-container");
+            const w = (typeof width !== "undefined" ? width : (cnv ? cnv.clientWidth : 800)) || 800;
+            const h = (typeof height !== "undefined" ? height : (cnv ? cnv.clientHeight : 600)) || 600;
+
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
             const txt = getFullText().trim(); if (!txt) return;
@@ -1726,7 +1744,7 @@
             document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
 
 
-            const charsPerBloom = 600 * (sS / max(bS, 10));
+            const charsPerBloom = 600 * (sS / Math.max(bS, 10));
             const count = constrain(ceil(txt.length / charsPerBloom), 2, 20);
 
             const words = txt.split(/\s+/);
@@ -1737,15 +1755,15 @@
             chunks = chunks.filter(c => c.length > 0);
             if (chunks.length === 0) return;
             const bloomCount = chunks.length;
-            const maxW = min(width, 1400);
+            const maxW = Math.min(w, 1400);
             for (let i = 0; i < bloomCount; i++) {
                 let best = null, att = 0;
                 while (!best && att++ < 100) {
                     const sc = eS * random(0.9, 1.1), rad = (BASE_SIZE * sc) / 2 + 5, spr = maxW * map(eS, 0.5, 2.5, 0.35, 0.5);
-                    const tx = width / 2 + random(-spr, spr), ty = height - height * random(0.15, map(i / (bloomCount - 1 || 1), 0, 1, 0.4, 0.85));
+                    const tx = w / 2 + random(-spr, spr), ty = h - h * random(0.15, map(i / (bloomCount - 1 || 1), 0, 1, 0.4, 0.85));
                     if (flowers.some(f => dist(tx, ty, f.tx, f.ty) < rad + f.radius)) continue;
                     const img = random(imgs), fz = bS * random(0.9, 1.1), data = processImage(img, fz, sc, oW);
-                    best = { x: width / 2, tx, ty, h: height - ty, bend: random(-100, 100), chars: chunks[i], points: data.points, graphic: data.pg, graphicOutline: data.pgOutline, source: img, fontSize: fz, radius: rad, relScale: sc / sS, relFont: fz / bS };
+                    best = { x: w / 2, tx, ty, h: h - ty, bend: random(-100, 100), chars: chunks[i], points: data.points, graphic: data.pg, graphicOutline: data.pgOutline, source: img, fontSize: fz, radius: rad, relScale: sc / sS, relFont: fz / bS };
                 }
                 if (best) flowers.push(best);
             }
@@ -1769,10 +1787,12 @@
         }
 
         function processImage(img, fz, sc, ow) {
-            const dim = ceil(BASE_SIZE * sc), pg = createGraphics(dim, dim), pgo = createGraphics(dim, dim);
+            const cg = _createGraphics || (typeof createGraphics !== "undefined" ? createGraphics : null);
+            if (!cg) throw new Error("createGraphics not ready");
+            const dim = ceil(BASE_SIZE * sc), pg = cg(dim, dim), pgo = cg(dim, dim);
             const asp = img.width / img.height, w = asp >= 1 ? dim : dim * asp, h = asp >= 1 ? dim / asp : dim;
             pg.image(img, (dim - w) / 2, (dim - h) / 2, w, h); pg.loadPixels();
-            const pts = [], step = max(fz * constrain(map(fz, 10, 80, 1.0, 0.1), 0.6, 1.0), 2);
+            const pts = [], step = Math.max(fz * constrain(map(fz, 10, 80, 1.0, 0.1), 0.6, 1.0), 2);
             for (let y = 0; y < dim; y += step) for (let x = 0; x < dim; x += step) {
                 const i = (floor(x) + floor(y) * dim) * 4;
                 if (i < pg.pixels.length && pg.pixels[i + 3] > 20) pts.push({ x: x - dim / 2, y: y - dim / 2 });
@@ -2205,7 +2225,12 @@
             });
         }
 
-        function applyVisualState(s) {
+        function applyVisualState(s, retryCount) {
+            if (!_createGraphics) {
+                if ((retryCount || 0) >= 60) return;
+                setTimeout(() => applyVisualState(s, (retryCount || 0) + 1), 50);
+                return;
+            }
             currentLabState = s;
             if (s.dominantMood && currentMorph) {
                 currentMorph = { ...currentMorph, dominantMood: s.dominantMood };

@@ -285,17 +285,14 @@ export default function FloraDetail() {
         </section>
 
         <section className="border border-[var(--spora-primary)] bg-[#E9E9E9]">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(360px,520px)_1fr]">
-            <section className="border border-[var(--spora-primary)] relative order-2 lg:order-1 ">
-              <div
-                className="w-full bg-[#E9E9E9]"
-                style={{ aspectRatio: "4 / 3" }}
-              >
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(360px,520px)_1fr] lg:items-stretch">
+            <section className="border border-[var(--spora-primary)] relative order-2 lg:order-1 flex flex-col min-h-0">
+              <div className="w-full flex-1 min-h-[240px] lg:min-h-0 bg-[#E9E9E9] overflow-hidden">
                 <img
                   src={derived.image}
                   alt={derived.title}
-                  className="w-full h-full object-cover"
-                  style={{ filter: "grayscale(80%) contrast(120%)" }}
+                  className="w-full h-full object-cover object-center"
+                  style={{ filter: "grayscale(100%) contrast(120%)" }}
                 />
               </div>
 
@@ -326,7 +323,7 @@ export default function FloraDetail() {
                 </span>
               </div>
 
-              <div className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-5 md:p-6 font-supply-mono text-[11px] sm:text-xs leading-loose tracking-wide whitespace-pre-wrap">
+              <div className="flora-text-scroll border border-[var(--spora-primary)] bg-[#E9E9E9] p-5 md:p-6 font-bizud-mincho text-[13px] sm:text-sm leading-loose tracking-wide whitespace-pre-wrap max-h-[70vh] overflow-y-auto">
                 {baseText}
               </div>
             </article>
