@@ -18,6 +18,7 @@ import Licensing from "../views/Licensing";
 import AdminPanel from "../views/AdminPanel";
 import Background from "../views/Background";
 import FloraDetail from "../views/FloraDetail";
+import FloraReader from "../views/FloraReader";
 import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import AccentColorOnRouteChange from "../components/shared/AccentColorOnRouteChange";
@@ -45,7 +46,8 @@ export default function Router() {
         <Route path="/home" element={<Home />} />
         <Route path="/garden" element={<Garden />} />
         <Route path="/greenhouse" element={<Greenhouse />} />
-        <Route path="/flora/:id" element={<FloraDetail />} />
+        <Route path="/flora/:id" element={<FloraReader />} />
+        <Route path="/flora/:id/details" element={<FloraDetail />} />
         <Route path="/grow" element={<LabFullUnlock />} />
         <Route path="/laboratory/full" element={<LabFullRoute><Installation fullLab /></LabFullRoute>} />
         <Route path="/laboratory" element={<ProtectedRoute><Installation /></ProtectedRoute>} />

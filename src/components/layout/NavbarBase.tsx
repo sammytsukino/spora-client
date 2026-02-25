@@ -15,6 +15,8 @@ interface NavbarBaseProps {
   showScrollBackground?: boolean;
   onNavigateRequest?: (path: "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full") => void;
   className?: string;
+  /** For transparent variant: when true, use light text (white) for dark backgrounds */
+  transparentUseLightText?: boolean;
 }
 
 export default function NavbarBase({
@@ -24,6 +26,7 @@ export default function NavbarBase({
   showScrollBackground = false,
   onNavigateRequest,
   className = "",
+  transparentUseLightText = false,
 }: NavbarBaseProps) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,6 +63,7 @@ export default function NavbarBase({
   const isTransparent = variant === "transparent";
   const isLaboratory = variant === "laboratory";
   const isTeam = variant === "team";
+  const useLightLogo = isDark || (isTransparent && transparentUseLightText);
 
   useEffect(() => {
     if (!showScrollProgress && !showScrollBackground) return;
@@ -99,6 +103,8 @@ export default function NavbarBase({
 
   const textColor = isDark
     ? "text-[var(--spora-text-secondary)]"
+    : isTransparent && transparentUseLightText
+    ? "text-white"
     : "text-[var(--spora-primary)]";
   const bgColor = isDark
     ? "bg-[var(--spora-primary)]"
@@ -137,7 +143,7 @@ export default function NavbarBase({
             >
               <img
                 src={
-                  isDark
+                  useLightLogo
                     ? "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg"
                     : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
                 }
@@ -151,7 +157,7 @@ export default function NavbarBase({
             <div className="hidden md:flex items-center">
                 <img
                   src={
-                    isDark
+                    useLightLogo
                       ? "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg"
                       : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
                   }
@@ -228,7 +234,7 @@ export default function NavbarBase({
                   <button
                     type="button"
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className={`p-2 hover:bg-black/5 transition-colors ${isDark ? "hover:bg-white/10" : ""}`}
+                    className={`p-2 transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                     aria-label="User menu"
                     aria-expanded={menuOpen}
                   >
@@ -241,7 +247,7 @@ export default function NavbarBase({
                   {menuOpen && (
                     <div
                       className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] border font-supply-mono text-xs uppercase tracking-wider ${
-                        isDark
+                        isDark || (isTransparent && transparentUseLightText)
                           ? "bg-[var(--spora-primary)] border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)]"
                           : "bg-[#E9E9E9] border-[#262626] text-[#262626]"
                       }`}
@@ -252,7 +258,7 @@ export default function NavbarBase({
                           setMenuOpen(false);
                           navigate("/profile");
                         }}
-                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
                         <User className="w-4 h-4 shrink-0" />
                         Profile
@@ -263,7 +269,7 @@ export default function NavbarBase({
                           setMenuOpen(false);
                           navigate("/terms");
                         }}
-                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
                         <FileText className="w-4 h-4 shrink-0" />
                         More info about licensing
@@ -275,17 +281,17 @@ export default function NavbarBase({
                             setMenuOpen(false);
                             navigate("/admin");
                           }}
-                          className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                          className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                         >
                           <Shield className="w-4 h-4 shrink-0" />
                           Admin panel
                         </button>
                       )}
-                      <hr className={isDark ? "border-[var(--spora-text-secondary)]/30" : "border-[#262626]/30"} />
+                      <hr className={isDark || (isTransparent && transparentUseLightText) ? "border-[var(--spora-text-secondary)]/30" : "border-[#262626]/30"} />
                       <button
                         type="button"
                         onClick={handleLogout}
-                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark ? "hover:bg-white/10" : "hover:bg-black/5"}`}
+                        className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
                         <LogOut className="w-4 h-4 shrink-0" />
                         Log out
@@ -295,7 +301,7 @@ export default function NavbarBase({
                 </div>
               ) : (
                 <MainButton
-                  variant={isDark ? "navbar" : "compact"}
+                  variant={isDark || (isTransparent && transparentUseLightText) ? "navbar" : "compact"}
                   size="sm"
                   type="button"
                   onClick={() => navigate("/signin")}

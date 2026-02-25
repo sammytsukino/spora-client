@@ -603,6 +603,15 @@
             gap: 15px;
         }
 
+        body.reader-mode #ui,
+        body.reader-mode #confirmModal {
+            display: none !important;
+        }
+
+        body.reader-mode #canvas-container {
+            width: 100%;
+        }
+
         #canvas-container {
             flex-grow: 1;
             height: 100%;
@@ -2272,7 +2281,9 @@
         function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
         window.addEventListener("DOMContentLoaded", () => {
             const fullLab = getQueryParam("full") === "1" || getQueryParam("admin") === "1";
-            if (INSTALLATION_MODE && !fullLab) document.getElementById("ui").classList.add("installation-mode");
+            const readerMode = getQueryParam("reader") === "1";
+            if (readerMode) document.body.classList.add("reader-mode");
+            if (INSTALLATION_MODE && !fullLab && !readerMode) document.getElementById("ui").classList.add("installation-mode");
             if (fullLab) {
                 document.getElementById("ui").classList.add("lab-full");
                 document.querySelectorAll("details").forEach(d => d.setAttribute("open", ""));

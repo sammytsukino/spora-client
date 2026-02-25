@@ -58,6 +58,18 @@ body.hide-scrollbar::-webkit-scrollbar {
   background: color-mix(in srgb, var(--spora-primary) 80%, black);
 }
 
+.flora-text-scroll-light {
+  scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
+}
+
+.flora-text-scroll-light::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.flora-text-scroll-light::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
 @font-face {
   font-family: "BIZ UDPMincho";
   src: url("./assets/BIZUDMincho-Regular.ttf") format("truetype");

@@ -5,6 +5,8 @@ type TransparentNavbarProps = {
   className?: string;
   showScrollProgress?: boolean;
   showScrollBackground?: boolean;
+  /** When true, use light text (white) for dark backgrounds; when false, use dark text for light backgrounds */
+  useLightText?: boolean;
 };
 
 export default function TransparentNavbar({
@@ -12,6 +14,7 @@ export default function TransparentNavbar({
   className = "",
   showScrollProgress = false,
   showScrollBackground = false,
+  useLightText = false,
 }: TransparentNavbarProps) {
   return (
     <NavbarBase
@@ -19,6 +22,7 @@ export default function TransparentNavbar({
       position={position}
       showScrollProgress={showScrollProgress}
       showScrollBackground={showScrollBackground}
+      transparentUseLightText={useLightText}
       className={`z-50 ${className}`}
     />
   );

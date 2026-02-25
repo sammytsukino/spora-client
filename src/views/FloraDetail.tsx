@@ -243,14 +243,22 @@ export default function FloraDetail() {
       <main className="pt-20 pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
         <section className="mb-6">
           <div className="mb-2 flex items-center justify-between gap-4">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
-            >
-              <span className="text-lg">←</span>
-              <span>Back</span>
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
+              >
+                <span className="text-lg">←</span>
+                <span>Back</span>
+              </button>
+              <Link
+                to={`/flora/${encodeURIComponent(derived.id)}`}
+                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase hover:underline"
+              >
+                Read
+              </Link>
+            </div>
             {canReport && (
               <button
                 type="button"
