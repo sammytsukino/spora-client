@@ -1,5 +1,11 @@
 import { api } from "./api";
-import type { ProfileUser, ProfileFloraItem, ProfileMetricsData, ProfileSocialData } from "@/data/profile-data";
+import type {
+  ProfileUser,
+  ProfileFloraItem,
+  ProfileMetricsData,
+  ProfileSocialData,
+  ProfileSocialInteraction,
+} from "@/data/profile-data";
 import type { ProfileFloraStatus } from "@/data/profile-data";
 
 export interface MeUser {
@@ -31,6 +37,8 @@ export interface ApiFlora {
   thumbnailUrl?: string;
   generative?: { seed?: { sentiment?: { label?: string } } };
   stats?: { views?: number; cuttingsTaken?: number; downloads?: number };
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 const DEFAULT_AVATAR =
@@ -81,6 +89,34 @@ export function mapApiFloraToProfileItem(flora: ApiFlora, fallbackUsername: stri
   };
 }
 
+function buildRecentActivityFromFloras(
+  floras: ApiFlora[],
+  userAvatar: string
+): ProfileSocialInteraction[] {
+  const ONE_MIN_MS = 60 * 1000;
+  const activities: ProfileSocialInteraction[] = [];
+  for (const f of floras) {
+    const created = f.createdAt ? new Date(f.createdAt).getTime() : 0;
+    const updated = f.updatedAt ? new Date(f.updatedAt).getTime() : 0;
+    const wasUpdated = updated > created + ONE_MIN_MS;
+    activities.push({
+      id: wasUpdated ? `updated-${f._id}` : `created-${f._id}`,
+      avatar: userAvatar,
+      username: "You",
+      action: wasUpdated ? "updated" : "created",
+      floraId: f._id,
+      floraTitle: f.title,
+      date: wasUpdated ? f.updatedAt : (f.createdAt ?? undefined),
+    });
+  }
+  activities.sort((a, b) => {
+    const da = a.date ? new Date(a.date).getTime() : 0;
+    const db = b.date ? new Date(b.date).getTime() : 0;
+    return db - da;
+  });
+  return activities.slice(0, 15);
+}
+
 export function mapFlorasToMetrics(floras: ApiFlora[]): ProfileMetricsData {
   let totalViews = 0;
   let totalCuttings = 0;
@@ -107,10 +143,13 @@ export async function fetchProfileData(): Promise<{
   const user = mapMeToProfileUser(me, floras);
   const profileFloras = floras.map((f) => mapApiFloraToProfileItem(f, me.username));
   const metrics = mapFlorasToMetrics(floras);
+  const userAvatar =
+    me.avatar || "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
+  const recentInteractions = buildRecentActivityFromFloras(floras, userAvatar);
   const social: ProfileSocialData = {
     followersCount: me.followersCount ?? 0,
     followingCount: me.followingCount ?? 0,
-    recentInteractions: [],
+    recentInteractions,
   };
   return { user, floras: profileFloras, metrics, social };
 }

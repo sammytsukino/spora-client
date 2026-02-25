@@ -1,6 +1,7 @@
 import { api } from "./api";
 
 export const TOKEN_KEY = "spora_token";
+export const REFRESH_TOKEN_KEY = "spora_refresh_token";
 export const USER_KEY = "spora_user";
 
 export const LAB_FULL_SECRET = "grow";
@@ -27,16 +28,21 @@ export interface AuthUser {
 
 export interface AuthResponse {
   token: string;
+  refreshToken?: string;
   user: AuthUser;
 }
 
 export function saveSession(session: AuthResponse) {
   localStorage.setItem(TOKEN_KEY, session.token);
+  if (session.refreshToken) {
+    localStorage.setItem(REFRESH_TOKEN_KEY, session.refreshToken);
+  }
   localStorage.setItem(USER_KEY, JSON.stringify(session.user));
 }
 
 export function clearSession() {
   localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(REFRESH_TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
 }
 
@@ -52,6 +58,10 @@ export function getStoredUser(): AuthUser | null {
 
 export function getStoredToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
+}
+
+export function getStoredRefreshToken(): string | null {
+  return localStorage.getItem(REFRESH_TOKEN_KEY);
 }
 
 export function updateStoredUser(updates: Partial<AuthUser>) {
@@ -83,4 +93,18 @@ export async function signUp(payload: {
 export async function fetchMe() {
   const { data } = await api.get<AuthUser>("/auth/me");
   return data;
+}
+
+export async function refreshAccessToken(): Promise<AuthResponse | null> {
+  const refreshToken = getStoredRefreshToken();
+  if (!refreshToken) return null;
+  try {
+    const { data } = await api.post<AuthResponse>("/auth/refresh", {
+      refreshToken,
+    });
+    saveSession(data);
+    return data;
+  } catch {
+    return null;
+  }
 }

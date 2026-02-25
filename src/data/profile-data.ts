@@ -31,10 +31,12 @@ export interface ProfileMetricsData {
 
 export interface ProfileSocialInteraction {
   id: string;
-  avatar: string;
+  avatar?: string;
   username: string;
-  action: "cutting" | "view" | "share";
+  action: "cutting" | "view" | "share" | "created" | "updated";
   floraId?: string;
+  floraTitle?: string;
+  date?: string;
 }
 
 export interface ProfileSocialData {
@@ -61,31 +63,9 @@ export const defaultProfileMetrics: ProfileMetricsData = {
 };
 
 export const defaultProfileSocial: ProfileSocialData = {
-  followersCount: 128,
-  followingCount: 64,
-  recentInteractions: [
-    {
-      id: "1",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop",
-      username: "@FranBarreno",
-      action: "cutting",
-      floraId: "FLR/001",
-    },
-    {
-      id: "2",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop",
-      username: "@SporaLab",
-      action: "view",
-      floraId: "FLR/003",
-    },
-    {
-      id: "3",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop",
-      username: "@GenArtist",
-      action: "share",
-      floraId: "FLR/002",
-    },
-  ],
+  followersCount: 0,
+  followingCount: 0,
+  recentInteractions: [],
 };
 
 export const defaultProfileUser: ProfileUser = {

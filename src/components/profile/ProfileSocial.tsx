@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { ProfileSocialData, ProfileSocialInteraction } from "@/data/profile-data";
 
 interface ProfileSocialProps {
@@ -12,6 +13,8 @@ const actionLabels: Record<ProfileSocialInteraction["action"], string> = {
   cutting: "made a Cutting of",
   view: "viewed",
   share: "shared",
+  created: "created",
+  updated: "updated",
 };
 
 export default function ProfileSocial({
@@ -21,7 +24,19 @@ export default function ProfileSocial({
   onFollowingClick,
   onInteractionClick,
 }: ProfileSocialProps) {
+  const navigate = useNavigate();
   const { followersCount, followingCount, recentInteractions } = social;
+
+  const handleItemClick = (item: ProfileSocialInteraction) => {
+    if (onInteractionClick) {
+      onInteractionClick(item);
+    } else if (item.floraId && (item.action === "created" || item.action === "updated")) {
+      navigate(`/flora/${encodeURIComponent(item.floraId)}`);
+    }
+  };
+
+  const displayTarget = (item: ProfileSocialInteraction) =>
+    item.floraTitle || item.floraId || "";
 
   return (
     <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
@@ -48,32 +63,37 @@ export default function ProfileSocial({
           </button>
         </div>
       )}
-      {recentInteractions.length > 0 && (
+      {recentInteractions.length > 0 ? (
         <ul className="space-y-2">
-            {recentInteractions.map((item) => (
-              <li key={item.id}>
-                <button
-                  type="button"
-                  onClick={() => onInteractionClick?.(item)}
-                  className="flex items-center gap-3 w-full text-left font-supply-mono text-[11px] p-2 border border-[var(--spora-primary)] hover:bg-lime-300 transition-colors"
-                >
+          {recentInteractions.map((item) => (
+            <li key={item.id}>
+              <button
+                type="button"
+                onClick={() => handleItemClick(item)}
+                className="flex items-center gap-3 w-full text-left font-supply-mono text-[11px] p-2 border border-[var(--spora-primary)] hover:bg-lime-300 transition-colors"
+              >
+                {item.avatar && (
                   <img
                     src={item.avatar}
                     alt=""
                     className="w-8 h-8 rounded-full object-cover border border-[var(--spora-primary)] shrink-0"
                   />
-                  <span>
-                    <span className="font-medium">{item.username}</span>
-                    {" "}
-                    {actionLabels[item.action]}
-                    {item.floraId && (
-                      <span className="opacity-90"> {item.floraId}</span>
-                    )}
-                  </span>
-                </button>
-              </li>
-            ))}
+                )}
+                <span>
+                  <span className="font-medium">{item.username}</span>{" "}
+                  {actionLabels[item.action]}
+                  {displayTarget(item) && (
+                    <span className="opacity-90"> «{displayTarget(item)}»</span>
+                  )}
+                </span>
+              </button>
+            </li>
+          ))}
         </ul>
+      ) : (
+        <p className="font-supply-mono text-[11px] opacity-70 italic">
+          No recent activity
+        </p>
       )}
     </section>
   );

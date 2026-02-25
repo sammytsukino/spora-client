@@ -122,12 +122,6 @@ export default function Profile({
   const dangerZoneConfig = { ...defaultProfileDangerZone, ...dangerZone };
 
   const handleUnsign = async () => {
-    if (
-      !window.confirm(
-        "This will replace your name and username with [forbidden_author] on all your Floras. This action is irreversible. Continue?"
-      )
-    )
-      return;
     try {
       setUnsigning(true);
       await unsignMyAccount();
@@ -244,6 +238,7 @@ export default function Profile({
         <div className="mt-10">
           <ProfileDangerZone
             {...dangerZoneConfig}
+            confirmationWord={effectiveUser.username}
             onUnsign={onUnsign ?? handleUnsign}
             unsigning={unsigning}
           />
