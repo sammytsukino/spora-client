@@ -5,7 +5,6 @@ type TransparentNavbarProps = {
   className?: string;
   showScrollProgress?: boolean;
   showScrollBackground?: boolean;
-  /** When true, use light text (white) for dark backgrounds; when false, use dark text for light backgrounds */
   useLightText?: boolean;
 };
 

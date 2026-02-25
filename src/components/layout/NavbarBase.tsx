@@ -15,7 +15,6 @@ interface NavbarBaseProps {
   showScrollBackground?: boolean;
   onNavigateRequest?: (path: "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full") => void;
   className?: string;
-  /** For transparent variant: when true, use light text (white) for dark backgrounds */
   transparentUseLightText?: boolean;
 }
 

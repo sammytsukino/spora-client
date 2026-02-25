@@ -1,7 +1,3 @@
-/**
- * Generates public/installation/mood-lexicons.js from src/data/mood-lexicons.ts
- * Single source of truth: only edit the TS file.
- */
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";

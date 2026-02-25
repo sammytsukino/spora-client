@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 interface InstallationProps {
   fullLab?: boolean;
@@ -8,12 +8,19 @@ interface InstallationProps {
 export default function Installation({ fullLab = false }: InstallationProps) {
   const location = useLocation();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [canReveal, setCanReveal] = useState(false);
   const params = new URLSearchParams(location.search || "");
   const floraId = params.get("floraId");
   const search = new URLSearchParams(location.search || "");
   search.delete("from");
   if (fullLab) search.set("full", "1");
   const src = `/Installation.html${search.toString() ? "?" + search.toString() : ""}`;
+
+  useEffect(() => {
+    setCanReveal(false);
+    const t = setTimeout(() => setCanReveal(true), 1000);
+    return () => clearTimeout(t);
+  }, [src]);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -31,12 +38,34 @@ export default function Installation({ fullLab = false }: InstallationProps) {
   }, [floraId]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      src={src}
-      style={{ width: '100vw', height: '100vh', border: 'none', position: 'fixed', top: 0, left: 0, zIndex: 9999 }}
-      title="Bouquet Generativo Installation"
-      allowFullScreen
-    />
+    <>
+      <div
+        style={{
+          opacity: canReveal ? 1 : 0,
+          transition: "opacity 300ms",
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+        }}
+      >
+        <iframe
+          ref={iframeRef}
+          src={src}
+          style={{ width: "100vw", height: "100vh", border: "none" }}
+          title="Bouquet Generativo Installation"
+          allowFullScreen
+        />
+      </div>
+      {!canReveal && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#E9E9E9]"
+          aria-hidden
+        >
+          <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#262626]">
+            Loading...
+          </p>
+        </div>
+      )}
+    </>
   );
 }

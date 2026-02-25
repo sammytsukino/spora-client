@@ -149,7 +149,7 @@ export default function FloraReader() {
   })();
 
   const theme = useImageLuminance(derived?.image);
-  const isLightBg = theme === "light"; // null = still loading, default to dark (white text)
+  const isLightBg = theme === "light";
   const textColorClass = isLightBg ? "text-[#262626]" : "text-white";
   const textShadowStyle =
     !isLightBg ? { textShadow: "0 1px 2px rgba(0,0,0,0.5)" } : undefined;
@@ -247,7 +247,6 @@ export default function FloraReader() {
 
   return (
     <div className="fixed inset-0 overflow-hidden">
-      {/* Iframe loads in background, revealed when ready */}
       <div
         className={`absolute inset-0 z-0 transition-opacity duration-300 ${
           canReveal ? "opacity-100" : "opacity-0"
@@ -263,21 +262,19 @@ export default function FloraReader() {
         />
       </div>
 
-      {/* Loading 2s min, above everything, until iframe ready */}
       <div
-        className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#111] transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#E9E9E9] transition-opacity duration-300 ${
           canReveal ? "opacity-0 pointer-events-none" : ""
         }`}
         aria-hidden
       >
-        <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-white/80">
+        <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#262626]">
           Loading...
         </p>
       </div>
 
       <TransparentNavbar showScrollBackground useLightText={!isLightBg} />
 
-      {/* z1: text overlay */}
       <main className="relative z-10 flex h-screen flex-col overflow-hidden pt-20 pb-24 px-6 md:px-12 lg:px-16">
         <div className="flex flex-1 min-h-0 gap-6 md:gap-10">
           <div className="flex flex-col flex-1 min-w-0 min-h-0">
@@ -321,7 +318,6 @@ export default function FloraReader() {
               </div>
             </article>
 
-            {/* CTA or sealed mark */}
             <div className="mt-8">
               {derived.status === "blossoming" ? (
                 <button
@@ -354,7 +350,6 @@ export default function FloraReader() {
             </div>
           </div>
 
-          {/* Right column: Details button + content */}
           <div className="flex flex-col items-end shrink-0">
             <button
               type="button"
@@ -466,7 +461,6 @@ export default function FloraReader() {
         </div>
       </main>
 
-      {/* Ambient controls: bottom-right, aligned with main padding */}
       <div
         className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 flex flex-col items-end gap-3 no, pointer-events-auto ${textColorClass}`}
         style={textShadowStyle}
