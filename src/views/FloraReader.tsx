@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import { floraImages } from "@/data/flora-data";
@@ -43,6 +43,8 @@ export default function FloraReader() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showDetailsPanel, setShowDetailsPanel] = useState(false);
+  const [windStrength, setWindStrength] = useState(0.5);
+  const installationRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -176,6 +178,20 @@ export default function FloraReader() {
     };
   }, []);
 
+  const sendToInstallation = (msg: { type: string; [k: string]: unknown }) => {
+    installationRef.current?.contentWindow?.postMessage(msg, window.location.origin);
+  };
+
+  useEffect(() => {
+    const sendWind = () => {
+      sendToInstallation({ type: "spora:setWind", active: windStrength > 0, strength: windStrength });
+    };
+    const t = setTimeout(sendWind, 500);
+    return () => clearTimeout(t);
+  }, [windStrength]);
+
+  const handleRegenerate = () => sendToInstallation({ type: "spora:regenerate" });
+
   if (isLoading && !derived) {
     return (
       <div className="fixed inset-0 bg-[#E9E9E9]">
@@ -209,10 +225,12 @@ export default function FloraReader() {
     <div className="fixed inset-0 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <iframe
+          ref={installationRef}
           src={installationSrc}
           title="Flora visualization"
           className="absolute inset-0 w-full h-full border-0 pointer-events-none"
           aria-hidden
+          onLoad={() => sendToInstallation({ type: "spora:setWind", active: windStrength > 0, strength: windStrength })}
         />
       </div>
 
@@ -407,6 +425,47 @@ export default function FloraReader() {
         </div>
       </main>
 
+      {/* Ambient controls: bottom-right, aligned with main padding */}
+      <div
+        className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 flex flex-col items-end gap-3 pointer-events-auto ${textColorClass}`}
+        style={textShadowStyle}
+      >
+        <div className="flex flex-col gap-2 font-supply-mono text-[9px] sm:text-[10px] uppercase tracking-wider">
+          <button
+            type="button"
+            onClick={handleRegenerate}
+            className={`px-2 py-1 border cursor-pointer hover:opacity-80 transition-opacity ${
+              isLightBg ? "border-[#262626]" : "border-white/60"
+            }`}
+          >
+            Regenerate seed
+          </button>
+          <div className="flex items-center gap-2">
+            <label htmlFor="reader-wind" className="opacity-80 whitespace-nowrap">
+              Wind
+            </label>
+            <input
+              id="reader-wind"
+              type="range"
+              min="0"
+              max="2"
+              step="0.1"
+              value={windStrength}
+              onChange={(e) => setWindStrength(parseFloat(e.target.value))}
+              className="w-16 sm:w-20 cursor-pointer"
+              style={{ accentColor: isLightBg ? "#262626" : "white" }}
+            />
+          </div>
+          <a
+            href="#music"
+            className={`px-2 py-1 border no-underline hover:opacity-80 transition-opacity ${
+              isLightBg ? "border-[#262626] text-[#262626]" : "border-white/60 text-white"
+            }`}
+          >
+            ♪ Music
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

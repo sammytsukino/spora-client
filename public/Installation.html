@@ -2296,6 +2296,16 @@
             if (e.data?.type === "SPORA_LOAD_FLORA" && e.data?.floraId) {
                 loadFloraPreview(e.data.floraId);
             }
+            if (e.data?.type === "spora:setWind") {
+                const chk = document.getElementById("chkWind"), rng = document.getElementById("rngWind");
+                if (chk && rng) {
+                    chk.checked = e.data.active !== false;
+                    rng.value = String(e.data.strength != null ? e.data.strength : 0.5);
+                }
+            }
+            if (e.data?.type === "spora:regenerate") {
+                if (typeof generateGarden === "function") generateGarden();
+            }
         });
     </script>
 </body>
