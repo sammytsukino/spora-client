@@ -2282,7 +2282,10 @@
         window.addEventListener("DOMContentLoaded", () => {
             const fullLab = getQueryParam("full") === "1" || getQueryParam("admin") === "1";
             const readerMode = getQueryParam("reader") === "1";
-            if (readerMode) document.body.classList.add("reader-mode");
+            if (readerMode) {
+                document.body.classList.add("reader-mode");
+                try { window.parent.postMessage({ type: "spora:reader-ready" }, "*"); } catch (e) { }
+            }
             if (INSTALLATION_MODE && !fullLab && !readerMode) document.getElementById("ui").classList.add("installation-mode");
             if (fullLab) {
                 document.getElementById("ui").classList.add("lab-full");

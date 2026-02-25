@@ -44,6 +44,8 @@ export default function FloraReader() {
   const [error, setError] = useState<string | null>(null);
   const [showDetailsPanel, setShowDetailsPanel] = useState(false);
   const [windStrength, setWindStrength] = useState(0.5);
+  const [installationReady, setInstallationReady] = useState(false);
+  const [minLoadTimeElapsed, setMinLoadTimeElapsed] = useState(false);
   const installationRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -190,6 +192,27 @@ export default function FloraReader() {
     return () => clearTimeout(t);
   }, [windStrength]);
 
+  useEffect(() => {
+    queueMicrotask(() => {
+      setInstallationReady(false);
+      setMinLoadTimeElapsed(false);
+    });
+  }, [id]);
+
+  useEffect(() => {
+    if (!derived?.id) return;
+    const t = setTimeout(() => setMinLoadTimeElapsed(true), 1000);
+    return () => clearTimeout(t);
+  }, [derived?.id]);
+
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.data?.type === "spora:reader-ready") setInstallationReady(true);
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
+
   const handleRegenerate = () => sendToInstallation({ type: "spora:regenerate" });
 
   if (isLoading && !derived) {
@@ -220,10 +243,16 @@ export default function FloraReader() {
 
 
   const installationSrc = `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1`;
+  const canReveal = minLoadTimeElapsed;
 
   return (
     <div className="fixed inset-0 overflow-hidden">
-      <div className="absolute inset-0 z-0">
+      {/* Iframe loads in background, revealed when ready */}
+      <div
+        className={`absolute inset-0 z-0 transition-opacity duration-300 ${
+          canReveal ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <iframe
           ref={installationRef}
           src={installationSrc}
@@ -232,6 +261,18 @@ export default function FloraReader() {
           aria-hidden
           onLoad={() => sendToInstallation({ type: "spora:setWind", active: windStrength > 0, strength: windStrength })}
         />
+      </div>
+
+      {/* Loading 2s min, above everything, until iframe ready */}
+      <div
+        className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#111] transition-opacity duration-300 ${
+          canReveal ? "opacity-0 pointer-events-none" : ""
+        }`}
+        aria-hidden
+      >
+        <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-white/80">
+          Loading...
+        </p>
       </div>
 
       <TransparentNavbar showScrollBackground useLightText={!isLightBg} />
@@ -427,7 +468,7 @@ export default function FloraReader() {
 
       {/* Ambient controls: bottom-right, aligned with main padding */}
       <div
-        className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 flex flex-col items-end gap-3 pointer-events-auto ${textColorClass}`}
+        className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 flex flex-col items-end gap-3 no, pointer-events-auto ${textColorClass}`}
         style={textShadowStyle}
       >
         <div className="flex flex-col gap-2 font-supply-mono text-[9px] sm:text-[10px] uppercase tracking-wider">

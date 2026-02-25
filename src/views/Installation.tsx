@@ -11,6 +11,7 @@ export default function Installation({ fullLab = false }: InstallationProps) {
   const params = new URLSearchParams(location.search || "");
   const floraId = params.get("floraId");
   const search = new URLSearchParams(location.search || "");
+  search.delete("from");
   if (fullLab) search.set("full", "1");
   const src = `/Installation.html${search.toString() ? "?" + search.toString() : ""}`;
 
