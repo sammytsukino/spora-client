@@ -70,6 +70,16 @@ body.hide-scrollbar::-webkit-scrollbar {
   background: rgba(255, 255, 255, 0.85);
 }
 
+.flora-reader-scroll {
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.flora-reader-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 @font-face {
   font-family: "BIZ UDPMincho";
   src: url("./assets/BIZUDMincho-Regular.ttf") format("truetype");
