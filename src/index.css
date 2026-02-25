@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 *::selection {
-  background: #bbf451;
+  background: var(--spora-accent-secondary);
   color: #262626;
 }
 

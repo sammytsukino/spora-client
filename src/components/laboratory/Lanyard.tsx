@@ -292,9 +292,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
         </RigidBody>
       </group>
       <mesh ref={band}>
-        {/* @ts-expect-error - MeshLine types are extended via @react-three/fiber */}
         <meshLineGeometry />
-        {/* @ts-expect-error - MeshLine types are extended via @react-three/fiber */}
         <meshLineMaterial
           color="white"
           depthTest={false}

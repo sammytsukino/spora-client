@@ -123,7 +123,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
       const canvas = canvasRef.current;
       if (!canvas || !imageDataRef.current) return;
 
-      // Clear with background
       if (backgroundColor !== "transparent") {
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, displayWidth, displayHeight);
@@ -140,10 +139,8 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
       const bayerMatrix = gridSize <= 4 ? BAYER_MATRIX_4x4 : BAYER_MATRIX_8x8;
       const matrixScale = matrixSize === 4 ? 16 : 64;
 
-      // Process pixels
       for (let y = 0; y < displayHeight; y += effectivePixelSize) {
         for (let x = 0; x < displayWidth; x += effectivePixelSize) {
-          // Map display coordinates to source image coordinates
           const srcX = Math.floor((x / displayWidth) * sourceWidth);
           const srcY = Math.floor((y / displayHeight) * sourceHeight);
           const srcIdx = (srcY * sourceWidth + srcX) * 4;
@@ -153,17 +150,14 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
           let b = sourceData[srcIdx + 2] || 0;
           const a = sourceData[srcIdx + 3] || 0;
 
-          if (a < 10) continue; // Skip fully transparent pixels
+          if (a < 10) continue;
 
-          // Apply brightness and contrast
           r = clamp((r - 128) * contrast + 128 + brightness * 255, 0, 255);
           g = clamp((g - 128) * contrast + 128 + brightness * 255, 0, 255);
           b = clamp((b - 128) * contrast + 128 + brightness * 255, 0, 255);
 
-          // Calculate luminance
           const luminance = getLuminance(r, g, b) / 255;
 
-          // Get dither threshold based on mode
           let ditherThreshold: number;
           const matrixX = Math.floor(x / gridSize) % matrixSize;
           const matrixY = Math.floor(y / gridSize) % matrixSize;
@@ -199,10 +193,8 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
               ditherThreshold = bayerMatrix[matrixY][matrixX] / matrixScale;
           }
 
-          // Adjust threshold with user setting
           ditherThreshold = ditherThreshold * (1 - threshold) + threshold * 0.5;
 
-          // Determine output color based on color mode
           let outputColor: [number, number, number];
 
           switch (colorMode) {
@@ -225,7 +217,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
                   ? parsedCustomPalette[0]
                   : parsedCustomPalette[1];
               } else {
-                // Quantize to closest palette color with dithering
                 const adjustedLuminance =
                   luminance + (ditherThreshold - 0.5) * 0.5;
                 const paletteIndex = Math.floor(
@@ -238,13 +229,11 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
             }
             case "original":
             default: {
-              // Apply dithering while preserving colors
               const ditherAmount = ditherThreshold - 0.5;
               const adjustedR = clamp(r + ditherAmount * 64, 0, 255);
               const adjustedG = clamp(g + ditherAmount * 64, 0, 255);
               const adjustedB = clamp(b + ditherAmount * 64, 0, 255);
 
-              // Quantize to fewer levels for dithered look
               const levels = 4;
               outputColor = [
                 Math.round(adjustedR / (255 / levels)) * (255 / levels),
@@ -255,7 +244,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
             }
           }
 
-          // Apply inversion
           if (invert) {
             outputColor = [
               255 - outputColor[0],
@@ -264,7 +252,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
             ];
           }
 
-          // Draw the pixel
           ctx.fillStyle = `rgb(${outputColor[0]}, ${outputColor[1]}, ${outputColor[2]})`;
           ctx.fillRect(x, y, effectivePixelSize, effectivePixelSize);
         }
@@ -286,7 +273,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
     ],
   );
 
-  // Setup resize observer for responsive sizing
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -308,7 +294,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
     };
   }, []);
 
-  // Process image and apply dithering when dimensions or settings change
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || dimensions.width === 0 || dimensions.height === 0) return;
@@ -331,7 +316,6 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
       ctx.resetTransform();
       ctx.scale(dpr, dpr);
 
-      // Create offscreen canvas to get image data
       const offscreen = document.createElement("canvas");
       const iw = img.naturalWidth || displayWidth;
       const ih = img.naturalHeight || displayHeight;
@@ -382,10 +366,8 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
         return;
       }
 
-      // Initial render
       applyDithering(ctx, displayWidth, displayHeight, 0);
 
-      // Setup animation if enabled
       if (animated) {
         const animate = () => {
           if (isCancelled) return;
@@ -397,11 +379,9 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
       }
     };
 
-    // If image is already loaded, reprocess it
     if (imageRef.current && imageRef.current.complete) {
       processImage(imageRef.current);
     } else {
-      // Load the image
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.src = src;
