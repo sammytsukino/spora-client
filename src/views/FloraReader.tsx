@@ -34,6 +34,23 @@ function ensureHandle(username: string) {
 }
 
 export default function FloraReader() {
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const musicRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audio = musicRef.current;
+    if (!audio) return;
+    if (musicPlaying) {
+      audio.currentTime = 0;
+      audio.play();
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    return () => {
+      audio.pause();
+    };
+  }, [musicPlaying]);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -491,16 +508,26 @@ export default function FloraReader() {
               style={{ accentColor: isLightBg ? "#262626" : "white" }}
             />
           </div>
-          <a
-            href="#music"
+          <button
+            type="button"
+            onClick={() => setMusicPlaying((v) => !v)}
             className={`px-2 py-1 border no-underline hover:opacity-80 transition-opacity ${
               isLightBg ? "border-[#262626] text-[#262626]" : "border-white/60 text-white"
             }`}
+            aria-pressed={musicPlaying}
           >
-            ♪ Music
-          </a>
+            {musicPlaying ? '⏸ Music' : '♪ Music'}
+          </button>
+
+          <audio
+            ref={musicRef}
+            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1772048674/something-comforting_e3grxc.mp3"
+            loop
+            style={{ display: 'none' }}
+          />
         </div>
       </div>
     </div>
   );
 }
+
