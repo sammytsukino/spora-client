@@ -1753,11 +1753,15 @@
             document.getElementById("statusText").innerText = `SET: ${activeS.toUpperCase()} | CALC...`;
 
 
-            const charsPerBloom = 600 * (sS / Math.max(bS, 10));
+            let charsPerBloom = 600 * (sS / Math.max(bS, 10));
+            if (txt.length > 500) charsPerBloom *= constrain(1 + (txt.length - 500) / 1200, 1, 2.5);
             const count = constrain(ceil(txt.length / charsPerBloom), 2, 20);
 
             const words = txt.split(/\s+/);
-            let dF = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0, eS = sS * dF;
+            const avgCharsPerBloom = txt.length / count;
+            let dF = count > 5 ? map(count, 5, 20, 1.0, 0.55) : 1.0;
+            if (avgCharsPerBloom > 100) dF = Math.max(dF, 0.9);
+            const eS = sS * dF;
             let chunks = [];
             if (words.length < count) for (let i = 0; i < count; i++) chunks.push(txt.split(""));
             else { let wPF = ceil(words.length / count); for (let i = 0; i < count; i++) chunks.push(words.slice(i * wPF, (i + 1) * wPF).join(" ").split("")); }
@@ -1771,7 +1775,8 @@
                     const sc = eS * random(0.9, 1.1), rad = (BASE_SIZE * sc) / 2 + 5, spr = maxW * map(eS, 0.5, 2.5, 0.35, 0.5);
                     const tx = w / 2 + random(-spr, spr), ty = h - h * random(0.15, map(i / (bloomCount - 1 || 1), 0, 1, 0.4, 0.85));
                     if (flowers.some(f => dist(tx, ty, f.tx, f.ty) < rad + f.radius)) continue;
-                    const img = random(imgs), fz = bS * random(0.9, 1.1), data = processImage(img, fz, sc, oW);
+                    const charScale = chunks[i].length > 50 ? constrain(map(chunks[i].length, 50, 300, 1.0, 0.4), 0.4, 1.0) : 1.0;
+                    const img = random(imgs), fz = bS * charScale * random(0.9, 1.1), data = processImage(img, fz, sc, oW);
                     best = { x: w / 2, tx, ty, h: h - ty, bend: random(-100, 100), chars: chunks[i], points: data.points, graphic: data.pg, graphicOutline: data.pgOutline, source: img, fontSize: fz, radius: rad, relScale: sc / sS, relFont: fz / bS };
                 }
                 if (best) flowers.push(best);
