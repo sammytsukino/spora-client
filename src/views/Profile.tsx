@@ -23,8 +23,8 @@ import {
   type ProfileDangerZoneConfig,
   type ProfileSocialInteraction,
 } from "@/data/profile-data";
-import { getStoredToken } from "@/lib/auth";
-import { fetchProfileData } from "@/lib/profileApi";
+import { getStoredToken, clearSession } from "@/lib/auth";
+import { fetchProfileData, unsignMyAccount } from "@/lib/profileApi";
 
 export interface ProfileViewProps {
   user?: ProfileUser;
@@ -62,6 +62,7 @@ export default function Profile({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [unsigning, setUnsigning] = useState(false);
 
   const loadProfile = async () => {
     const data = await fetchProfileData();
@@ -119,6 +120,31 @@ export default function Profile({
       : effectiveFloras.filter((f) => f.status === activeFilter);
 
   const dangerZoneConfig = { ...defaultProfileDangerZone, ...dangerZone };
+
+  const handleUnsign = async () => {
+    if (
+      !window.confirm(
+        "This will replace your name and username with [forbidden_author] on all your Floras. This action is irreversible. Continue?"
+      )
+    )
+      return;
+    try {
+      setUnsigning(true);
+      await unsignMyAccount();
+      clearSession();
+      navigate("/signin", { replace: true });
+    } catch (e) {
+      setUnsigning(false);
+      const msg =
+        e && typeof e === "object" && "response" in e
+          ? (e as { response?: { status?: number; data?: { message?: string } } }).response?.data?.message ||
+            (e as { response?: { status?: number } }).response?.status === 401
+            ? "Session expired"
+            : "Could not unsign"
+          : "Could not unsign";
+      setError(msg);
+    }
+  };
 
   const handleCardClick = (floraId: string) => {
     if (onCardClick) {
@@ -218,7 +244,8 @@ export default function Profile({
         <div className="mt-10">
           <ProfileDangerZone
             {...dangerZoneConfig}
-            onUnsign={onUnsign}
+            onUnsign={onUnsign ?? handleUnsign}
+            unsigning={unsigning}
           />
         </div>
       </section>

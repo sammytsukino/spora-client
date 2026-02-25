@@ -127,6 +127,11 @@ export async function updateProfile(payload: UpdateProfilePayload): Promise<MeUs
   return data;
 }
 
+export async function unsignMyAccount(): Promise<{ florasAnonymized?: number }> {
+  const { data } = await api.post<{ florasAnonymized?: number }>("/auth/me/unsign");
+  return data;
+}
+
 export function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
