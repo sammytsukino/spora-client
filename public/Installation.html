@@ -1260,30 +1260,122 @@
 
         const LITERAL_THRESHOLD = 5;
         const COLOR_FAMILIES = {
-            joy: { mask: ["#FFCF10", "#FFF189", "#FFE145", "#FFFAC2"], bg: ["#00AAF7", "#3134FF", "#00FFEA"], bgB: ["#FFD54A", "#FFFFFF", "#FFFAD1"] },
-            void: { mask: ["#002456", "#0049AE", "#004EEB"], bg: ["#0A0A0A", "#1F1F1F", "#001238"], bgB: ["#003488", "#0049AE"] },
-            glitch: { mask: ["#FF00FF", "#00FF88", "#FF0088", "#88FF00"], bg: ["#0F0F0F", "#190038", "#00001E"], bgB: ["#330033", "#000048"] },
-            editorial: { mask: ["#FFFFFF", "#F5F5F5"], bg: ["#000000", "#0A0A0A"], bgB: ["#171717", "#262626"] },
-            system: { mask: ["#BEFF46", "#E0FF80", "#76FFA8"], bg: ["#999999", "#2D2D2D"], bgB: ["#404040", "#525252"] },
-            midnight: { mask: ["#3DD1FF", "#5559FF", "#7A86FF"], bg: ["#000015", "#000039", "#060069"], bgB: ["#0600B2", "#0D00DA"] },
-            warning: { mask: ["#000000", "#1A1A1A"], bg: ["#FF5400", "#FF8C00", "#F65400"], bgB: ["#FF7210", "#FF9138"] },
-            ethereal: { mask: ["#00FFFF", "#E0B0FF", "#3DD1FF", "#C081FF"], bg: ["#0600B2", "#0030CD", "#B888FF", "#004D7A"], bgB: ["#00BADA", "#31C0FF", "#A486FF", "#11DFFF"] },
-            melancholy: { mask: ["#FFA335", "#C081FF", "#FF1919", "#FFD143"], bg: ["#873100", "#833E00", "#0048B0", "#804000"], bgB: ["#4D97FF", "#A486FF", "#CE8B00"] },
-            aggression: { mask: ["#FF4444", "#FF8800", "#FF5500", "#FF6666"], bg: ["#D50000", "#B40000", "#8E2400"], bgB: ["#F65400", "#FF7210", "#FF0303"] },
-            passion: { mask: ["#FF69B4", "#FF1493", "#FF67B6", "#EC73FF"], bg: ["#B10031", "#9B00A8", "#8000F0"], bgB: ["#DF7700", "#FF67B6"] },
-            anxiety: { mask: ["#BFFF00", "#00FFCC", "#00E755", "#02FFDF"], bg: ["#00857A", "#00615A", "#006728"], bgB: ["#88E200", "#00E755", "#29FF77"] },
-            serenity: { mask: ["#7FFFD4", "#98FB98", "#08FFA4", "#56FFBB"], bg: ["#007C58", "#00857A", "#004D7A"], bgB: ["#00AAF7", "#02FFDF", "#00E755"] },
-            rage: { mask: ["#FF0303", "#D50000", "#FF3434"], bg: ["#0A0000", "#1A0000", "#4F0000"], bgB: ["#B40000", "#D50000"] },
-            horror: { mask: ["#007B2E", "#006728", "#009537"], bg: ["#000806", "#001609", "#003315"], bgB: ["#007B2E", "#009537"] },
-            ecstasy: { mask: ["#FFE145", "#FFFAC2", "#FFC020"], bg: ["#FFC020", "#FFD54A", "#FFE145"], bgB: ["#FFF189", "#FFFAC2"] },
-            despair: { mask: ["#000051", "#000085", "#0000AD"], bg: ["#000000", "#000014", "#000033"], bgB: ["#000051", "#000085"] },
-            tenderness: { mask: ["#FFE4F3", "#FFE4F3", "#FFCCD2"], bg: ["#FFF1F2", "#FFE4E6", "#FFE4F3"], bgB: ["#FFA2AD", "#FFA2D4"] },
-            zen: { mask: ["#90FFE9", "#C8FFF3", "#49FFE2"], bg: ["#00615A", "#00857A", "#006F67"], bgB: ["#02FFDF", "#49FFE2"] },
-            nostalgia: { mask: ["#E8B4B8", "#C9A0A0", "#D4A5A5", "#DEB887"], bg: ["#4A3728", "#5C4033", "#3D2B1F"], bgB: ["#8B7355", "#A0826D"] },
-            wonder: { mask: ["#E6E6FA", "#B0E0E6", "#DDA0DD", "#87CEEB"], bg: ["#191970", "#2F2F4F", "#4B0082"], bgB: ["#6A5ACD", "#9370DB", "#BA55D3"] },
-            solitude: { mask: ["#F5F5DC", "#E8E8E8", "#D3D3D3", "#C0C0C0"], bg: ["#2F4F4F", "#36454F", "#1C1C1C"], bgB: ["#708090", "#778899"] },
-            neutral: { mask: ["#FF00FF", "#00FFFF", "#FFD700", "#21FFE8", "#E0B0FF", "#98FB98"], bg: ["#4600B2", "#00857A", "#D50000", "#5559FF"], bgB: ["#FFA001", "#00BADA", "#A486FF", "#00E755"] }
-        };
+    joy: {
+        mask: ["#FFEE00", "#FFD500", "#FFFAAA", "#FFD500"],
+        bg:   ["#0080FF", "#2200FF", "#00FFFF"],
+        bgB:  ["#FFD500", "#FFFFFF", "#FFFF00"]
+    },
+    void: {
+        mask: ["#000055", "#000088", "#000044"],
+        bg:   ["#000000", "#000000", "#000000"],
+        bgB:  ["#0000FF", "#0000FF"]
+    },
+    glitch: {
+        mask: ["#CC00FF", "#00FF88", "#FF0088", "#88FF00"],
+        bg:   ["#000000", "#110022", "#00001E"],
+        bgB:  ["#FF00FF", "#0000FF"]
+    },
+    editorial: {
+        mask: ["#FFFFFF", "#FFFFFF"],
+        bg:   ["#000000", "#000000"],
+        bgB:  ["#111111", "#222222"]
+    },
+    system: {
+        mask: ["#CCFF00", "#AAEE00", "#00FF88"],
+        bg:   ["#FFFFFF", "#000000"],
+        bgB:  ["#333333", "#444444"]
+    },
+    midnight: {
+        mask: ["#00CCFF", "#7788FF", "#AABBFF"],
+        bg:   ["#000000", "#000022", "#0000FF"],
+        bgB:  ["#0000FF", "#0000FF"]
+    },
+    warning: {
+        mask: ["#111100", "#221100"],
+        bg:   ["#FF5500", "#FF8800", "#FF5500"],
+        bgB:  ["#FF7700", "#FF8800"]
+    },
+    ethereal: {
+        mask: ["#AADDFF", "#CC88FF", "#88CCFF", "#BB88FF"],
+        bg:   ["#0000FF", "#0000FF", "#AA00FF", "#0000FF"],
+        bgB:  ["#00CCFF", "#00CCFF", "#AA00FF", "#00FFFF"]
+    },
+    melancholy: {
+        mask: ["#FF8800", "#AA00FF", "#FF4444", "#FFCC00"],
+        bg:   ["#880000", "#880000", "#0000FF", "#880000"],
+        bgB:  ["#0055FF", "#AA00FF", "#CC8800"]
+    },
+    aggression: {
+        mask: ["#FF4444", "#FF8800", "#FF5500", "#FF6666"],
+        bg:   ["#FF0000", "#FF0000", "#880000"],
+        bgB:  ["#FF5500", "#FF7700", "#FF0000"]
+    },
+    passion: {
+        mask: ["#FF55AA", "#FF2288", "#FF55BB", "#FF66FF"],
+        bg:   ["#FF0000", "#AA00FF", "#8800FF"],
+        bgB:  ["#FF8800", "#FF00FF"]
+    },
+    anxiety: {
+        mask: ["#AAFF00", "#00FFCC", "#44FF88", "#00FFDD"],
+        bg:   ["#00AA88", "#008800", "#006600"],
+        bgB:  ["#88FF00", "#00FF00", "#00FF55"]
+    },
+    serenity: {
+        mask: ["#55FFBB", "#88FFCC", "#44FFAA", "#77FFCC"],
+        bg:   ["#007755", "#00AA88", "#0055AA"],
+        bgB:  ["#00AAFF", "#00FFFF", "#00FF00"]
+    },
+    rage: {
+        mask: ["#FF2222", "#FF3333", "#FF1111"],
+        bg:   ["#000000", "#110000", "#550000"],
+        bgB:  ["#FF0000", "#FF0000"]
+    },
+    horror: {
+        mask: ["#33AA33", "#226622", "#118811"],
+        bg:   ["#000000", "#001100", "#003300"],
+        bgB:  ["#00FF00", "#00FF00"]
+    },
+    ecstasy: {
+        mask: ["#FFDD00", "#FFE844", "#FFCC00"],
+        bg:   ["#FFCC00", "#FFDD00", "#FFDD00"],
+        bgB:  ["#FFFF00", "#FFFF00"]
+    },
+    despair: {
+        mask: ["#222255", "#3333AA", "#444499"],
+        bg:   ["#000000", "#000011", "#000022"],
+        bgB:  ["#0000FF", "#0000FF"]
+    },
+    tenderness: {
+        mask: ["#FF88CC", "#FF99DD", "#FF77BB"],
+        bg:   ["#FF0055", "#FF0055", "#FF00AA"],
+        bgB:  ["#FF0055", "#FF00FF"]
+    },
+    zen: {
+        mask: ["#55FFEE", "#88FFEE", "#44FFEE"],
+        bg:   ["#008888", "#00AAAA", "#008888"],
+        bgB:  ["#00FFFF", "#00FFFF"]
+    },
+    nostalgia: {
+        mask: ["#FF8888", "#AA8888", "#CC8888", "#FFAA00"],
+        bg:   ["#553300", "#553300", "#332200"],
+        bgB:  ["#886633", "#AA6633"]
+    },
+    wonder: {
+        mask: ["#CCCCFF", "#88CCFF", "#CC88FF", "#88BBFF"],
+        bg:   ["#000088", "#000055", "#440088"],
+        bgB:  ["#6600FF", "#8800FF", "#FF00FF"]
+    },
+    solitude: {
+        mask: ["#FFFFFF", "#CCCCCC", "#AAAAAA", "#888888"],
+        bg:   ["#334444", "#334444", "#111111"],
+        bgB:  ["#668899", "#668899"]
+    },
+    neutral: {
+        mask: ["#FF88FF", "#88FFFF", "#FFDD44", "#55FFEE", "#CC88FF", "#88FFAA"],
+        bg:   ["#FF00FF", "#00FFFF", "#FF0000", "#0000FF"],
+        bgB:  ["#FF8800", "#00CCFF", "#AA00FF", "#00FF00"]
+    }
+};
         function pickFromPool(pool, seed) {
             return pool[Math.floor(seed * pool.length)];
         }
