@@ -15,11 +15,11 @@ export function setLabTutorialDone(): void {
 const STEPS = [
   {
     title: "Welcome to the Laboratory",
-    body: "Here you cultivate Floras—generative artworks grown from text. Write, adjust, and watch your creation blossom.",
+    body: "Here you cultivate Floras, generative artworks grown from text. Write, adjust, and watch your creation blossom.",
   },
   {
     title: "Your text is the soil",
-    body: "The text area is where you plant your ideas. Add at least 10 characters to begin. Your words—their length, rhythm, sentiment—are mapped into a unique, deterministic artwork. The same text always yields the same Flora.",
+    body: "The text area is where you plant your ideas. Add at least 10 characters to begin. Your words (their length, rhythm, sentiment) are mapped into a unique, deterministic artwork. The same text always yields the same Flora.",
   },
   {
     title: "Generate your Flora",

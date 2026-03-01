@@ -82,7 +82,7 @@ body.hide-scrollbar::-webkit-scrollbar {
 
 @font-face {
   font-family: "BIZ UDPMincho";
-  src: url("./assets/BIZUDMincho-Regular.ttf") format("truetype");
+  src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048422/BIZUDMincho-Regular_oshva4.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -90,7 +90,7 @@ body.hide-scrollbar::-webkit-scrollbar {
 
 @font-face {
   font-family: "BIZ UDPMincho";
-  src: url("./assets/BIZUDMincho-Bold.ttf") format("truetype");
+  src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048422/BIZUDMincho-Bold_aguylj.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -98,7 +98,7 @@ body.hide-scrollbar::-webkit-scrollbar {
 
 @font-face {
   font-family: "Supply Mono";
-  src: url("./assets/supplyMono-Light.ttf") format("truetype");
+  src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048421/supplyMono-Light_ifjxjr.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
