@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useRef, useEffect, useState } from "react";
+import LabTutorialOverlay, { getLabTutorialDone } from "@/components/laboratory/LabTutorialOverlay";
 
 interface InstallationProps {
   fullLab?: boolean;
@@ -9,6 +10,7 @@ export default function Installation({ fullLab = false }: InstallationProps) {
   const location = useLocation();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [canReveal, setCanReveal] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(() => !getLabTutorialDone());
   const params = new URLSearchParams(location.search || "");
   const floraId = params.get("floraId");
   const search = new URLSearchParams(location.search || "");
@@ -39,13 +41,16 @@ export default function Installation({ fullLab = false }: InstallationProps) {
 
   return (
     <>
+      {canReveal && showTutorial && (
+        <LabTutorialOverlay onClose={() => setShowTutorial(false)} />
+      )}
       <div
         style={{
           opacity: canReveal ? 1 : 0,
           transition: "opacity 300ms",
           position: "fixed",
           inset: 0,
-          zIndex: 9999,
+          zIndex: showTutorial ? 9998 : 9999,
         }}
       >
         <iframe

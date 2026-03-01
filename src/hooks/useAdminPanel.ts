@@ -5,11 +5,15 @@ import {
   fetchAdminUsers,
   fetchAdminReports,
   fetchAdminFlagged,
+  fetchAdminFloras,
   updateUserRole,
   updateUserStatus,
   updateReportStatus,
   unsignUser,
   hideFlora,
+  batchUpdateFloras,
+  batchUpdateReports,
+  batchUpdateUserStatus,
 } from "@/lib/admin-api";
 import type {
   AdminMetricsData,
@@ -124,6 +128,9 @@ export function useAdminPanel() {
   const [users, setUsers] = useState<AdminUserSummary[]>([]);
   const [reports, setReports] = useState<AdminReport[]>([]);
   const [flagged, setFlagged] = useState<AdminFlaggedItem[]>([]);
+  const [allFloras, setAllFloras] = useState<
+    { _id: string; title: string; status?: string; isHidden?: boolean; authorUsername?: string; createdAt?: string }[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -137,9 +144,10 @@ export function useAdminPanel() {
         fetchAdminUsers({ limit: 500 }),
         fetchAdminReports(),
         fetchAdminFlagged(),
+        fetchAdminFloras({ limit: 500 }),
       ]);
 
-      const [metricsRes, chartsRes, usersRes, reportsRes, flaggedRes] =
+      const [metricsRes, chartsRes, usersRes, reportsRes, flaggedRes, florasRes] =
         results.map((r) => (r.status === "fulfilled" ? r.value : null));
 
       const errs = results
@@ -183,6 +191,7 @@ export function useAdminPanel() {
       if (Array.isArray(usersRes)) setUsers(usersRes.map(mapApiUser));
       if (Array.isArray(reportsRes)) setReports(reportsRes.map(mapApiReport));
       if (Array.isArray(flaggedRes)) setFlagged(flaggedRes.map(mapApiFlagged));
+      if (Array.isArray(florasRes)) setAllFloras(florasRes);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Failed to load admin data";
       setError(msg);
@@ -268,6 +277,39 @@ export function useAdminPanel() {
     [load]
   );
 
+  const handleBatchFloras = useCallback(
+    async (floraIds: string[], action: "hide" | "unhide" | "delete") => {
+      await batchUpdateFloras(floraIds, action);
+      setFlagged((prev) =>
+        action === "delete" ? prev.filter((f) => !floraIds.includes(f.contentId)) : prev
+      );
+      setReports((prev) =>
+        action === "delete" ? prev.filter((r) => !floraIds.includes(r.targetId)) : prev
+      );
+      setAllFloras((prev) =>
+        action === "delete" ? prev.filter((f) => !floraIds.includes(f._id)) : prev
+      );
+      load();
+    },
+    [load]
+  );
+
+  const handleBatchReports = useCallback(
+    async (reportIds: string[], action: "resolve" | "dismiss") => {
+      await batchUpdateReports(reportIds, action);
+      load();
+    },
+    [load]
+  );
+
+  const handleBatchUsers = useCallback(
+    async (userIds: string[], status: "suspend" | "ban" | "activate") => {
+      await batchUpdateUserStatus(userIds, status);
+      load();
+    },
+    [load]
+  );
+
   return {
     metrics,
     florasByDay,
@@ -275,6 +317,7 @@ export function useAdminPanel() {
     users,
     reports,
     flagged,
+    allFloras,
     loading,
     error,
     refresh: load,
@@ -284,5 +327,8 @@ export function useAdminPanel() {
     onFlaggedStatusChange: handleFlaggedStatusChange,
     onUnsignUser: handleUnsignUser,
     onHideFlora: handleHideFlora,
+    onBatchFloras: handleBatchFloras,
+    onBatchReports: handleBatchReports,
+    onBatchUsers: handleBatchUsers,
   };
 }

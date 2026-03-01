@@ -1,14 +1,24 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
 import { signIn } from "@/lib/auth"
 
 export default function SignInForm() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [message, setMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    const stateMessage = (location.state as { message?: string })?.message
+    if (stateMessage) {
+      setMessage(stateMessage)
+      window.history.replaceState({}, "", location.pathname)
+    }
+  }, [location.state, location.pathname])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,8 +28,13 @@ export default function SignInForm() {
     try {
       await signIn(username, password)
       navigate("/garden")
-    } catch {
-      setError("Invalid credentials or server error.")
+    } catch (err: unknown) {
+      const res = err as { response?: { data?: { code?: string; error?: string } } }
+      if (res?.response?.data?.code === "EMAIL_NOT_VERIFIED") {
+        setError("Please verify your email before signing in.")
+      } else {
+        setError(res?.response?.data?.error || "Invalid credentials or server error.")
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -34,10 +49,24 @@ export default function SignInForm() {
           Welcome back, cultivator
         </p>
 
-        {error ? (
-          <p className="mb-4 text-sm text-red-700 font-supply-mono">
-            {error}
+        {message ? (
+          <p className="mb-4 text-sm text-lime-700 font-supply-mono">
+            {message}
           </p>
+        ) : null}
+        {error ? (
+          <div className="mb-4 text-sm text-red-700 font-supply-mono">
+            <p>{error}</p>
+            {error.includes("verify your email") && (
+              <button
+                type="button"
+                onClick={() => navigate("/verify-email")}
+                className="mt-2 underline hover:no-underline"
+              >
+                Request new verification link
+              </button>
+            )}
+          </div>
         ) : null}
 
         <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">

@@ -79,14 +79,46 @@ export async function signIn(username: string, password: string) {
   return data;
 }
 
+export interface SignUpResponse {
+  message?: string;
+  emailSent?: boolean;
+  token?: string;
+  refreshToken?: string;
+  user?: AuthUser;
+}
+
 export async function signUp(payload: {
   username: string;
   displayName: string;
   email: string;
   password: string;
-}) {
-  const { data } = await api.post<AuthResponse>("/auth/signup", payload);
+}): Promise<SignUpResponse> {
+  const { data } = await api.post<SignUpResponse>("/auth/signup", payload);
+  if (data.token && data.user) {
+    saveSession({
+      token: data.token,
+      refreshToken: data.refreshToken,
+      user: data.user,
+    });
+  }
+  return data;
+}
+
+export async function verifyEmail(token: string): Promise<AuthResponse> {
+  const { data } = await api.post<AuthResponse>("/auth/verify-email", {
+    token: token.trim(),
+  });
   saveSession(data);
+  return data;
+}
+
+export async function resendVerificationEmail(
+  email: string
+): Promise<{ message: string }> {
+  const { data } = await api.post<{ message: string }>(
+    "/auth/resend-verification",
+    { email }
+  );
   return data;
 }
 

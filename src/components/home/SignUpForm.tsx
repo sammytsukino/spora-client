@@ -39,13 +39,24 @@ export default function SignUpForm() {
 
     setIsSubmitting(true)
     try {
-      await signUp({
+      const result = await signUp({
         username,
         displayName: name,
         email,
         password,
       })
-      navigate("/garden")
+      if (result.emailSent) {
+        navigate("/signin", {
+          state: {
+            message:
+              "Check your email and click the verification link to activate your account.",
+          },
+        })
+      } else if (result.token && result.user) {
+        navigate("/garden")
+      } else {
+        navigate("/signin")
+      }
     } catch {
       setError("Could not create account. Try again.")
     } finally {

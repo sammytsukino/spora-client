@@ -90,6 +90,8 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            min-width: 0;
+            overflow-wrap: break-word;
         }
 
         .control-box {
@@ -381,7 +383,13 @@
 
         .btn-group {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
+        }
+
+        .btn-group button {
+            flex: 1 1 80px;
+            min-width: 70px;
         }
 
         button {
@@ -2294,8 +2302,10 @@
             const list = document.getElementById("paletteRefList");
             if (!list) return;
             list.innerHTML = "";
-            Object.entries(PALETTE_EXAMPLES).forEach(([key, ex]) => {
+            const moodOrder = Object.keys(MOOD_LEXICONS || {});
+            moodOrder.forEach((key) => {
                 const p = moodProfiles[key];
+                const ex = PALETTE_EXAMPLES[key];
                 if (!p || !ex) return;
                 const row = document.createElement("div");
                 row.style.cssText = "margin-bottom:12px;padding:8px;border:1px solid var(--spora-dark);cursor:pointer;display:flex;gap:8px;flex-wrap:wrap;align-items:center";

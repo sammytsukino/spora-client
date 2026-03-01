@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Home from "../views/Home";
 import Installation from "../views/Installation";
@@ -13,6 +13,7 @@ import TermsConditions from "../views/TermsConditions";
 import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
+import VerifyEmail from "../views/VerifyEmail";
 import Profile from "../views/Profile";
 import Licensing from "../views/Licensing";
 import AdminPanel from "../views/AdminPanel";
@@ -22,6 +23,7 @@ import FloraView from "../views/FloraView";
 import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import AccentColorOnRouteChange from "../components/shared/AccentColorOnRouteChange";
+import ConsentModal, { getConsentGiven } from "../components/shared/ConsentModal";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
 
@@ -35,12 +37,18 @@ function ClearLabFullSessionOnLeave() {
   return null;
 }
 
-export default function Router() {
+function RouterContent() {
+  const [consentGiven, setConsentGiven] = useState(() => getConsentGiven());
+  const location = useLocation();
+  const isTermsPage = location.pathname === "/terms";
+
   return (
-    <BrowserRouter>
-      <ClearLabFullSessionOnLeave />
-      <AccentColorOnRouteChange />
+    <>
       <ScrollToTop />
+      <AccentColorOnRouteChange />
+      {!consentGiven && !isTermsPage && (
+        <ConsentModal onAccept={() => setConsentGiven(true)} />
+      )}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
@@ -58,11 +66,21 @@ export default function Router() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<GuestRoute><SignIn /></GuestRoute>} />
         <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/licensing" element={<Licensing />} />
         <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
         <Route path="/background" element={<Background />} />
       </Routes>
+    </>
+  );
+}
+
+export default function Router() {
+  return (
+    <BrowserRouter>
+      <ClearLabFullSessionOnLeave />
+      <RouterContent />
     </BrowserRouter>
   );
 }

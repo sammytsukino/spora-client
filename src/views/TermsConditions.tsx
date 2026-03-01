@@ -96,7 +96,7 @@ export default function TermsConditions() {
             </p>
           </section>
 
-          <section>
+          <section id="cookies">
             <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
               5. Data Protection & Privacy
             </h2>

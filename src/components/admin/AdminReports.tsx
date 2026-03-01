@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Download, ExternalLink, UserX, Eye, Trash2, Mail } from "lucide-react";
+import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { AdminReport, ReportStatus } from "@/data/admin-data";
 
 interface AdminReportsProps {
@@ -12,6 +14,7 @@ interface AdminReportsProps {
   onRemoveTarget?: (report: AdminReport) => void;
   onContactTarget?: (report: AdminReport) => void;
   onHideFlora?: (floraId: string) => void;
+  onBatchReports?: (ids: string[], action: "resolve" | "dismiss") => void;
 }
 
 const statusStyles: Record<ReportStatus, string> = {
@@ -44,7 +47,100 @@ export default function AdminReports({
   onRemoveTarget,
   onContactTarget,
   onHideFlora,
+  onBatchReports,
 }: AdminReportsProps) {
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [confirm, setConfirm] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    onConfirm: () => void;
+  }>({ open: false, title: "", description: "", onConfirm: () => {} });
+
+  const handleHideFlora = (report: AdminReport) => {
+    if (!onHideFlora) return;
+    setConfirm({
+      open: true,
+      title: "Hide flora",
+      description:
+        "Are you sure you want to hide this flora? It will no longer be visible to other users.",
+      onConfirm: () => {
+        onHideFlora(report.targetId);
+        setConfirm((c) => ({ ...c, open: false }));
+      },
+    });
+  };
+
+  const handleResolve = (report: AdminReport) => {
+    if (!onStatusChange) return;
+    setConfirm({
+      open: true,
+      title: "Resolve report",
+      description:
+        "Mark this report as resolved. The report will be closed.",
+      onConfirm: () => {
+        onStatusChange(report.id, "resolved");
+        setConfirm((c) => ({ ...c, open: false }));
+      },
+    });
+  };
+
+  const handleDismiss = (report: AdminReport) => {
+    if (!onStatusChange) return;
+    setConfirm({
+      open: true,
+      title: "Dismiss report",
+      description:
+        "Dismiss this report. No action will be taken on the reported content.",
+      onConfirm: () => {
+        onStatusChange(report.id, "dismissed");
+        setConfirm((c) => ({ ...c, open: false }));
+      },
+    });
+  };
+
+  const handleRemoveTarget = (report: AdminReport) => {
+    if (!onRemoveTarget) return;
+    setConfirm({
+      open: true,
+      title: "Remove content",
+      description:
+        "Are you sure you want to remove the reported content? This action cannot be undone.",
+      onConfirm: () => {
+        onRemoveTarget(report);
+        setConfirm((c) => ({ ...c, open: false }));
+      },
+    });
+  };
+
+  const pendingReports = reports.filter((r) => r.status === "pending");
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+  const selectAll = () => {
+    if (selectedIds.size === pendingReports.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(pendingReports.map((r) => r.id)));
+  };
+  const runBatch = (action: "resolve" | "dismiss") => {
+    if (!onBatchReports || selectedIds.size === 0) return;
+    const ids = Array.from(selectedIds);
+    setConfirm({
+      open: true,
+      title: action === "resolve" ? "Resolve reports" : "Dismiss reports",
+      description: `Are you sure you want to ${action} ${ids.length} report${ids.length !== 1 ? "s" : ""}?`,
+      onConfirm: () => {
+        onBatchReports(ids, action);
+        setSelectedIds(new Set());
+        setConfirm((c) => ({ ...c, open: false }));
+      },
+    });
+  };
+
   if (reports.length === 0) {
     return (
       <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
@@ -60,19 +156,60 @@ export default function AdminReports({
 
   return (
     <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="font-supply-mono font-bold text-sm uppercase">
-          Reports
-        </h2>
-        <span className="font-supply-mono text-[11px] opacity-80">
-          {reports.length} report{reports.length !== 1 ? "s" : ""}
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <div className="flex items-center gap-4">
+          <h2 className="font-supply-mono font-bold text-sm uppercase">
+            Reports
+          </h2>
+          <span className="font-supply-mono text-[11px] opacity-80">
+            {reports.length} report{reports.length !== 1 ? "s" : ""}
+          </span>
+          {onBatchReports && pendingReports.length > 0 && (
+            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-[11px]">
+              <input
+                type="checkbox"
+                checked={
+                  pendingReports.length > 0 &&
+                  pendingReports.every((r) => selectedIds.has(r.id))
+                }
+                onChange={selectAll}
+                className="w-4 h-4 border-2 border-[var(--spora-primary)]"
+              />
+              Select all pending
+            </label>
+          )}
+        </div>
+        {selectedIds.size > 0 && onBatchReports && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => runBatch("resolve")}
+              className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 text-[10px] uppercase font-supply-mono"
+            >
+              Resolve ({selectedIds.size})
+            </button>
+            <button
+              type="button"
+              onClick={() => runBatch("dismiss")}
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+            >
+              Dismiss ({selectedIds.size})
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedIds(new Set())}
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+            >
+              Clear selection
+            </button>
+          </div>
+        )}
       </div>
       <ul className="space-y-4">
         {reports.map((report) => (
           <li key={report.id}>
             <article
-              className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-4 font-supply-mono text-[11px]"
+              className={`border bg-[#E9E9E9] p-4 font-supply-mono text-[11px] transition-colors ${selectedIds.has(report.id) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
               onClick={() => onReportClick?.(report)}
               onKeyDown={(e) =>
                 onReportClick &&
@@ -84,6 +221,18 @@ export default function AdminReports({
             >
               <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-2 flex-wrap">
+                  {onBatchReports && report.status === "pending" && (
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(report.id)}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        toggleSelect(report.id);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-4 h-4 border-2 border-[var(--spora-primary)]"
+                    />
+                  )}
                   <span className="font-bold">{report.id}</span>
                   <span className="uppercase opacity-80">{report.type}</span>
                   <span
@@ -145,7 +294,7 @@ export default function AdminReports({
                 {report.targetType === "flora" && onHideFlora && (
                   <button
                     type="button"
-                    onClick={() => onHideFlora(report.targetId)}
+                    onClick={() => handleHideFlora(report)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
                   >
                     Hide flora
@@ -154,7 +303,7 @@ export default function AdminReports({
                 {(report.targetType === "flora" || report.targetType === "comment") && (
                   <button
                     type="button"
-                    onClick={() => onRemoveTarget?.(report)}
+                    onClick={() => handleRemoveTarget(report)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
                   >
                     <Trash2 className="size-3.5" aria-hidden />
@@ -183,14 +332,14 @@ export default function AdminReports({
                   <>
                     <button
                       type="button"
-                      onClick={() => onStatusChange(report.id, "resolved")}
+                      onClick={() => handleResolve(report)}
                       className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
                     >
                       Resolve
                     </button>
                     <button
                       type="button"
-                      onClick={() => onStatusChange(report.id, "dismissed")}
+                      onClick={() => handleDismiss(report)}
                       className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
                     >
                       Dismiss
@@ -202,6 +351,13 @@ export default function AdminReports({
           </li>
         ))}
       </ul>
+      <ConfirmModal
+        open={confirm.open}
+        title={confirm.title}
+        description={confirm.description}
+        onConfirm={confirm.onConfirm}
+        onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
+      />
     </section>
   );
 }

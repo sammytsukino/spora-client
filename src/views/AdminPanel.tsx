@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FilterTabs from "@/components/shared/FilterTabs";
@@ -8,6 +8,7 @@ import AdminUsageCharts from "@/components/admin/AdminUsageCharts";
 import AdminReports from "@/components/admin/AdminReports";
 import AdminUserManagement from "@/components/admin/AdminUserManagement";
 import AdminFlaggedContent from "@/components/admin/AdminFlaggedContent";
+import AdminFlorasManagement from "@/components/admin/AdminFlorasManagement";
 import { adminSectionTabs } from "@/data/admin-data";
 import { useAdminPanel } from "@/hooks/useAdminPanel";
 import { getStoredUser } from "@/lib/auth";
@@ -32,10 +33,19 @@ const defaultMetrics = {
 const reportsSubViews = ["By flora", "By report"] as const;
 const reportStatusFilters = ["Pending", "All"] as const;
 
+const validTabs = new Set(adminSectionTabs);
+
 export default function AdminPanel() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const user = getStoredUser();
-  const [activeSection, setActiveSection] = useState<string>(adminSectionTabs[0]);
+  const tabFromUrl = searchParams.get("tab") ?? adminSectionTabs[0];
+  const activeSection = validTabs.has(tabFromUrl) ? tabFromUrl : adminSectionTabs[0];
+
+  const setActiveSection = (tab: string) => {
+    setSearchParams(tab === adminSectionTabs[0] ? {} : { tab });
+  };
+
   const [reportsSubView, setReportsSubView] = useState<
     (typeof reportsSubViews)[number]
   >("By flora");
@@ -50,6 +60,7 @@ export default function AdminPanel() {
     users,
     reports,
     flagged,
+    allFloras,
     loading,
     error,
     refresh,
@@ -58,6 +69,9 @@ export default function AdminPanel() {
     onReportStatusChange,
     onUnsignUser,
     onHideFlora,
+    onBatchFloras,
+    onBatchReports,
+    onBatchUsers,
   } = useAdminPanel();
 
   const pendingReports = reports.filter((r) => r.status === "pending");
@@ -115,6 +129,13 @@ export default function AdminPanel() {
           </p>
         ) : (
           <>
+            {activeSection === "Floras" && (
+              <AdminFlorasManagement
+                floras={allFloras}
+                onBatchFloras={onBatchFloras}
+              />
+            )}
+
             {activeSection === "Overview" && (
               <div className="space-y-6">
                 <AdminMetrics
@@ -163,6 +184,7 @@ export default function AdminPanel() {
                     }
                     onHideFlora={onHideFlora}
                     onDownload={(item) => exportFlaggedToPdf(item)}
+                    onBatchFloras={onBatchFloras}
                   />
                 ) : (
                   <AdminReports
@@ -182,6 +204,7 @@ export default function AdminPanel() {
                     onContactTarget={() => {}}
                     onSuspendTarget={() => {}}
                     onHideFlora={onHideFlora}
+                    onBatchReports={onBatchReports}
                   />
                 )}
               </div>
@@ -209,6 +232,7 @@ export default function AdminPanel() {
                 onSuspend={(u) => onUserStatusChange(u.id, "suspended")}
                 onBan={(u) => onUserStatusChange(u.id, "banned")}
                 onActivate={(u) => onUserStatusChange(u.id, "active")}
+                onBatchUsers={onBatchUsers}
               />
             )}
 

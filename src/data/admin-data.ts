@@ -63,6 +63,7 @@ export interface AdminUsageDataPoint {
 
 export const adminSectionTabs = [
   "Overview",
+  "Floras",
   "Reports",
   "Users",
 ] as const;

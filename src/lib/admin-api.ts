@@ -143,6 +143,39 @@ export async function unhideFlora(floraId: string, reason?: string): Promise<voi
   await api.patch(`/admin/floras/${floraId}/status`, { isHidden: false, reason });
 }
 
+export async function batchUpdateFloras(
+  ids: string[],
+  action: "hide" | "unhide" | "delete"
+): Promise<{ updated: number; failed: string[] }> {
+  const { data } = await api.patch<{ updated: number; failed: string[] }>(
+    "/admin/floras/batch",
+    { ids, action }
+  );
+  return data;
+}
+
+export async function batchUpdateReports(
+  ids: string[],
+  action: "resolve" | "dismiss"
+): Promise<{ updated: number; failed: string[] }> {
+  const { data } = await api.patch<{ updated: number; failed: string[] }>(
+    "/admin/reports/batch",
+    { ids, action }
+  );
+  return data;
+}
+
+export async function batchUpdateUserStatus(
+  ids: string[],
+  status: "suspend" | "ban" | "activate"
+): Promise<{ updated: number; failed: string[] }> {
+  const { data } = await api.patch<{ updated: number; failed: string[] }>(
+    "/admin/users/batch",
+    { ids, action: status }
+  );
+  return data;
+}
+
 export async function fetchAdminFloras(params?: {
   limit?: number;
   skip?: number;
