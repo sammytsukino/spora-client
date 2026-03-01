@@ -6,6 +6,7 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
+import { Shuffle } from "lucide-react";
 
 interface FloraLocationState {
   flora?: {
@@ -482,11 +483,12 @@ export default function FloraReader() {
           <button
             type="button"
             onClick={handleRegenerate}
-            className={`px-2 py-1 border cursor-pointer hover:opacity-80 transition-opacity ${
+            className={`px-2 py-1 border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-2 ${
               isLightBg ? "border-[#262626]" : "border-white/60"
             }`}
           >
-            Regenerate seed
+            <Shuffle size={12} aria-hidden />
+            Shuffle layout
           </button>
           <div className="flex items-center gap-2">
             <label htmlFor="reader-wind" className="opacity-80 whitespace-nowrap">

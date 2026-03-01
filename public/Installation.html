@@ -435,6 +435,17 @@
             border-style: dashed;
         }
 
+        .btn-with-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-with-icon .btn-icon {
+            flex-shrink: 0;
+        }
+
         .btn-group.publish-buttons {
             align-items: stretch;
         }
@@ -664,7 +675,7 @@
             </a>
         </div>
         <section class="laboratory-only" id="titleSection">
-            <h2>ARTWORK TITLE</h2>
+            <h2>ARTWORK_TITLE</h2>
             <div class="control-box">
                 <input type="text" id="inpTitle" placeholder="Name your flora (required)..." required />
             </div>
@@ -965,10 +976,10 @@
                         edits, no more cuttings.</span>
                 </span>
             </div>
-            <button type="button" id="btnRegenerate" class="btn-primary" style="margin-bottom: 12px"
-                onclick="generateGarden()">REGENERATE SEED (RE-POSITION)</button>
+            <button type="button" id="btnRegenerate" class="btn-primary btn-with-icon" style="margin-bottom: 12px"
+                onclick="generateGarden()"><svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>SHUFFLE LAYOUT</button>
             <div class="btn-group">
-                <button id="btnRenderPNG" onclick="saveFullArt()">RENDER PNG</button>
+                <button id="btnRenderPNG" class="btn-with-icon" onclick="saveFullArt()"><svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>DOWNLOAD IMAGE</button>
             </div>
             <div id="jsonExportGroup" style="display: none;">
                 <div class="btn-group" style="margin-top: 10px;">
