@@ -24,7 +24,7 @@ export default function QuoteSection({ quote, author, buttonText, onButtonClick 
         />
       </video>
 
-      <div className="absolute left-0 top-0 h-full w-full md:w-3/5 bg-(--spora-primary)/75 md:bg-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-[var(--spora-primary)]/80 pointer-events-none" />
 
       <div className="relative z-10 h-full flex flex-col md:items-end items-center md:justify-start justify-center px-6 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16">
         <p className="font-bizud-mincho text-[var(--spora-text-secondary)] max-w-6xl md:text-right text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-relaxed pointer-events-none mb-4 md:mb-8">

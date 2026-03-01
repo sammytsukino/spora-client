@@ -4,6 +4,16 @@ import FooterAlter from "@/components/layout/FooterAlter";
 import MainButton from "@/components/ui/MainButton";
 import Section from "@/components/layout/Section";
 import { Mail, X, Instagram } from "lucide-react";
+import { BubbleBackground } from "@/components/backgrounds/BubbleBackground";
+
+const bubbleColors = {
+  first: '18,113,255',
+  second: '221,74,255',
+  third: '0,220,255',
+  fourth: '82,255,90',
+  fifth: '244,239,64',
+  sixth: '255,100,255',
+};
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -28,6 +38,9 @@ export default function Contact() {
         className="relative flex flex-col justify-between min-h-dvh"
       >
         <div className="fixed inset-0 w-full h-full z-0">
+          <BubbleBackground className="absolute inset-0 w-full h-full" colors={bubbleColors} interactive />
+        </div>
+        {/* <div className="fixed inset-0 w-full h-full z-0">
           <video
             autoPlay
             loop
@@ -40,7 +53,7 @@ export default function Contact() {
               type="video/mp4"
             />
           </video>
-        </div>
+        </div> */}
 
         <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 py-24 min-h-0">
           <div className="w-full max-w-[640px] px-8 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14 bg-[#E9E9E9] border border-[var(--spora-primary)]">

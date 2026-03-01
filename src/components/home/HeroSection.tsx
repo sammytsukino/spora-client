@@ -1,6 +1,15 @@
 import CyclingLogo from '@/components/layout/CyclingLogo';
 import { sporaLogos } from '@/data/logo-data';
+import { BubbleBackground } from '@/components/backgrounds/BubbleBackground';
 
+const bubbleColors = {
+  first: '18,113,255',
+  second: '221,74,255',
+  third: '0,220,255',
+  fourth: '82,255,90',
+  fifth: '244,239,64',
+  sixth: '255,100,255',
+};
 
 export default function HeroSection() {
   return (
@@ -36,7 +45,8 @@ export default function HeroSection() {
       </div>
 
       <div className="relative flex-1 w-full md:w-[80vw] min-h-[48vh] md:min-h-0">
-        <video
+        <BubbleBackground className="absolute inset-0 w-full h-full bg-[var(--spora-accent-secondary)]" colors={bubbleColors} interactive />
+        {/* <video
           autoPlay
           loop
           muted
@@ -47,7 +57,7 @@ export default function HeroSection() {
             src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
             type="video/mp4"
           />
-        </video>
+        </video> */}
 
         <div className="absolute inset-0 p-5 sm:p-6 md:p-0">
           <div className="md:absolute md:right-12 lg:right-16 md:top-20 lg:top-24 md:text-right">
@@ -56,14 +66,6 @@ export default function HeroSection() {
             </p>
           </div>
 
-          <div className="mt-4 md:mt-0 md:absolute md:right-12 lg:right-16 md:bottom-6 lg:bottom-8 md:text-right">
-            <button
-              type="button"
-              className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] text-[var(--spora-primary)] hover:underline hover:cursor-pointer"
-            >
-              next flora →
-            </button>
-          </div>
         </div>
       </div>
     </div>
