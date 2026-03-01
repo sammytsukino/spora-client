@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
 import type { FloraItem } from "@/data/flora-data";
 
 interface GreenhouseFloraCardProps {
   flora: FloraItem;
+  authorUsername?: string;
   onClick?: () => void;
 }
 
-export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraCardProps) {
+export default function GreenhouseFloraCard({ flora, authorUsername, onClick }: GreenhouseFloraCardProps) {
   return (
     <article
       className="group bg-[var(--spora-primary-light)] p-4 md:p-5 flex flex-col relative transition-colors duration-200 cursor-pointer hover:bg-[var(--spora-accent-secondary)] border border-[var(--spora-primary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
@@ -55,7 +57,13 @@ export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraC
         "{flora.excerpt}"
       </p>
       <div className="flex justify-between font-supply-mono text-[9px] md:text-[10px] opacity-75 mt-1">
-        <span>{flora.author}</span>
+        {authorUsername && flora.author !== "@Anonymous" ? (
+          <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+            {flora.author}
+          </Link>
+        ) : (
+          <span>{flora.author}</span>
+        )}
         <span>{flora.seed}</span>
       </div>
     </article>

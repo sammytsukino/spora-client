@@ -7,6 +7,7 @@ export interface ApiFlora {
   text: string;
   authorId?: string;
   authorUsername?: string;
+  isAuthorAnonymized?: boolean;
   author?: { username?: string; displayName?: string };
   coAuthors?: Array<{
     username?: string;
@@ -34,6 +35,7 @@ export async function listFloras(params?: {
   status?: string;
   authorId?: string;
   generation?: number;
+  followingOnly?: boolean;
   limit?: number;
   skip?: number;
 }) {

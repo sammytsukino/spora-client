@@ -10,6 +10,7 @@ import FeaturedFlora from "@/components/flora/FeaturedFlora";
 import GreenhouseFloraCard from "@/components/flora/GreenhouseFloraCard";
 import { floraFilters, ITEMS_PER_PAGE, floraImages } from "@/data/flora-data";
 import { listFloras, type ApiFlora } from "@/lib/floras";
+import { getStoredToken } from "@/lib/auth";
 
 interface UiFlora {
   id: string;
@@ -19,6 +20,7 @@ interface UiFlora {
   excerpt: string;
   author: string;
   seed: string;
+  authorUsername?: string;
 }
 
 function formatGeneration(value?: number) {
@@ -30,6 +32,8 @@ function formatSeed(flora: ApiFlora) {
   const seedSource = flora.generative?.soilId || flora.generative?.soilName || flora._id;
   return `#${seedSource.slice(-6).toUpperCase()}`;
 }
+
+const greenhouseFiltersWithFollowing = ["All Units", "Following", ...floraFilters.slice(1)] as const;
 
 function mapFlora(flora: ApiFlora, index: number): UiFlora {
   const author = flora.authorUsername
@@ -46,6 +50,7 @@ function mapFlora(flora: ApiFlora, index: number): UiFlora {
     excerpt: flora.text?.slice(0, 140) || "",
     author,
     seed: formatSeed(flora),
+    authorUsername: flora.isAuthorAnonymized ? undefined : flora.authorUsername,
   };
 }
 
@@ -53,15 +58,21 @@ export default function Greenhouse() {
   const [searchParams] = useSearchParams();
   const authorId = searchParams.get("authorId") ?? undefined;
   const authorLabel = searchParams.get("username") ?? undefined;
+  const isLoggedIn = !!getStoredToken();
+  const showFollowingFilter = isLoggedIn && !authorId;
+  const filters = showFollowingFilter ? greenhouseFiltersWithFollowing : floraFilters;
 
-  const [activeFilter, setActiveFilter] = useState('All Units');
+  const [activeFilter, setActiveFilter] = useState<string>(filters[0]);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [floras, setFloras] = useState<UiFlora[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const useFollowingFilter = activeFilter === "Following";
+
   useEffect(() => {
+    if (useFollowingFilter && !isLoggedIn) return;
     let isActive = true;
     setIsLoading(true);
     setError(null);
@@ -69,30 +80,29 @@ export default function Greenhouse() {
 
     const params: Parameters<typeof listFloras>[0] = { status: "sealed" };
     if (authorId) params.authorId = authorId;
+    if (useFollowingFilter) params.followingOnly = true;
 
     listFloras(params)
       .then((data) => {
         if (!isActive) return;
         setFloras(data.map(mapFlora));
       })
-      .catch(() => {
+      .catch((e) => {
         if (!isActive) return;
-        setError("Could not load floras.");
+        if (e?.response?.status === 401) setError("Sign in to see floras from people you follow.");
+        else setError("Could not load floras.");
       })
       .finally(() => {
         if (!isActive) return;
         setIsLoading(false);
       });
 
-    return () => {
-      isActive = false;
-    };
-  }, [authorId]);
+    return () => { isActive = false; };
+  }, [authorId, useFollowingFilter, isLoggedIn]);
 
   const filteredFloras = useMemo(() => {
-    return activeFilter === 'All Units'
-      ? floras
-      : floras.filter(flora => flora.generation === activeFilter);
+    if (activeFilter === "All Units" || activeFilter === "Following") return floras;
+    return floras.filter((flora) => flora.generation === activeFilter);
   }, [activeFilter, floras]);
 
   const loadMoreCards = useCallback(() => {
@@ -159,8 +169,8 @@ export default function Greenhouse() {
           </div>
 
           <div className="flex items-center justify-end">
-            <FilterTabs 
-              filters={floraFilters}
+            <FilterTabs
+              filters={filters as readonly string[]}
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
             />
@@ -181,20 +191,25 @@ export default function Greenhouse() {
             />
           ) : visibleFloras.length === 0 ? (
             <EmptyState
-              title="No flora found"
-              description="Try adjusting your filters to see more results."
+              title={activeFilter === "Following" ? "No floras from people you follow" : "No flora found"}
+              description={
+                activeFilter === "Following"
+                  ? "Follow cultivators from the Garden or Greenhouse to fill your feed."
+                  : "Try adjusting your filters to see more results."
+              }
             />
           ) : (
             <main className="flex flex-col gap-6">
               {featured && (
                 <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
-                  <FeaturedFlora flora={featured} onClick={() => handleCardClick(featured)} />
+                      <FeaturedFlora flora={featured} onClick={() => handleCardClick(featured)} />
 
                   <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1 gap-6">
                     {sideFloras.map((flora) => (
                       <GreenhouseFloraCard
                         key={flora.id}
                         flora={flora}
+                        authorUsername={flora.authorUsername}
                         onClick={() => handleCardClick(flora)}
                       />
                     ))}
@@ -208,6 +223,7 @@ export default function Greenhouse() {
                     <GreenhouseFloraCard
                       key={flora.id}
                       flora={flora}
+                      authorUsername={flora.authorUsername}
                       onClick={() => handleCardClick(flora)}
                     />
                   ))}

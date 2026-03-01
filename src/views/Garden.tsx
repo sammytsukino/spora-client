@@ -9,6 +9,7 @@ import LoadingIndicator from "@/components/shared/LoadingIndicator";
 import EmptyState from "@/components/shared/EmptyState";
 import { floraFilters, ITEMS_PER_PAGE, floraImages } from "@/data/flora-data";
 import { listFloras, type ApiFlora } from "@/lib/floras";
+import { getStoredToken } from "@/lib/auth";
 
 interface UiFlora {
   id: string;
@@ -18,6 +19,7 @@ interface UiFlora {
   excerpt: string;
   author: string;
   seed: string;
+  authorUsername?: string;
 }
 
 function formatGeneration(value?: number) {
@@ -45,45 +47,54 @@ function mapFlora(flora: ApiFlora, index: number): UiFlora {
     excerpt: flora.text?.slice(0, 140) || "",
     author,
     seed: formatSeed(flora),
+    authorUsername: flora.isAuthorAnonymized ? undefined : flora.authorUsername,
   };
 }
 
+const gardenFiltersWithFollowing = ["All Units", "Following", ...floraFilters.slice(1)] as const;
+
 export default function Garden() {
-  const [activeFilter, setActiveFilter] = useState('All Units');
+  const isLoggedIn = !!getStoredToken();
+  const filters = isLoggedIn ? gardenFiltersWithFollowing : floraFilters;
+  const [activeFilter, setActiveFilter] = useState<string>(filters[0]);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [floras, setFloras] = useState<UiFlora[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const useFollowingFilter = activeFilter === "Following";
+
   useEffect(() => {
+    if (useFollowingFilter && !isLoggedIn) return;
     let isActive = true;
     setIsLoading(true);
     setError(null);
 
-    listFloras({ status: "blossoming" })
+    const params: Parameters<typeof listFloras>[0] = { status: "blossoming" };
+    if (useFollowingFilter) params.followingOnly = true;
+
+    listFloras(params)
       .then((data) => {
         if (!isActive) return;
         setFloras(data.map(mapFlora));
       })
-      .catch(() => {
+      .catch((e) => {
         if (!isActive) return;
-        setError("Could not load floras.");
+        if (e?.response?.status === 401) setError("Sign in to see floras from people you follow.");
+        else setError("Could not load floras.");
       })
       .finally(() => {
         if (!isActive) return;
         setIsLoading(false);
       });
 
-    return () => {
-      isActive = false;
-    };
-  }, []);
+    return () => { isActive = false; };
+  }, [useFollowingFilter, isLoggedIn]);
 
   const filteredFloras = useMemo(() => {
-    return activeFilter === 'All Units'
-      ? floras
-      : floras.filter(flora => flora.generation === activeFilter);
+    if (activeFilter === "All Units" || activeFilter === "Following") return floras;
+    return floras.filter((flora) => flora.generation === activeFilter);
   }, [activeFilter, floras]);
 
   const loadMoreCards = useCallback(() => {
@@ -144,8 +155,8 @@ export default function Garden() {
           </div>
 
           <div className="flex items-center justify-end">
-            <FilterTabs 
-              filters={floraFilters}
+            <FilterTabs
+              filters={filters as readonly string[]}
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
             />
@@ -166,8 +177,12 @@ export default function Garden() {
             />
           ) : visibleFloras.length === 0 ? (
             <EmptyState
-              title="No flora found"
-              description="Try adjusting your filters to see more results."
+              title={activeFilter === "Following" ? "No floras from people you follow" : "No flora found"}
+              description={
+                activeFilter === "Following"
+                  ? "Follow cultivators from the Garden or Greenhouse to fill your feed."
+                  : "Try adjusting your filters to see more results."
+              }
             />
           ) : (
             <main className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
@@ -181,6 +196,7 @@ export default function Garden() {
                   excerpt={flora.excerpt}
                   author={flora.author}
                   seed={flora.seed}
+                  authorUsername={flora.authorUsername}
                   onClick={() => handleCardClick(flora)}
                 />
               ))}

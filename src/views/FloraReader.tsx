@@ -134,10 +134,17 @@ export default function FloraReader() {
         }
       );
 
+      const authorUsername = authorName?.replace(/^@+/, "") ?? null;
+      const canLinkToProfile =
+        authorUsername &&
+        author !== "@Anonymous" &&
+        !authorUsername.startsWith("[forbidden_author]");
+
       return {
         id: flora._id,
         title: flora.title,
         author,
+        authorUsername: canLinkToProfile ? authorUsername : null,
         seed: formatSeed(flora),
         generation: formatGeneration(flora.lineage?.generation),
         image:
@@ -150,10 +157,19 @@ export default function FloraReader() {
     }
 
     if (state?.flora) {
+      const stateAuthor = state.flora.author;
+      const stateUsername = typeof stateAuthor === "string"
+        ? stateAuthor.replace(/^@+/, "")
+        : null;
+      const stateCanLink =
+        stateUsername &&
+        stateAuthor !== "@Anonymous" &&
+        !stateUsername.startsWith("[forbidden_author]");
       return {
         id: state.flora.id,
         title: state.flora.title,
         author: state.flora.author,
+        authorUsername: stateCanLink ? stateUsername : null,
         seed: state.flora.seed,
         generation: "GEN_0",
         image: state.flora.image,
@@ -318,7 +334,18 @@ export default function FloraReader() {
                   className="font-supply-mono text-[10px] sm:text-xs opacity-90"
                   style={textShadowStyle}
                 >
-                  {derived.author} · {derived.seed}
+                  {derived.authorUsername ? (
+                    <Link
+                      to={`/profile/${derived.authorUsername}`}
+                      className="hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {derived.author}
+                    </Link>
+                  ) : (
+                    derived.author
+                  )}{" "}
+                  · {derived.seed}
                 </p>
               </header>
 
@@ -394,6 +421,18 @@ export default function FloraReader() {
                                 : "border-white bg-white/20 text-white hover:bg-white hover:text-[#262626]"
                             }`}
                             title="View flora"
+                          >
+                            {item.handle}
+                          </Link>
+                        ) : derived.authorUsername && item.handle === derived.author ? (
+                          <Link
+                            to={`/profile/${derived.authorUsername}`}
+                            className={`px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
+                              isLightBg
+                                ? "border-[#262626] bg-[#262626]/20 text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
+                                : "border-white/60 bg-white/10 text-white hover:bg-white/20"
+                            }`}
+                            title="View profile"
                           >
                             {item.handle}
                           </Link>

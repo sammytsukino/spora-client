@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface FloraCardBaseProps {
   id: string;
   generation: string;
@@ -6,6 +8,7 @@ interface FloraCardBaseProps {
   excerpt: string;
   author: string;
   seed: string;
+  authorUsername?: string;
   onClick?: () => void;
   variant?: 'garden' | 'greenhouse';
 }
@@ -18,6 +21,7 @@ export default function FloraCardBase({
   excerpt,
   author,
   seed,
+  authorUsername,
   onClick,
   variant = 'garden',
 }: FloraCardBaseProps) {
@@ -109,7 +113,13 @@ export default function FloraCardBase({
               : 'text-[9px] md:text-[10px] opacity-75'
           }`}
         >
-          <span>{author}</span>
+          {authorUsername && author !== '@Anonymous' ? (
+            <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+              {author}
+            </Link>
+          ) : (
+            <span>{author}</span>
+          )}
           <span>{isGarden ? `SEED: ${seed}` : seed}</span>
         </div>
       </div>

@@ -182,8 +182,14 @@ export default function Profile({
           followersCount={effectiveSocial.followersCount}
           followingCount={effectiveSocial.followingCount}
           onEdit={onEdit ?? (() => setEditOpen(true))}
-          onFollowersClick={onFollowersClick}
-          onFollowingClick={onFollowingClick}
+          onFollowersClick={
+            onFollowersClick ??
+            (() => navigate(`/profile/${String(effectiveUser.username).replace(/^@/, "")}/followers`))
+          }
+          onFollowingClick={
+            onFollowingClick ??
+            (() => navigate(`/profile/${String(effectiveUser.username).replace(/^@/, "")}/following`))
+          }
         />
         {editOpen && (
           <ProfileEditModal

@@ -15,6 +15,9 @@ import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
 import VerifyEmail from "../views/VerifyEmail";
 import Profile from "../views/Profile";
+import PublicProfile from "../views/PublicProfile";
+import ProfileFollowers from "../views/ProfileFollowers";
+import ProfileFollowing from "../views/ProfileFollowing";
 import Licensing from "../views/Licensing";
 import AdminPanel from "../views/AdminPanel";
 import Background from "../views/Background";
@@ -68,6 +71,9 @@ function RouterContent() {
         <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:username/followers" element={<ProfileFollowers />} />
+        <Route path="/profile/:username/following" element={<ProfileFollowing />} />
+        <Route path="/profile/:username" element={<PublicProfile />} />
         <Route path="/licensing" element={<Licensing />} />
         <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
         <Route path="/background" element={<Background />} />

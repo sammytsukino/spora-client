@@ -8,6 +8,7 @@ interface FloraCardProps {
   excerpt: string;
   author: string;
   seed: string;
+  authorUsername?: string;
   onClick?: () => void;
 }
 
@@ -19,6 +20,7 @@ export default function FloraCard({
   excerpt,
   author,
   seed,
+  authorUsername,
   onClick,
 }: FloraCardProps) {
   return (
@@ -30,6 +32,7 @@ export default function FloraCard({
       excerpt={excerpt}
       author={author}
       seed={seed}
+      authorUsername={authorUsername}
       onClick={onClick}
       variant="garden"
     />
