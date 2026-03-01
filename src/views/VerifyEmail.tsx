@@ -7,7 +7,6 @@ import FooterAlter from "@/components/layout/FooterAlter";
 export default function VerifyEmail() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const tokenFromUrl = searchParams.get("token");
   const [status, setStatus] = useState<"loading" | "success" | "error" | "alreadyVerified">(
     "loading"
   );

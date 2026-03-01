@@ -61,7 +61,7 @@ export default function FloraReader() {
   const [error, setError] = useState<string | null>(null);
   const [showDetailsPanel, setShowDetailsPanel] = useState(false);
   const [windStrength, setWindStrength] = useState(0.5);
-  const [installationReady, setInstallationReady] = useState(false);
+  const [, setInstallationReady] = useState(false);
   const [minLoadTimeElapsed, setMinLoadTimeElapsed] = useState(false);
   const installationRef = useRef<HTMLIFrameElement>(null);
 
@@ -176,10 +176,6 @@ export default function FloraReader() {
   const words = text.length > 0 ? text.split(/\s+/).filter((w) => w.length > 0) : [];
   const wordCount = words.length;
   const charCount = baseText.length;
-  const lineCount = baseText.length > 0 ? baseText.split(/\n/).length : 1;
-  const avgWordsPerLine =
-    lineCount > 0 ? Math.round((wordCount / lineCount) * 10) / 10 : wordCount;
-  const seedHex = (derived?.seed ?? "").replace("#", "").slice(0, 6);
   const morph = extractMorphology(baseText);
   const labState = flora?.generative?.labState as {
     geometry?: { scale?: number };

@@ -9,7 +9,7 @@ import AdminReports from "@/components/admin/AdminReports";
 import AdminUserManagement from "@/components/admin/AdminUserManagement";
 import AdminFlaggedContent from "@/components/admin/AdminFlaggedContent";
 import AdminFlorasManagement from "@/components/admin/AdminFlorasManagement";
-import { adminSectionTabs } from "@/data/admin-data";
+import { adminSectionTabs, type AdminSection } from "@/data/admin-data";
 import { useAdminPanel } from "@/hooks/useAdminPanel";
 import { getStoredUser } from "@/lib/auth";
 import {
@@ -33,17 +33,18 @@ const defaultMetrics = {
 const reportsSubViews = ["By flora", "By report"] as const;
 const reportStatusFilters = ["Pending", "All"] as const;
 
-const validTabs = new Set(adminSectionTabs);
-
 export default function AdminPanel() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const user = getStoredUser();
   const tabFromUrl = searchParams.get("tab") ?? adminSectionTabs[0];
-  const activeSection = validTabs.has(tabFromUrl) ? tabFromUrl : adminSectionTabs[0];
+  const isTabValid = (s: string): s is AdminSection =>
+    (adminSectionTabs as readonly string[]).includes(s);
+  const activeSection: AdminSection = isTabValid(tabFromUrl) ? tabFromUrl : adminSectionTabs[0];
 
   const setActiveSection = (tab: string) => {
-    setSearchParams(tab === adminSectionTabs[0] ? {} : { tab });
+    const safe: AdminSection = isTabValid(tab) ? tab : adminSectionTabs[0];
+    setSearchParams(safe === adminSectionTabs[0] ? {} : { tab: safe });
   };
 
   const [reportsSubView, setReportsSubView] = useState<

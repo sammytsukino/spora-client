@@ -170,7 +170,7 @@ export default function SimpleMarquee({
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
   ]
 
-  const itemsToUse =
+  const itemsToUse: FloraThumbnail[] =
     floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
   const minItemsForFill = 45
   const expandedItems =

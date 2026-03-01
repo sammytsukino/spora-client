@@ -6,7 +6,7 @@ interface AdminMetricsProps {
   onExportMetrics?: () => void;
 }
 
-const metricKeys: (keyof AdminMetricsData)[] = [
+const metricKeys: (keyof Omit<AdminMetricsData, "growth">)[] = [
   "totalUsers",
   "totalFloras",
   "totalBlossoming",
@@ -16,7 +16,7 @@ const metricKeys: (keyof AdminMetricsData)[] = [
   "flaggedContent",
 ];
 
-const metricLabels: Record<keyof AdminMetricsData, string> = {
+const metricLabels: Record<keyof Omit<AdminMetricsData, "growth">, string> = {
   totalUsers: "users",
   totalFloras: "Floras",
   totalBlossoming: "Blossoming",
@@ -38,7 +38,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
           {metricKeys.filter((k) => typeof metrics[k] === "number").map((key) => (
               <div key={key} className="flex items-baseline gap-2">
                 <span className="text-lg font-bold">
-                  {metrics[key].toLocaleString()}
+                  {(metrics[key] as number).toLocaleString()}
                 </span>
                 <span className="text-[11px] uppercase opacity-80">
                   {metricLabels[key]}

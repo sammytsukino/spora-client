@@ -16,6 +16,14 @@ import {
   batchUpdateUserStatus,
 } from "@/lib/admin-api";
 import type {
+  AdminMetricsResponse,
+  AdminUsageChartsResponse,
+  ApiUser,
+  ApiReport,
+  ApiFlaggedFlora,
+  ApiFlora,
+} from "@/lib/admin-api";
+import type {
   AdminMetricsData,
   AdminReport,
   AdminUserSummary,
@@ -128,9 +136,7 @@ export function useAdminPanel() {
   const [users, setUsers] = useState<AdminUserSummary[]>([]);
   const [reports, setReports] = useState<AdminReport[]>([]);
   const [flagged, setFlagged] = useState<AdminFlaggedItem[]>([]);
-  const [allFloras, setAllFloras] = useState<
-    { _id: string; title: string; status?: string; isHidden?: boolean; authorUsername?: string; createdAt?: string }[]
-  >([]);
+  const [allFloras, setAllFloras] = useState<ApiFlora[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -147,8 +153,21 @@ export function useAdminPanel() {
         fetchAdminFloras({ limit: 500 }),
       ]);
 
-      const [metricsRes, chartsRes, usersRes, reportsRes, flaggedRes, florasRes] =
-        results.map((r) => (r.status === "fulfilled" ? r.value : null));
+      const [
+        metricsRes,
+        chartsRes,
+        usersRes,
+        reportsRes,
+        flaggedRes,
+        florasRes,
+      ] = results.map((r) => (r.status === "fulfilled" ? r.value : null)) as [
+        AdminMetricsResponse | null,
+        AdminUsageChartsResponse | null,
+        ApiUser[] | null,
+        ApiReport[] | null,
+        ApiFlaggedFlora[] | null,
+        ApiFlora[] | null,
+      ];
 
       const errs = results
         .map((r) => (r.status === "rejected" ? r.reason : null))
@@ -176,13 +195,14 @@ export function useAdminPanel() {
           growth: metricsRes.growth,
         });
       } else if (metricsRes && "totalUsers" in metricsRes) {
+        const m = metricsRes as { totalUsers?: number; totalFloras?: number; pendingReports?: number };
         setMetrics({
-          totalUsers: metricsRes.totalUsers ?? 0,
-          totalFloras: metricsRes.totalFloras ?? 0,
+          totalUsers: m.totalUsers ?? 0,
+          totalFloras: m.totalFloras ?? 0,
           totalBlossoming: 0,
           totalSealed: 0,
           totalHidden: 0,
-          pendingReports: metricsRes.pendingReports ?? 0,
+          pendingReports: m.pendingReports ?? 0,
           flaggedContent: 0,
         });
       }

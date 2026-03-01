@@ -1,6 +1,6 @@
 import NavbarBase from "@/components/layout/NavbarBase";
 
-type NavTarget = "/garden" | "/greenhouse" | "/laboratory";
+type NavTarget = "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full";
 
 interface LaboratoryNavbarProps {
   onNavigateRequest?: (path: NavTarget) => void;
