@@ -6,12 +6,10 @@ export default function FooterAlter() {
   const navigate = useNavigate()
 
   return (
-    <footer className="relative w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)] overflow-hidden">
-      <div className="relative z-10 flex flex-col justify-between h-full">
+    <footer className="relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)] overflow-hidden">
+      <div className="relative z-10 flex flex-col justify-between">
 
-
-
-        <div className="flex-1 flex items-end justify-between mt-8">
+        <div className="flex items-end justify-between mt-8">
           <div className="flex items-end">
             <CyclingLogo
               logos={[

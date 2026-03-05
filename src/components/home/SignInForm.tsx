@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
+import UnderlineField from "@/components/ui/UnderlineField"
 import { signIn } from "@/lib/auth"
 
 export default function SignInForm() {
@@ -41,74 +42,75 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="w-full max-w-[520px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border border-[var(--spora-primary)]">
-        <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold text-center mb-2 font-bizud-mincho-bold">
-          Enter SPORA
-        </h1>
-        <p className="text-center text-[#262626] mb-8 font-supply-mono text-sm sm:text-base">
-          Welcome back, cultivator
-        </p>
-
-        {message ? (
-          <p className="mb-4 text-sm text-lime-700 font-supply-mono">
-            {message}
-          </p>
-        ) : null}
-        {error ? (
-          <div className="mb-4 text-sm text-red-700 font-supply-mono">
-            <p>{error}</p>
-            {error.includes("verify your email") && (
-              <button
-                type="button"
-                onClick={() => navigate("/verify-email")}
-                className="mt-2 underline hover:no-underline"
-              >
-                Request new verification link
-              </button>
-            )}
-          </div>
-        ) : null}
-
-        <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Username
-            </label>
-            <input
-              type="text"
-              autoComplete="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder=""
-              className="w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:border-[var(--spora-primary)] font-supply-mono"
-              required
-            />
+    <div className="w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border border-[var(--spora-primary)]">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
+          <div className="min-w-0 sm:min-w-[200px] shrink-0">
+            <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold leading-tight mb-2 font-bizud-mincho-bold">
+              Enter SPORA
+            </h1>
+            <p className="text-[14px] font-supply-mono leading-relaxed text-[#262626]">
+              Welcome back,
+              <br />
+              cultivator
+            </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder=""
-              className="w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:border-[var(--spora-primary)] font-supply-mono"
-              required
-            />
-          </div>
+          <form onSubmit={handleLogin} className="flex-1 min-w-0">
+            {message ? (
+              <p className="mb-4 text-sm text-lime-700 font-supply-mono">
+                {message}
+              </p>
+            ) : null}
+            {error ? (
+              <div className="mb-4 text-sm text-red-700 font-supply-mono">
+                <p>{error}</p>
+                {error.includes("verify your email") && (
+                  <button
+                    type="button"
+                    onClick={() => navigate("/verify-email")}
+                    className="mt-2 underline hover:no-underline"
+                  >
+                    Request new verification link
+                  </button>
+                )}
+              </div>
+            ) : null}
 
-          <MainButton
-            type="submit"
-            className="w-full h-11 sm:h-12 border border-[#262626]"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "LOGGING IN..." : "LOGIN"}
-          </MainButton>
-        </form>
+            <div className="flex flex-col gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <UnderlineField
+                  label="Username"
+                  autoComplete="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="e.g. cultivator_01"
+                  required
+                />
+                <UnderlineField
+                  label="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+              <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
+                <MainButton
+                  type="submit"
+                  variant="compact"
+                  size="sm"
+                  className="w-full sm:w-auto border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "LOGGING IN..." : "LOGIN"}
+                </MainButton>
+              </div>
+            </div>
+          </form>
+        </div>
 
-        <p className="text-center mt-8 font-supply-mono text-sm">
+        <p className="text-center mt-6 font-supply-mono text-sm text-[#262626]">
           Don't have account?{" "}
           <button
             type="button"

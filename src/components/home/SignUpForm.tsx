@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
+import UnderlineField from "@/components/ui/UnderlineField"
 import { signUp } from "@/lib/auth"
 
 export default function SignUpForm() {
@@ -65,113 +66,95 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="w-full max-w-[640px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border border-[var(--spora-primary)]">
-        <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold text-center mb-2 font-bizud-mincho-bold">
-          Join SPORA
-        </h1>
-        <p className="text-center text-[#262626] mb-8 font-supply-mono text-sm sm:text-base">
-          Start cultivating with us
-        </p>
-
-        {error ? (
-          <p className="mb-6 text-sm text-red-700 font-supply-mono">
-            {error}
-          </p>
-        ) : null}
-
-        <form onSubmit={handleSignUp} className="space-y-5 sm:space-y-6">
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Username
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder=""
-              className="peer w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
-              required
-            />
-            <p className="mt-2 text-xs text-[#262626] font-supply-mono opacity-0 transition-opacity peer-focus:opacity-100">
-              3+ characters, letters, numbers, underscores only.
+    <div className="w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border border-[var(--spora-primary)]">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
+          <div className="min-w-0 sm:min-w-[200px] shrink-0">
+            <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold leading-tight mb-2 font-bizud-mincho-bold">
+              Join SPORA
+            </h1>
+            <p className="text-[14px] font-supply-mono leading-relaxed text-[#262626]">
+              Start cultivating
+              <br />
+              with us
             </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder=""
-              className="w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
-              required
-            />
-          </div>
+          <form onSubmit={handleSignUp} className="flex-1 min-w-0">
+            {error ? (
+              <p className="mb-6 text-sm text-red-700 font-supply-mono">
+                {error}
+              </p>
+            ) : null}
 
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder=""
-              className="peer w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
-              required
-            />
-            <p className="mt-2 text-xs text-[#262626] font-supply-mono opacity-0 transition-opacity peer-focus:opacity-100">
-              Use a valid email address (e.g., name@domain.com).
-            </p>
-          </div>
+            <div className="flex flex-col gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <div className="flex flex-col gap-6 sm:gap-8">
+                  <UnderlineField
+                    label="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="e.g. cultivator_01"
+                    hint="3+ chars. Letters, numbers, underscores."
+                    hintVisibleOnFocus
+                    required
+                  />
+                  <UnderlineField
+                    label="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Dawn"
+                    required
+                  />
+                  <UnderlineField
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="e.g. dawn@example.com"
+                    hint="Use a valid email (e.g. dawn@domain.com)."
+                    hintVisibleOnFocus
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-6 sm:gap-8">
+                  <UnderlineField
+                    label="Password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    hint="Minimum 8 characters."
+                    hintVisibleOnFocus
+                    required
+                  />
+                  <UnderlineField
+                    label="Confirm password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    hint="Must match the password above."
+                    hintVisibleOnFocus
+                    required
+                  />
+                </div>
+              </div>
+              <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
+                <MainButton
+                  type="submit"
+                  variant="compact"
+                  size="sm"
+                  className="w-full sm:w-auto border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "CREATING..." : "CREATE ACCOUNT"}
+                </MainButton>
+              </div>
+            </div>
+          </form>
+        </div>
 
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder=""
-              className="peer w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
-              required
-            />
-            <p className="mt-2 text-xs text-[#262626] font-supply-mono opacity-0 transition-opacity peer-focus:opacity-100">
-              Minimum 8 characters.
-            </p>
-          </div>
-
-          <div>
-            <label className="block text-sm font-supply-mono mb-2">
-              Confirm password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder=""
-              className="peer w-full px-4 py-3 border border-[var(--spora-primary)] bg-transparent focus:outline-none focus:ring-0 font-supply-mono"
-              required
-            />
-            <p className="mt-2 text-xs text-[#262626] font-supply-mono opacity-0 transition-opacity peer-focus:opacity-100">
-              Must match the password above.
-            </p>
-          </div>
-
-          <MainButton
-            type="submit"
-            className="w-full h-11 sm:h-12 border border-[#262626]"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "CREATING..." : "CREATE ACCOUNT"}
-          </MainButton>
-        </form>
-
-        <p className="text-center mt-8 font-supply-mono text-sm">
+        <p className="text-center mt-6 font-supply-mono text-sm text-[#262626]">
           Already have an account?{" "}
           <button
             type="button"

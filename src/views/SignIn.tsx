@@ -21,7 +21,7 @@ export default function SignIn() {
       <Section
         variant="full"
         containerized={false}
-        className="relative flex flex-col justify-between"
+        className="relative flex flex-col justify-between min-h-dvh"
       >
         <div className="fixed inset-0 w-full h-full z-0">
           <BubbleBackground className="absolute inset-0 w-full h-full" colors={bubbleColors} interactive />
@@ -41,7 +41,8 @@ export default function SignIn() {
           </video>
         </div> */}
 
-        <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 pt-24 pb-10">
+        <div className="relative z-10 shrink-0 h-16 sm:h-20" aria-hidden />
+        <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-4 sm:px-6">
           <SignInForm />
         </div>
 
