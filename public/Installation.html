@@ -2108,12 +2108,21 @@
             }
 
             const lineageUsernames = [];
+            const lineageFloraIds = [];
             if (currentFlora && currentFlora.status === "blossoming") {
                 const parentChain = currentFlora.generative?.labState?.lineageUsernames;
+                const parentFloraIds = currentFlora.generative?.labState?.lineageFloraIds;
+                const rootId = currentFlora.lineage && currentFlora.lineage.rootFloraId
+                    ? currentFlora.lineage.rootFloraId
+                    : currentFlora._id;
                 const priorUsernames = Array.isArray(parentChain) && parentChain.length > 0
                     ? parentChain
                     : [currentFlora.authorUsername, ...(currentFlora.coAuthors || []).map((a) => a && a.username).filter(Boolean)].filter(Boolean);
                 priorUsernames.forEach((u) => { if (u) lineageUsernames.push(u); });
+                if (Array.isArray(parentFloraIds) && parentFloraIds.length > 0) {
+                    parentFloraIds.forEach((id) => { if (id) lineageFloraIds.push(String(id)); });
+                }
+                lineageFloraIds.push(String(currentFlora._id));
             }
             if (currentUser && currentUser.username) {
                 lineageUsernames.push(currentUser.username);
@@ -2156,6 +2165,7 @@
                     labState: {
                         ...state,
                         lineageUsernames: lineageUsernames,
+                        lineageFloraIds: lineageFloraIds.length ? lineageFloraIds : undefined,
                     },
                 },
             };

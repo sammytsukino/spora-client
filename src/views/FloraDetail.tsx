@@ -98,8 +98,9 @@ export default function FloraDetail() {
         .filter((value): value is string => Boolean(value))
         .map(ensureHandle);
 
-      const lineageUsernames = (flora.generative?.labState as { lineageUsernames?: string[] } | undefined)
-        ?.lineageUsernames;
+      const labState = flora.generative?.labState as { lineageUsernames?: string[]; lineageFloraIds?: string[] } | undefined;
+      const lineageUsernames = labState?.lineageUsernames;
+      const lineageFloraIds = labState?.lineageFloraIds;
       const fromLabState = Array.isArray(lineageUsernames)
         ? lineageUsernames.map(ensureHandle)
         : [];
@@ -121,17 +122,23 @@ export default function FloraDetail() {
         : undefined;
       const isCutting = Boolean(flora.lineage?.parentFloraId || flora.lineage?.rootFloraId);
 
-      const priorCount = allHandles.length - 1;
       const lineageItems: { handle: string; floraId?: string }[] = allHandles.map(
         (handle, i) => {
           let floraId: string | undefined;
-          if (i === 0 && rootFloraId) floraId = rootFloraId;
-          else if (priorCount > 1 && i === priorCount - 1 && parentFloraId)
+          if (Array.isArray(lineageFloraIds) && i < lineageFloraIds.length) {
+            floraId = lineageFloraIds[i];
+          } else if ((isCutting || allHandles.length === 1) && i === allHandles.length - 1) {
+            floraId = flora._id;
+          } else if (i === 0 && rootFloraId) {
+            floraId = rootFloraId;
+          } else if (i === allHandles.length - 1 && parentFloraId && allHandles.length === 2) {
             floraId = parentFloraId;
-          else if (priorCount === 1 && i === 0 && parentFloraId && !rootFloraId)
+          } else if (i === 0 && parentFloraId && !rootFloraId) {
             floraId = parentFloraId;
-          else if (isCutting && i === allHandles.length - 1) floraId = flora._id;
-          return { handle, floraId };
+          } else if (allHandles.length > 2 && i === allHandles.length - 2 && parentFloraId) {
+            floraId = parentFloraId;
+          }
+          return { handle, floraId: floraId ? String(floraId) : undefined };
         }
       );
 
@@ -363,15 +370,29 @@ export default function FloraDetail() {
                     <Link
                       to={`/flora/${encodeURIComponent(item.floraId)}`}
                       className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#E9E9E9] hover:text-[#262626] transition-colors cursor-pointer no-underline"
-                      title="View original flora"
+                      title="View flora"
                     >
                       {item.handle}
                     </Link>
-                  ) : (
-                    <span className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]">
-                      {item.handle}
-                    </span>
-                  )}
+                  ) : (() => {
+                    const username = item.handle.replace(/^@+/, "");
+                    if (username && username !== "Anonymous" && !username.startsWith("[forbidden_author]")) {
+                      return (
+                        <Link
+                          to={`/profile/${encodeURIComponent(username)}`}
+                          className="px-3 py-1 border border-[#262626] bg-[#262626]/20 text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] transition-colors cursor-pointer no-underline"
+                          title="View profile"
+                        >
+                          {item.handle}
+                        </Link>
+                      );
+                    }
+                    return (
+                      <span className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]">
+                        {item.handle}
+                      </span>
+                    );
+                  })()}
                   {i < lineageItems.length - 1 && (
                     <span
                       className="w-4 sm:w-6 h-px bg-[#262626] mx-1 shrink-0"

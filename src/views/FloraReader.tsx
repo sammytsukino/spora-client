@@ -111,8 +111,9 @@ export default function FloraReader() {
         .filter((value): value is string => Boolean(value))
         .map(ensureHandle);
 
-      const lineageUsernames = (flora.generative?.labState as { lineageUsernames?: string[] } | undefined)
-        ?.lineageUsernames;
+      const labState = flora.generative?.labState as { lineageUsernames?: string[]; lineageFloraIds?: string[] } | undefined;
+      const lineageUsernames = labState?.lineageUsernames;
+      const lineageFloraIds = labState?.lineageFloraIds;
       const fromLabState = Array.isArray(lineageUsernames)
         ? lineageUsernames.map(ensureHandle)
         : [];
@@ -134,17 +135,23 @@ export default function FloraReader() {
         : undefined;
       const isCutting = Boolean(flora.lineage?.parentFloraId || flora.lineage?.rootFloraId);
 
-      const priorCount = allHandles.length - 1;
       const lineageItems: { handle: string; floraId?: string }[] = allHandles.map(
         (handle, i) => {
           let floraId: string | undefined;
-          if (i === 0 && rootFloraId) floraId = rootFloraId;
-          else if (priorCount > 1 && i === priorCount - 1 && parentFloraId)
+          if (Array.isArray(lineageFloraIds) && i < lineageFloraIds.length) {
+            floraId = lineageFloraIds[i];
+          } else if ((isCutting || allHandles.length === 1) && i === allHandles.length - 1) {
+            floraId = flora._id;
+          } else if (i === 0 && rootFloraId) {
+            floraId = rootFloraId;
+          } else if (i === allHandles.length - 1 && parentFloraId && allHandles.length === 2) {
             floraId = parentFloraId;
-          else if (priorCount === 1 && i === 0 && parentFloraId && !rootFloraId)
+          } else if (i === 0 && parentFloraId && !rootFloraId) {
             floraId = parentFloraId;
-          else if (isCutting && i === allHandles.length - 1) floraId = flora._id;
-          return { handle, floraId };
+          } else if (allHandles.length > 2 && i === allHandles.length - 2 && parentFloraId) {
+            floraId = parentFloraId;
+          }
+          return { handle, floraId: floraId ? String(floraId) : undefined };
         }
       );
 
@@ -438,27 +445,33 @@ export default function FloraReader() {
                           >
                             {item.handle}
                           </Link>
-                        ) : derived.authorUsername && item.handle === derived.author ? (
-                          <Link
-                            to={`/profile/${derived.authorUsername}`}
-                            className={`px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
-                              isLightBg
-                                ? "border-[#262626] bg-[#262626]/20 text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
-                                : "border-white/60 bg-white/10 text-white hover:bg-white/20"
-                            }`}
-                            title="View profile"
-                          >
-                            {item.handle}
-                          </Link>
-                        ) : (
-                          <span
-                            className={`px-2 py-1 border ${
-                              isLightBg ? "border-[#262626] bg-[#262626]/20 text-[#262626]" : "border-white/60 bg-white/10 text-white"
-                            }`}
-                          >
-                            {item.handle}
-                          </span>
-                        )}
+                        ) : (() => {
+                          const username = item.handle.replace(/^@+/, "");
+                          if (username && username !== "Anonymous" && !username.startsWith("[forbidden_author]")) {
+                            return (
+                              <Link
+                                to={`/profile/${encodeURIComponent(username)}`}
+                                className={`px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
+                                  isLightBg
+                                    ? "border-[#262626] bg-[#262626]/20 text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
+                                    : "border-white/60 bg-white/10 text-white hover:bg-white/20"
+                                }`}
+                                title="View profile"
+                              >
+                                {item.handle}
+                              </Link>
+                            );
+                          }
+                          return (
+                            <span
+                              className={`px-2 py-1 border ${
+                                isLightBg ? "border-[#262626] bg-[#262626]/20 text-[#262626]" : "border-white/60 bg-white/10 text-white"
+                              }`}
+                            >
+                              {item.handle}
+                            </span>
+                          );
+                        })()}
                         {i < derived.lineageItems.length - 1 && (
                           <span
                             className={`w-3 h-px mx-0.5 shrink-0 ${isLightBg ? "bg-[#262626]" : "bg-white/60"}`}
