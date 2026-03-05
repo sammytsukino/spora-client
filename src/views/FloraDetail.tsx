@@ -94,31 +94,43 @@ export default function FloraDetail() {
         : "@Anonymous";
 
       const coAuthorHandles = (flora.coAuthors || [])
-        .map((item) => item.username)
+        .map((item) => (typeof item === "string" ? item : item.username))
         .filter((value): value is string => Boolean(value))
         .map(ensureHandle);
-      const allHandles = [...coAuthorHandles, author];
+
+      const lineageUsernames = (flora.generative?.labState as { lineageUsernames?: string[] } | undefined)
+        ?.lineageUsernames;
+      const fromLabState = Array.isArray(lineageUsernames)
+        ? lineageUsernames.map(ensureHandle)
+        : [];
+
+      let allHandles: string[];
+      if (fromLabState.length > 0) {
+        allHandles = fromLabState;
+      } else if (coAuthorHandles.length > 0) {
+        allHandles = [...coAuthorHandles, author];
+      } else {
+        allHandles = [author];
+      }
+
       const rootFloraId = flora.lineage?.rootFloraId
         ? String(flora.lineage.rootFloraId)
         : undefined;
       const parentFloraId = flora.lineage?.parentFloraId
         ? String(flora.lineage.parentFloraId)
         : undefined;
+      const isCutting = Boolean(flora.lineage?.parentFloraId || flora.lineage?.rootFloraId);
 
+      const priorCount = allHandles.length - 1;
       const lineageItems: { handle: string; floraId?: string }[] = allHandles.map(
         (handle, i) => {
           let floraId: string | undefined;
-          if (i === 0 && rootFloraId) {
-            floraId = rootFloraId;
-          } else if (
-            i === coAuthorHandles.length - 1 &&
-            coAuthorHandles.length > 1 &&
-            parentFloraId
-          ) {
+          if (i === 0 && rootFloraId) floraId = rootFloraId;
+          else if (priorCount > 1 && i === priorCount - 1 && parentFloraId)
             floraId = parentFloraId;
-          } else if (coAuthorHandles.length === 1 && i === 0 && parentFloraId && !rootFloraId) {
+          else if (priorCount === 1 && i === 0 && parentFloraId && !rootFloraId)
             floraId = parentFloraId;
-          }
+          else if (isCutting && i === allHandles.length - 1) floraId = flora._id;
           return { handle, floraId };
         }
       );
