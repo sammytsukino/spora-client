@@ -45,7 +45,7 @@ export default function HeroSection() {
       </div>
 
       <div className="relative flex-1 w-full md:w-[80vw] min-h-[48vh] md:min-h-0">
-        <BubbleBackground className="absolute inset-0 w-full h-full bg-[var(--spora-accent-secondary)]" colors={bubbleColors} interactive />
+        <BubbleBackground className="absolute inset-0 w-full h-full bg-stone-300" colors={bubbleColors} interactive />
         {/* <video
           autoPlay
           loop
