@@ -294,7 +294,7 @@ export default function NavbarBase({
                           Admin panel
                         </button>
                       )}
-                      <hr className={isDark || (isTransparent && transparentUseLightText) ? "border-[var(--spora-text-secondary)]/30" : "border-[#262626]/30"} />
+                      <hr className={isDark || (isTransparent && transparentUseLightText) ? "border-(--spora-text-secondary)/30" : "border-[#262626]/30"} />
                       <button
                         type="button"
                         onClick={handleLogout}

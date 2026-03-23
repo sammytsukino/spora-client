@@ -52,7 +52,7 @@ export default function ProfileFollowing() {
           className="mb-8"
         />
         {loading ? (
-          <p className="font-supply-mono text-sm text-[var(--spora-primary)]">Loading…</p>
+          <p className="font-supply-mono text-sm text-spora-primary">Loading…</p>
         ) : error ? (
           <p className="font-supply-mono text-sm text-red-600">{error}</p>
         ) : users.length === 0 ? (
@@ -71,7 +71,7 @@ export default function ProfileFollowing() {
                   <img
                     src={u.avatar || DEFAULT_AVATAR}
                     alt=""
-                    className="w-12 h-12 rounded-full object-cover border border-[var(--spora-primary)]"
+                    className="w-12 h-12 rounded-full object-cover border border-spora-primary"
                   />
                   <div>
                     <p className="font-supply-mono font-bold text-spora-primary">

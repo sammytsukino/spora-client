@@ -58,16 +58,16 @@ export default function VerifyEmail() {
           )}
           {status === "success" && (
             <div>
-              <h1 className="font-bizud-mincho-bold text-2xl mb-4 text-[var(--spora-primary)]">
+              <h1 className="font-bizud-mincho-bold text-2xl mb-4 text-spora-primary">
                 Email verified
               </h1>
-              <p className="font-supply-mono text-sm text-[var(--spora-primary)] mb-6">
+              <p className="font-supply-mono text-sm text-spora-primary mb-6">
                 Your account is now active. Redirecting to the garden…
               </p>
               <button
                 type="button"
                 onClick={() => navigate("/garden")}
-                className="px-4 py-2 border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
+                className="px-4 py-2 border border-spora-primary bg-spora-primary text-spora-primary-light font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
               >
                 Go to garden
               </button>
@@ -94,10 +94,10 @@ export default function VerifyEmail() {
           )}
           {status === "error" && (
             <div>
-              <h1 className="font-bizud-mincho-bold text-2xl mb-4 text-[var(--spora-primary)]">
+              <h1 className="font-bizud-mincho-bold text-2xl mb-4 text-spora-primary">
                 Verification failed
               </h1>
-              <p className="font-supply-mono text-sm text-[var(--spora-primary)] mb-6">
+              <p className="font-supply-mono text-sm text-spora-primary mb-6">
                 {errorMessage}
               </p>
               <div className="flex flex-col gap-3 mb-6">
@@ -129,7 +129,7 @@ export default function VerifyEmail() {
                       setResending(false);
                     }
                   }}
-                  className="px-4 py-2 border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-black cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 border border-spora-primary bg-spora-primary text-spora-primary-light font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-black cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {resending ? "Sending…" : "Resend verification email"}
                 </button>

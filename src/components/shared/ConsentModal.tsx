@@ -59,7 +59,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-[9999] w-[calc(100%-2rem)] max-w-sm"
+      className="fixed bottom-4 right-4 z-9999 w-[calc(100%-2rem)] max-w-sm"
       role="dialog"
       aria-modal="false"
       aria-labelledby="consent-title"
@@ -68,7 +68,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
         <button
           type="button"
           onClick={() => dismiss(true)}
-          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-[var(--spora-primary)] hover:bg-[#f0f0f0] font-supply-mono text-sm leading-none"
+          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-spora-primary hover:bg-[#f0f0f0] font-supply-mono text-sm leading-none"
           aria-label="Cerrar"
         >
           ×
@@ -93,7 +93,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
             type="checkbox"
             checked={terms}
             onChange={(e) => setTerms(e.target.checked)}
-            className="mt-0.5 w-4 h-4 border-2 border-[var(--spora-primary)] accent-[var(--spora-primary)] cursor-pointer"
+            className="mt-0.5 w-4 h-4 border-2 border-spora-primary accent-spora-primary cursor-pointer"
           />
           <span className="font-supply-mono text-[11px] text-spora-primary group-hover:underline">
             I accept the{" "}

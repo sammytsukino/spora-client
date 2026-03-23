@@ -141,7 +141,7 @@ export default function PublicProfile() {
           <img
             src={user.avatar || DEFAULT_AVATAR}
             alt={user.displayName || user.username}
-            className="w-24 h-24 rounded-full object-cover border border-[var(--spora-primary)] shrink-0"
+            className="w-24 h-24 rounded-full object-cover border border-spora-primary shrink-0"
           />
           <div className="flex-1 min-w-0">
             <p className="font-supply-mono text-lg font-bold">@{user.username}</p>
@@ -187,7 +187,7 @@ export default function PublicProfile() {
             </div>
           </div>
           {floras.length === 0 ? (
-            <p className="font-supply-mono text-sm text-[var(--spora-primary)] opacity-80">
+            <p className="font-supply-mono text-sm text-spora-primary opacity-80">
               No floras yet.
             </p>
           ) : (

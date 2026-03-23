@@ -57,7 +57,7 @@ export default function Contact() {
 
         <div className="relative z-10 shrink-0 h-16 sm:h-20" aria-hidden />
         <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-4 sm:px-6">
-          <div className="w-full max-w-[1000px] px-8 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14 bg-[#E9E9E9] border border-[var(--spora-primary)]">
+          <div className="w-full max-w-[1000px] px-8 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14 bg-[#E9E9E9] border border-spora-primary">
             <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
               <div className="min-w-0 sm:min-w-[200px] shrink-0">
                 <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold leading-tight mb-2 font-bizud-mincho-bold">

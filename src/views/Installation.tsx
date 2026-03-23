@@ -63,7 +63,7 @@ export default function Installation({ fullLab = false }: InstallationProps) {
       </div>
       {!canReveal && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#E9E9E9]"
+          className="fixed inset-0 z-9999 flex items-center justify-center bg-[#E9E9E9]"
           aria-hidden
         >
           <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#262626]">

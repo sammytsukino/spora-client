@@ -62,7 +62,7 @@ export default function MarqueeTextContent({
           <p className="font-supply-mono text-xs md:text-sm lg:text-sm text-[#262626]">
             ({item.number}) {item.title}
           </p>
-          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-[#262626] leading-tight hover:underline break-words">
+          <p className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl text-[#262626] leading-tight hover:underline [overflow-wrap:break-word]">
             {item.description}
           </p>
         </button>

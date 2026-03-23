@@ -5,7 +5,7 @@ export default function TeamFooter() {
   const navigate = useNavigate();
 
   return (
-    <footer className="relative flex w-full flex-col justify-between px-6 py-8 text-[var(--spora-primary)] md:px-12 lg:px-16">
+    <footer className="relative flex w-full flex-col justify-between px-6 py-8 text-spora-primary md:px-12 lg:px-16">
       <div className="flex w-full flex-col items-end gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-full text-right text-sm leading-relaxed font-supply-mono md:max-w-xs md:text-left sm:text-lg">
           <span>SPORA: Conceptualized, designed and developed with lots of ♡ by{" "}

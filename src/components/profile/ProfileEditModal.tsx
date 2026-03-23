@@ -74,7 +74,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
       aria-labelledby="profile-edit-title"
     >
       <div
-        className="relative w-full max-w-xl border border-[var(--spora-primary)] bg-[#E9E9E9] p-6 font-supply-mono"
+        className="relative w-full max-w-xl border border-spora-primary bg-[#E9E9E9] p-6 font-supply-mono"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 mb-6">
@@ -102,7 +102,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
                 <img
                   src={avatarPreview}
                   alt="Avatar"
-                  className="w-24 h-24 object-cover border border-[var(--spora-primary)] aspect-square"
+                  className="w-24 h-24 object-cover border border-spora-primary aspect-square"
                 />
                 <span className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Camera className="w-6 h-6 text-white" />

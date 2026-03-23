@@ -149,7 +149,7 @@ export default function Greenhouse() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden bg-[var(--spora-primary-light)]">
+    <div className="w-full overflow-x-hidden bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
 
       <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">

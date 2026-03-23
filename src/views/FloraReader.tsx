@@ -314,7 +314,7 @@ export default function FloraReader() {
       </div>
 
       <div
-        className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#E9E9E9] transition-opacity duration-300 ${
+        className={`fixed inset-0 z-9999 flex items-center justify-center bg-[#E9E9E9] transition-opacity duration-300 ${
           canReveal ? "opacity-0 pointer-events-none" : ""
         }`}
         aria-hidden
