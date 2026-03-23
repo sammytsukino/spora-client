@@ -26,6 +26,26 @@ body.hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
+/* Native <details> menus: no marker, underline title when open */
+.spora-details-menu > summary {
+  list-style: none;
+}
+
+.spora-details-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.spora-details-menu[open] > summary {
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+}
+
+/* Panel is a sibling of <summary>, not a child — it inherits from <details>, not from the summary. */
+.spora-details-menu {
+  font-family: var(--spora-font-mono-stack);
+  font-weight: 300;
+}
+
 .lab-scroll {
   overflow-y: auto;
   -ms-overflow-style: none;
@@ -96,8 +116,9 @@ body.hide-scrollbar::-webkit-scrollbar {
   font-display: swap;
 }
 
+/* Single-token name so production CSS minifiers cannot strip quotes and break the family (Supply Mono → Supply, Mono fallbacks). */
 @font-face {
-  font-family: "Supply Mono";
+  font-family: SupplyMono;
   src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048421/supplyMono-Light_ifjxjr.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
@@ -185,9 +206,11 @@ body {
   position: relative;
 }
 
-.font-supply-mono {
-  font-family: "Supply Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
+@layer utilities {
+  /* Theme supplies font-family via --font-supply-mono; keep Light weight aligned with @font-face. */
+  .font-supply-mono {
+    font-weight: 300;
+  }
 }
 
 .font-bizud-mincho {
@@ -316,6 +339,9 @@ body {
   --color-spora-text-primary: var(--spora-text-primary);
   --color-spora-text-secondary: var(--spora-text-secondary);
   --color-spora-border: var(--spora-border);
+
+  /* Tailwind v4 `font-supply-mono` utility — literal stack (defined before :root tokens). */
+  --font-supply-mono: SupplyMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 :root {
@@ -363,6 +389,10 @@ body {
   --spora-text-primary: #262626;
   --spora-text-secondary: #e5e7eb;
   --spora-border: #262626;
+
+  /* Mono stack: SupplyMono matches @font-face (single token; survives minify). */
+  --spora-font-mono-stack: SupplyMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
 }
 
 .dark {

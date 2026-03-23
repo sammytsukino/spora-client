@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import { floraImages } from "@/data/flora-data";
@@ -6,7 +6,9 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
-import { Shuffle } from "lucide-react";
+import { Shuffle, Volume2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
+import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
 
 interface FloraLocationState {
   flora?: {
@@ -60,11 +62,31 @@ export default function FloraReader() {
   const [flora, setFlora] = useState<ApiFlora | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showDetailsPanel, setShowDetailsPanel] = useState(false);
   const [windStrength, setWindStrength] = useState(0.5);
   const [, setInstallationReady] = useState(false);
   const [minLoadTimeElapsed, setMinLoadTimeElapsed] = useState(false);
   const installationRef = useRef<HTMLIFrameElement>(null);
+  const ttsAudioRef = useRef<HTMLAudioElement>(null);
+  const ttsObjectUrlRef = useRef<string | null>(null);
+  const [ttsPhase, setTtsPhase] = useState<
+    "idle" | "loading" | "playing" | "paused" | "error"
+  >("idle");
+  const [ttsError, setTtsError] = useState<string | null>(null);
+  /** ElevenLabs voice_settings.speed: 1 = normal; lower = slower, higher = faster (server clamps ~0.65–1.35). */
+  const [ttsSpeed, setTtsSpeed] = useState(1);
+
+  const releaseTtsResources = useCallback(() => {
+    const a = ttsAudioRef.current;
+    if (a) {
+      a.pause();
+      a.removeAttribute("src");
+      a.load();
+    }
+    if (ttsObjectUrlRef.current) {
+      URL.revokeObjectURL(ttsObjectUrlRef.current);
+      ttsObjectUrlRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -221,6 +243,14 @@ export default function FloraReader() {
     chaos?: { jitter?: number; scrambleForce?: number; pulse?: { active?: boolean; strength?: number } };
   } | undefined;
 
+  useEffect(() => () => releaseTtsResources(), [releaseTtsResources]);
+
+  useEffect(() => {
+    releaseTtsResources();
+    setTtsPhase("idle");
+    setTtsError(null);
+  }, [derived?.id, releaseTtsResources]);
+
   useEffect(() => {
     document.body.classList.add("hide-scrollbar");
     document.documentElement.classList.add("hide-scrollbar");
@@ -265,6 +295,93 @@ export default function FloraReader() {
   }, []);
 
   const handleRegenerate = () => sendToInstallation({ type: "spora:regenerate" });
+
+  const canListen =
+    Boolean(derived?.id) &&
+    (Boolean((derived?.title || "").trim()) || text.length > 0);
+
+  const handleTtsStop = () => {
+    releaseTtsResources();
+    setTtsPhase("idle");
+    setTtsError(null);
+  };
+
+  const handleTtsSpeedChange = (next: number) => {
+    setTtsSpeed(next);
+    if (ttsObjectUrlRef.current) {
+      ttsAudioRef.current?.pause();
+      releaseTtsResources();
+      setTtsPhase("idle");
+      setTtsError(null);
+    }
+  };
+
+  const handleTtsMain = async () => {
+    if (!derived?.id || ttsPhase === "loading") return;
+
+    if (ttsPhase === "playing") {
+      ttsAudioRef.current?.pause();
+      setTtsPhase("paused");
+      return;
+    }
+
+    if (ttsPhase === "paused" && ttsObjectUrlRef.current) {
+      const bg = musicRef.current;
+      if (bg) {
+        bg.pause();
+        bg.currentTime = 0;
+      }
+      setMusicPlaying(false);
+      try {
+        await ttsAudioRef.current?.play();
+        setTtsPhase("playing");
+      } catch {
+        setTtsError("Playback failed");
+        setTtsPhase("error");
+      }
+      return;
+    }
+
+    setTtsError(null);
+    setTtsPhase("loading");
+    try {
+      const res = await fetch(`${API_BASE_URL}/reader/tts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ floraId: derived.id, speed: ttsSpeed }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        setTtsError(typeof data.error === "string" ? data.error : "Could not load voice");
+        setTtsPhase("error");
+        return;
+      }
+      const blob = await res.blob();
+      releaseTtsResources();
+      const url = URL.createObjectURL(blob);
+      ttsObjectUrlRef.current = url;
+      const audio = ttsAudioRef.current;
+      if (!audio) {
+        URL.revokeObjectURL(url);
+        ttsObjectUrlRef.current = null;
+        setTtsPhase("error");
+        setTtsError("Audio unavailable");
+        return;
+      }
+      audio.src = url;
+      const bg = musicRef.current;
+      if (bg) {
+        bg.pause();
+        bg.currentTime = 0;
+      }
+      setMusicPlaying(false);
+      await audio.play();
+      setTtsPhase("playing");
+    } catch {
+      setTtsError("Network error");
+      setTtsPhase("error");
+    }
+  };
 
   if (isLoading && !derived) {
     return (
@@ -412,20 +529,18 @@ export default function FloraReader() {
             </div>
           </div>
 
-          <div className="flex flex-col items-end shrink-0">
-            <button
-              type="button"
-              onClick={() => setShowDetailsPanel((v) => !v)}
-              className={`font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase hover:underline cursor-pointer mb-2 ${textColorClass}`}
-              style={textShadowStyle}
+          <div className="flex flex-col items-end shrink-0 min-w-0">
+            <SporaDetailsMenu
+              label="Details"
+              placement="down"
+              align="end"
+              className={`w-full min-w-[220px] max-w-[280px] ${textColorClass}`}
+              summaryClassName="mb-0"
+              summaryStyle={textShadowStyle}
+              panelClassName="flora-reader-scroll max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 text-[10px] sm:text-xs"
+              panelStyle={textShadowStyle}
+              aria-label="Flora details and analysis"
             >
-              {showDetailsPanel ? "Hide details" : "Details"}
-            </button>
-            {showDetailsPanel && (
-              <div
-                className={`flora-reader-scroll w-full min-w-[220px] max-w-[280px] font-supply-mono text-[10px] sm:text-xs space-y-4 max-h-[calc(100vh-12rem)] overflow-y-auto ${textColorClass}`}
-                style={textShadowStyle}
-              >
                 <section className="pt-1 pb-2">
                   <div className="uppercase tracking-widest mb-2 opacity-70">
                     Lineage
@@ -535,61 +650,140 @@ export default function FloraReader() {
                     </div>
                   </div>
                 </section>
-              </div>
-            )}
+            </SporaDetailsMenu>
           </div>
         </div>
       </main>
 
       <div
-        className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 flex flex-col items-end gap-3 no, pointer-events-auto ${textColorClass}`}
+        className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 pointer-events-auto ${textColorClass}`}
         style={textShadowStyle}
       >
-        <div className="flex flex-col gap-2 font-supply-mono text-[9px] sm:text-[10px] uppercase tracking-wider">
-          <button
-            type="button"
-            onClick={handleRegenerate}
-            className={`px-2 py-1 border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-2 ${
-              isLightBg ? "border-[#262626]" : "border-white/60"
-            }`}
-          >
-            <Shuffle className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
-            Shuffle layout
-          </button>
-          <div className="flex items-center gap-2">
-            <label htmlFor="reader-wind" className="opacity-80 whitespace-nowrap">
-              Wind
-            </label>
-            <input
-              id="reader-wind"
-              type="range"
-              min="0"
-              max="2"
-              step="0.1"
-              value={windStrength}
-              onChange={(e) => setWindStrength(parseFloat(e.target.value))}
-              className="w-16 sm:w-20 cursor-pointer"
-              style={{ accentColor: isLightBg ? "#262626" : "white" }}
-            />
+        <SporaDetailsMenu
+          label="Reader options"
+          placement="up"
+          align="end"
+          className={`min-w-[220px] max-w-[min(100vw-3rem,280px)] ${textColorClass}`}
+          summaryClassName="text-[9px] sm:text-[10px] tracking-wider"
+          summaryStyle={textShadowStyle}
+          panelStyle={textShadowStyle}
+          panelClassName="font-supply-mono text-[9px] sm:text-[10px] uppercase tracking-wider gap-3"
+          aria-label="Reader options: layout, wind, music, listen"
+        >
+          <div className="flex flex-col gap-2 w-full items-end">
+            <button
+              type="button"
+              onClick={handleRegenerate}
+              className="bg-transparent border-0 shadow-none px-0 py-1 cursor-pointer hover:underline transition-opacity flex items-center gap-2 w-full justify-end text-right"
+            >
+              <span>Shuffle layout</span>
+              <Shuffle className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
+            </button>
+            <div className="flex flex-col gap-1 w-full items-end">
+              <label htmlFor="reader-wind" className="opacity-80 whitespace-nowrap">
+                Wind
+              </label>
+              <input
+                id="reader-wind"
+                type="range"
+                min="0"
+                max="2"
+                step="0.1"
+                value={windStrength}
+                onChange={(e) => setWindStrength(parseFloat(e.target.value))}
+                className="w-full max-w-[220px] cursor-pointer"
+                style={{ accentColor: isLightBg ? "#262626" : "white" }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => setMusicPlaying((v) => !v)}
+              className="bg-transparent border-0 shadow-none px-0 py-1 no-underline hover:underline transition-opacity w-full text-right"
+              aria-pressed={musicPlaying}
+            >
+              {musicPlaying ? "⏸ Music" : "♪ Music"}
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setMusicPlaying((v) => !v)}
-            className={`px-2 py-1 border no-underline hover:opacity-80 transition-opacity ${
-              isLightBg ? "border-[#262626] text-[#262626]" : "border-white/60 text-white"
-            }`}
-            aria-pressed={musicPlaying}
-          >
-            {musicPlaying ? '⏸ Music' : '♪ Music'}
-          </button>
 
-          <audio
-            ref={musicRef}
-            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1772048674/something-comforting_e3grxc.mp3"
-            loop
-            style={{ display: 'none' }}
-          />
-        </div>
+          <div className="flex flex-col gap-2 w-full items-end">
+            <span className="opacity-80 normal-case tracking-normal text-[10px] sm:text-[11px] flex items-center gap-1.5 justify-end w-full">
+              <Volume2 className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
+              Listen (ElevenLabs)
+            </span>
+            <div className="flex flex-col gap-1 w-full items-end">
+              <label htmlFor="reader-tts-speed" className="opacity-80 whitespace-nowrap">
+                Speed
+              </label>
+              <div className="flex items-center gap-2 w-full max-w-[220px] justify-end flex-wrap">
+                <input
+                  id="reader-tts-speed"
+                  type="range"
+                  min={0.65}
+                  max={1.35}
+                  step={0.05}
+                  value={ttsSpeed}
+                  onChange={(e) => handleTtsSpeedChange(parseFloat(e.target.value))}
+                  className="flex-1 min-w-[100px] cursor-pointer"
+                  style={{ accentColor: isLightBg ? "#262626" : "white" }}
+                />
+                <span
+                  className="opacity-80 tabular-nums shrink-0 text-[10px] min-w-10 text-right normal-case"
+                  aria-live="polite"
+                >
+                  {ttsSpeed.toFixed(2)}×
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => void handleTtsMain()}
+                disabled={!canListen || ttsPhase === "loading"}
+                className="bg-transparent border-0 shadow-none px-0 py-1 hover:underline transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {ttsPhase === "loading"
+                  ? "Generating…"
+                  : ttsPhase === "playing"
+                    ? "Pause"
+                    : ttsPhase === "paused"
+                      ? "Resume"
+                      : "Play"}
+              </button>
+              <button
+                type="button"
+                onClick={handleTtsStop}
+                disabled={ttsPhase === "idle"}
+                className="bg-transparent border-0 shadow-none px-0 py-1 hover:underline transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Stop
+              </button>
+            </div>
+            {ttsError && (
+              <p
+                className={`normal-case tracking-normal text-[10px] font-medium leading-snug text-right ${
+                  isLightBg ? "text-red-600" : "text-red-300"
+                }`}
+              >
+                {ttsError}
+              </p>
+            )}
+          </div>
+        </SporaDetailsMenu>
+
+        <audio
+          ref={musicRef}
+          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1772048674/something-comforting_e3grxc.mp3"
+          loop
+          className="hidden"
+        />
+        <audio
+          ref={ttsAudioRef}
+          className="hidden"
+          onEnded={() => {
+            releaseTtsResources();
+            setTtsPhase("idle");
+          }}
+        />
       </div>
     </div>
   );

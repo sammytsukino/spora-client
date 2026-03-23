@@ -23,13 +23,22 @@
     <script src="installation/mask-urls.js"></script>
 
     <style>
+        @font-face {
+            font-family: SupplyMono;
+            src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048421/supplyMono-Light_ifjxjr.ttf")
+                format("truetype");
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
         :root {
             --spora-bg-ui: #e6e6e6;
             --spora-dark: #262626;
             --spora-lime: #bbf451;
             --spora-white: #ffffff;
             --font-main: "BIZ UDMincho", serif;
-            --font-mono: "Jetbrains Mono", monospace;
+            --font-mono: SupplyMono, "JetBrains Mono", monospace;
         }
 
         ::selection {
