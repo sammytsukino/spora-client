@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 
 const CONSENT_KEY = "spora_consent_v1";
 const IGNORE_SECONDS = 8;
@@ -63,7 +64,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
       aria-modal="false"
       aria-labelledby="consent-title"
     >
-      <div className="bg-[var(--spora-primary-light)] border-2 border-[var(--spora-primary)] p-4 shadow-lg relative">
+      <div className="bg-spora-primary-light border-2 border-spora-primary p-4 shadow-lg relative">
         <button
           type="button"
           onClick={() => dismiss(true)}
@@ -75,13 +76,13 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
 
         <h2
           id="consent-title"
-          className="font-bizud-mincho-bold text-lg mb-2 pr-6 text-[var(--spora-primary)]"
+          className="font-bizud-mincho-bold text-lg mb-2 pr-6 text-spora-primary"
         >
           Terms & Conditions
         </h2>
-        <p className="font-supply-mono text-[11px] text-[var(--spora-primary)] mb-4 leading-relaxed">
+        <p className="font-supply-mono text-[11px] text-spora-primary mb-4 leading-relaxed">
           By using SPORA you agree to our{" "}
-          <Link to="/terms" className="underline hover:no-underline">
+          <Link to={ROUTES.TERMS} className="underline hover:no-underline">
             Terms & Conditions
           </Link>
           . You can dismiss this to continue.
@@ -94,9 +95,9 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
             onChange={(e) => setTerms(e.target.checked)}
             className="mt-0.5 w-4 h-4 border-2 border-[var(--spora-primary)] accent-[var(--spora-primary)] cursor-pointer"
           />
-          <span className="font-supply-mono text-[11px] text-[var(--spora-primary)] group-hover:underline">
+          <span className="font-supply-mono text-[11px] text-spora-primary group-hover:underline">
             I accept the{" "}
-            <Link to="/terms" className="underline hover:no-underline">
+            <Link to={ROUTES.TERMS} className="underline hover:no-underline">
               Terms & Conditions
             </Link>
           </span>
@@ -106,7 +107,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
           <button
             type="button"
             onClick={() => dismiss(true)}
-            className="px-3 py-1.5 border border-[var(--spora-primary)] bg-transparent text-[var(--spora-primary)] font-supply-mono text-[10px] uppercase tracking-[0.2em] hover:bg-[#f5f5f5] cursor-pointer"
+            className="px-3 py-1.5 border border-spora-primary bg-transparent text-spora-primary font-supply-mono text-[10px] uppercase tracking-[0.2em] hover:bg-spora-primary-lighter cursor-pointer"
           >
             Dismiss
           </button>
@@ -114,7 +115,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
             type="button"
             disabled={!terms}
             onClick={handleAccept}
-            className="px-3 py-1.5 border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] font-supply-mono text-[10px] uppercase tracking-[0.2em] hover:bg-black cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 border border-spora-primary bg-spora-primary text-spora-primary-light font-supply-mono text-[10px] uppercase tracking-[0.2em] hover:opacity-90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Accept
           </button>

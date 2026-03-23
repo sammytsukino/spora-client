@@ -19,6 +19,7 @@ import {
   exportReportToPdf,
   exportFlaggedToPdf,
 } from "@/lib/admin-pdf-export";
+import { ROUTES, floraPath, greenhouseWithAuthorQuery } from "@/constants/routes";
 
 const defaultMetrics = {
   totalUsers: 0,
@@ -79,7 +80,7 @@ export default function AdminPanel() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="w-full min-h-screen bg-[#E9E9E9] flex items-center justify-center">
+      <div className="w-full min-h-screen bg-spora-primary-light flex items-center justify-center">
         <p className="font-supply-mono text-sm uppercase">
           Admin access required.
         </p>
@@ -98,7 +99,7 @@ export default function AdminPanel() {
               Admin panel
             </h1>
             <Link
-              to="/laboratory/full"
+              to={ROUTES.LABORATORY_FULL}
               className="cursor-pointer font-supply-mono text-xs uppercase underline hover:no-underline"
             >
               Full Laboratory
@@ -181,9 +182,9 @@ export default function AdminPanel() {
                   <AdminFlaggedContent
                     items={flagged}
                     title="Reported floras"
-                    onItemClick={(item) => navigate(`/flora/${item.contentId}`)}
+                    onItemClick={(item) => navigate(floraPath(item.contentId))}
                     onViewContent={(item) =>
-                      window.open(`/flora/${item.contentId}`, "_blank")
+                      window.open(floraPath(item.contentId), "_blank")
                     }
                     onHideFlora={onHideFlora}
                     onDownload={(item) => exportFlaggedToPdf(item)}
@@ -199,9 +200,9 @@ export default function AdminPanel() {
                     onReportClick={(r) => navigate(`/flora/${r.targetId}`)}
                     onStatusChange={onReportStatusChange}
                     onDownloadReport={(r) => exportReportToPdf(r)}
-                    onViewTarget={(r) => navigate(`/flora/${r.targetId}`)}
+                    onViewTarget={(r) => navigate(floraPath(r.targetId))}
                     onViewPreview={(r) =>
-                      window.open(`/flora/${r.targetId}`, "_blank")
+                      window.open(floraPath(r.targetId), "_blank")
                     }
                     onRemoveTarget={() => {}}
                     onContactTarget={() => {}}
@@ -218,13 +219,14 @@ export default function AdminPanel() {
                 users={users}
                 onUserClick={(u) => {
                   if (u.id === user?.id) {
-                    navigate("/profile");
+                    navigate(ROUTES.PROFILE);
                   } else {
-                    const params = new URLSearchParams({
-                      authorId: u.id,
-                      username: u.username.replace(/^@/, ""),
-                    });
-                    navigate(`/greenhouse?${params}`);
+                    navigate(
+                      greenhouseWithAuthorQuery(
+                        u.id,
+                        u.username.replace(/^@/, "")
+                      )
+                    );
                   }
                 }}
                 onRoleChange={onUserRoleChange}

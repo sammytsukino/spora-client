@@ -7,7 +7,6 @@ import GuestRoute from "../components/shared/GuestRoute";
 import LabFullRoute from "../components/shared/LabFullRoute";
 import Garden from "../views/Garden";
 import Greenhouse from "../views/Greenhouse";
-import Laboratory from "../views/Laboratory";
 import Team from "../views/Team";
 import TermsConditions from "../views/TermsConditions";
 import Contact from "../views/Contact";
@@ -27,13 +26,14 @@ import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import AccentColorOnRouteChange from "../components/shared/AccentColorOnRouteChange";
 import ConsentModal, { getConsentGiven } from "../components/shared/ConsentModal";
+import { ROUTES } from "../constants/routes";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
 
 function ClearLabFullSessionOnLeave() {
   const location = useLocation();
   useEffect(() => {
-    if (location.pathname !== "/laboratory/full" && typeof sessionStorage !== "undefined") {
+    if (location.pathname !== ROUTES.LABORATORY_FULL && typeof sessionStorage !== "undefined") {
       sessionStorage.removeItem(LAB_FULL_SESSION_KEY);
     }
   }, [location.pathname]);
@@ -43,7 +43,7 @@ function ClearLabFullSessionOnLeave() {
 function RouterContent() {
   const [consentGiven, setConsentGiven] = useState(() => getConsentGiven());
   const location = useLocation();
-  const isTermsPage = location.pathname === "/terms";
+  const isTermsPage = location.pathname === ROUTES.TERMS;
 
   return (
     <>
@@ -54,7 +54,7 @@ function RouterContent() {
       )}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Navigate to={ROUTES.HOME} replace />} />
         <Route path="/garden" element={<Garden />} />
         <Route path="/greenhouse" element={<Greenhouse />} />
         <Route path="/flora/:id" element={<FloraView />} />
@@ -62,10 +62,10 @@ function RouterContent() {
         <Route path="/grow" element={<LabFullUnlock />} />
         <Route path="/laboratory/full" element={<LabFullRoute><Installation fullLab /></LabFullRoute>} />
         <Route path="/laboratory" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
-        <Route path="/installation" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
+        <Route path="/installation" element={<Navigate to={ROUTES.LABORATORY} replace />} />
         <Route path="/team" element={<Team />} />
         <Route path="/terms" element={<TermsConditions />} />
-        <Route path="/research" element={<Navigate to="/terms" replace />} />
+        <Route path={ROUTES.RESEARCH} element={<Navigate to={ROUTES.TERMS} replace />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<GuestRoute><SignIn /></GuestRoute>} />
         <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />

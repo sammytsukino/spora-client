@@ -553,7 +553,7 @@ export default function FloraReader() {
               isLightBg ? "border-[#262626]" : "border-white/60"
             }`}
           >
-            <Shuffle size={12} aria-hidden />
+            <Shuffle className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
             Shuffle layout
           </button>
           <div className="flex items-center gap-2">

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { getStoredToken, getStoredUser } from "@/lib/auth";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
@@ -29,7 +30,7 @@ export default function LabFullRoute({ children }: LabFullRouteProps) {
   }, [user?.role, fromGrow, searchParams, navigate, location.pathname]);
 
   if (!token) {
-    return <Navigate to="/signin" state={{ from: location }} replace />;
+    return <Navigate to={ROUTES.SIGN_IN} state={{ from: location }} replace />;
   }
 
   if (user?.role === "admin") {
@@ -37,7 +38,7 @@ export default function LabFullRoute({ children }: LabFullRouteProps) {
   }
 
   if (user?.role === "cultivator" && !cultivatorCanSeeFull) {
-    return <Navigate to="/laboratory" replace />;
+    return <Navigate to={ROUTES.LABORATORY} replace />;
   }
 
   return <>{children}</>;

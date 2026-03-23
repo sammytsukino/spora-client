@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { getStoredToken } from "@/lib/auth";
 
 interface GuestRouteProps {
@@ -6,7 +7,7 @@ interface GuestRouteProps {
   redirectTo?: string;
 }
 
-export default function GuestRoute({ children, redirectTo = "/profile" }: GuestRouteProps) {
+export default function GuestRoute({ children, redirectTo = ROUTES.PROFILE }: GuestRouteProps) {
   const token = getStoredToken();
 
   if (token) {

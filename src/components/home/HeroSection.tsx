@@ -14,18 +14,18 @@ const bubbleColors = {
 export default function HeroSection() {
   return (
     <div className="relative w-full min-h-0 flex-1 flex flex-col md:flex-row overflow-hidden">
-      <div className="relative w-full md:w-[20vw] min-w-0 bg-[--spora-primary-lightest] px-5 sm:px-6 md:pl-12 md:pr-0 lg:pl-16">
-        <div className="absolute left-0 top-0 bottom-0 w-px bg-[--spora-accent] opacity-60 hidden md:block" />
+      <div className="relative w-full md:w-[20vw] min-w-0 bg-spora-primary-lightest px-5 sm:px-6 md:pl-12 md:pr-0 lg:pl-16">
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-spora-accent opacity-60 hidden md:block" />
 
         <div className="relative z-10 pt-16 pb-5 sm:pt-16 sm:pb-6 md:py-0 md:absolute md:bottom-0 md:left-12 lg:left-16 md:pb-6 lg:pb-8" style={{ width: 'max(16rem, 50vw)' }}>
           <div className="mb-4 sm:mb-5 md:mb-8 lg:mb-16 max-sm:hidden flex items-center gap-4 sm:gap-6 md:gap-10 w-full">
-            <div className="font-bizud-mincho text-base sm:text-lg md:text-3xl lg:text-4xl text-[--spora-primary] leading-tight whitespace-nowrap">
+            <div className="font-bizud-mincho text-base sm:text-lg md:text-3xl lg:text-4xl text-spora-primary leading-tight whitespace-nowrap">
               not revolutionary
             </div>
             <div className="flex-1 min-w-6">
-              <div className="h-[2px] bg-(--spora-primary) w-full" />
+              <div className="h-[2px] bg-spora-primary w-full" />
             </div>
-            <div className="font-bizud-mincho text-base sm:text-lg md:text-3xl lg:text-4xl text-[--spora-primary] leading-tight whitespace-nowrap">
+            <div className="font-bizud-mincho text-base sm:text-lg md:text-3xl lg:text-4xl text-spora-primary leading-tight whitespace-nowrap">
               but evolutionary
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function HeroSection() {
 
         <div className="absolute inset-0 p-5 sm:p-6 md:p-0">
           <div className="md:absolute md:right-12 lg:right-16 md:top-20 lg:top-24 md:text-right">
-            <p className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] leading-relaxed text-[--spora-primary] max-w-[40ch] md:max-w-[44ch] md:ml-auto">
+            <p className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] leading-relaxed text-spora-primary max-w-[40ch] md:max-w-[44ch] md:ml-auto">
               Generative art for everyone. A canvas for the smallest thing we share: our words. Words blooming into singular works that live, branch, and grow.
             </p>
           </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ApiFlora } from "@/lib/admin-api";
+import { floraPath } from "@/constants/routes";
 
 interface AdminFlorasManagementProps {
   floras: ApiFlora[];
@@ -60,7 +61,7 @@ export default function AdminFlorasManagement({
   };
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+    <section className="border border-spora-primary bg-spora-primary-light p-6">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-4">
           <h2 className="font-supply-mono font-bold text-sm uppercase">
@@ -76,7 +77,7 @@ export default function AdminFlorasManagement({
                 floras.length > 0 && selectedIds.size === floras.length
               }
               onChange={selectAll}
-              className="w-4 h-4 border-2 border-[var(--spora-primary)]"
+              className="w-4 h-4 border-2 border-spora-primary"
             />
             Select all
           </label>
@@ -110,7 +111,7 @@ export default function AdminFlorasManagement({
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-spora-accent-secondary text-[10px] uppercase font-supply-mono"
             >
               Clear selection
             </button>
@@ -124,11 +125,11 @@ export default function AdminFlorasManagement({
               className={`border p-3 font-supply-mono text-[11px] transition-colors cursor-pointer ${
                 selectedIds.has(flora._id)
                   ? "border-amber-600 bg-amber-50/50"
-                  : "border-[var(--spora-primary)] bg-[#E9E9E9] hover:bg-[#f5f5f5]"
+                  : "border-spora-primary bg-spora-primary-light hover:bg-spora-primary-lighter"
               }`}
-              onClick={() => navigate(`/flora/${flora._id}`)}
+              onClick={() => navigate(floraPath(flora._id))}
               onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") && navigate(`/flora/${flora._id}`)
+                (e.key === "Enter" || e.key === " ") && navigate(floraPath(flora._id))
               }
               role="button"
               tabIndex={0}
@@ -142,10 +143,10 @@ export default function AdminFlorasManagement({
                     toggleSelect(flora._id);
                   }}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-4 h-4 border-2 border-[var(--spora-primary)] shrink-0"
+                  className="w-4 h-4 border-2 border-spora-primary shrink-0"
                 />
                 <div
-                  className="w-12 h-12 shrink-0 rounded overflow-hidden bg-[#ddd] border border-[var(--spora-primary)]"
+                  className="w-12 h-12 shrink-0 rounded overflow-hidden bg-spora-primary-lighter border border-spora-primary"
                   role="img"
                   aria-label={`Thumbnail for ${flora.title}`}
                 >

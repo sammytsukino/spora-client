@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { isLabFullAccessible } from "@/lib/auth";
 export default function TeamFooter() {
   const navigate = useNavigate();
@@ -24,21 +25,21 @@ export default function TeamFooter() {
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate("/team")}
+              onClick={() => navigate(ROUTES.TEAM)}
             >
               Team
             </button>
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate("/garden")}
+              onClick={() => navigate(ROUTES.GARDEN)}
             >
               Garden
             </button>
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate("/terms")}
+              onClick={() => navigate(ROUTES.TERMS)}
             >
               <span className="md:hidden">Terms</span>
               <span className="hidden md:inline">Terms & Conditions</span>
@@ -53,14 +54,16 @@ export default function TeamFooter() {
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate("/contact")}
+              onClick={() => navigate(ROUTES.CONTACT)}
             >
               Contact
             </button>
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
+              onClick={() =>
+                navigate(isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY)
+              }
             >
               Laboratory
             </button>

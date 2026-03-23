@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyEmail, resendVerificationEmail } from "@/lib/auth";
+import { ROUTES } from "@/constants/routes";
+import MainButton from "@/components/ui/MainButton";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 
@@ -34,7 +36,7 @@ export default function VerifyEmail() {
     verifyEmail(token)
       .then(() => {
         setStatus("success");
-        setTimeout(() => navigate("/garden"), 2000);
+        setTimeout(() => navigate(ROUTES.GARDEN), 2000);
       })
       .catch((err) => {
         setStatus((prev) => (prev === "success" ? prev : "error"));
@@ -48,9 +50,9 @@ export default function VerifyEmail() {
     <div className="min-h-screen bg-[#E9E9E9] flex flex-col">
       <TransparentNavbar showScrollBackground />
       <main className="flex-1 flex items-center justify-center px-6 pt-24 pb-16">
-        <div className="max-w-md w-full border border-[var(--spora-primary)] bg-[#E9E9E9] p-8 text-center">
+        <div className="max-w-md w-full border border-spora-primary bg-spora-primary-light p-8 text-center">
           {status === "loading" && (
-            <p className="font-supply-mono text-sm uppercase tracking-[0.25em] text-[var(--spora-primary)]">
+            <p className="font-supply-mono text-sm uppercase tracking-[0.25em] text-spora-primary">
               Verifying your email…
             </p>
           )}
@@ -73,19 +75,21 @@ export default function VerifyEmail() {
           )}
           {status === "alreadyVerified" && (
             <div>
-              <h1 className="font-bizud-mincho-bold text-2xl mb-4 text-[var(--spora-primary)]">
+              <h1 className="font-bizud-mincho-bold text-2xl mb-4 text-spora-primary">
                 Already verified
               </h1>
-              <p className="font-supply-mono text-sm text-[var(--spora-primary)] mb-6">
+              <p className="font-supply-mono text-sm text-spora-primary mb-6">
                 Your account is already verified. You can sign in.
               </p>
-              <button
+              <MainButton
                 type="button"
-                onClick={() => navigate("/signin")}
-                className="px-4 py-2 border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
+                variant="compact"
+                size="sm"
+                onClick={() => navigate(ROUTES.SIGN_IN)}
+                className="border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary hover:text-spora-primary-light"
               >
                 Sign in
-              </button>
+              </MainButton>
             </div>
           )}
           {status === "error" && (
@@ -102,7 +106,7 @@ export default function VerifyEmail() {
                   value={resendEmail}
                   onChange={(e) => setResendEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="w-full px-3 py-2 border border-[var(--spora-primary)] bg-transparent font-supply-mono text-sm"
+                  className="w-full px-3 py-2 border border-spora-primary bg-transparent font-supply-mono text-sm"
                 />
                 <button
                   type="button"
@@ -130,18 +134,20 @@ export default function VerifyEmail() {
                   {resending ? "Sending…" : "Resend verification email"}
                 </button>
                 {resendMessage && (
-                  <p className="font-supply-mono text-xs text-[var(--spora-primary)]">
+                  <p className="font-supply-mono text-xs text-spora-primary">
                     {resendMessage}
                   </p>
                 )}
               </div>
-              <button
+              <MainButton
                 type="button"
-                onClick={() => navigate("/signin")}
-                className="px-4 py-2 border border-[var(--spora-primary)] font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-[#f5f5f5] cursor-pointer"
+                variant="compact"
+                size="sm"
+                onClick={() => navigate(ROUTES.SIGN_IN)}
+                className="mt-2"
               >
                 Sign in
-              </button>
+              </MainButton>
             </div>
           )}
         </div>

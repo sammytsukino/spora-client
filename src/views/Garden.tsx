@@ -10,6 +10,7 @@ import EmptyState from "@/components/shared/EmptyState";
 import { floraFilters, ITEMS_PER_PAGE, floraImages } from "@/data/flora-data";
 import { listFloras, type ApiFlora } from "@/lib/floras";
 import { getStoredToken } from "@/lib/auth";
+import { floraPath } from "@/constants/routes";
 
 interface UiFlora {
   id: string;
@@ -119,7 +120,7 @@ export default function Garden() {
   }, [loadMoreCards]);
 
   const handleCardClick = (flora: UiFlora) => {
-    navigate(`/flora/${encodeURIComponent(flora.id)}`, {
+    navigate(floraPath(flora.id), {
       state: { flora },
     });
   };
@@ -151,7 +152,7 @@ export default function Garden() {
 
         <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div className="min-w-0 flex-1">
-            <div className="w-full border-b border-[var(--spora-primary)]" />
+            <div className="w-full border-b border-spora-primary" />
           </div>
 
           <div className="flex w-full min-w-0 justify-end sm:w-auto sm:shrink-0">

@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useState, type ChangeEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
 import UnderlineField from "@/components/ui/UnderlineField"
 import { signUp } from "@/lib/auth"
+import { ROUTES } from "@/constants/routes"
 
 export default function SignUpForm() {
   const navigate = useNavigate()
@@ -47,7 +48,7 @@ export default function SignUpForm() {
         password,
       })
       if (result.emailSent) {
-        navigate("/signin", {
+        navigate(ROUTES.SIGN_IN, {
           state: {
             message:
               "Check your email and click the verification link to activate your account.",
@@ -66,13 +67,13 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-[#E9E9E9] border border-[var(--spora-primary)]">
+    <div className="w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-spora-primary-light border border-spora-primary">
         <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
           <div className="min-w-0 sm:min-w-[200px] shrink-0">
-            <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold leading-tight mb-2 font-bizud-mincho-bold">
+            <h1 className="text-2xl sm:text-3xl text-spora-text-primary font-bold leading-tight mb-2 font-bizud-mincho-bold">
               Join SPORA
             </h1>
-            <p className="text-[14px] font-supply-mono leading-relaxed text-[#262626]">
+            <p className="text-[14px] font-supply-mono leading-relaxed text-spora-text-primary">
               Start cultivating
               <br />
               with us
@@ -92,7 +93,7 @@ export default function SignUpForm() {
                   <UnderlineField
                     label="Username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                     placeholder="e.g. cultivator_01"
                     hint="3+ chars. Letters, numbers, underscores."
                     hintVisibleOnFocus
@@ -101,7 +102,7 @@ export default function SignUpForm() {
                   <UnderlineField
                     label="Name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                     placeholder="e.g. Dawn"
                     required
                   />
@@ -109,7 +110,7 @@ export default function SignUpForm() {
                     label="Email"
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     placeholder="e.g. dawn@example.com"
                     hint="Use a valid email (e.g. dawn@domain.com)."
                     hintVisibleOnFocus
@@ -121,7 +122,7 @@ export default function SignUpForm() {
                     label="Password"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     hint="Minimum 8 characters."
                     hintVisibleOnFocus
@@ -131,7 +132,7 @@ export default function SignUpForm() {
                     label="Confirm password"
                     type="password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
                     hint="Must match the password above."
                     hintVisibleOnFocus
@@ -144,7 +145,7 @@ export default function SignUpForm() {
                   type="submit"
                   variant="compact"
                   size="sm"
-                  className="w-full sm:w-auto border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
+                  className="w-full sm:w-auto border-spora-primary text-spora-primary hover:bg-spora-primary hover:text-spora-primary-light"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "CREATING..." : "CREATE ACCOUNT"}
@@ -158,7 +159,7 @@ export default function SignUpForm() {
           Already have an account?{" "}
           <button
             type="button"
-            onClick={() => navigate("/signin")}
+            onClick={() => navigate(ROUTES.SIGN_IN)}
             className="hover:underline cursor-pointer"
           >
             Sign In

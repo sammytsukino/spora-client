@@ -40,10 +40,10 @@ export default function FilterTabs({ filters, activeFilter, onFilterChange }: Fi
         <button
           key={filter}
           type="button"
-          className={`shrink-0 border px-2 py-1 font-supply-mono text-[10px] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 sm:px-3 sm:text-[11px] ${
+          className={`shrink-0 border px-2 py-1 font-supply-mono text-[10px] uppercase transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 sm:px-3 sm:text-[11px] ${
             activeFilter === filter
-              ? "cursor-default border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-accent-secondary)]"
-              : "cursor-pointer border-[var(--spora-primary)] bg-transparent text-[var(--spora-primary)] hover:border-[var(--spora-primary)] hover:bg-[var(--spora-primary)]/10"
+              ? "cursor-default border-spora-primary bg-spora-primary text-spora-accent-secondary"
+              : "cursor-pointer border-spora-primary bg-transparent text-spora-primary hover:border-spora-primary hover:bg-spora-primary/10"
           }`}
           onClick={() => onFilterChange(filter)}
         >

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { floraPath } from "@/constants/routes";
 import type { ProfileSocialData, ProfileSocialInteraction } from "@/data/profile-data";
 
 interface ProfileSocialProps {
@@ -31,7 +32,7 @@ export default function ProfileSocial({
     if (onInteractionClick) {
       onInteractionClick(item);
     } else if (item.floraId && (item.action === "created" || item.action === "updated")) {
-      navigate(`/flora/${encodeURIComponent(item.floraId)}`);
+      navigate(floraPath(item.floraId));
     }
   };
 
@@ -39,7 +40,7 @@ export default function ProfileSocial({
     item.floraTitle || item.floraId || "";
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+    <section className="border border-spora-primary bg-spora-primary-light p-6">
       <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
         Recent activity
       </h2>
@@ -70,13 +71,13 @@ export default function ProfileSocial({
               <button
                 type="button"
                 onClick={() => handleItemClick(item)}
-                className="flex items-center gap-3 w-full text-left font-supply-mono text-[11px] p-2 border border-[var(--spora-primary)] hover:bg-lime-300 transition-colors"
+                className="flex items-center gap-3 w-full text-left font-supply-mono text-[11px] p-2 border border-spora-primary hover:bg-lime-300 transition-colors"
               >
                 {item.avatar && (
                   <img
                     src={item.avatar}
                     alt=""
-                    className="w-8 h-8 rounded-full object-cover border border-[var(--spora-primary)] shrink-0"
+                    className="w-8 h-8 rounded-full object-cover border border-spora-primary shrink-0"
                   />
                 )}
                 <span>

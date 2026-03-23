@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { ROUTES } from "@/constants/routes"
 import { isLabFullAccessible } from "@/lib/auth"
 import CyclingLogo from "@/components/layout/CyclingLogo"
 
@@ -6,7 +7,7 @@ export default function FooterMain() {
   const navigate = useNavigate()
 
   return (
-    <footer className="flex h-full w-full flex-col justify-between px-6 py-8 text-[var(--spora-primary)] md:px-12 lg:px-16">
+    <footer className="flex h-full w-full flex-col justify-between px-6 py-8 text-spora-primary md:px-12 lg:px-16">
       <div className="flex items-start justify-between text-lg sm:text-2xl font-supply-mono mb-10 sm:mb-12">
         <p className="whitespace-pre leading-tight">
           Not{"\n"}
@@ -44,7 +45,7 @@ export default function FooterMain() {
         </div>
 
         <div className="ml-4 flex min-w-0 flex-1 flex-col items-end justify-center sm:ml-8">
-          <div className="w-1/2 border-t border-[var(--spora-primary)]" />
+          <div className="w-1/2 border-t border-spora-primary" />
         </div>
       </div>
 
@@ -55,7 +56,7 @@ export default function FooterMain() {
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate("/team")}
+                onClick={() => navigate(ROUTES.TEAM)}
               >
                 Team
               </button>
@@ -69,7 +70,7 @@ export default function FooterMain() {
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate("/terms")}
+                onClick={() => navigate(ROUTES.TERMS)}
               >
                 <span className="md:hidden">Terms</span>
                 <span className="hidden md:inline">Terms & Conditions</span>
@@ -77,21 +78,23 @@ export default function FooterMain() {
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate("/greenhouse")}
+                onClick={() => navigate(ROUTES.GREENHOUSE)}
               >
                 Greenhouse
               </button>
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate("/contact")}
+                onClick={() => navigate(ROUTES.CONTACT)}
               >
                 Contact
               </button>
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
+                onClick={() =>
+                  navigate(isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY)
+                }
               >
                 Laboratory
               </button>

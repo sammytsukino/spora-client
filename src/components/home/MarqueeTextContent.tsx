@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { useNavigate } from "react-router-dom"
+import { ROUTES } from "@/constants/routes"
 import { isLabFullAccessible } from "@/lib/auth"
 interface MarqueeTextContentProps {
   className?: string
@@ -31,13 +32,13 @@ export default function MarqueeTextContent({
   const handleClick = (item: (typeof textItems)[number]) => {
     switch (item.title) {
       case "GARDEN":
-        navigate("/garden")
+        navigate(ROUTES.GARDEN)
         break
       case "GREENHOUSE":
-        navigate("/greenhouse")
+        navigate(ROUTES.GREENHOUSE)
         break
       case "LABORATORY":
-        navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")
+        navigate(isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY)
         break
       default:
         break

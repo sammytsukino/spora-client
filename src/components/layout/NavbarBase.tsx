@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, User, LogOut, FileText, Shield } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
 import CyclingLogo from "@/components/layout/CyclingLogo";
+import { ROUTES } from "@/constants/routes";
 import { getStoredToken, clearSession, isLabFullAccessible, getStoredUser } from "@/lib/auth";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
@@ -13,7 +14,9 @@ interface NavbarBaseProps {
   position?: NavbarPosition;
   showScrollProgress?: boolean;
   showScrollBackground?: boolean;
-  onNavigateRequest?: (path: "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full") => void;
+  onNavigateRequest?: (
+    path: typeof ROUTES.GARDEN | typeof ROUTES.GREENHOUSE | typeof ROUTES.LABORATORY | typeof ROUTES.LABORATORY_FULL
+  ) => void;
   className?: string;
   transparentUseLightText?: boolean;
 }
@@ -57,7 +60,7 @@ export default function NavbarBase({
     clearSession();
     setMenuOpen(false);
     setIsLoggedIn(false);
-    navigate("/");
+    navigate(ROUTES.HOME);
   };
   const isTransparent = variant === "transparent";
   const isLaboratory = variant === "laboratory";
@@ -87,7 +90,9 @@ export default function NavbarBase({
     };
   }, [showScrollProgress, showScrollBackground]);
 
-  const handleClick = (path: "/garden" | "/greenhouse" | "/laboratory" | "/laboratory/full") => {
+  const handleClick = (
+    path: typeof ROUTES.GARDEN | typeof ROUTES.GREENHOUSE | typeof ROUTES.LABORATORY | typeof ROUTES.LABORATORY_FULL
+  ) => {
     if (onNavigateRequest) {
       onNavigateRequest(path);
     } else {
@@ -96,17 +101,18 @@ export default function NavbarBase({
   };
 
   const pathname = location.pathname.toLowerCase();
-  const isGarden = pathname.startsWith("/garden");
-  const isGreenhouse = pathname.startsWith("/greenhouse");
-  const isLaboratoryPath = pathname.startsWith("/laboratory") || pathname.startsWith("/installation");
+  const isGarden = pathname.startsWith(ROUTES.GARDEN);
+  const isGreenhouse = pathname.startsWith(ROUTES.GREENHOUSE);
+  const isLaboratoryPath =
+    pathname.startsWith(ROUTES.LABORATORY) || pathname.startsWith("/installation");
 
   const textColor = isDark
-    ? "text-[var(--spora-text-secondary)]"
+    ? "text-spora-text-secondary"
     : isTransparent && transparentUseLightText
     ? "text-white"
-    : "text-[var(--spora-primary)]";
+    : "text-spora-primary";
   const bgColor = isDark
-    ? "bg-[var(--spora-primary)]"
+    ? "bg-spora-primary"
     : isTransparent
     ? ""
     : "bg-transparent";
@@ -136,7 +142,7 @@ export default function NavbarBase({
           {(isTeam || isDark || isTransparent) && (
             <button
               type="button"
-              onClick={() => navigate("/")}
+              onClick={() => navigate(ROUTES.HOME)}
               className="md:hidden flex items-center cursor-pointer"
               aria-label="Go to home"
             >
@@ -162,7 +168,7 @@ export default function NavbarBase({
                   }
                   alt="Spora logo"
                   className="h-7 sm:h-8 w-auto cursor-pointer"
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate(ROUTES.HOME)}
                 />
             </div>
           )}
@@ -175,7 +181,7 @@ export default function NavbarBase({
               <button
                 type="button"
                 className={`${isGarden && !isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
-                onClick={() => handleClick("/garden")}
+                onClick={() => handleClick(ROUTES.GARDEN)}
               >
                 <span className="md:hidden">GARDEN</span>
                 <span className="hidden md:inline">(01)GARDEN</span>
@@ -186,7 +192,7 @@ export default function NavbarBase({
               <button
                 type="button"
                 className={`${isGreenhouse && !isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
-                onClick={() => handleClick("/greenhouse")}
+                onClick={() => handleClick(ROUTES.GREENHOUSE)}
               >
                 <span className="md:hidden">GREENHOUSE</span>
                 <span className="hidden md:inline">(02)GREENHOUSE</span>
@@ -197,7 +203,9 @@ export default function NavbarBase({
               <button
                 type="button"
                 className={`${isLaboratoryPath && isLaboratory ? "underline" : "hover:underline"} cursor-pointer`}
-                onClick={() => handleClick(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
+                onClick={() =>
+                  handleClick(isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY)
+                }
               >
                 <span className="md:hidden">LAB</span>
                 <span className="hidden md:inline">(03)LABORATORY</span>
@@ -209,7 +217,7 @@ export default function NavbarBase({
           {isTeam && (
             <button
               type="button"
-              onClick={() => navigate("/")}
+              onClick={() => navigate(ROUTES.HOME)}
               className="hidden md:inline-flex cursor-pointer"
             >
               <CyclingLogo
@@ -247,15 +255,15 @@ export default function NavbarBase({
                     <div
                       className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] border font-supply-mono text-xs uppercase tracking-wider ${
                         isDark || (isTransparent && transparentUseLightText)
-                          ? "bg-[var(--spora-primary)] border-[var(--spora-text-secondary)] text-[var(--spora-text-secondary)]"
-                          : "bg-[#E9E9E9] border-[#262626] text-[#262626]"
+                          ? "bg-spora-primary border-spora-text-secondary text-spora-text-secondary"
+                          : "bg-spora-primary-light border-spora-primary text-spora-text-primary"
                       }`}
                     >
                       <button
                         type="button"
                         onClick={() => {
                           setMenuOpen(false);
-                          navigate("/profile");
+                          navigate(ROUTES.PROFILE);
                         }}
                         className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
@@ -278,7 +286,7 @@ export default function NavbarBase({
                           type="button"
                           onClick={() => {
                             setMenuOpen(false);
-                            navigate("/admin");
+                            navigate(ROUTES.ADMIN);
                           }}
                           className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                         >
@@ -318,7 +326,7 @@ export default function NavbarBase({
             className="h-full transition-all duration-150 ease-out"
             style={{
               width: `${scrollProgress}%`,
-              backgroundColor: isDark ? "var(--spora-accent-secondary)" : "oklch(65.6% 0.241 354.308)",
+              backgroundColor: isDark ? "var(--spora-accent-secondary)" : "var(--spora-accent)",
             }}
           />
         </div>

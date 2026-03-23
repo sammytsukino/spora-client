@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import MainButton from "@/components/ui/MainButton";
@@ -77,20 +77,20 @@ export default function Contact() {
                       <UnderlineField
                         label="Name"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                         placeholder="e.g. Dawn"
                       />
                       <UnderlineField
                         label="E-mail"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                         placeholder="e.g. dawn@example.com"
                       />
                       <UnderlineField
                         label="Subject"
                         value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSubject(e.target.value)}
                         placeholder="e.g. Partnership inquiry"
                       />
                     </div>
@@ -98,7 +98,7 @@ export default function Contact() {
                       label="Message"
                       as="textarea"
                       value={message}
-                      onChange={(e) => setMessage(e.target.value)}
+                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
                       placeholder="Your message..."
                       fillParent
                     />

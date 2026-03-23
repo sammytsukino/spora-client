@@ -10,6 +10,8 @@ import { listFloras, type ApiFlora } from "@/lib/floras";
 import { api } from "@/lib/api";
 import { floraFilters, floraImages, ITEMS_PER_PAGE } from "@/data/flora-data";
 import { getStoredToken } from "@/lib/auth";
+import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
+import MainButton from "@/components/ui/MainButton";
 
 const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
@@ -65,7 +67,7 @@ export default function PublicProfile() {
 
   useEffect(() => {
     if (!username) {
-      navigate("/profile", { replace: true });
+      navigate(ROUTES.PROFILE, { replace: true });
       return;
     }
     let cancelled = false;
@@ -80,7 +82,7 @@ export default function PublicProfile() {
         ]);
         if (cancelled) return;
         if (meRes?.data?.id === publicUser.id) {
-          navigate("/profile", { replace: true });
+          navigate(ROUTES.PROFILE, { replace: true });
           return;
         }
         setUser(publicUser);
@@ -102,17 +104,17 @@ export default function PublicProfile() {
   const visibleFloras = filteredFloras.slice(0, visibleCount);
 
   const handleCardClick = (flora: UiFlora) => {
-    navigate(`/flora/${encodeURIComponent(flora.id)}`, { state: { flora } });
+    navigate(floraPath(flora.id), { state: { flora } });
   };
 
   if (!username) return null;
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen bg-[var(--spora-primary-light)]">
+      <div className="w-full min-h-screen bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 px-6">
-          <p className="font-supply-mono text-sm text-[var(--spora-primary)]">Loading…</p>
+          <p className="font-supply-mono text-sm text-spora-primary">Loading…</p>
         </main>
       </div>
     );
@@ -120,7 +122,7 @@ export default function PublicProfile() {
 
   if (error || !user) {
     return (
-      <div className="w-full min-h-screen bg-[var(--spora-primary-light)]">
+      <div className="w-full min-h-screen bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 px-6">
           <p className="font-supply-mono text-sm text-red-600">{error || "User not found."}</p>
@@ -132,10 +134,10 @@ export default function PublicProfile() {
   const statusFilters = ["SHOW ALL", ...floraFilters.slice(1)];
 
   return (
-    <div className="w-full overflow-x-hidden bg-[var(--spora-primary-light)]">
+    <div className="w-full overflow-x-hidden bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
       <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
-        <header className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+        <header className="border border-spora-primary bg-spora-primary-light p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
           <img
             src={user.avatar || DEFAULT_AVATAR}
             alt={user.displayName || user.username}
@@ -143,14 +145,14 @@ export default function PublicProfile() {
           />
           <div className="flex-1 min-w-0">
             <p className="font-supply-mono text-lg font-bold">@{user.username}</p>
-            <p className="font-supply-mono text-sm text-[#262626]/80">{user.displayName || user.username}</p>
+            <p className="font-supply-mono text-sm text-spora-text-primary/80">{user.displayName || user.username}</p>
             {user.bio && <p className="font-supply-mono text-sm italic mt-1">{user.bio}</p>}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2 font-supply-mono text-[11px] opacity-90">
               <span>{floras.length} Floras</span>
               <span className="opacity-50">·</span>
               <button
                 type="button"
-                onClick={() => navigate(`/profile/${username}/followers`)}
+                onClick={() => navigate(profileFollowersPath(username))}
                 className="hover:underline focus:underline"
               >
                 <strong>{user.followersCount + followDelta}</strong> followers
@@ -158,7 +160,7 @@ export default function PublicProfile() {
               <span className="opacity-50">·</span>
               <button
                 type="button"
-                onClick={() => navigate(`/profile/${username}/following`)}
+                onClick={() => navigate(profileFollowingPath(username))}
                 className="hover:underline focus:underline"
               >
                 <strong>{user.followingCount}</strong> following
@@ -207,13 +209,15 @@ export default function PublicProfile() {
             </main>
           )}
           {visibleCount < filteredFloras.length && (
-            <button
+            <MainButton
               type="button"
+              variant="compact"
+              size="sm"
+              className="mt-6"
               onClick={() => setVisibleCount((v) => Math.min(v + ITEMS_PER_PAGE, filteredFloras.length))}
-              className="mt-6 font-supply-mono text-xs uppercase tracking-[0.2em] border border-[var(--spora-primary)] px-4 py-2 hover:bg-[var(--spora-primary)]/5"
             >
               Load more
-            </button>
+            </MainButton>
           )}
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { ROUTES } from "@/constants/routes"
 import { isLabFullAccessible } from "@/lib/auth"
 import CyclingLogo from "@/components/layout/CyclingLogo"
 
@@ -6,7 +7,7 @@ export default function FooterAlter() {
   const navigate = useNavigate()
 
   return (
-    <footer className="relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)] overflow-hidden">
+    <footer className="relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-spora-primary overflow-hidden">
       <div className="relative z-10 flex flex-col justify-between">
         <div className="mt-8 flex min-w-0 items-end justify-between gap-3">
           <div className="flex shrink-0 items-end">
@@ -25,7 +26,7 @@ export default function FooterAlter() {
             />
           </div>
 
-          <div className="hidden lg:block w-2/4 shrink-0 border-t border-[var(--spora-primary)] mb-10" />
+          <div className="hidden lg:block w-2/4 shrink-0 border-t border-spora-primary mb-10" />
 
           <div className="flex min-w-0 flex-1 justify-end">
             <div className="min-w-0 text-[10px] sm:text-xs font-supply-mono">
@@ -33,21 +34,21 @@ export default function FooterAlter() {
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
-                  onClick={() => navigate("/team")}
+                  onClick={() => navigate(ROUTES.TEAM)}
                 >
                   Team
                 </button>
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
-                  onClick={() => navigate("/garden")}
+                  onClick={() => navigate(ROUTES.GARDEN)}
                 >
                   Garden
                 </button>
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
-                  onClick={() => navigate("/terms")}
+                  onClick={() => navigate(ROUTES.TERMS)}
                 >
                   <span className="md:hidden">Terms</span>
                   <span className="hidden md:inline">Terms & Conditions</span>
@@ -62,14 +63,16 @@ export default function FooterAlter() {
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
-                  onClick={() => navigate("/contact")}
+                  onClick={() => navigate(ROUTES.CONTACT)}
                 >
                   Contact
                 </button>
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
-                  onClick={() => navigate(isLabFullAccessible() ? "/laboratory/full" : "/laboratory")}
+                  onClick={() =>
+                    navigate(isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY)
+                  }
                 >
                   Laboratory
                 </button>

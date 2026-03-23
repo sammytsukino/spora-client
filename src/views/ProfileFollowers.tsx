@@ -5,6 +5,7 @@ import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/layout/FooterAlter";
 import { getFollowers, type FollowUser } from "@/lib/followApi";
 import { getUserByUsername } from "@/lib/usersApi";
+import { ROUTES, profilePath } from "@/constants/routes";
 
 const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
@@ -13,13 +14,12 @@ export default function ProfileFollowers() {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
   const [users, setUsers] = useState<FollowUser[]>([]);
-  const [displayName, setDisplayName] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!username) {
-      navigate("/profile", { replace: true });
+      navigate(ROUTES.PROFILE, { replace: true });
       return;
     }
     let cancelled = false;
@@ -30,7 +30,6 @@ export default function ProfileFollowers() {
         const publicUser = await getUserByUsername(username);
         const followers = await getFollowers(publicUser.id);
         if (cancelled) return;
-        setDisplayName(publicUser.displayName || publicUser.username);
         setUsers(followers);
       } catch (e) {
         if (!cancelled) setError("Could not load followers.");
@@ -44,7 +43,7 @@ export default function ProfileFollowers() {
   if (!username) return null;
 
   return (
-    <div className="w-full overflow-x-hidden bg-[var(--spora-primary-light)] min-h-screen">
+    <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen">
       <TransparentNavbar showScrollBackground />
       <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
         <PageTitle
@@ -53,11 +52,11 @@ export default function ProfileFollowers() {
           className="mb-8"
         />
         {loading ? (
-          <p className="font-supply-mono text-sm text-[var(--spora-primary)]">Loading…</p>
+          <p className="font-supply-mono text-sm text-spora-primary">Loading…</p>
         ) : error ? (
           <p className="font-supply-mono text-sm text-red-600">{error}</p>
         ) : users.length === 0 ? (
-          <p className="font-supply-mono text-sm text-[var(--spora-primary)] opacity-80">
+          <p className="font-supply-mono text-sm text-spora-primary opacity-80">
             No followers yet.
           </p>
         ) : (
@@ -66,20 +65,20 @@ export default function ProfileFollowers() {
               <li key={u.id}>
                 <button
                   type="button"
-                  onClick={() => navigate(`/profile/${u.username}`)}
-                  className="flex items-center gap-4 w-full text-left p-3 border border-[var(--spora-primary)] bg-transparent hover:bg-[var(--spora-primary)]/5 transition-colors"
+                  onClick={() => navigate(profilePath(u.username))}
+                  className="flex items-center gap-4 w-full text-left p-3 border border-spora-primary bg-transparent hover:bg-spora-primary/5 transition-colors"
                 >
                   <img
                     src={u.avatar || DEFAULT_AVATAR}
                     alt=""
-                    className="w-12 h-12 rounded-full object-cover border border-[var(--spora-primary)]"
+                    className="w-12 h-12 rounded-full object-cover border border-spora-primary"
                   />
                   <div>
-                    <p className="font-supply-mono font-bold text-[var(--spora-primary)]">
+                    <p className="font-supply-mono font-bold text-spora-primary">
                       @{u.username}
                     </p>
                     {u.displayName && (
-                      <p className="font-supply-mono text-xs text-[var(--spora-primary)]/80">
+                      <p className="font-supply-mono text-xs text-spora-primary/80">
                         {u.displayName}
                       </p>
                     )}

@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { getStoredToken } from "@/lib/auth";
 
 interface ProtectedRouteProps {
@@ -6,7 +7,7 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
-export default function ProtectedRoute({ children, redirectTo = "/signup" }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, redirectTo = ROUTES.SIGN_UP }: ProtectedRouteProps) {
   const location = useLocation();
   const token = getStoredToken();
 

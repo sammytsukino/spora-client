@@ -3,7 +3,7 @@
 
 *::selection {
   background: var(--spora-accent-secondary);
-  color: #262626;
+  color: var(--spora-primary);
 }
 
 a,
@@ -104,6 +104,7 @@ body.hide-scrollbar::-webkit-scrollbar {
   font-display: swap;
 }
 
+/* App shell: body/html use SPORA gray; @apply bg-background on body is for shadcn token alignment inside components. */
 html,
 body {
   margin: 0;
@@ -303,6 +304,18 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* SPORA brand (mirrors :root --spora-* for Tailwind utilities: bg-spora-primary, text-spora-accent-secondary, …) */
+  --color-spora-primary: var(--spora-primary);
+  --color-spora-primary-light: var(--spora-primary-light);
+  --color-spora-primary-lighter: var(--spora-primary-lighter);
+  --color-spora-primary-lightest: var(--spora-primary-lightest);
+  --color-spora-secondary: var(--spora-secondary);
+  --color-spora-accent: var(--spora-accent);
+  --color-spora-accent-secondary: var(--spora-accent-secondary);
+  --color-spora-text-primary: var(--spora-text-primary);
+  --color-spora-text-secondary: var(--spora-text-secondary);
+  --color-spora-border: var(--spora-border);
 }
 
 :root {
@@ -343,6 +356,8 @@ body {
   --spora-primary-light: #E9E9E9;
   --spora-primary-lighter: #e3e3e3;
   --spora-primary-lightest: #e6e6e6;
+  /* Gradient / secondary brand anchor (e.g. mobile marquee fade: lime → charcoal) */
+  --spora-secondary: #262626;
   --spora-accent: #ff6b4a;
   --spora-accent-secondary: #bbf451;
   --spora-text-primary: #262626;

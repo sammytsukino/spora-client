@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, type ChangeEvent } from "react";
 import { X, Camera } from "lucide-react";
 import type { ProfileUser } from "@/data/profile-data";
 import { updateProfile, fileToBase64 } from "@/lib/profileApi";
@@ -125,7 +125,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
                 label="Name"
                 id="displayName"
                 value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
                 placeholder="e.g. Dawn"
                 maxLength={100}
               />
@@ -135,7 +135,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
                   id="bio"
                   as="textarea"
                   value={bio}
-                  onChange={(e) => setBio(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBio(e.target.value)}
                   placeholder="e.g. Tell us about yourself..."
                   maxLength={500}
                   minRows={3}

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import '../index.css'
+import { ROUTES } from '@/constants/routes'
 import { useFloraThumbnails } from '@/hooks/useFloraThumbnails'
 import MarqueeAlongSvgPath from '../components/home/MarqueeAlongSvgPath'
 import VideoTextSection from '../components/home/VideoTextSection'
@@ -72,7 +73,7 @@ export default function Home() {
       <Section
         variant="large"
         containerized={false}
-        className="bg-[var(--spora-primary)] items-stretch max-md:h-auto!"
+        className="bg-spora-primary items-stretch max-md:h-auto!"
       >
         <VideoTextSection />
       </Section>
@@ -80,14 +81,14 @@ export default function Home() {
       <Section variant="compact" containerized={false}>
         <div className="w-full h-full flex flex-col">
           <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
-            <h2 className="text-xl sm:text-lg md:text-2x1 font-supply-mono hover:underline cursor-pointer" onClick={() => navigate('/garden')}>
+            <h2 className="text-xl sm:text-lg md:text-2xl font-supply-mono hover:underline cursor-pointer" onClick={() => navigate(ROUTES.GARDEN)}>
               Featured Floras →
             </h2>
             <MainButton
               variant="compact"
               size="sm"
               type="button"
-              onClick={() => navigate('/garden')}
+              onClick={() => navigate(ROUTES.GARDEN)}
             >
               VIEW ALL
             </MainButton>
@@ -112,7 +113,7 @@ donde mi cuerpo parece que es la puerta...
 "
           author="Fran Barreno"
           buttonText="CREATE YOUR OWN"
-          onButtonClick={() => navigate('/laboratory')}
+          onButtonClick={() => navigate(ROUTES.LABORATORY)}
         />
       </Section>
 

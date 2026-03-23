@@ -25,6 +25,7 @@ import {
 } from "@/data/profile-data";
 import { getStoredToken, clearSession } from "@/lib/auth";
 import { fetchProfileData, unsignMyAccount } from "@/lib/profileApi";
+import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
 
 export interface ProfileViewProps {
   user?: ProfileUser;
@@ -75,7 +76,7 @@ export default function Profile({
   useEffect(() => {
     const token = getStoredToken();
     if (!token) {
-      navigate("/signin", { replace: true });
+      navigate(ROUTES.SIGN_IN, { replace: true });
       return;
     }
     let cancelled = false;
@@ -99,7 +100,7 @@ export default function Profile({
             : "Error loading profile";
           setError(msg);
           if ((e as { response?: { status?: number } }).response?.status === 401) {
-            navigate("/signin", { replace: true });
+            navigate(ROUTES.SIGN_IN, { replace: true });
           }
         }
       } finally {
@@ -126,7 +127,7 @@ export default function Profile({
       setUnsigning(true);
       await unsignMyAccount();
       clearSession();
-      navigate("/signin", { replace: true });
+      navigate(ROUTES.SIGN_IN, { replace: true });
     } catch (e) {
       setUnsigning(false);
       const msg =
@@ -144,13 +145,13 @@ export default function Profile({
     if (onCardClick) {
       onCardClick();
     } else {
-      navigate(`/flora/${encodeURIComponent(floraId)}`);
+      navigate(floraPath(floraId));
     }
   };
 
   if (loading) {
     return (
-      <div className="w-full overflow-x-hidden bg-[#E9E9E9] min-h-screen flex items-center justify-center">
+      <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen flex items-center justify-center">
         <TransparentNavbar showScrollBackground />
         <p className="font-supply-mono text-sm uppercase">Loading profile…</p>
       </div>
@@ -163,7 +164,7 @@ export default function Profile({
 
   if (error) {
     return (
-      <div className="w-full overflow-x-hidden bg-[#E9E9E9] min-h-screen">
+      <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen">
         <TransparentNavbar showScrollBackground />
         <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
           <p className="font-supply-mono text-sm text-red-600 uppercase">{error}</p>
@@ -184,11 +185,11 @@ export default function Profile({
           onEdit={onEdit ?? (() => setEditOpen(true))}
           onFollowersClick={
             onFollowersClick ??
-            (() => navigate(`/profile/${String(effectiveUser.username).replace(/^@/, "")}/followers`))
+            (() => navigate(profileFollowersPath(String(effectiveUser.username))))
           }
           onFollowingClick={
             onFollowingClick ??
-            (() => navigate(`/profile/${String(effectiveUser.username).replace(/^@/, "")}/following`))
+            (() => navigate(profileFollowingPath(String(effectiveUser.username))))
           }
         />
         {editOpen && (
