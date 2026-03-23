@@ -149,12 +149,12 @@ export default function Garden() {
           />
         </div>
 
-        <div className="flex items-center justify-between gap-4 mb-8">
-          <div className="flex-1">
+        <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="min-w-0 flex-1">
             <div className="w-full border-b border-[var(--spora-primary)]" />
           </div>
 
-          <div className="flex items-center justify-end">
+          <div className="flex w-full min-w-0 justify-end sm:w-auto sm:shrink-0">
             <FilterTabs
               filters={filters as readonly string[]}
               activeFilter={activeFilter}

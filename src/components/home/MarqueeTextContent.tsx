@@ -47,7 +47,7 @@ export default function MarqueeTextContent({
   return (
     <div
       className={cn(
-        "absolute left-0 top-0 flex flex-col md:flex-row items-start gap-4 sm:gap-5 md:gap-10 lg:gap-12 px-6 sm:px-8 md:px-12 pt-6 sm:pt-9 md:pt-16 z-10 w-full md:w-auto box-border",
+        "relative z-10 flex flex-col md:absolute md:left-0 md:top-0 md:flex-row items-start gap-4 sm:gap-5 md:gap-10 lg:gap-12 px-6 sm:px-8 md:px-12 py-8 sm:py-9 md:py-0 md:pt-16 md:pb-0 w-full md:w-auto box-border",
         className
       )}
     >

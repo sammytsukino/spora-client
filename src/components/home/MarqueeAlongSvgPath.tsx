@@ -477,9 +477,22 @@ export default function MarqueeAlongSvgPath({
   items?: FloraThumbnail[]
 }) {
   return (
-    <div className="w-full relative overflow-hidden min-h-[36vh] sm:min-h-[50vh] md:min-h-[80vh]">
+    <div
+      className={cn(
+        "w-full relative overflow-hidden",
+        showText
+          ? "md:min-h-[80vh]"
+          : "min-h-[36vh] sm:min-h-[50vh] md:min-h-[80vh]"
+      )}
+    >
       <div className="absolute inset-0 w-full h-full md:hidden bg-linear-to-b from-(--spora-accent-secondary) to-(--spora-secondary)" />
-      <MarqueeBackground className="absolute inset-0 w-full h-full overflow-hidden" items={items} />
+      <MarqueeBackground
+        className={cn(
+          "absolute inset-0 w-full h-full overflow-hidden",
+          showText && "hidden md:block"
+        )}
+        items={items}
+      />
       {showText && <MarqueeTextContent />}
     </div>
   )

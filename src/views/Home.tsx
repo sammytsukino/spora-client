@@ -57,6 +57,7 @@ export default function Home() {
       >
         <DeclarativeSection
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
+          imageSrc="https://res.cloudinary.com/dsy30p7gf/image/upload/v1774263030/lace_chart_jfrssl.png"
         />
       </Section>
 
@@ -71,7 +72,7 @@ export default function Home() {
       <Section
         variant="large"
         containerized={false}
-        className="bg-[var(--spora-primary)] items-stretch"
+        className="bg-[var(--spora-primary)] items-stretch max-md:h-auto!"
       >
         <VideoTextSection />
       </Section>

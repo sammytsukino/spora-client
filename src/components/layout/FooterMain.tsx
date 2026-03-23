@@ -6,7 +6,7 @@ export default function FooterMain() {
   const navigate = useNavigate()
 
   return (
-    <footer className="w-full h-full px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)]">
+    <footer className="flex h-full w-full flex-col justify-between px-6 py-8 text-[var(--spora-primary)] md:px-12 lg:px-16">
       <div className="flex items-start justify-between text-lg sm:text-2xl font-supply-mono mb-10 sm:mb-12">
         <p className="whitespace-pre leading-tight">
           Not{"\n"}
@@ -22,11 +22,11 @@ export default function FooterMain() {
         <img
           src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg"
           alt="Spora logo"
-          className="max-w-[220px] sm:max-w-[480px] lg:max-w-[800px] object-contain"
+          className="max-w-[180px] sm:max-w-[400px] lg:max-w-[640px] object-contain"
         />
       </div>
 
-      <div className="flex-1 flex items-center justify-between">
+      <div className="flex min-h-0 flex-1 items-center justify-between">
         <div className="flex items-center">
           <CyclingLogo
             logos={[
@@ -43,19 +43,15 @@ export default function FooterMain() {
           />
         </div>
 
-        <div className="flex-1 flex flex-col items-end justify-center ml-4 sm:ml-8">
+        <div className="ml-4 flex min-w-0 flex-1 flex-col items-end justify-center sm:ml-8">
           <div className="w-1/2 border-t border-[var(--spora-primary)]" />
         </div>
       </div>
 
-      <div className="mt-8 flex items-end justify-between text-[10px] sm:text-xs font-supply-mono">
-        <span className="flex-1" />
-
-        <span className="text-center whitespace-nowrap">© 2026, SPORA</span>
-
-        <div className="flex-1 flex justify-end">
-          <div className="text-[10px] sm:text-xs font-supply-mono">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">
+      <div className="mt-8 flex w-full min-w-0 flex-col gap-6 text-[10px] sm:text-xs font-supply-mono">
+        <div className="flex w-full min-w-0 justify-end">
+          <div className="min-w-0 text-[10px] sm:text-xs font-supply-mono">
+            <div className="grid grid-cols-1 gap-x-4 gap-y-1 justify-items-end text-right text-sm sm:grid-cols-2 sm:gap-x-8 sm:text-lg">
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
@@ -75,7 +71,8 @@ export default function FooterMain() {
                 className="hover:underline cursor-pointer"
                 onClick={() => navigate("/terms")}
               >
-                Terms & Conditions
+                <span className="md:hidden">Terms</span>
+                <span className="hidden md:inline">Terms & Conditions</span>
               </button>
               <button
                 type="button"
@@ -100,6 +97,10 @@ export default function FooterMain() {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="flex justify-center">
+          <span className="whitespace-nowrap text-center">© 2026, SPORA</span>
         </div>
       </div>
     </footer>

@@ -147,7 +147,7 @@ export default function NavbarBase({
                     : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
                 }
                 alt="Spora logo"
-                className="h-5 w-auto"
+                className="h-4 w-auto"
               />
             </button>
           )}
@@ -161,7 +161,7 @@ export default function NavbarBase({
                       : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
                   }
                   alt="Spora logo"
-                  className="h-8 sm:h-9 w-auto cursor-pointer"
+                  className="h-7 sm:h-8 w-auto cursor-pointer"
                   onClick={() => navigate("/")}
                 />
             </div>

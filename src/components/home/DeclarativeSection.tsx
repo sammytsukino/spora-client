@@ -5,6 +5,8 @@ import useDetectBrowser from '@/hooks/use-detect-browser';
 
 interface DeclarativeSectionProps {
   text: string;
+  imageSrc?: string;
+  imageAlt?: string;
 }
 
   const pixelColors = [
@@ -17,13 +19,23 @@ interface DeclarativeSectionProps {
   ];
 
 
-export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
+export default function DeclarativeSection({
+  text,
+  imageSrc,
+  imageAlt = '',
+}: DeclarativeSectionProps) {
   const screenSize = useScreenSize();
   const browserName = useDetectBrowser();
   const isSafari = browserName === "Safari";
 
   return (
-    <div className="relative w-full overflow-visible bg-[#262626] min-h-0 sm:min-h-[65vh] lg:min-h-[80vh]">
+    <div
+      className={
+        imageSrc
+          ? 'relative w-full overflow-visible bg-[#262626] min-h-0 sm:min-h-[52vh] lg:min-h-[58vh]'
+          : 'relative w-full overflow-visible bg-[#262626] min-h-0 sm:min-h-[65vh] lg:min-h-[80vh]'
+      }
+    >
 
       <GooeySvgFilter id="gooey-filter-hero" strength={5} />
 
@@ -44,12 +56,32 @@ export default function DeclarativeSection({ text }: DeclarativeSectionProps) {
 
 
       <div className="relative z-10 flex flex-col h-full pointer-events-none">
-        <div className="px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16 pb-10 sm:pb-0">
-          <p className="font-bizud-mincho text-stone-200 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight w-full max-w-full break-words">
+        <div
+          className={
+            imageSrc
+              ? 'px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16 pb-12 sm:pb-14 lg:pb-16'
+              : 'px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16 pb-10 sm:pb-0'
+          }
+        >
+          <p className="font-bizud-mincho text-stone-200 text-2xl leading-snug sm:text-4xl sm:leading-tight md:text-5xl lg:text-6xl xl:text-7xl w-full max-w-full break-words">
             {text}
           </p>
+          {imageSrc ? (
+            <div className="mt-6 sm:mt-8 lg:mt-10 flex w-full justify-end pointer-events-none">
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className="h-auto w-full max-w-full object-contain object-center sm:max-w-[min(100%,60vw)] sm:object-right select-none"
+                draggable={false}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : null}
         </div>
-        <div className="flex-1 min-h-0 sm:min-h-[22vh] md:min-h-[36vh]" />
+        {imageSrc ? null : (
+          <div className="flex-1 min-h-0 sm:min-h-[22vh] md:min-h-[36vh]" />
+        )}
       </div>
     </div>
   );

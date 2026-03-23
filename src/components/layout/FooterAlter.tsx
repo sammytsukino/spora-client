@@ -8,9 +8,8 @@ export default function FooterAlter() {
   return (
     <footer className="relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-[var(--spora-primary)] overflow-hidden">
       <div className="relative z-10 flex flex-col justify-between">
-
-        <div className="flex items-end justify-between mt-8">
-          <div className="flex items-end">
+        <div className="mt-8 flex min-w-0 items-end justify-between gap-3">
+          <div className="flex shrink-0 items-end">
             <CyclingLogo
               logos={[
                 "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769690617/Ready5_czorye.svg",
@@ -26,11 +25,11 @@ export default function FooterAlter() {
             />
           </div>
 
-          <div className="hidden lg:block w-2/4 border-t border-[var(--spora-primary)] mb-10" />
+          <div className="hidden lg:block w-2/4 shrink-0 border-t border-[var(--spora-primary)] mb-10" />
 
-          <div className="flex items-start">
-            <div className="text-[10px] sm:text-xs font-supply-mono">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-1 justify-items-end text-right text-sm sm:text-lg">
+          <div className="flex min-w-0 flex-1 justify-end">
+            <div className="min-w-0 text-[10px] sm:text-xs font-supply-mono">
+              <div className="grid grid-cols-1 gap-y-1 justify-items-end text-right text-sm sm:grid-cols-2 sm:gap-x-8 sm:gap-y-1 sm:text-lg">
                 <button
                   type="button"
                   className="hover:underline cursor-pointer"
@@ -50,7 +49,8 @@ export default function FooterAlter() {
                   className="hover:underline cursor-pointer"
                   onClick={() => navigate("/terms")}
                 >
-                  Terms & Conditions
+                  <span className="md:hidden">Terms</span>
+                  <span className="hidden md:inline">Terms & Conditions</span>
                 </button>
                 <button
                   type="button"

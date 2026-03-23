@@ -174,13 +174,15 @@ export default function PublicProfile() {
         </header>
 
         <div className="mt-6">
-          <div className="flex items-end justify-between gap-4 mb-6">
-            <h2 className="font-supply-mono font-bold text-sm uppercase">Floras</h2>
-            <FilterTabs
-              filters={statusFilters}
-              activeFilter={activeFilter}
-              onFilterChange={setActiveFilter}
-            />
+          <div className="mb-6 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <h2 className="shrink-0 font-supply-mono text-sm font-bold uppercase">Floras</h2>
+            <div className="flex w-full min-w-0 justify-end sm:w-auto">
+              <FilterTabs
+                filters={statusFilters}
+                activeFilter={activeFilter}
+                onFilterChange={setActiveFilter}
+              />
+            </div>
           </div>
           {floras.length === 0 ? (
             <p className="font-supply-mono text-sm text-[var(--spora-primary)] opacity-80">

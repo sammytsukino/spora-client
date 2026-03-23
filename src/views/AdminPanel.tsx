@@ -92,23 +92,25 @@ export default function AdminPanel() {
       <TransparentNavbar showScrollBackground />
 
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
-        <div className="flex items-end justify-between gap-4 mb-6">
-          <div className="flex items-center gap-4">
-            <h1 className="font-supply-mono font-bold text-sm uppercase">
+        <div className="mb-6 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <div className="flex min-w-0 flex-wrap items-center gap-4">
+            <h1 className="font-supply-mono text-sm font-bold uppercase">
               Admin panel
             </h1>
             <Link
               to="/laboratory/full"
-              className="font-supply-mono text-xs uppercase underline hover:no-underline cursor-pointer"
+              className="cursor-pointer font-supply-mono text-xs uppercase underline hover:no-underline"
             >
               Full Laboratory
             </Link>
           </div>
-          <FilterTabs
-            filters={[...adminSectionTabs]}
-            activeFilter={activeSection}
-            onFilterChange={setActiveSection}
-          />
+          <div className="flex w-full min-w-0 justify-end sm:w-auto">
+            <FilterTabs
+              filters={[...adminSectionTabs]}
+              activeFilter={activeSection}
+              onFilterChange={setActiveSection}
+            />
+          </div>
         </div>
 
         {error && (

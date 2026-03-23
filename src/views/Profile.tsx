@@ -204,15 +204,17 @@ export default function Profile({
         </div>
 
         <div className="mt-10">
-          <div className="flex items-end justify-between gap-4 mb-6">
-            <h2 className="font-supply-mono font-bold text-sm uppercase">
+          <div className="mb-6 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <h2 className="shrink-0 font-supply-mono text-sm font-bold uppercase">
               My Floras
             </h2>
-            <FilterTabs
-              filters={[...profileGalleryFilters]}
-              activeFilter={activeFilter}
-              onFilterChange={setActiveFilter}
-            />
+            <div className="flex w-full min-w-0 justify-end sm:w-auto">
+              <FilterTabs
+                filters={[...profileGalleryFilters]}
+                activeFilter={activeFilter}
+                onFilterChange={setActiveFilter}
+              />
+            </div>
           </div>
           <div>
             <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
