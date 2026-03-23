@@ -503,6 +503,32 @@
             visibility: visible;
         }
 
+        .title-required-banner {
+            display: none;
+            margin-bottom: 14px;
+            padding: 12px 14px;
+            border: 2px solid var(--spora-dark);
+            background: var(--spora-lime);
+            color: var(--spora-dark);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.5;
+            letter-spacing: 0.06em;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0 var(--spora-dark);
+        }
+
+        .title-required-banner.visible {
+            display: block;
+        }
+
+        .control-box.title-field-error {
+            border-color: var(--spora-dark);
+            background: rgba(187, 244, 81, 0.35);
+            box-shadow: 0 0 0 3px var(--spora-lime), 4px 4px 0 var(--spora-dark);
+        }
+
         input:disabled,
         textarea:disabled,
         select:disabled,
@@ -677,7 +703,8 @@
         <section class="laboratory-only" id="titleSection">
             <h2>ARTWORK_TITLE</h2>
             <div class="control-box">
-                <input type="text" id="inpTitle" placeholder="Name your flora (required)..." required />
+                <input type="text" id="inpTitle" placeholder="Name your flora (required)..." required
+                    oninput="onTitleInputChanged()" />
             </div>
         </section>
         <section>
@@ -962,6 +989,7 @@
         <section
             style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark); overflow: visible;">
             <h2>SYSTEM_EXPORT</h2>
+            <div id="titleRequiredBanner" class="title-required-banner" role="alert" aria-live="assertive"></div>
             <div class="btn-group publish-buttons" style="margin-bottom: 12px">
                 <span class="publish-tooltip-wrap">
                     <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH
@@ -2036,6 +2064,47 @@
             a.click();
         }
 
+        function getTitleControlBox() {
+            const inp = document.getElementById("inpTitle");
+            return inp ? inp.closest(".control-box") : null;
+        }
+
+        function clearTitleRequiredUI() {
+            const banner = document.getElementById("titleRequiredBanner");
+            const box = getTitleControlBox();
+            if (banner) {
+                banner.classList.remove("visible");
+                banner.textContent = "";
+            }
+            if (box) box.classList.remove("title-field-error");
+        }
+
+        function onTitleInputChanged() {
+            const v = (document.getElementById("inpTitle")?.value || "").trim();
+            if (!v) return;
+            clearTitleRequiredUI();
+            const st = document.getElementById("statusText");
+            if (st && /BLOCKED|ADD TITLE/i.test(st.innerText)) st.innerText = "SYSTEM READY";
+        }
+
+        function showTitleRequiredForPublish() {
+            const banner = document.getElementById("titleRequiredBanner");
+            const statusEl = document.getElementById("statusText");
+            const inp = document.getElementById("inpTitle");
+            const box = getTitleControlBox();
+            if (banner) {
+                banner.innerHTML = "<strong>Title required.</strong> Add a name in <strong>ARTWORK_TITLE</strong> at the top of this sidebar, then publish again.";
+                banner.classList.add("visible");
+            }
+            if (statusEl) statusEl.innerText = "BLOCKED — ADD ARTWORK TITLE (SEE HIGHLIGHT ABOVE)";
+            if (box) box.classList.add("title-field-error");
+            const sec = document.getElementById("titleSection");
+            if (sec) sec.scrollIntoView({ behavior: "smooth", block: "center" });
+            if (inp) {
+                setTimeout(() => inp.focus({ preventScroll: true }), 350);
+            }
+        }
+
         async function ensureValidToken(apiBase) {
             let token = localStorage.getItem("spora_token");
             const refreshToken = localStorage.getItem("spora_refresh_token");
@@ -2067,9 +2136,10 @@
             const state = collectState();
 
             if (!state.title || !state.title.trim()) {
-                s.innerText = "ADD TITLE";
+                showTitleRequiredForPublish();
                 return;
             }
+            clearTitleRequiredUI();
             if (!state.text || state.text.trim().length < 5) {
                 s.innerText = "ADD MORE TEXT";
                 return;
