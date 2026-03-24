@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FloraCard from "@/components/flora/FloraCard";
@@ -11,6 +11,7 @@ import { api } from "@/lib/api";
 import { floraFilters, floraImages, ITEMS_PER_PAGE } from "@/data/flora-data";
 import { getStoredToken } from "@/lib/auth";
 import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
+import { readerNavState } from "@/lib/floraViewBack";
 import MainButton from "@/components/ui/MainButton";
 
 const DEFAULT_AVATAR =
@@ -55,6 +56,7 @@ function mapFlora(flora: ApiFlora, index: number): UiFlora {
 export default function PublicProfile() {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState<PublicUser | null>(null);
   const [followDelta, setFollowDelta] = useState(0);
   const [floras, setFloras] = useState<UiFlora[]>([]);
@@ -104,7 +106,9 @@ export default function PublicProfile() {
   const visibleFloras = filteredFloras.slice(0, visibleCount);
 
   const handleCardClick = (flora: UiFlora) => {
-    navigate(floraPath(flora.id), { state: { flora } });
+    navigate(floraPath(flora.id), {
+      state: { flora, ...readerNavState(location.pathname, location.search) },
+    });
   };
 
   if (!username) return null;

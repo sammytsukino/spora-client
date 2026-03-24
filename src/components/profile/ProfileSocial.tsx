@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { floraPath } from "@/constants/routes";
+import { readerNavState } from "@/lib/floraViewBack";
 import type { ProfileSocialData, ProfileSocialInteraction } from "@/data/profile-data";
 
 interface ProfileSocialProps {
@@ -26,13 +27,16 @@ export default function ProfileSocial({
   onInteractionClick,
 }: ProfileSocialProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { followersCount, followingCount, recentInteractions } = social;
 
   const handleItemClick = (item: ProfileSocialInteraction) => {
     if (onInteractionClick) {
       onInteractionClick(item);
     } else if (item.floraId && (item.action === "created" || item.action === "updated")) {
-      navigate(floraPath(item.floraId));
+      navigate(floraPath(item.floraId), {
+        state: readerNavState(location.pathname, location.search),
+      });
     }
   };
 

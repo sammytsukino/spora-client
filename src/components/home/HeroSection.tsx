@@ -46,18 +46,6 @@ export default function HeroSection() {
 
       <div className="relative flex-1 w-full md:w-[80vw] min-h-[48vh] md:min-h-0">
         <BubbleBackground className="absolute inset-0 w-full h-full bg-stone-300" colors={bubbleColors} interactive />
-        {/* <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source
-            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
-            type="video/mp4"
-          />
-        </video> */}
 
         <div className="absolute inset-0 p-5 sm:p-6 md:p-0">
           <div className="md:absolute md:right-12 lg:right-16 md:top-20 lg:top-24 md:text-right">

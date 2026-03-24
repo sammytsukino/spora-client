@@ -124,20 +124,6 @@ donde mi cuerpo parece que es la puerta...
       >
         <div className="absolute inset-0 w-full h-full">
           <BubbleBackground className="absolute inset-0 w-full h-full" colors={bubbleColors} interactive />
-          {/* <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source
-                src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
-                type="video/mp4"
-              />
-            </video>
-          </div> */}
         </div>
 
         <div className="relative z-10">

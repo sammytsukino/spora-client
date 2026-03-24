@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import ProfileHeader from "@/components/profile/ProfileHeader";
@@ -26,6 +26,7 @@ import {
 import { getStoredToken, clearSession } from "@/lib/auth";
 import { fetchProfileData, unsignMyAccount } from "@/lib/profileApi";
 import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
+import { readerNavState } from "@/lib/floraViewBack";
 
 export interface ProfileViewProps {
   user?: ProfileUser;
@@ -55,6 +56,7 @@ export default function Profile({
   onInteractionClick,
 }: ProfileViewProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeFilter, setActiveFilter] = useState<string>(profileGalleryFilters[0]);
   const [user, setUser] = useState<ProfileUser>(defaultProfileUser);
   const [userFloras, setUserFloras] = useState<ProfileFloraItem[]>(getDefaultProfileFloras());
@@ -145,7 +147,9 @@ export default function Profile({
     if (onCardClick) {
       onCardClick();
     } else {
-      navigate(floraPath(floraId));
+      navigate(floraPath(floraId), {
+        state: readerNavState(location.pathname, location.search),
+      });
     }
   };
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/layout/FooterAlter";
@@ -12,6 +12,7 @@ import { floraFilters, ITEMS_PER_PAGE, floraImages } from "@/data/flora-data";
 import { listFloras, type ApiFlora } from "@/lib/floras";
 import { getStoredToken } from "@/lib/auth";
 import { floraPath } from "@/constants/routes";
+import { readerNavState } from "@/lib/floraViewBack";
 
 interface UiFlora {
   id: string;
@@ -69,6 +70,7 @@ export default function Greenhouse() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const useFollowingFilter = activeFilter === "Following";
 
@@ -134,7 +136,7 @@ export default function Greenhouse() {
 
   const handleCardClick = (flora: UiFlora) => {
     navigate(floraPath(flora.id), {
-      state: { flora },
+      state: { flora, ...readerNavState(location.pathname, location.search) },
     });
   };
 

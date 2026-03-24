@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FilterTabs from "@/components/shared/FilterTabs";
@@ -20,6 +20,7 @@ import {
   exportFlaggedToPdf,
 } from "@/lib/admin-pdf-export";
 import { ROUTES, floraPath, greenhouseWithAuthorQuery } from "@/constants/routes";
+import { readerNavState } from "@/lib/floraViewBack";
 
 const defaultMetrics = {
   totalUsers: 0,
@@ -36,7 +37,9 @@ const reportStatusFilters = ["Pending", "All"] as const;
 
 export default function AdminPanel() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const floraOpenState = readerNavState(location.pathname, location.search);
   const user = getStoredUser();
   const tabFromUrl = searchParams.get("tab") ?? adminSectionTabs[0];
   const isTabValid = (s: string): s is AdminSection =>
@@ -182,7 +185,9 @@ export default function AdminPanel() {
                   <AdminFlaggedContent
                     items={flagged}
                     title="Reported floras"
-                    onItemClick={(item) => navigate(floraPath(item.contentId))}
+                    onItemClick={(item) =>
+                      navigate(floraPath(item.contentId), { state: floraOpenState })
+                    }
                     onViewContent={(item) =>
                       window.open(floraPath(item.contentId), "_blank")
                     }
@@ -197,10 +202,14 @@ export default function AdminPanel() {
                         ? pendingReports
                         : reports
                     }
-                    onReportClick={(r) => navigate(`/flora/${r.targetId}`)}
+                    onReportClick={(r) =>
+                      navigate(`/flora/${r.targetId}`, { state: floraOpenState })
+                    }
                     onStatusChange={onReportStatusChange}
                     onDownloadReport={(r) => exportReportToPdf(r)}
-                    onViewTarget={(r) => navigate(floraPath(r.targetId))}
+                    onViewTarget={(r) =>
+                      navigate(floraPath(r.targetId), { state: floraOpenState })
+                    }
                     onViewPreview={(r) =>
                       window.open(floraPath(r.targetId), "_blank")
                     }

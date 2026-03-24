@@ -1,17 +1,17 @@
 import type { jsPDF } from "jspdf";
 
-/** SPORA admin PDF layout — hex values mirror `src/index.css` brand tokens. */
+
 export const PDF_BRAND = {
   margin: 18,
   lineHeight: 5.5,
   colors: {
-    /** #262626 */
+    
     primary: [38, 38, 38] as [number, number, number],
-    /** #bbf451 */
+    
     accent: [187, 244, 81] as [number, number, number],
-    /** #ff6b4a */
+    
     accentWarm: [255, 107, 74] as [number, number, number],
-    /** #E9E9E9 */
+    
     surface: [233, 233, 233] as [number, number, number],
     muted: [100, 100, 100] as [number, number, number],
     white: [255, 255, 255] as [number, number, number],
@@ -83,7 +83,7 @@ export function drawKeyValue(
   return y + Math.max(5, lines.length * PDF_BRAND.lineHeight);
 }
 
-/** Horizontal bar: width mm proportional to `ratio` in [0, 1]. */
+
 export function drawRatioBar(
   doc: jsPDF,
   x: number,

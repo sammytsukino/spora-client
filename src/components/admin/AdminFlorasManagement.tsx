@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { ApiFlora } from "@/lib/admin-api";
 import { floraPath } from "@/constants/routes";
+import { readerNavState } from "@/lib/floraViewBack";
 
 interface AdminFlorasManagementProps {
   floras: ApiFlora[];
@@ -28,6 +29,7 @@ export default function AdminFlorasManagement({
   onBatchFloras,
 }: AdminFlorasManagementProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [working, setWorking] = useState(false);
 
@@ -127,9 +129,16 @@ export default function AdminFlorasManagement({
                   ? "border-amber-600 bg-amber-50/50"
                   : "border-spora-primary bg-spora-primary-light hover:bg-spora-primary-lighter"
               }`}
-              onClick={() => navigate(floraPath(flora._id))}
+              onClick={() =>
+                navigate(floraPath(flora._id), {
+                  state: readerNavState(location.pathname, location.search),
+                })
+              }
               onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") && navigate(floraPath(flora._id))
+                (e.key === "Enter" || e.key === " ") &&
+                  navigate(floraPath(flora._id), {
+                    state: readerNavState(location.pathname, location.search),
+                  })
               }
               role="button"
               tabIndex={0}

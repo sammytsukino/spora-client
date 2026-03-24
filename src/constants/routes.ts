@@ -1,4 +1,4 @@
-/** Canonical paths and helpers — use these instead of string literals for navigation. */
+
 export const ROUTES = {
   HOME: "/",
   GARDEN: "/garden",
@@ -56,7 +56,7 @@ export function greenhouseWithAuthorQuery(authorId: string, username?: string): 
   return `${ROUTES.GREENHOUSE}?${params.toString()}`;
 }
 
-/** Full lab with query (e.g. post-unlock). */
+
 export function laboratoryFullFromGrow(): string {
   return `${ROUTES.LABORATORY_FULL}?from=grow`;
 }

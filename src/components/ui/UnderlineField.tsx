@@ -15,9 +15,9 @@ interface UnderlineFieldProps
   as?: "textarea";
   hint?: string;
   hintVisibleOnFocus?: boolean;
-  /** For textarea: min height to match N stacked fields (e.g. 3) */
+  
   minRows?: number;
-  /** For textarea: fill parent height, bottom line aligns with sibling column. No resize. */
+  
   fillParent?: boolean;
 }
 

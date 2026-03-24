@@ -1,5 +1,5 @@
 import { useState, useEffect, type ChangeEvent } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate, useLocation, type Location } from "react-router-dom"
 import MainButton from "@/components/ui/MainButton"
 import UnderlineField from "@/components/ui/UnderlineField"
 import { signIn } from "@/lib/auth"
@@ -29,7 +29,13 @@ export default function SignInForm() {
 
     try {
       await signIn(username, password)
-      navigate(ROUTES.GARDEN)
+      const fromState = (location.state as { from?: Location; message?: string })?.from
+      const fromPath = fromState?.pathname
+      const avoidLoop =
+        !fromPath ||
+        fromPath === ROUTES.SIGN_IN ||
+        fromPath === ROUTES.SIGN_UP
+      navigate(avoidLoop ? ROUTES.GARDEN : fromPath, { replace: true })
     } catch (err: unknown) {
       const res = err as { response?: { data?: { code?: string; error?: string } } }
       if (res?.response?.data?.code === "EMAIL_NOT_VERIFIED") {

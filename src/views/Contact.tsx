@@ -40,20 +40,6 @@ export default function Contact() {
         <div className="fixed inset-0 w-full h-full z-0">
           <BubbleBackground className="absolute inset-0 w-full h-full" colors={bubbleColors} interactive />
         </div>
-        {/* <div className="fixed inset-0 w-full h-full z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source
-              src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
-              type="video/mp4"
-            />
-          </video>
-        </div> */}
 
         <div className="relative z-10 shrink-0 h-16 sm:h-20" aria-hidden />
         <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-4 sm:px-6">

@@ -292,9 +292,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
         </RigidBody>
       </group>
       <mesh ref={band}>
-        {/* @ts-expect-error meshline extended components - R3F types */}
         <meshLineGeometry />
-        {/* @ts-expect-error meshline extended components - R3F types */}
         <meshLineMaterial
           color="white"
           depthTest={false}

@@ -8,9 +8,10 @@ import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
 import { Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
+import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
 
-interface FloraLocationState {
+interface FloraLocationState extends FloraViewLocationState {
   flora?: {
     id: string;
     generation: string;
@@ -72,7 +73,7 @@ export default function FloraReader() {
     "idle" | "loading" | "playing" | "paused" | "error"
   >("idle");
   const [ttsError, setTtsError] = useState<string | null>(null);
-  /** ElevenLabs voice_settings.speed: 1 = normal; lower = slower, higher = faster (server clamps ~0.65–1.35). */
+  
   const [ttsSpeed, setTtsSpeed] = useState(1);
 
   const releaseTtsResources = useCallback(() => {
@@ -449,7 +450,7 @@ export default function FloraReader() {
             <div className="mb-4 flex items-center justify-between gap-4">
               <button
                 type="button"
-                onClick={() => navigate(-1)}
+                onClick={() => navigateFloraViewBack(navigate, location.pathname, state)}
                 className={`font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer ${textColorClass}`}
                 style={textShadowStyle}
               >

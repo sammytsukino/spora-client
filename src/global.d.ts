@@ -23,10 +23,14 @@ declare module "meshline" {
   }
 }
 
-declare namespace JSX {
-  interface IntrinsicElements {
-    meshLineGeometry: Record<string, unknown>;
-    meshLineMaterial: Record<string, unknown>;
+declare global {
+  namespace React {
+    namespace JSX {
+      interface IntrinsicElements {
+        meshLineGeometry: Record<string, unknown>;
+        meshLineMaterial: Record<string, unknown>;
+      }
+    }
   }
 }
 

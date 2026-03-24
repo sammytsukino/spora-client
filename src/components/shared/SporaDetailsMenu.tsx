@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 export type SporaDetailsMenuPlacement = "up" | "down";
 
 export interface SporaDetailsMenuProps {
-  /** Visible title (e.g. "Details", "Reader options") */
+  
   label: ReactNode;
-  /** `up`: panel above summary (e.g. bottom-fixed controls). `down`: panel below summary. */
+  
   placement?: SporaDetailsMenuPlacement;
-  /** Align summary + panel to the end (right in LTR) or start. */
+  
   align?: "end" | "start";
   className?: string;
   summaryClassName?: string;
@@ -19,10 +19,7 @@ export interface SporaDetailsMenuProps {
   "aria-label"?: string;
 }
 
-/**
- * Native details/summary with shared SPORA styling: transparent, no frame,
- * underline on summary when open, panel absolutely positioned.
- */
+
 export default function SporaDetailsMenu({
   label,
   placement = "down",

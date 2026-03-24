@@ -8,8 +8,9 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { extractMorphology } from "@/lib/morphology";
 import { isLabFullAccessible, getStoredToken, getStoredUser } from "@/lib/auth";
 import { createReport, type ReportCategory } from "@/lib/reports-api";
+import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 
-interface FloraLocationState {
+interface FloraLocationState extends FloraViewLocationState {
   flora?: {
     id: string;
     generation: string;
@@ -265,7 +266,7 @@ export default function FloraDetail() {
             <div className="flex items-center gap-4">
               <button
                 type="button"
-                onClick={() => navigate(-1)}
+                onClick={() => navigateFloraViewBack(navigate, location.pathname, state)}
                 className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
               >
                 <span className="text-lg">←</span>
