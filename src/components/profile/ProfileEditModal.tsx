@@ -74,7 +74,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
       aria-labelledby="profile-edit-title"
     >
       <div
-        className="relative w-full max-w-xl border border-spora-primary bg-[#E9E9E9] p-6 font-supply-mono"
+        className="relative w-full max-w-xl border border-spora-primary bg-spora-primary-light p-6 font-supply-mono"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 mb-6">
@@ -97,7 +97,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
               <button
                 type="button"
                 onClick={handleAvatarClick}
-                className="relative group focus:ring-2 focus:ring-[#262626] focus:ring-offset-2"
+                className="relative group focus:ring-2 focus:ring-spora-primary focus:ring-offset-2"
               >
                 <img
                   src={avatarPreview}

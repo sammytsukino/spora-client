@@ -339,6 +339,29 @@ body {
   --color-spora-text-primary: var(--spora-text-primary);
   --color-spora-text-secondary: var(--spora-text-secondary);
   --color-spora-border: var(--spora-border);
+  --color-spora-primary-hover: var(--spora-primary-hover);
+
+  --z-spora-loader: 100;
+  --z-spora-consent: 110;
+  /* Above lab iframe (inline z-index 9998/9999) so first-visit tutorial stays visible and interactive */
+  --z-spora-tutorial: 10020;
+
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-image: 600ms;
+  --ease-spora-out: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  --shadow-spora-modal: 0 4px 24px color-mix(in srgb, var(--spora-primary) 8%, transparent);
+
+  --text-overline-xs: 0.625rem;
+  --text-overline-xs--line-height: 1.25;
+  --text-caption-2xs: 0.5625rem;
+  --text-caption-2xs--line-height: 1.25;
+  --text-caption-sm: 0.6875rem;
+  --text-caption-sm--line-height: 1.4;
+  --text-lead-sm: 0.875rem;
+  --text-lead-sm--line-height: 1.625;
 
   /* Tailwind v4 `font-supply-mono` utility — literal stack (defined before :root tokens). */
   --font-supply-mono: SupplyMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -380,6 +403,7 @@ body {
 
   --spora-primary: #262626;
   --spora-primary-light: #E9E9E9;
+  /* TODO: [DS] lighter vs lightest — product: merge to one muted surface or keep two roles (panel vs subtle fill). */
   --spora-primary-lighter: #e3e3e3;
   --spora-primary-lightest: #e6e6e6;
   /* Gradient / secondary brand anchor (e.g. mobile marquee fade: lime → charcoal) */
@@ -389,6 +413,7 @@ body {
   --spora-text-primary: #262626;
   --spora-text-secondary: #e5e7eb;
   --spora-border: #262626;
+  --spora-primary-hover: color-mix(in srgb, var(--spora-primary) 74%, black);
 
   /* Mono stack: SupplyMono matches @font-face (single token; survives minify). */
   --spora-font-mono-stack: SupplyMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,

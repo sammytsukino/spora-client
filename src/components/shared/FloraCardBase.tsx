@@ -29,7 +29,7 @@ export default function FloraCardBase({
 
   return (
     <article
-      className={`group bg-[var(--spora-primary-light)] flex flex-col relative transition-all duration-200 cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 ${
+      className={`group bg-[var(--spora-primary-light)] flex flex-col relative transition-all duration-fast ease-spora-out cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 ${
         isGarden ? 'active:scale-[0.98]' : ''
       } border border-[var(--spora-primary)]`}
       style={{ aspectRatio: '4/5' }}
@@ -67,7 +67,7 @@ export default function FloraCardBase({
         <img
           src={image}
           alt={title}
-          className="absolute inset-0 w-full h-full object-cover transition-all duration-[600ms] ease-[cubic-bezier(0.165,0.84,0.44,1)] z-10"
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-image ease-spora-out z-10"
           style={{
             filter: 'grayscale(100%) contrast(120%)',
           }}

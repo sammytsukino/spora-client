@@ -155,7 +155,7 @@ export default function SignUpForm() {
           </form>
         </div>
 
-        <p className="text-center mt-6 font-supply-mono text-sm text-[#262626]">
+        <p className="text-center mt-6 font-supply-mono text-sm text-spora-primary">
           Already have an account?{" "}
           <button
             type="button"

@@ -55,9 +55,9 @@ export default function FollowButton({ userId, onFollowChange, className = "" }:
       type="button"
       onClick={handleClick}
       disabled={loading}
-      className={`font-supply-mono text-[11px] uppercase tracking-[0.2em] px-3 py-1.5 border border-[var(--spora-primary)] transition-colors disabled:opacity-50 ${className} ${
+      className={`font-supply-mono text-caption-sm uppercase tracking-[0.2em] px-3 py-1.5 border border-[var(--spora-primary)] transition-colors disabled:opacity-50 ${className} ${
         following
-          ? "bg-[var(--spora-primary)] text-[var(--spora-primary-light)] hover:bg-[#1c1c1c]"
+          ? "bg-[var(--spora-primary)] text-[var(--spora-primary-light)] hover:bg-spora-primary-hover"
           : "bg-transparent text-[var(--spora-primary)] hover:bg-[var(--spora-primary)]/10"
       }`}
     >

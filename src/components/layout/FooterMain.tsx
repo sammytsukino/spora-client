@@ -23,7 +23,7 @@ export default function FooterMain() {
         <img
           src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1769536671/Ready12_xjlgkh.svg"
           alt="Spora logo"
-          className="max-w-[180px] sm:max-w-[400px] lg:max-w-[640px] object-contain"
+          className="max-w-[80px] sm:max-w-[400px] lg:w-full object-contain"
         />
       </div>
 

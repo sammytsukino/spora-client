@@ -10,7 +10,7 @@ interface GreenhouseFloraCardProps {
 export default function GreenhouseFloraCard({ flora, authorUsername, onClick }: GreenhouseFloraCardProps) {
   return (
     <article
-      className="group bg-[var(--spora-primary-light)] p-4 md:p-5 flex flex-col relative transition-colors duration-200 cursor-pointer hover:bg-[var(--spora-accent-secondary)] border border-[var(--spora-primary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
+      className="group bg-[var(--spora-primary-light)] p-4 md:p-5 flex flex-col relative transition-colors duration-fast ease-spora-out cursor-pointer hover:bg-[var(--spora-accent-secondary)] border border-[var(--spora-primary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
       onClick={onClick}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -34,7 +34,7 @@ export default function GreenhouseFloraCard({ flora, authorUsername, onClick }: 
         <img
           src={flora.image}
           alt={flora.title}
-          className="absolute inset-0 w-full h-full object-cover transition-all duration-600 ease-[cubic-bezier(0.165,0.84,0.44,1)] z-10"
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-image ease-spora-out z-10"
           style={{
             filter: "grayscale(100%) contrast(120%)",
           }}

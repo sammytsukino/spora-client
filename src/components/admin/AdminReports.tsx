@@ -22,7 +22,7 @@ const statusStyles: Record<ReportStatus, string> = {
   reviewing: "bg-sky-100 border-sky-700",
   reviewed: "bg-sky-100 border-sky-700",
   resolved: "bg-lime-300 border-lime-300",
-  dismissed: "bg-stone-200 border-[#262626]",
+  dismissed: "bg-stone-200 border-spora-primary",
 };
 
 function formatDate(iso: string) {
@@ -143,11 +143,11 @@ export default function AdminReports({
 
   if (reports.length === 0) {
     return (
-      <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+      <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
           Reports
         </h2>
-        <p className="font-supply-mono text-[11px] opacity-80">
+        <p className="font-supply-mono text-caption-sm opacity-80">
           No reports found.
         </p>
       </section>
@@ -155,17 +155,17 @@ export default function AdminReports({
   }
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-4">
           <h2 className="font-supply-mono font-bold text-sm uppercase">
             Reports
           </h2>
-          <span className="font-supply-mono text-[11px] opacity-80">
+          <span className="font-supply-mono text-caption-sm opacity-80">
             {reports.length} report{reports.length !== 1 ? "s" : ""}
           </span>
           {onBatchReports && pendingReports.length > 0 && (
-            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-[11px]">
+            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-caption-sm">
               <input
                 type="checkbox"
                 checked={
@@ -184,21 +184,21 @@ export default function AdminReports({
             <button
               type="button"
               onClick={() => runBatch("resolve")}
-              className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Resolve ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => runBatch("dismiss")}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Dismiss ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Clear selection
             </button>
@@ -209,7 +209,7 @@ export default function AdminReports({
         {reports.map((report) => (
           <li key={report.id}>
             <article
-              className={`border bg-[#E9E9E9] p-4 font-supply-mono text-[11px] transition-colors ${selectedIds.has(report.id) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
+              className={`border bg-spora-primary-light p-4 font-supply-mono text-caption-sm transition-colors ${selectedIds.has(report.id) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
               onClick={() => onReportClick?.(report)}
               onKeyDown={(e) =>
                 onReportClick &&
@@ -241,7 +241,7 @@ export default function AdminReports({
                     {report.status}
                   </span>
                 </div>
-                <span className="opacity-70 text-[10px]">
+                <span className="opacity-70 text-overline-xs">
                   {formatDate(report.createdAt)}
                 </span>
               </div>
@@ -267,7 +267,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onDownloadReport(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
@@ -277,7 +277,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onViewTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                   >
                     <ExternalLink className="size-3.5" aria-hidden />
                     View target
@@ -286,7 +286,7 @@ export default function AdminReports({
                 <button
                   type="button"
                   onClick={() => onViewPreview?.(report)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                 >
                   <Eye className="size-3.5" aria-hidden />
                   Preview
@@ -295,7 +295,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => handleHideFlora(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
                   >
                     Hide flora
                   </button>
@@ -304,7 +304,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => handleRemoveTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
                   >
                     <Trash2 className="size-3.5" aria-hidden />
                     Remove content
@@ -313,7 +313,7 @@ export default function AdminReports({
                 <button
                   type="button"
                   onClick={() => onContactTarget?.(report)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                 >
                   <Mail className="size-3.5" aria-hidden />
                   Contact
@@ -322,7 +322,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onSuspendTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
                   >
                     <UserX className="size-3.5" aria-hidden />
                     Suspend user
@@ -333,14 +333,14 @@ export default function AdminReports({
                     <button
                       type="button"
                       onClick={() => handleResolve(report)}
-                      className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
+                      className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 hover:text-white text-overline-xs uppercase"
                     >
                       Resolve
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDismiss(report)}
-                      className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                      className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                     >
                       Dismiss
                     </button>

@@ -9,7 +9,7 @@ export default function FooterAlter() {
   return (
     <footer className="relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-spora-primary overflow-hidden">
       <div className="relative z-10 flex flex-col justify-between">
-        <div className="mt-8 flex min-w-0 items-end justify-between gap-3">
+        <div className="mt-8 flex min-w-0 w-full items-end gap-3">
           <div className="flex shrink-0 items-end">
             <CyclingLogo
               logos={[
@@ -26,9 +26,14 @@ export default function FooterAlter() {
             />
           </div>
 
-          <div className="hidden lg:block w-2/4 shrink-0 border-t border-spora-primary mb-10" />
+          <div
+            className="hidden lg:flex flex-1 min-w-0 items-end mb-10 px-2 md:px-4"
+            aria-hidden
+          >
+            <div className="h-px w-full min-w-0 bg-spora-primary" />
+          </div>
 
-          <div className="flex min-w-0 flex-1 justify-end">
+          <div className="flex min-w-0 shrink-0 justify-end">
             <div className="min-w-0 text-[10px] sm:text-xs font-supply-mono">
               <div className="grid grid-cols-1 gap-y-1 justify-items-end text-right text-sm sm:grid-cols-2 sm:gap-x-8 sm:gap-y-1 sm:text-lg">
                 <button

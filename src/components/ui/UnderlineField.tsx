@@ -1,9 +1,9 @@
 import React from "react";
 
 const inputBaseClass =
-  "w-full bg-transparent border-none py-[6px] min-h-[28px] text-sm text-[#262626] outline-none placeholder:text-[#262626]/50 font-supply-mono";
+  "w-full bg-transparent border-none py-[6px] min-h-[28px] text-sm text-spora-primary outline-none placeholder:text-spora-primary/50 font-supply-mono";
 
-const underlineClass = "mt-1 h-[1px] w-full shrink-0 bg-[#262626]/40";
+const underlineClass = "mt-1 h-[1px] w-full shrink-0 bg-spora-primary/40";
 
 interface UnderlineFieldProps
   extends Omit<
@@ -43,7 +43,7 @@ export default function UnderlineField({
     >
       <label
         htmlFor={inputId}
-        className="mb-2 block text-[13px] font-supply-mono font-semibold text-[#262626]"
+        className="mb-2 block text-[13px] font-supply-mono font-semibold text-spora-primary"
       >
         {label}
       </label>
@@ -70,7 +70,7 @@ export default function UnderlineField({
       <div className={underlineClass} />
       <div
         className={
-          "mt-2 min-h-[2rem] text-xs text-[#262626] font-supply-mono leading-relaxed " +
+          "mt-2 min-h-[2rem] text-xs text-spora-primary font-supply-mono leading-relaxed " +
           (hint
             ? hintVisibleOnFocus
               ? "opacity-0 transition-opacity peer-focus:opacity-100"

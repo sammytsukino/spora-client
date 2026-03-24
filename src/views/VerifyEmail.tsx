@@ -47,7 +47,7 @@ export default function VerifyEmail() {
   }, [searchParams, navigate, setSearchParams]);
 
   return (
-    <div className="min-h-screen bg-[#E9E9E9] flex flex-col">
+    <div className="min-h-screen bg-spora-primary-light flex flex-col">
       <TransparentNavbar showScrollBackground />
       <main className="flex-1 flex items-center justify-center px-6 pt-24 pb-16">
         <div className="max-w-md w-full border border-spora-primary bg-spora-primary-light p-8 text-center">

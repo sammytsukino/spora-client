@@ -4,7 +4,7 @@ import PageTitle from "@/components/ui/PageTitle";
 
 export default function Licensing() {
   return (
-    <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-[#E9E9E9]">
+    <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
 
       <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16">
@@ -15,7 +15,7 @@ export default function Licensing() {
           className="mb-12"
         />
 
-        <div className="max-w-2xl space-y-6 font-supply-mono text-sm text-[#262626]">
+        <div className="max-w-2xl space-y-6 font-supply-mono text-sm text-spora-primary">
           <p>
             Content created on SPORA may be subject to specific licensing terms.
             Please refer to our full terms of service and licensing documentation

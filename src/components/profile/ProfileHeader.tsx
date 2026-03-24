@@ -33,7 +33,7 @@ export default function ProfileHeader({
     followersCount !== undefined && followingCount !== undefined;
 
   return (
-    <header className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+    <header className="border border-[var(--spora-primary)] bg-spora-primary-light p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
       <img
         src={avatar}
         alt={fullName}
@@ -41,7 +41,7 @@ export default function ProfileHeader({
       />
       <div className="flex-1 min-w-0">
         <p className="font-supply-mono text-lg font-bold">{username}</p>
-        <p className="font-supply-mono text-sm text-[#262626]/80">{fullName}</p>
+        <p className="font-supply-mono text-sm text-spora-primary/80">{fullName}</p>
         <p className="font-supply-mono text-sm italic mt-1">{bio}</p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 font-supply-mono text-[11px] opacity-90">
           <span>

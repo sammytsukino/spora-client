@@ -32,8 +32,8 @@ export default function DeclarativeSection({
     <div
       className={
         imageSrc
-          ? 'relative w-full overflow-visible bg-[#262626] min-h-0 sm:min-h-[52vh] lg:min-h-[58vh]'
-          : 'relative w-full overflow-visible bg-[#262626] min-h-0 sm:min-h-[65vh] lg:min-h-[80vh]'
+          ? 'relative w-full overflow-visible bg-spora-primary min-h-0 sm:min-h-[52vh] lg:min-h-[58vh]'
+          : 'relative w-full overflow-visible bg-spora-primary min-h-0 sm:min-h-[65vh] lg:min-h-[80vh]'
       }
     >
 

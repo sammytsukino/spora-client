@@ -53,7 +53,7 @@ export default function ProfileSocial({
           <button
             type="button"
             onClick={onFollowersClick}
-            className="font-supply-mono text-sm border border-[#262626] px-4 py-2 hover:bg-[#262626] hover:text-lime-300 transition-colors"
+            className="font-supply-mono text-sm border border-spora-primary px-4 py-2 hover:bg-spora-primary hover:text-lime-300 transition-colors"
           >
             <span className="font-bold">{followersCount}</span>
             <span className="ml-2 opacity-90">followers</span>
@@ -61,7 +61,7 @@ export default function ProfileSocial({
           <button
             type="button"
             onClick={onFollowingClick}
-            className="font-supply-mono text-sm border border-[#262626] px-4 py-2 hover:bg-[#262626] hover:text-lime-300 transition-colors"
+            className="font-supply-mono text-sm border border-spora-primary px-4 py-2 hover:bg-spora-primary hover:text-lime-300 transition-colors"
           >
             <span className="font-bold">{followingCount}</span>
             <span className="ml-2 opacity-90">following</span>

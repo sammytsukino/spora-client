@@ -21,7 +21,7 @@ interface AdminUserManagementProps {
 }
 
 const roleStyles: Record<UserRole, string> = {
-  user: "border-[#262626] bg-[#E9E9E9]",
+  user: "border-spora-primary bg-spora-primary-light",
   creator: "border-lime-300 bg-lime-300",
   cultivator: "border-lime-300 bg-lime-300",
   moderator: "border-sky-600 bg-sky-100",
@@ -151,11 +151,11 @@ export default function AdminUserManagement({
 
   if (users.length === 0) {
     return (
-      <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+      <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
           User management
         </h2>
-        <p className="font-supply-mono text-[11px] opacity-80">
+        <p className="font-supply-mono text-caption-sm opacity-80">
           No users found.
         </p>
       </section>
@@ -163,14 +163,14 @@ export default function AdminUserManagement({
   }
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6 overflow-x-auto">
+    <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6 overflow-x-auto">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-4">
           <h2 className="font-supply-mono font-bold text-sm uppercase">
             User management
           </h2>
           {onBatchUsers && (
-            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-[11px]">
+            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-caption-sm">
               <input
                 type="checkbox"
                 checked={
@@ -189,28 +189,28 @@ export default function AdminUserManagement({
             <button
               type="button"
               onClick={() => runBatch("suspend")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono"
             >
               Suspend ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => runBatch("ban")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono"
             >
               Ban ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => runBatch("activate")}
-              className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Activate ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Clear
             </button>
@@ -220,7 +220,7 @@ export default function AdminUserManagement({
           <button
             type="button"
             onClick={onExportUsers}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#262626] hover:bg-[#262626] hover:text-lime-300 font-supply-mono text-[10px] uppercase"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-lime-300 font-supply-mono text-overline-xs uppercase"
           >
             <Download className="size-3.5" aria-hidden />
             Export all users
@@ -228,10 +228,10 @@ export default function AdminUserManagement({
         )}
         </div>
       </div>
-      <div className="border border-[var(--spora-primary)] bg-[#E9E9E9] min-w-[720px]">
-        <table className="w-full font-supply-mono text-[11px]">
+      <div className="border border-[var(--spora-primary)] bg-spora-primary-light min-w-[720px]">
+        <table className="w-full font-supply-mono text-caption-sm">
           <thead>
-            <tr className="border-b border-[var(--spora-primary)] bg-[#E9E9E9]">
+            <tr className="border-b border-[var(--spora-primary)] bg-spora-primary-light">
               <th className="text-left p-3 uppercase w-8">
                 {onBatchUsers ? (
                   <span className="sr-only">Select</span>
@@ -299,7 +299,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => onUserClick(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                       >
                         <User className="size-3" aria-hidden />
                         View
@@ -309,7 +309,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => onExportUser(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                       >
                         <Download className="size-3" aria-hidden />
                         Export
@@ -319,7 +319,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleUnsign(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
                         title="Withdraw signature: anonymize author on all Floras by this user while preserving content and Lineage"
                       >
                         <UserMinus className="size-3" aria-hidden />
@@ -330,7 +330,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleSuspend(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
                       >
                         <UserX className="size-3" aria-hidden />
                         Suspend
@@ -340,7 +340,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleBan(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
                       >
                         <Ban className="size-3" aria-hidden />
                         Ban
@@ -350,7 +350,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleActivate(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-lime-300 text-spora-primary hover:bg-lime-300 hover:text-white text-overline-xs uppercase"
                       >
                         <CheckCircle className="size-3" aria-hidden />
                         Activate
@@ -365,7 +365,7 @@ export default function AdminUserManagement({
                                 key={role}
                                 type="button"
                                 onClick={() => handleRoleChange(user.id, role)}
-                                className="px-2 py-0.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                                className="px-2 py-0.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                               >
                                 {role}
                               </button>

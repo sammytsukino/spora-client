@@ -59,7 +59,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-9999 w-[calc(100%-2rem)] max-w-sm"
+      className="fixed bottom-4 right-4 z-spora-consent w-[calc(100%-2rem)] max-w-sm"
       role="dialog"
       aria-modal="false"
       aria-labelledby="consent-title"

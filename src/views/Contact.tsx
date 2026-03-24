@@ -43,13 +43,13 @@ export default function Contact() {
 
         <div className="relative z-10 shrink-0 h-16 sm:h-20" aria-hidden />
         <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-4 sm:px-6">
-          <div className="w-full max-w-[1000px] px-8 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14 bg-[#E9E9E9] border border-spora-primary">
+          <div className="w-full max-w-[1000px] px-8 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14 bg-spora-primary-light border border-spora-primary">
             <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
               <div className="min-w-0 sm:min-w-[200px] shrink-0">
-                <h1 className="text-2xl sm:text-3xl text-[#262626] font-bold leading-tight mb-2 font-bizud-mincho-bold">
+                <h1 className="text-2xl sm:text-3xl text-spora-primary font-bold leading-tight mb-2 font-bizud-mincho-bold">
                   Get in touch
                 </h1>
-                <p className="text-[14px] font-supply-mono leading-relaxed text-[#262626]">
+                <p className="text-lead-sm font-supply-mono leading-relaxed text-spora-primary">
                   Questions, feedback,
                   <br />
                   or partnership ideas?
@@ -90,14 +90,14 @@ export default function Contact() {
                     />
                   </div>
                   <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
-                    <p className="text-sm font-supply-mono text-[#262626]">
+                    <p className="text-sm font-supply-mono text-spora-primary">
                       We typically respond within 2–3 business days.
                     </p>
                     <MainButton
                       type="submit"
                       variant="compact"
                       size="sm"
-                      className="w-full sm:w-auto border-[#262626] text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
+                      className="w-full sm:w-auto border-spora-primary text-spora-primary hover:bg-spora-primary hover:text-spora-primary-light"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "SENDING..." : "SEND"}

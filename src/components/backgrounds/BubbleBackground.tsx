@@ -107,7 +107,7 @@ function BubbleBackground({
       ref={containerRef}
       data-slot="bubble-background"
       className={cn(
-        'relative size-full overflow-hidden bg-[#E9E9E9]',
+        'relative size-full overflow-hidden bg-spora-primary-light',
         className,
       )}
       {...props}

@@ -90,7 +90,7 @@ export default function AdminFlorasManagement({
               type="button"
               disabled={working}
               onClick={() => runBatch("hide")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase font-supply-mono disabled:opacity-50"
+              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Hide ({selectedIds.size})
             </button>
@@ -98,7 +98,7 @@ export default function AdminFlorasManagement({
               type="button"
               disabled={working}
               onClick={() => runBatch("unhide")}
-              className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 text-[10px] uppercase font-supply-mono disabled:opacity-50"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Unhide ({selectedIds.size})
             </button>
@@ -106,14 +106,14 @@ export default function AdminFlorasManagement({
               type="button"
               disabled={working}
               onClick={() => runBatch("delete")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase font-supply-mono disabled:opacity-50"
+              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Delete ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-spora-accent-secondary text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-spora-accent-secondary text-overline-xs uppercase font-supply-mono"
             >
               Clear selection
             </button>
@@ -166,7 +166,7 @@ export default function AdminFlorasManagement({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-[10px] text-[#888] font-supply-mono">
+                    <div className="w-full h-full flex items-center justify-center text-overline-xs text-[#888] font-supply-mono">
                       —
                     </div>
                   )}
@@ -177,7 +177,7 @@ export default function AdminFlorasManagement({
                   </span>
                   <span className="uppercase opacity-80">{flora.status ?? "—"}</span>
                   {flora.isHidden && (
-                    <span className="px-2 py-0.5 border border-amber-600 bg-amber-100 text-amber-700 uppercase text-[10px]">
+                    <span className="px-2 py-0.5 border border-amber-600 bg-amber-100 text-amber-700 uppercase text-overline-xs">
                       Hidden
                     </span>
                   )}
@@ -185,7 +185,7 @@ export default function AdminFlorasManagement({
                     {flora.authorUsername ?? "@—"}
                   </span>
                 </div>
-                <span className="opacity-70 text-[10px] shrink-0 ml-auto">
+                <span className="opacity-70 text-overline-xs shrink-0 ml-auto">
                   {formatDate(flora.createdAt)}
                 </span>
               </div>

@@ -41,7 +41,7 @@ export default function Installation({ fullLab = false }: InstallationProps) {
 
   return (
     <>
-      {canReveal && showTutorial && (
+      {showTutorial && (
         <LabTutorialOverlay onClose={() => setShowTutorial(false)} />
       )}
       <div
@@ -51,6 +51,7 @@ export default function Installation({ fullLab = false }: InstallationProps) {
           position: "fixed",
           inset: 0,
           zIndex: showTutorial ? 9998 : 9999,
+          pointerEvents: showTutorial ? "none" : "auto",
         }}
       >
         <iframe
@@ -63,10 +64,10 @@ export default function Installation({ fullLab = false }: InstallationProps) {
       </div>
       {!canReveal && (
         <div
-          className="fixed inset-0 z-9999 flex items-center justify-center bg-[#E9E9E9]"
+          className="fixed inset-0 z-spora-loader flex items-center justify-center bg-spora-primary-light"
           aria-hidden
         >
-          <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#262626]">
+          <p className="font-supply-mono text-overline-xs sm:text-xs uppercase tracking-[0.25em] text-spora-primary">
             Loading...
           </p>
         </div>

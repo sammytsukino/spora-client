@@ -17,7 +17,7 @@ export default function ProfileMetrics({ metrics }: ProfileMetricsProps) {
 
   return (
     <section
-      className="border border-[var(--spora-primary)] bg-[#E9E9E9] px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2"
+      className="border border-[var(--spora-primary)] bg-spora-primary-light px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2"
       aria-label="Overview metrics"
     >
       {entries.map(({ key, value, label }) => (

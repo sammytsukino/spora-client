@@ -21,7 +21,7 @@ interface AdminFlaggedContentProps {
 const statusStyles: Record<FlaggedStatus, string> = {
   pending: "bg-amber-200 border-amber-700",
   approved: "bg-lime-300 border-lime-300",
-  removed: "bg-stone-200 border-[#262626]",
+  removed: "bg-stone-200 border-spora-primary",
 };
 
 function formatDate(iso: string) {
@@ -98,11 +98,11 @@ export default function AdminFlaggedContent({
 
   if (items.length === 0) {
     return (
-      <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+      <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
         <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
           {title}
         </h2>
-        <p className="font-supply-mono text-[11px] opacity-80">
+        <p className="font-supply-mono text-caption-sm opacity-80">
           No flagged content.
         </p>
       </section>
@@ -110,17 +110,17 @@ export default function AdminFlaggedContent({
   }
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-4">
           <h2 className="font-supply-mono font-bold text-sm uppercase">
             {title}
           </h2>
-          <span className="font-supply-mono text-[11px] opacity-80">
+          <span className="font-supply-mono text-caption-sm opacity-80">
             {items.length} item{items.length !== 1 ? "s" : ""}
           </span>
           {onBatchFloras && floraItems.length > 0 && (
-            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-[11px]">
+            <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-caption-sm">
               <input
                 type="checkbox"
                 checked={
@@ -139,28 +139,28 @@ export default function AdminFlaggedContent({
             <button
               type="button"
               onClick={() => runBatch("hide")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono"
             >
               Hide ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => runBatch("unhide")}
-              className="px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Unhide ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => runBatch("delete")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono"
             >
               Delete ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
             >
               Clear selection
             </button>
@@ -171,7 +171,7 @@ export default function AdminFlaggedContent({
         {items.map((item) => (
           <li key={item.id}>
             <article
-              className={`border bg-[#E9E9E9] p-4 font-supply-mono text-[11px] transition-colors ${selectedIds.has(item.contentId) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
+              className={`border bg-spora-primary-light p-4 font-supply-mono text-caption-sm transition-colors ${selectedIds.has(item.contentId) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
               onClick={() => onItemClick?.(item)}
               onKeyDown={(e) =>
                 onItemClick &&
@@ -204,7 +204,7 @@ export default function AdminFlaggedContent({
                     {item.status}
                   </span>
                 </div>
-                <span className="opacity-70 text-[10px]">
+                <span className="opacity-70 text-overline-xs">
                   {formatDate(item.flaggedAt)}
                 </span>
               </div>
@@ -228,7 +228,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onViewContent(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                   >
                     <ExternalLink className="size-3.5" aria-hidden />
                     View content
@@ -238,7 +238,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onDownload(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-[#262626] hover:text-lime-300 text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
@@ -248,7 +248,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => handleHideFlora(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
                   >
                     Hide flora
                   </button>
@@ -257,7 +257,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onSuspendAuthor(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
                   >
                     <UserX className="size-3.5" aria-hidden />
                     Suspend author
@@ -279,7 +279,7 @@ export default function AdminFlaggedContent({
                           },
                         })
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-lime-300 text-[#262626] hover:bg-lime-300 hover:text-white text-[10px] uppercase"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 hover:text-white text-overline-xs uppercase"
                     >
                       <Check className="size-3.5" aria-hidden />
                       Approve
@@ -298,7 +298,7 @@ export default function AdminFlaggedContent({
                           },
                         })
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-[10px] uppercase"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
                     >
                       <Trash2 className="size-3.5" aria-hidden />
                       Remove content

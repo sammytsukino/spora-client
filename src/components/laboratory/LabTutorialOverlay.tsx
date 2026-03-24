@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 
 const LAB_TUTORIAL_KEY = "spora_lab_tutorial_done";
 
@@ -42,10 +43,19 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
 
-  return (
-    <div className="fixed inset-0 z-[10001] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+  const overlay = (
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      style={{ zIndex: 999_999 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lab-tutorial-title"
+    >
       <div className="bg-[var(--spora-primary-light)] border-2 border-[var(--spora-primary)] max-w-lg w-full p-6 shadow-lg">
-        <h2 className="font-bizud-mincho-bold text-xl mb-2 text-[var(--spora-primary)]">
+        <h2
+          id="lab-tutorial-title"
+          className="font-bizud-mincho-bold text-xl mb-2 text-[var(--spora-primary)]"
+        >
           {current.title}
         </h2>
         <p className="font-supply-mono text-sm text-[var(--spora-primary)] mb-6 leading-relaxed">
@@ -96,4 +106,7 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
       </div>
     </div>
   );
+
+  if (typeof document === "undefined") return null;
+  return createPortal(overlay, document.body);
 }

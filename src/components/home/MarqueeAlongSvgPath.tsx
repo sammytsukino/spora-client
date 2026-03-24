@@ -485,7 +485,7 @@ export default function MarqueeAlongSvgPath({
           : "min-h-[36vh] sm:min-h-[50vh] md:min-h-[80vh]"
       )}
     >
-      <div className="absolute inset-0 w-full h-full md:hidden bg-linear-to-b from-spora-accent-secondary to-spora-secondary" />
+      <div className="absolute inset-0 w-full h-full md:hidden bg-linear-to-b from-spora-accent-secondary to-spora-primary-light" />
       <MarqueeBackground
         className={cn(
           "absolute inset-0 w-full h-full overflow-hidden",

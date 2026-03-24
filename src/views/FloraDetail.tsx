@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Flag, X } from "lucide-react";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
@@ -216,6 +216,20 @@ export default function FloraDetail() {
     ? derived.lineageItems
     : [{ handle: "@Anonymous" }];
 
+  const lineageRows: typeof lineageItems[] = [];
+  for (let i = 0; i < lineageItems.length; i += 2) {
+    lineageRows.push(lineageItems.slice(i, i + 2));
+  }
+
+  const lineageDash = (
+    <span
+      className="flex w-4 sm:w-6 shrink-0 items-center justify-center self-stretch"
+      aria-hidden
+    >
+      <span className="block h-px w-4 sm:w-6 bg-spora-primary" />
+    </span>
+  );
+
   const currentUser = getStoredUser();
   const authorId =
     flora?.authorId ??
@@ -230,7 +244,7 @@ export default function FloraDetail() {
 
   if (isLoading && !derived) {
     return (
-      <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+      <div className="w-full overflow-x-hidden bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
           <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
@@ -244,7 +258,7 @@ export default function FloraDetail() {
 
   if (error || !derived) {
     return (
-      <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+      <div className="w-full overflow-x-hidden bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
           <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
@@ -257,7 +271,7 @@ export default function FloraDetail() {
   }
 
   return (
-    <div className="w-full overflow-x-hidden bg-[#E9E9E9]">
+    <div className="w-full overflow-x-hidden bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
 
       <main className="pt-20 pb-12 md:pb-16 px-6 md:px-12 lg:px-16">
@@ -267,14 +281,14 @@ export default function FloraDetail() {
               <button
                 type="button"
                 onClick={() => navigateFloraViewBack(navigate, location.pathname, state)}
-                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
+                className="font-supply-mono text-caption-sm sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 hover:underline cursor-pointer"
               >
                 <span className="text-lg">←</span>
                 <span>Back</span>
               </button>
               <Link
                 to={`/flora/${encodeURIComponent(derived.id)}`}
-                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase hover:underline"
+                className="font-supply-mono text-caption-sm sm:text-xs tracking-[0.25em] uppercase hover:underline"
               >
                 Read
               </Link>
@@ -290,7 +304,7 @@ export default function FloraDetail() {
                   setReportSuccess(false);
                   setReportError(null);
                 }}
-                className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 px-3 py-1.5 border border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] transition-colors cursor-pointer"
+                className="font-supply-mono text-caption-sm sm:text-xs tracking-[0.25em] uppercase flex items-center gap-2 px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-spora-primary-light transition-colors cursor-pointer"
               >
                 <Flag className="size-3.5" aria-hidden />
                 Report
@@ -298,11 +312,11 @@ export default function FloraDetail() {
             )}
           </div>
 
-          <div className="bg-[#262626] text-[#E9E9E9] border border-[#262626] px-6 py-4 md:py-5">
+          <div className="bg-spora-primary text-spora-primary-light border border-spora-primary px-6 py-4 md:py-5">
             <h1 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-none mb-2">
               {derived.title}
             </h1>
-            <p className="font-supply-mono text-[11px] sm:text-xs">
+            <p className="font-supply-mono text-caption-sm sm:text-xs">
               by{" "}
               <span className="font-semibold">
                 {derived.author}
@@ -312,10 +326,10 @@ export default function FloraDetail() {
           </div>
         </section>
 
-        <section className="border border-[var(--spora-primary)] bg-[#E9E9E9]">
+        <section className="border border-[var(--spora-primary)] bg-spora-primary-light">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(360px,520px)_1fr] lg:items-stretch">
             <section className="border border-[var(--spora-primary)] relative order-2 lg:order-1 flex flex-col min-h-0">
-              <div className="w-full flex-1 min-h-[240px] lg:min-h-0 bg-[#E9E9E9] overflow-hidden">
+              <div className="w-full flex-1 min-h-[240px] lg:min-h-0 bg-spora-primary-light overflow-hidden">
                 <img
                   src={derived.image}
                   alt={derived.title}
@@ -331,12 +345,12 @@ export default function FloraDetail() {
                   const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
                   window.open(url, "_blank", "noopener,noreferrer");
                 }}
-                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-[#262626] text-[#E9E9E9] font-supply-mono py-3 px-4 border border-[#262626] hover:bg-[var(--spora-accent-secondary)] hover:text-[#262626] hover:border-[var(--spora-accent-secondary)] transition-colors cursor-pointer"
+                className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-spora-primary text-spora-primary-light font-supply-mono py-3 px-4 border border-spora-primary hover:bg-[var(--spora-accent-secondary)] hover:text-spora-primary hover:border-[var(--spora-accent-secondary)] transition-colors cursor-pointer"
               >
                 <span className="text-xs sm:text-sm uppercase tracking-widest">
                   Open in Laboratory
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold leading-tight text-center opacity-90">
+                <span className="text-caption-2xs sm:text-overline-xs font-bold leading-tight text-center opacity-90">
                   Full bloom in the Laboratory.
                   {derived.status === "blossoming" && " Cuttings allowed."}
                 </span>
@@ -344,73 +358,85 @@ export default function FloraDetail() {
             </section>
 
             <article className="border border-[var(--spora-primary)] p-4 md:p-6 flex flex-col gap-4 order-1 lg:order-2 ">
-              <div className="bg-[#262626] text-[#E9E9E9] px-4 py-2 border border-[#262626] flex items-center justify-between font-supply-mono text-[11px] uppercase tracking-[0.25em] ">
+              <div className="bg-spora-primary text-spora-primary-light px-4 py-2 border border-spora-primary flex items-center justify-between font-supply-mono text-caption-sm uppercase tracking-[0.25em] ">
                 <span>FLORA</span>
-                <span className="text-[9px] opacity-80">
+                <span className="text-caption-2xs opacity-80">
                   SEED {derived.seed}
                 </span>
               </div>
 
-              <div className="flora-text-scroll border border-[var(--spora-primary)] bg-[#E9E9E9] p-5 md:p-6 font-bizud-mincho text-[13px] sm:text-sm leading-loose tracking-wide whitespace-pre-wrap max-h-[70vh] overflow-y-auto">
+              <div className="flora-text-scroll border border-[var(--spora-primary)] bg-spora-primary-light p-5 md:p-6 font-bizud-mincho text-[13px] sm:text-sm leading-loose tracking-wide whitespace-pre-wrap max-h-[70vh] overflow-y-auto">
                 {baseText}
               </div>
             </article>
           </div>
         </section>
 
-        <section className="mt-6 border border-[var(--spora-primary)] bg-[#E9E9E9]">
+        <section className="mt-6 border border-[var(--spora-primary)] bg-spora-primary-light">
           <div className="border border-[var(--spora-primary)] p-5 md:p-6">
-            <div className="font-supply-mono text-[10px] uppercase tracking-[0.2em] text-[#262626]/80 mb-3">
+            <div className="font-supply-mono text-overline-xs uppercase tracking-[0.2em] text-spora-primary/80 mb-3">
               Lineage
             </div>
 
-            <div className="flex flex-wrap items-center gap-0 font-supply-mono text-[11px] sm:text-xs">
-              {lineageItems.map((item, i) => (
-                <span key={`${item.handle}-${i}`} className="flex items-center">
-                  {item.floraId ? (
-                    <Link
-                      to={`/flora/${encodeURIComponent(item.floraId)}`}
-                      className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#E9E9E9] hover:text-[#262626] transition-colors cursor-pointer no-underline"
-                      title="View flora"
-                    >
-                      {item.handle}
-                    </Link>
-                  ) : (() => {
-                    const username = item.handle.replace(/^@+/, "");
-                    if (username && username !== "Anonymous" && !username.startsWith("[forbidden_author]")) {
-                      return (
-                        <Link
-                          to={`/profile/${encodeURIComponent(username)}`}
-                          className="px-3 py-1 border border-[#262626] bg-[#262626]/20 text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] transition-colors cursor-pointer no-underline"
-                          title="View profile"
-                        >
-                          {item.handle}
-                        </Link>
-                      );
-                    }
+            <div className="flex flex-col gap-y-2 min-w-0 font-supply-mono text-caption-sm sm:text-xs">
+              {lineageRows.map((rowItems, rowIdx) => (
+                <div
+                  key={`lineage-row-${rowIdx}`}
+                  className="flex flex-nowrap items-stretch gap-x-0.5 min-w-0 max-w-full"
+                >
+                  {rowIdx > 0 ? lineageDash : null}
+                  {rowItems.map((item, j) => {
+                    const i = rowIdx * 2 + j;
                     return (
-                      <span className="px-3 py-1 border border-[#262626] bg-[#262626] text-[#E9E9E9]">
-                        {item.handle}
-                      </span>
+                      <Fragment key={`${item.handle}-${i}`}>
+                        <span className="flex min-w-0 shrink items-center">
+                          {item.floraId ? (
+                            <Link
+                              to={`/flora/${encodeURIComponent(item.floraId)}`}
+                              className="max-w-full truncate px-3 py-1 border border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary-light hover:text-spora-primary transition-colors cursor-pointer no-underline"
+                              title="View flora"
+                            >
+                              {item.handle}
+                            </Link>
+                          ) : (() => {
+                            const username = item.handle.replace(/^@+/, "");
+                            if (
+                              username &&
+                              username !== "Anonymous" &&
+                              !username.startsWith("[forbidden_author]")
+                            ) {
+                              return (
+                                <Link
+                                  to={`/profile/${encodeURIComponent(username)}`}
+                                  className="max-w-full truncate px-3 py-1 border border-spora-primary bg-spora-primary/20 text-spora-primary hover:bg-spora-primary hover:text-spora-primary-light transition-colors cursor-pointer no-underline"
+                                  title="View profile"
+                                >
+                                  {item.handle}
+                                </Link>
+                              );
+                            }
+                            return (
+                              <span className="max-w-full truncate px-3 py-1 border border-spora-primary bg-spora-primary text-spora-primary-light">
+                                {item.handle}
+                              </span>
+                            );
+                          })()}
+                        </span>
+                        {j < rowItems.length - 1 ? lineageDash : null}
+                      </Fragment>
                     );
-                  })()}
-                  {i < lineageItems.length - 1 && (
-                    <span
-                      className="w-4 sm:w-6 h-px bg-[#262626] mx-1 shrink-0"
-                      aria-hidden
-                    />
-                  )}
-                </span>
+                  })}
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="mt-6 border border-[var(--spora-primary)] bg-[#E9E9E9]">
+        <section className="mt-6 border border-[var(--spora-primary)] bg-spora-primary-light">
           <button
             type="button"
             onClick={() => setShowAnalysis((v) => !v)}
-            className="w-full text-left border border-[var(--spora-primary)] px-4 py-2 font-supply-mono text-[10px] uppercase tracking-widest text-[#262626]/70 hover:text-[#262626] hover:bg-[#E3E3E3] transition-colors"
+            className="w-full text-left border border-[var(--spora-primary)] px-4 py-2 font-supply-mono text-overline-xs uppercase tracking-widest text-spora-primary/70 hover:text-spora-primary hover:bg-spora-primary-lighter transition-colors"
           >
             {showAnalysis ? "− Hide analysis" : "+ Show analysis"}
           </button>
@@ -418,42 +444,42 @@ export default function FloraDetail() {
           {showAnalysis && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div className="border border-[var(--spora-primary)] p-4 md:p-5 ">
-              <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
+              <div className="font-supply-mono text-caption-2xs uppercase tracking-widest text-spora-primary/60 mb-2">
                 Generation stats
               </div>
 
-              <div className="flex flex-col gap-1.5 font-supply-mono text-[10px] sm:text-xs text-[#262626]/90">
+              <div className="flex flex-col gap-1.5 font-supply-mono text-overline-xs sm:text-xs text-spora-primary/90">
                 <div className="flex justify-between">
                   <span className="opacity-70">WORDS</span>
-                  <span className="text-[#262626]">{wordCount}</span>
+                  <span className="text-spora-primary">{wordCount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">CHARS</span>
-                  <span className="text-[#262626]">{charCount}</span>
+                  <span className="text-spora-primary">{charCount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">LINES</span>
-                  <span className="text-[#262626]">{lineCount}</span>
+                  <span className="text-spora-primary">{lineCount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">WORDS/LINE</span>
-                  <span className="text-[#262626]">{avgWordsPerLine}</span>
+                  <span className="text-spora-primary">{avgWordsPerLine}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">SEED HASH</span>
-                  <span className="text-[#262626]">{seedHex.toUpperCase()}</span>
+                  <span className="text-spora-primary">{seedHex.toUpperCase()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">UNIT</span>
-                  <span className="text-[#262626]">{derived.id}</span>
+                  <span className="text-spora-primary">{derived.id}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">GEN</span>
-                  <span className="text-[#262626]">{derived.generation}</span>
+                  <span className="text-spora-primary">{derived.generation}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">MOOD</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {(morph?.dominantMood ?? "neutral").toUpperCase()}
                   </span>
                 </div>
@@ -461,14 +487,14 @@ export default function FloraDetail() {
             </div>
 
             <div className="border border-[var(--spora-primary)] p-4 md:p-5 ">
-              <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
+              <div className="font-supply-mono text-caption-2xs uppercase tracking-widest text-spora-primary/60 mb-2">
                 Morphology analysis
               </div>
 
-              <div className="flex flex-col gap-1.5 font-supply-mono text-[10px] sm:text-xs text-[#262626]/90">
+              <div className="flex flex-col gap-1.5 font-supply-mono text-overline-xs sm:text-xs text-spora-primary/90">
                 <div className="flex justify-between">
                   <span className="opacity-70">SENTIMENT_FORCE</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {morph?.sentimentStrength != null
                       ? String(morph.sentimentStrength)
                       : "-"}
@@ -476,7 +502,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">ENTROPY_INDEX</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {morph?.entropy != null
                       ? morph.entropy.toFixed(3)
                       : "-"}
@@ -484,7 +510,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">VOCALIC_DENSITY</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {morph?.vowelDensity != null
                       ? morph.vowelDensity.toFixed(3)
                       : "-"}
@@ -492,7 +518,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">SIBILANCE_LVL</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {morph?.sibilanceIndex != null
                       ? morph.sibilanceIndex.toFixed(3)
                       : "-"}
@@ -500,7 +526,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">RHYTHM_DELTA</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {morph?.avgLengthDelta != null
                       ? morph.avgLengthDelta.toFixed(2)
                       : "-"}
@@ -510,14 +536,14 @@ export default function FloraDetail() {
             </div>
 
             <div className="border border-[var(--spora-primary)] p-4 md:p-5 ">
-              <div className="font-supply-mono text-[9px] uppercase tracking-widest text-[#262626]/60 mb-2">
+              <div className="font-supply-mono text-caption-2xs uppercase tracking-widest text-spora-primary/60 mb-2">
                 Mapped parameters
               </div>
 
-              <div className="flex flex-col gap-1.5 font-supply-mono text-[10px] sm:text-xs text-[#262626]/90">
+              <div className="flex flex-col gap-1.5 font-supply-mono text-overline-xs sm:text-xs text-spora-primary/90">
                 <div className="flex justify-between">
                   <span className="opacity-70">GEOM_SCALE</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {labState?.geometry?.scale != null
                       ? labState.geometry.scale.toFixed(2)
                       : "-"}
@@ -525,7 +551,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">WIND_FORCE</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {labState?.wind?.strength != null
                       ? labState.wind.strength.toFixed(2)
                       : "-"}
@@ -533,7 +559,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">CHAOS_JITTER</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {labState?.chaos?.jitter != null
                       ? labState.chaos.jitter.toFixed(2)
                       : "-"}
@@ -541,7 +567,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">SCRAMBLE_DNA</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {labState?.chaos?.scrambleForce != null
                       ? labState.chaos.scrambleForce.toFixed(2)
                       : "-"}
@@ -549,7 +575,7 @@ export default function FloraDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="opacity-70">PULSE_WAVE</span>
-                  <span className="text-[#262626]">
+                  <span className="text-spora-primary">
                     {labState?.chaos?.pulse?.active &&
                     labState?.chaos?.pulse?.strength != null
                       ? labState.chaos.pulse.strength.toFixed(2)
@@ -570,7 +596,7 @@ export default function FloraDetail() {
           aria-modal="true"
           aria-labelledby="report-modal-title"
         >
-          <div className="w-full max-w-md border border-[var(--spora-primary)]  bg-[#E9E9E9] p-6 font-supply-mono">
+          <div className="w-full max-w-md border border-[var(--spora-primary)]  bg-spora-primary-light p-6 font-supply-mono">
             <div className="flex items-center justify-between mb-4">
               <h2
                 id="report-modal-title"
@@ -581,7 +607,7 @@ export default function FloraDetail() {
               <button
                 type="button"
                 onClick={() => setShowReportModal(false)}
-                className="p-1 hover:bg-[#262626]/10 transition-colors"
+                className="p-1 hover:bg-spora-primary/10 transition-colors"
                 aria-label="Close"
               >
                 <X className="size-5" />
@@ -589,7 +615,7 @@ export default function FloraDetail() {
             </div>
 
             {reportSuccess ? (
-              <p className="text-xs text-[#262626]/80 mb-4">
+              <p className="text-xs text-spora-primary/80 mb-4">
                 Report submitted. Thank you for helping keep the community safe.
               </p>
             ) : (
@@ -621,7 +647,7 @@ export default function FloraDetail() {
                 <div>
                   <label
                     htmlFor="report-category"
-                    className="block text-[10px] uppercase tracking-wider mb-1"
+                    className="block text-overline-xs uppercase tracking-wider mb-1"
                   >
                     Category
                   </label>
@@ -642,7 +668,7 @@ export default function FloraDetail() {
                 <div>
                   <label
                     htmlFor="report-reason"
-                    className="block text-[10px] uppercase tracking-wider mb-1"
+                    className="block text-overline-xs uppercase tracking-wider mb-1"
                   >
                     Reason (required, max 100 chars)
                   </label>
@@ -658,14 +684,14 @@ export default function FloraDetail() {
                     className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-xs"
                     placeholder="Brief reason for this report"
                   />
-                  <span className="text-[9px] opacity-70">
+                  <span className="text-caption-2xs opacity-70">
                     {reportReason.length}/100
                   </span>
                 </div>
                 <div>
                   <label
                     htmlFor="report-description"
-                    className="block text-[10px] uppercase tracking-wider mb-1"
+                    className="block text-overline-xs uppercase tracking-wider mb-1"
                   >
                     Additional details (optional, max 500 chars)
                   </label>
@@ -680,25 +706,25 @@ export default function FloraDetail() {
                     className="w-full border border-[var(--spora-primary)] bg-white px-3 py-2 text-xs resize-none"
                     placeholder="Any additional context"
                   />
-                  <span className="text-[9px] opacity-70">
+                  <span className="text-caption-2xs opacity-70">
                     {reportDescription.length}/500
                   </span>
                 </div>
                 {reportError && (
-                  <p className="text-[10px] text-red-600">{reportError}</p>
+                  <p className="text-overline-xs text-red-600">{reportError}</p>
                 )}
                 <div className="flex gap-2 justify-end pt-2">
                   <button
                     type="button"
                     onClick={() => setShowReportModal(false)}
-                    className="px-3 py-1.5 border border-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9] text-[10px] uppercase"
+                    className="px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-spora-primary-light text-overline-xs uppercase"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={reportSubmitting || !reportReason.trim()}
-                    className="px-3 py-1.5 border border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#1a1a1a] text-[10px] uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 border border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary-hover text-overline-xs uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {reportSubmitting ? "Submitting…" : "Submit report"}
                   </button>

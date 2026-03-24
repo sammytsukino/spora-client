@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import { floraImages } from "@/data/flora-data";
@@ -228,7 +228,7 @@ export default function FloraReader() {
 
   const theme = useImageLuminance(derived?.image);
   const isLightBg = theme === "light";
-  const textColorClass = isLightBg ? "text-[#262626]" : "text-white";
+  const textColorClass = isLightBg ? "text-spora-primary" : "text-white";
   const textShadowStyle =
     !isLightBg ? { textShadow: "0 1px 2px rgba(0,0,0,0.5)" } : undefined;
 
@@ -386,10 +386,10 @@ export default function FloraReader() {
 
   if (isLoading && !derived) {
     return (
-      <div className="fixed inset-0 bg-[#E9E9E9]">
+      <div className="fixed inset-0 bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="flex min-h-screen items-center justify-center pt-24 px-6">
-          <p className="font-supply-mono text-xs uppercase tracking-[0.25em] text-[#262626]">
+          <p className="font-supply-mono text-xs uppercase tracking-[0.25em] text-spora-primary">
             Loading...
           </p>
         </main>
@@ -399,10 +399,10 @@ export default function FloraReader() {
 
   if (error || !derived) {
     return (
-      <div className="fixed inset-0 bg-[#E9E9E9]">
+      <div className="fixed inset-0 bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="flex min-h-screen items-center justify-center pt-24 px-6">
-          <p className="font-supply-mono text-xs uppercase tracking-[0.25em] text-[#262626]">
+          <p className="font-supply-mono text-xs uppercase tracking-[0.25em] text-spora-primary">
             Could not load this Flora.
           </p>
         </main>
@@ -413,6 +413,22 @@ export default function FloraReader() {
 
   const installationSrc = `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1`;
   const canReveal = minLoadTimeElapsed;
+
+  const lineageRows: (typeof derived.lineageItems)[] = [];
+  for (let i = 0; i < derived.lineageItems.length; i += 2) {
+    lineageRows.push(derived.lineageItems.slice(i, i + 2));
+  }
+
+  const lineageDash = (
+    <span
+      className="flex w-3 shrink-0 items-center justify-center self-stretch"
+      aria-hidden
+    >
+      <span
+        className={`block h-px w-3 ${isLightBg ? "bg-spora-primary" : "bg-white/60"}`}
+      />
+    </span>
+  );
 
   return (
     <div className="fixed inset-0 overflow-hidden">
@@ -432,12 +448,12 @@ export default function FloraReader() {
       </div>
 
       <div
-        className={`fixed inset-0 z-9999 flex items-center justify-center bg-[#E9E9E9] transition-opacity duration-300 ${
+        className={`fixed inset-0 z-spora-loader flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
           canReveal ? "opacity-0 pointer-events-none" : ""
         }`}
         aria-hidden
       >
-        <p className="font-supply-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#262626]">
+        <p className="font-supply-mono text-overline-xs sm:text-xs uppercase tracking-[0.25em] text-spora-primary">
           Loading...
         </p>
       </div>
@@ -509,8 +525,8 @@ export default function FloraReader() {
                   }}
                   className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase py-3 px-4 border cursor-pointer hover:underline"
                   style={{
-                    borderColor: isLightBg ? "#262626" : "white",
-                    color: isLightBg ? "#262626" : "white",
+                    borderColor: isLightBg ? "var(--spora-primary)" : "white",
+                    color: isLightBg ? "var(--spora-primary)" : "white",
                   }}
                 >
                   Make a Cutting · Cuttings allowed
@@ -519,7 +535,7 @@ export default function FloraReader() {
                 <span
                   className={`font-supply-mono text-[10px] sm:text-[11px] tracking-[0.2em] uppercase py-2 px-3 border ${
                     isLightBg
-                      ? "border-[#262626] text-[#262626]"
+                      ? "border-spora-primary text-spora-primary"
                       : "border-white/60 text-white/90"
                   }`}
                   style={textShadowStyle}
@@ -546,55 +562,69 @@ export default function FloraReader() {
                   <div className="uppercase tracking-widest mb-2 opacity-70">
                     Lineage
                   </div>
-                  <div className="flex flex-wrap items-center gap-y-2 gap-x-1">
-                    {derived.lineageItems.map((item, i) => (
-                      <span key={`${item.handle}-${i}`} className="flex items-center">
-                        {item.floraId ? (
-                          <Link
-                            to={`/flora/${encodeURIComponent(item.floraId)}`}
-                            className={`px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
-                              isLightBg
-                                ? "border-[#262626] bg-[#262626] text-[#E9E9E9] hover:bg-[#E9E9E9] hover:text-[#262626]"
-                                : "border-white bg-white/20 text-white hover:bg-white hover:text-[#262626]"
-                            }`}
-                            title="View flora"
-                          >
-                            {item.handle}
-                          </Link>
-                        ) : (() => {
-                          const username = item.handle.replace(/^@+/, "");
-                          if (username && username !== "Anonymous" && !username.startsWith("[forbidden_author]")) {
-                            return (
-                              <Link
-                                to={`/profile/${encodeURIComponent(username)}`}
-                                className={`px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
-                                  isLightBg
-                                    ? "border-[#262626] bg-[#262626]/20 text-[#262626] hover:bg-[#262626] hover:text-[#E9E9E9]"
-                                    : "border-white/60 bg-white/10 text-white hover:bg-white/20"
-                                }`}
-                                title="View profile"
-                              >
-                                {item.handle}
-                              </Link>
-                            );
-                          }
+                  <div className="flex flex-col gap-y-2 min-w-0">
+                    {lineageRows.map((rowItems, rowIdx) => (
+                      <div
+                        key={`lineage-row-${rowIdx}`}
+                        className="flex flex-nowrap items-stretch gap-x-0.5 min-w-0 max-w-full"
+                      >
+                        {rowIdx > 0 ? lineageDash : null}
+                        {rowItems.map((item, j) => {
+                          const i = rowIdx * 2 + j;
                           return (
-                            <span
-                              className={`px-2 py-1 border ${
-                                isLightBg ? "border-[#262626] bg-[#262626]/20 text-[#262626]" : "border-white/60 bg-white/10 text-white"
-                              }`}
-                            >
-                              {item.handle}
-                            </span>
+                            <Fragment key={`${item.handle}-${i}`}>
+                              <span className="flex min-w-0 shrink items-center">
+                                {item.floraId ? (
+                                  <Link
+                                    to={`/flora/${encodeURIComponent(item.floraId)}`}
+                                    className={`max-w-full truncate px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
+                                      isLightBg
+                                        ? "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary-light hover:text-spora-primary"
+                                        : "border-white bg-white/20 text-white hover:bg-white hover:text-spora-primary"
+                                    }`}
+                                    title="View flora"
+                                  >
+                                    {item.handle}
+                                  </Link>
+                                ) : (() => {
+                                  const username = item.handle.replace(/^@+/, "");
+                                  if (
+                                    username &&
+                                    username !== "Anonymous" &&
+                                    !username.startsWith("[forbidden_author]")
+                                  ) {
+                                    return (
+                                      <Link
+                                        to={`/profile/${encodeURIComponent(username)}`}
+                                        className={`max-w-full truncate px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
+                                          isLightBg
+                                            ? "border-spora-primary bg-spora-primary/20 text-spora-primary hover:bg-spora-primary hover:text-spora-primary-light"
+                                            : "border-white/60 bg-white/10 text-white hover:bg-white/20"
+                                        }`}
+                                        title="View profile"
+                                      >
+                                        {item.handle}
+                                      </Link>
+                                    );
+                                  }
+                                  return (
+                                    <span
+                                      className={`max-w-full truncate px-2 py-1 border ${
+                                        isLightBg
+                                          ? "border-spora-primary bg-spora-primary/20 text-spora-primary"
+                                          : "border-white/60 bg-white/10 text-white"
+                                      }`}
+                                    >
+                                      {item.handle}
+                                    </span>
+                                  );
+                                })()}
+                              </span>
+                              {j < rowItems.length - 1 ? lineageDash : null}
+                            </Fragment>
                           );
-                        })()}
-                        {i < derived.lineageItems.length - 1 && (
-                          <span
-                            className={`w-3 h-px mx-0.5 shrink-0 ${isLightBg ? "bg-[#262626]" : "bg-white/60"}`}
-                            aria-hidden
-                          />
-                        )}
-                      </span>
+                        })}
+                      </div>
                     ))}
                   </div>
                 </section>
@@ -664,11 +694,11 @@ export default function FloraReader() {
           label="Reader options"
           placement="up"
           align="end"
-          className={`min-w-[220px] max-w-[min(100vw-3rem,280px)] ${textColorClass}`}
-          summaryClassName="text-[9px] sm:text-[10px] tracking-wider"
+          className={`w-full min-w-[220px] max-w-[280px] ${textColorClass}`}
+          summaryClassName="mb-0"
           summaryStyle={textShadowStyle}
           panelStyle={textShadowStyle}
-          panelClassName="font-supply-mono text-[9px] sm:text-[10px] uppercase tracking-wider gap-3"
+          panelClassName="flora-reader-scroll max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 text-[10px] sm:text-xs"
           aria-label="Reader options: layout, wind, music, listen"
         >
           <div className="flex flex-col gap-2 w-full items-end">
@@ -693,7 +723,7 @@ export default function FloraReader() {
                 value={windStrength}
                 onChange={(e) => setWindStrength(parseFloat(e.target.value))}
                 className="w-full max-w-[220px] cursor-pointer"
-                style={{ accentColor: isLightBg ? "#262626" : "white" }}
+                style={{ accentColor: isLightBg ? "var(--spora-primary)" : "white" }}
               />
             </div>
             <button
@@ -704,6 +734,16 @@ export default function FloraReader() {
             >
               {musicPlaying ? "⏸ Music" : "♪ Music"}
             </button>
+          </div>
+
+          <div
+            className="w-full min-w-0 self-stretch shrink-0 py-1 px-2"
+            role="separator"
+            aria-hidden
+          >
+            <span
+              className={`block h-px w-full min-w-0 ${isLightBg ? "bg-spora-primary/30" : "bg-white/40"}`}
+            />
           </div>
 
           <div className="flex flex-col gap-2 w-full items-end">
@@ -725,7 +765,7 @@ export default function FloraReader() {
                   value={ttsSpeed}
                   onChange={(e) => handleTtsSpeedChange(parseFloat(e.target.value))}
                   className="flex-1 min-w-[100px] cursor-pointer"
-                  style={{ accentColor: isLightBg ? "#262626" : "white" }}
+                  style={{ accentColor: isLightBg ? "var(--spora-primary)" : "white" }}
                 />
                 <span
                   className="opacity-80 tabular-nums shrink-0 text-[10px] min-w-10 text-right normal-case"

@@ -39,22 +39,22 @@ export default function ConfirmModal({
 
   return (
     <div 
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-normal"
       onClick={onCancel}
       style={{ animation: 'fadeIn 0.2s ease-out' }}
     >
       <div 
-        className="bg-[var(--spora-primary-light)] border border-[var(--spora-primary)] max-w-md w-[90%] px-6 py-5 shadow-[0_4px_24px_rgba(38,38,38,0.08)] transition-transform duration-300"
+        className="bg-[var(--spora-primary-light)] border border-[var(--spora-primary)] max-w-md w-[90%] px-6 py-5 shadow-spora-modal transition-transform duration-normal"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'slideUp 0.3s ease-out' }}
       >
         <h2 className="font-bizud-mincho-bold text-xl mb-3 text-[var(--spora-primary)]">
           {title}
         </h2>
-        <p className="font-supply-mono text-[11px] sm:text-xs mb-5 text-[var(--spora-primary)]">
+        <p className="font-supply-mono text-caption-sm sm:text-xs mb-5 text-[var(--spora-primary)]">
           {description}
         </p>
-        <div className="flex justify-end gap-3 font-supply-mono text-[11px] sm:text-xs">
+        <div className="flex justify-end gap-3 font-supply-mono text-caption-sm sm:text-xs">
           <button
             type="button"
             className="px-4 py-2 border border-[var(--spora-primary)] bg-[var(--spora-primary-light)] text-[var(--spora-primary)] uppercase tracking-[0.25em] hover:bg-[#f5f5f5] cursor-pointer"

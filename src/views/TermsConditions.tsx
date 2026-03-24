@@ -45,7 +45,7 @@ export default function TermsConditions() {
           className="mb-12"
         />
 
-        <div className="space-y-10 font-supply-mono text-sm text-[#262626]">
+        <div className="space-y-10 font-supply-mono text-sm text-spora-primary">
           <section>
             <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
               1. Acceptance of Terms

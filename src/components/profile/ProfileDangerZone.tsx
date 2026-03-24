@@ -26,7 +26,7 @@ export default function ProfileDangerZone({
   const canSubmit = isConfirmed && !unsigning;
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
       <h2 className="font-supply-mono font-bold text-sm uppercase mb-2">
         {title}
       </h2>
@@ -54,7 +54,7 @@ export default function ProfileDangerZone({
           type="button"
           onClick={() => canSubmit && onUnsign?.()}
           disabled={!canSubmit}
-          className="font-supply-mono text-[11px] px-4 py-2 border border-red-600 text-red-600 bg-[#E9E9E9] uppercase w-fit hover:bg-red-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#E9E9E9] disabled:hover:text-red-600"
+          className="font-supply-mono text-caption-sm px-4 py-2 border border-red-600 text-red-600 bg-spora-primary-light uppercase w-fit hover:bg-red-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-spora-primary-light disabled:hover:text-red-600"
         >
           {unsigning ? "Processing…" : buttonLabel}
         </button>

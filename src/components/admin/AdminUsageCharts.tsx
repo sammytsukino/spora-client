@@ -52,7 +52,7 @@ export default function AdminUsageCharts({
   if (!hasFloras && !hasUsers) return null;
 
   return (
-    <section className="border border-[var(--spora-primary)] bg-[#E9E9E9] p-6">
+    <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
       <h2 className="font-supply-mono font-bold text-sm uppercase mb-4">
         {title}
       </h2>
