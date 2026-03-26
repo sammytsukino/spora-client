@@ -6,7 +6,16 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'coverage']),
+  {
+    files: ['**/*.{test,spec}.{ts,tsx}', 'src/test/**/*.ts', 'vitest.config.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.vitest,
+      },
+    },
+  },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
