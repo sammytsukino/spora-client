@@ -58,7 +58,7 @@ export default function Home() {
       >
         <DeclarativeSection
           text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
-          imageSrc="https://res.cloudinary.com/dsy30p7gf/image/upload/v1774263030/lace_chart_jfrssl.png"
+          imageSrc="https://res.cloudinary.com/dsy30p7gf/image/upload/v1774516514/chart_d4xmev.png"
         />
       </Section>
 

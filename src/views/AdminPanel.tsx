@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FilterTabs from "@/components/shared/FilterTabs";
+import AlertModal, { type AlertModalTone } from "@/components/shared/AlertModal";
 import AdminMetrics from "@/components/admin/AdminMetrics";
 import AdminUsageCharts from "@/components/admin/AdminUsageCharts";
 import AdminReports from "@/components/admin/AdminReports";
@@ -57,6 +58,30 @@ export default function AdminPanel() {
   const [reportStatusFilter, setReportStatusFilter] = useState<
     (typeof reportStatusFilters)[number]
   >("Pending");
+
+  const [pdfAlert, setPdfAlert] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    tone?: AlertModalTone;
+  }>({ open: false, title: "", description: "" });
+
+  const safePdfExport = (run: () => void) => {
+    try {
+      run();
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      setPdfAlert({
+        open: true,
+        title: "Export failed",
+        description:
+          message.trim() !== ""
+            ? message
+            : "Something went wrong while creating the PDF.",
+        tone: "error",
+      });
+    }
+  };
 
   const {
     metrics,
@@ -148,7 +173,9 @@ export default function AdminPanel() {
                 <AdminMetrics
                   metrics={metrics ?? defaultMetrics}
                   onExportMetrics={() =>
-                    exportMetricsToPdf(metrics ?? defaultMetrics)
+                    safePdfExport(() =>
+                      exportMetricsToPdf(metrics ?? defaultMetrics)
+                    )
                   }
                 />
                 <AdminUsageCharts
@@ -192,7 +219,9 @@ export default function AdminPanel() {
                       window.open(floraPath(item.contentId), "_blank")
                     }
                     onHideFlora={onHideFlora}
-                    onDownload={(item) => exportFlaggedToPdf(item)}
+                    onDownload={(item) =>
+                      safePdfExport(() => exportFlaggedToPdf(item))
+                    }
                     onBatchFloras={onBatchFloras}
                   />
                 ) : (
@@ -206,7 +235,9 @@ export default function AdminPanel() {
                       navigate(`/flora/${r.targetId}`, { state: floraOpenState })
                     }
                     onStatusChange={onReportStatusChange}
-                    onDownloadReport={(r) => exportReportToPdf(r)}
+                    onDownloadReport={(r) =>
+                      safePdfExport(() => exportReportToPdf(r))
+                    }
                     onViewTarget={(r) =>
                       navigate(floraPath(r.targetId), { state: floraOpenState })
                     }
@@ -241,8 +272,10 @@ export default function AdminPanel() {
                 onRoleChange={onUserRoleChange}
                 onStatusChange={onUserStatusChange}
                 onUnsign={onUnsignUser}
-                onExportUsers={() => exportUsersToPdf(users)}
-                onExportUser={(u) => exportUserToPdf(u)}
+                onExportUsers={() =>
+                  safePdfExport(() => exportUsersToPdf(users))
+                }
+                onExportUser={(u) => safePdfExport(() => exportUserToPdf(u))}
                 onSuspend={(u) => onUserStatusChange(u.id, "suspended")}
                 onBan={(u) => onUserStatusChange(u.id, "banned")}
                 onActivate={(u) => onUserStatusChange(u.id, "active")}
@@ -253,6 +286,15 @@ export default function AdminPanel() {
           </>
         )}
       </section>
+
+      <AlertModal
+        open={pdfAlert.open}
+        title={pdfAlert.title}
+        description={pdfAlert.description}
+        tone={pdfAlert.tone}
+        okLabel="OK"
+        onClose={() => setPdfAlert((a) => ({ ...a, open: false }))}
+      />
 
       <FooterAlter />
     </div>

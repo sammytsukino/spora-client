@@ -52,6 +52,7 @@ export default function AdminUserManagement({
     open: boolean;
     title: string;
     description: string;
+    variant?: "default" | "danger";
     onConfirm: () => void;
   }>({ open: false, title: "", description: "", onConfirm: () => {} });
 
@@ -61,6 +62,7 @@ export default function AdminUserManagement({
       open: true,
       title: "Unsign user",
       description: `This will anonymize all Floras by ${user.username}. Authorship will be removed and attributed to "Forgotten Author". This action cannot be undone.`,
+      variant: "danger",
       onConfirm: () => {
         onUnsign(user);
         setConfirm((c) => ({ ...c, open: false }));
@@ -74,6 +76,7 @@ export default function AdminUserManagement({
       open: true,
       title: "Suspend user",
       description: `Suspend ${user.username}? The user will not be able to access their account.`,
+      variant: "danger",
       onConfirm: () => {
         onSuspend(user);
         setConfirm((c) => ({ ...c, open: false }));
@@ -87,6 +90,7 @@ export default function AdminUserManagement({
       open: true,
       title: "Ban user",
       description: `Permanently ban ${user.username}? The user will not be able to access their account.`,
+      variant: "danger",
       onConfirm: () => {
         onBan(user);
         setConfirm((c) => ({ ...c, open: false }));
@@ -141,6 +145,7 @@ export default function AdminUserManagement({
       open: true,
       title: `Batch ${labels[status]}`,
       description: `Are you sure you want to ${labels[status]} ${ids.length} user${ids.length !== 1 ? "s" : ""}?`,
+      variant: status === "activate" ? "default" : "danger",
       onConfirm: () => {
         onBatchUsers(ids, status);
         setSelectedIds(new Set());
@@ -384,6 +389,7 @@ export default function AdminUserManagement({
         open={confirm.open}
         title={confirm.title}
         description={confirm.description}
+        variant={confirm.variant}
         onConfirm={confirm.onConfirm}
         onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
       />

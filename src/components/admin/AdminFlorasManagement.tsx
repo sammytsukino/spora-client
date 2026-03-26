@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { ApiFlora } from "@/lib/admin-api";
 import { floraPath } from "@/constants/routes";
 import { readerNavState } from "@/lib/floraViewBack";
@@ -32,6 +33,21 @@ export default function AdminFlorasManagement({
   const location = useLocation();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [working, setWorking] = useState(false);
+  const [confirm, setConfirm] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    variant: "default" | "danger";
+    confirmLabel: string;
+    onConfirm: () => void;
+  }>({
+    open: false,
+    title: "",
+    description: "",
+    variant: "default",
+    confirmLabel: "CONFIRM",
+    onConfirm: () => {},
+  });
 
   const selectAll = () => {
     if (selectedIds.size === floras.length) setSelectedIds(new Set());
@@ -45,14 +61,43 @@ export default function AdminFlorasManagement({
     setSelectedIds(next);
   };
 
-  const runBatch = async (action: "hide" | "unhide" | "delete") => {
+  const requestBatch = (action: "hide" | "unhide" | "delete") => {
     const ids = Array.from(selectedIds);
     if (ids.length === 0) return;
-    const msg =
-      action === "delete"
-        ? `Delete ${ids.length} flora${ids.length !== 1 ? "s" : ""}? This cannot be undone.`
-        : `Are you sure you want to ${action} ${ids.length} flora${ids.length !== 1 ? "s" : ""}?`;
-    if (!confirm(msg)) return;
+    const n = ids.length;
+    const plural = n !== 1 ? "s" : "";
+    if (action === "delete") {
+      setConfirm({
+        open: true,
+        title: "Delete floras",
+        description: `Delete ${n} flora${plural}? This cannot be undone.`,
+        variant: "danger",
+        confirmLabel: "DELETE",
+        onConfirm: () => {
+          setConfirm((c) => ({ ...c, open: false }));
+          void runBatch(action, ids);
+        },
+      });
+      return;
+    }
+    const verb = action === "hide" ? "hide" : "unhide";
+    setConfirm({
+      open: true,
+      title: action === "hide" ? "Hide floras" : "Unhide floras",
+      description: `${verb.charAt(0).toUpperCase() + verb.slice(1)} ${n} flora${plural}?`,
+      variant: "default",
+      confirmLabel: action === "hide" ? "HIDE" : "UNHIDE",
+      onConfirm: () => {
+        setConfirm((c) => ({ ...c, open: false }));
+        void runBatch(action, ids);
+      },
+    });
+  };
+
+  const runBatch = async (
+    action: "hide" | "unhide" | "delete",
+    ids: string[]
+  ) => {
     setWorking(true);
     try {
       await onBatchFloras(ids, action);
@@ -89,7 +134,7 @@ export default function AdminFlorasManagement({
             <button
               type="button"
               disabled={working}
-              onClick={() => runBatch("hide")}
+              onClick={() => requestBatch("hide")}
               className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Hide ({selectedIds.size})
@@ -97,7 +142,7 @@ export default function AdminFlorasManagement({
             <button
               type="button"
               disabled={working}
-              onClick={() => runBatch("unhide")}
+              onClick={() => requestBatch("unhide")}
               className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Unhide ({selectedIds.size})
@@ -105,7 +150,7 @@ export default function AdminFlorasManagement({
             <button
               type="button"
               disabled={working}
-              onClick={() => runBatch("delete")}
+              onClick={() => requestBatch("delete")}
               className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Delete ({selectedIds.size})
@@ -198,6 +243,15 @@ export default function AdminFlorasManagement({
           No floras found.
         </p>
       )}
+      <ConfirmModal
+        open={confirm.open}
+        title={confirm.title}
+        description={confirm.description}
+        variant={confirm.variant}
+        confirmLabel={confirm.confirmLabel}
+        onConfirm={confirm.onConfirm}
+        onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
+      />
     </section>
   );
 }

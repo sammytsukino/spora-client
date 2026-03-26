@@ -54,6 +54,7 @@ export default function AdminReports({
     open: boolean;
     title: string;
     description: string;
+    variant?: "default" | "danger";
     onConfirm: () => void;
   }>({ open: false, title: "", description: "", onConfirm: () => {} });
 
@@ -106,6 +107,7 @@ export default function AdminReports({
       title: "Remove content",
       description:
         "Are you sure you want to remove the reported content? This action cannot be undone.",
+      variant: "danger",
       onConfirm: () => {
         onRemoveTarget(report);
         setConfirm((c) => ({ ...c, open: false }));
@@ -133,6 +135,7 @@ export default function AdminReports({
       open: true,
       title: action === "resolve" ? "Resolve reports" : "Dismiss reports",
       description: `Are you sure you want to ${action} ${ids.length} report${ids.length !== 1 ? "s" : ""}?`,
+      variant: action === "dismiss" ? "danger" : "default",
       onConfirm: () => {
         onBatchReports(ids, action);
         setSelectedIds(new Set());
@@ -355,6 +358,7 @@ export default function AdminReports({
         open={confirm.open}
         title={confirm.title}
         description={confirm.description}
+        variant={confirm.variant}
         onConfirm={confirm.onConfirm}
         onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
       />

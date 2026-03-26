@@ -51,6 +51,7 @@ export default function AdminFlaggedContent({
     open: boolean;
     title: string;
     description: string;
+    variant?: "default" | "danger";
     onConfirm: () => void;
   }>({ open: false, title: "", description: "", onConfirm: () => {} });
 
@@ -88,6 +89,7 @@ export default function AdminFlaggedContent({
       open: true,
       title: `Batch ${actionLabels[action]}`,
       description: `Are you sure you want to ${action} ${ids.length} flora${ids.length !== 1 ? "s" : ""}?${action === "delete" ? " This cannot be undone." : ""}`,
+      variant: action === "delete" ? "danger" : "default",
       onConfirm: () => {
         onBatchFloras(ids, action);
         setSelectedIds(new Set());
@@ -292,6 +294,7 @@ export default function AdminFlaggedContent({
                           title: "Remove content",
                           description:
                             "Are you sure you want to remove this content? This action cannot be undone.",
+                          variant: "danger",
                           onConfirm: () => {
                             onStatusChange(item.id, "removed");
                             setConfirm((c) => ({ ...c, open: false }));
@@ -314,6 +317,7 @@ export default function AdminFlaggedContent({
         open={confirm.open}
         title={confirm.title}
         description={confirm.description}
+        variant={confirm.variant}
         onConfirm={confirm.onConfirm}
         onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
       />

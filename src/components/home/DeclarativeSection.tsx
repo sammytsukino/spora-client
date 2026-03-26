@@ -63,15 +63,15 @@ export default function DeclarativeSection({
               : 'px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16 pb-10 sm:pb-0'
           }
         >
-          <p className="font-bizud-mincho text-stone-200 text-2xl leading-snug sm:text-4xl sm:leading-tight md:text-5xl lg:text-6xl xl:text-7xl w-full max-w-full [overflow-wrap:break-word]">
+          <p className="font-bizud-mincho text-stone-200 text-2xl leading-snug sm:text-3xl sm:leading-tight md:text-5xl lg:text-5xl xl:text-6xl w-full max-w-full [overflow-wrap:break-word]">
             {text}
           </p>
           {imageSrc ? (
-            <div className="mt-6 sm:mt-8 lg:mt-10 flex w-full justify-end pointer-events-none">
+            <div className="mt-6 sm:mt-8 lg:mt-10 flex w-full justify-end pointer-events-none pb-10">
               <img
                 src={imageSrc}
                 alt={imageAlt}
-                className="h-auto w-full max-w-full object-contain object-center sm:max-w-[min(100%,60vw)] sm:object-right select-none"
+                className="h-auto w-full max-w-full object-contain object-center sm:max-w-[min(100%,50vw)] sm:object-right select-none"
                 draggable={false}
                 loading="lazy"
                 decoding="async"
