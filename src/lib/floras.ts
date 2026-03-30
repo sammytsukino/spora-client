@@ -1,5 +1,14 @@
 import { api } from "./api";
 
+/** Present on POST/PATCH /floras responses when the server ran lexical screening. */
+export interface ContentScreening {
+  flagged: boolean;
+  matchCount: number;
+  titleHits?: number;
+  textHits?: number;
+  matchedTerms?: string[];
+}
+
 export interface ApiFlora {
   _id: string;
   shortId?: string;
@@ -29,6 +38,7 @@ export interface ApiFlora {
   publishedAt?: string;
   sealedAt?: string;
   thumbnailUrl?: string;
+  contentScreening?: ContentScreening;
 }
 
 export async function listFloras(params?: {

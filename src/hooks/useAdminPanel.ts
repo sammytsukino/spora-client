@@ -64,29 +64,34 @@ function mapApiUser(u: {
 
 function mapApiReport(r: {
   _id: string;
-  reportedBy: { username?: string } | string;
+  reportedBy: { username?: string } | string | null;
   reportedFlora?: { _id?: string; title?: string; author?: string } | string;
   reportedFloraId?: { _id?: string } | string;
   category: string;
   reason: string;
   status: string;
   createdAt: string;
+  source?: "user" | "language_screen";
 }): AdminReport {
   const reporterUsername =
-    typeof r.reportedBy === "object" && r.reportedBy?.username
-      ? r.reportedBy.username.startsWith("@")
-        ? r.reportedBy.username
-        : `@${r.reportedBy.username}`
-      : "@Unknown";
+    r.source === "language_screen"
+      ? "System"
+      : typeof r.reportedBy === "object" && r.reportedBy?.username
+        ? r.reportedBy.username.startsWith("@")
+          ? r.reportedBy.username
+          : `@${r.reportedBy.username}`
+        : "@Unknown";
   const flora = (r.reportedFlora ?? r.reportedFloraId) as { _id?: string } | string;
   const targetId =
     typeof flora === "object" && flora?._id
       ? String(flora._id)
       : String(flora);
-  const categoryMap: Record<string, "spam" | "abuse" | "copyright" | "other"> = {
+  const categoryMap: Record<string, AdminReport["type"]> = {
     spam: "spam",
     harassment: "abuse",
     inappropriate: "abuse",
+    copyright: "copyright",
+    language_review: "language_review",
     other: "other",
   };
   const type = categoryMap[r.category] ?? "other";
@@ -106,6 +111,7 @@ function mapApiReport(r: {
     targetId,
     reason: r.reason,
     createdAt: r.createdAt,
+    source: r.source,
   };
 }
 

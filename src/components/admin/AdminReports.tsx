@@ -238,6 +238,11 @@ export default function AdminReports({
                   )}
                   <span className="font-bold">{report.id}</span>
                   <span className="uppercase opacity-80">{report.type}</span>
+                  {report.source === "language_screen" && (
+                    <span className="px-2 py-0.5 border border-sky-600 text-sky-800 bg-sky-50 uppercase shrink-0 text-overline-xs">
+                      Auto
+                    </span>
+                  )}
                   <span
                     className={`px-2 py-0.5 border uppercase shrink-0 ${statusStyles[report.status]}`}
                   >

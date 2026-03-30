@@ -17,7 +17,7 @@ export interface AdminMetricsData {
 }
 
 export type ReportStatus = "pending" | "reviewing" | "reviewed" | "resolved" | "dismissed";
-export type ReportType = "spam" | "abuse" | "copyright" | "other";
+export type ReportType = "spam" | "abuse" | "copyright" | "other" | "language_review";
 
 export interface AdminReport {
   id: string;
@@ -28,6 +28,7 @@ export interface AdminReport {
   targetId: string;
   reason?: string;
   createdAt: string;
+  source?: "user" | "language_screen";
 }
 
 export type UserRole = "user" | "creator" | "cultivator" | "moderator" | "admin";

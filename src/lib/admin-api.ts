@@ -49,12 +49,14 @@ export interface ApiUser {
 
 export interface ApiReport {
   _id: string;
-  reportedBy: { username?: string } | string;
-  reportedFlora: { title?: string; author?: string } | string;
+  reportedBy: { username?: string } | string | null;
+  reportedFlora?: { title?: string; author?: string } | string;
+  reportedFloraId?: { title?: string; authorUsername?: string } | string;
   category: string;
   reason: string;
   status: "pending" | "reviewing" | "resolved" | "dismissed";
   createdAt: string;
+  source?: "user" | "language_screen";
 }
 
 export interface ApiFlaggedFlora {

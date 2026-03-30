@@ -256,6 +256,72 @@
             color: var(--spora-dark);
         }
 
+        .confirm-modal--wide {
+            max-width: 520px;
+        }
+
+        .confirm-modal-desc--prose {
+            line-height: 1.55;
+            white-space: normal;
+        }
+
+        .confirm-modal-desc--prose p {
+            margin: 0 0 12px 0;
+        }
+
+        .confirm-modal-desc--prose p:last-child {
+            margin-bottom: 0;
+        }
+
+        #screeningAdvisoryModal.confirm-modal-overlay {
+            z-index: 8000;
+        }
+
+        body.reader-mode #screeningAdvisoryModal.is-open {
+            display: flex !important;
+        }
+
+        #screeningAdvisoryModal .confirm-modal-actions button {
+            width: auto;
+            min-width: 120px;
+            flex: 0 1 auto;
+            padding: 14px 18px;
+            background: transparent;
+            border: 2px solid var(--spora-dark);
+            color: var(--spora-dark);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        #screeningAdvisoryModal .confirm-modal-actions button:hover {
+            background: var(--spora-dark);
+            color: var(--spora-lime);
+        }
+
+        #screeningAdvisoryModal .confirm-modal-actions button:active {
+            top: 2px;
+            left: 2px;
+        }
+
+        #screeningAdvisoryModal .confirm-modal-actions button.screening-btn-primary {
+            background: var(--spora-lime);
+            color: var(--spora-dark);
+        }
+
+        #screeningAdvisoryModal .confirm-modal-actions button.screening-btn-primary:hover {
+            background: var(--spora-dark);
+            color: var(--spora-lime);
+            border-color: var(--spora-dark);
+        }
+
         .confirm-modal-actions {
             display: flex;
             justify-content: flex-end;
@@ -658,7 +724,8 @@
         }
 
         body.reader-mode #ui,
-        body.reader-mode #confirmModal {
+        body.reader-mode #confirmModal,
+        body.reader-mode #screeningAdvisoryModal {
             display: none !important;
         }
 
@@ -1044,6 +1111,23 @@
                 <button id="confirmCancelBtn" type="button" class="confirm-modal-btn">STAY HERE</button>
                 <button id="confirmOkBtn" type="button" class="confirm-modal-btn confirm-modal-btn-confirm">GO
                     HOME</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screeningAdvisoryModal" class="confirm-modal-overlay" aria-hidden="true" role="dialog"
+        aria-modal="true" aria-labelledby="screeningAdvisoryTitle">
+        <div class="confirm-modal confirm-modal--wide" role="document">
+            <h2 id="screeningAdvisoryTitle" class="confirm-modal-title">All set</h2>
+            <div class="confirm-modal-desc confirm-modal-desc--prose">
+                <p>Your flora is live. We did notice that one of its words could be misread outside its artistic
+                    context.</p>
+                <p>Because SPORA treats art as human expression, this piece may receive a quick human review to make
+                    sure it comes from a place of good faith. This is not an automatic judgment, just a second look.</p>
+            </div>
+            <div class="confirm-modal-actions">
+                <button type="button" id="screeningCloseBtn">CLOSE</button>
+                <button type="button" id="screeningContinueBtn" class="screening-btn-primary">CONTINUE</button>
             </div>
         </div>
     </div>
@@ -2114,6 +2198,14 @@
             }
         }
 
+        function getApiBase() {
+            const h = window.location.hostname;
+            if (h === "localhost" || h === "127.0.0.1") {
+                return window.location.protocol + "//" + h + ":4000/api";
+            }
+            return "/api";
+        }
+
         async function ensureValidToken(apiBase) {
             let token = localStorage.getItem("spora_token");
             const refreshToken = localStorage.getItem("spora_refresh_token");
@@ -2140,6 +2232,54 @@
             return null;
         }
 
+        function openScreeningAdvisoryModal(actions) {
+            const overlay = document.getElementById("screeningAdvisoryModal");
+            const btnClose = document.getElementById("screeningCloseBtn");
+            const btnContinue = document.getElementById("screeningContinueBtn");
+            const onContinue = actions && actions.onContinue;
+            const onClose = actions && actions.onClose;
+            if (!overlay || !btnClose || !btnContinue) {
+                if (onClose) onClose();
+                return;
+            }
+            function cleanupListeners() {
+                btnContinue.removeEventListener("click", onContinueClick);
+                btnClose.removeEventListener("click", onCloseClick);
+                overlay.removeEventListener("click", onOverlayClick);
+                document.removeEventListener("keydown", onKey);
+            }
+            function closeOverlay() {
+                overlay.classList.remove("is-open");
+                overlay.setAttribute("aria-hidden", "true");
+                cleanupListeners();
+            }
+            function onContinueClick(e) {
+                e.stopPropagation();
+                closeOverlay();
+                if (onContinue) onContinue();
+            }
+            function onCloseClick(e) {
+                e.stopPropagation();
+                closeOverlay();
+                if (onClose) onClose();
+            }
+            function onOverlayClick(e) {
+                if (e.target === overlay) onCloseClick(e);
+            }
+            function onKey(e) {
+                if (e.key === "Escape") onCloseClick(e);
+            }
+            btnContinue.addEventListener("click", onContinueClick);
+            btnClose.addEventListener("click", onCloseClick);
+            overlay.addEventListener("click", onOverlayClick);
+            document.addEventListener("keydown", onKey);
+            overlay.classList.add("is-open");
+            overlay.setAttribute("aria-hidden", "false");
+            try {
+                btnClose.focus();
+            } catch (e) { }
+        }
+
         async function submitFlora(status) {
             const s = document.getElementById("statusText");
             const state = collectState();
@@ -2155,9 +2295,7 @@
             }
 
             s.innerText = "SAVING...";
-            const apiBase = window.location.hostname === "localhost"
-                ? "http://localhost:4000/api"
-                : "/api";
+            const apiBase = getApiBase();
 
             let token = await ensureValidToken(apiBase);
             if (!token) {
@@ -2294,10 +2432,24 @@
                     return;
                 }
 
-                s.innerText = status === "sealed" ? "SEALED" : "BLOSSOMING";
-                setTimeout(() => {
-                    window.open(`/flora/${data._id}`, "_blank");
-                }, 800);
+                const baseStatus = status === "sealed" ? "SEALED" : "BLOSSOMING";
+                s.innerText = baseStatus;
+
+                const floraId = data._id;
+                const openReaderTab = function () {
+                    setTimeout(function () {
+                        window.open("/flora/" + floraId, "_blank");
+                    }, 800);
+                };
+
+                if (data.contentScreening && data.contentScreening.flagged) {
+                    openScreeningAdvisoryModal({
+                        onContinue: openReaderTab,
+                        onClose: function () { },
+                    });
+                } else {
+                    openReaderTab();
+                }
             } catch (err) {
                 s.innerText = "NETWORK ERROR";
             }
@@ -2319,9 +2471,7 @@
             const statusEl = document.getElementById("statusText");
             statusEl.innerText = "LOADING FLORA...";
 
-            const apiBase = window.location.hostname === "localhost"
-                ? "http://localhost:4000/api"
-                : "/api";
+            const apiBase = getApiBase();
 
             try {
                 const res = await fetch(apiBase + "/floras/" + floraId);
