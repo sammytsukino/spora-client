@@ -1,15 +1,6 @@
 import CyclingLogo from '@/components/layout/CyclingLogo';
 import { sporaLogos } from '@/data/logo-data';
-import { BubbleBackground } from '@/components/backgrounds/BubbleBackground';
-
-const bubbleColors = {
-  first: '18,113,255',
-  second: '221,74,255',
-  third: '0,220,255',
-  fourth: '82,255,90',
-  fifth: '244,239,64',
-  sixth: '255,100,255',
-};
+import { HeroMeshGradientBackground } from '@/components/backgrounds/Gradient';
 
 export default function HeroSection() {
   return (
@@ -45,15 +36,23 @@ export default function HeroSection() {
       </div>
 
       <div className="relative flex-1 w-full md:w-[80vw] min-h-[48vh] md:min-h-0">
-        <BubbleBackground className="absolute inset-0 w-full h-full bg-stone-300" colors={bubbleColors} interactive />
+        <HeroMeshGradientBackground />
 
         <div className="absolute inset-0 p-5 sm:p-6 md:p-0">
           <div className="md:absolute md:right-12 lg:right-16 md:top-20 lg:top-24 md:text-right">
-            <p className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] leading-relaxed text-spora-primary max-w-[40ch] md:max-w-[44ch] md:ml-auto">
+            <p className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] leading-relaxed text-[var(--spora-primary)] max-w-[40ch] md:max-w-[44ch] md:ml-auto">
               Generative art for everyone. A canvas for the smallest thing we share: our words. Words blooming into singular works that live, branch, and grow.
             </p>
           </div>
 
+          <div className="mt-4 md:mt-0 md:absolute md:right-12 lg:right-16 md:bottom-6 lg:bottom-8 md:text-right">
+            <button
+              type="button"
+              className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] text-[var(--spora-primary)] hover:underline hover:cursor-pointer"
+            >
+              next flora →
+            </button>
+          </div>
         </div>
       </div>
     </div>

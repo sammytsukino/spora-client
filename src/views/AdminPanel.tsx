@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FilterTabs from "@/components/shared/FilterTabs";
@@ -122,17 +122,9 @@ export default function AdminPanel() {
 
       <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
         <div className="mb-6 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-          <div className="flex min-w-0 flex-wrap items-center gap-4">
-            <h1 className="font-supply-mono text-sm font-bold uppercase">
-              Admin panel
-            </h1>
-            <Link
-              to={ROUTES.LABORATORY_FULL}
-              className="cursor-pointer font-supply-mono text-xs uppercase underline hover:no-underline"
-            >
-              Full Laboratory
-            </Link>
-          </div>
+          <h1 className="min-w-0 font-supply-mono text-sm font-bold uppercase">
+            Admin panel
+          </h1>
           <div className="flex w-full min-w-0 justify-end sm:w-auto">
             <FilterTabs
               filters={[...adminSectionTabs]}

@@ -14,16 +14,7 @@ import Navbar from '@/components/layout/Navbar'
 import HeroSection from '@/components/home/HeroSection'
 import DeclarativeSection from '@/components/home/DeclarativeSection'
 import QuoteSection from '@/components/home/QuoteSection'
-import { BubbleBackground } from '@/components/backgrounds/BubbleBackground'
-
-const bubbleColors = {
-  first: '18,113,255',
-  second: '221,74,255',
-  third: '0,220,255',
-  fourth: '82,255,90',
-  fifth: '244,239,64',
-  sixth: '255,100,255',
-}
+import { HeroMeshGradientBackground } from '@/components/backgrounds/Gradient'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -123,7 +114,7 @@ donde mi cuerpo parece que es la puerta...
         className="relative overflow-hidden"
       >
         <div className="absolute inset-0 w-full h-full">
-          <BubbleBackground className="absolute inset-0 w-full h-full" colors={bubbleColors} interactive />
+          <HeroMeshGradientBackground className="absolute inset-0" />
         </div>
 
         <div className="relative z-10">

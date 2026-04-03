@@ -62,17 +62,7 @@ function mapApiUser(u: {
   };
 }
 
-function mapApiReport(r: {
-  _id: string;
-  reportedBy: { username?: string } | string | null;
-  reportedFlora?: { _id?: string; title?: string; author?: string } | string;
-  reportedFloraId?: { _id?: string } | string;
-  category: string;
-  reason: string;
-  status: string;
-  createdAt: string;
-  source?: "user" | "language_screen";
-}): AdminReport {
+function mapApiReport(r: ApiReport): AdminReport {
   const reporterUsername =
     r.source === "language_screen"
       ? "System"

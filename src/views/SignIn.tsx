@@ -2,16 +2,7 @@ import FooterAlter from "@/components/layout/FooterAlter";
 import SignInForm from "@/components/home/SignInForm";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import Section from "@/components/layout/Section";
-import { BubbleBackground } from "@/components/backgrounds/BubbleBackground";
-
-const bubbleColors = {
-  first: '18,113,255',
-  second: '221,74,255',
-  third: '0,220,255',
-  fourth: '82,255,90',
-  fifth: '244,239,64',
-  sixth: '255,100,255',
-};
+import { HeroMeshGradientBackground } from "@/components/backgrounds/Gradient";
 
 export default function SignIn() {
   return (
@@ -24,7 +15,7 @@ export default function SignIn() {
         className="relative flex flex-col justify-between min-h-dvh"
       >
         <div className="fixed inset-0 w-full h-full z-0">
-          <BubbleBackground className="absolute inset-0 w-full h-full" colors={bubbleColors} interactive />
+          <HeroMeshGradientBackground className="absolute inset-0" />
         </div>
 
         <div className="relative z-10 shrink-0 h-16 sm:h-20" aria-hidden />
