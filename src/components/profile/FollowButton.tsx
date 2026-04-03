@@ -37,6 +37,7 @@ export default function FollowButton({ userId, onFollowChange, className = "" }:
         onFollowChange?.(true);
       }
     } catch {
+      // ignore; user can retry
     } finally {
       setLoading(false);
     }

@@ -90,7 +90,7 @@ export default function PublicProfile() {
         setUser(publicUser);
         const florasData = await listFloras({ authorId: publicUser.id });
         if (!cancelled) setFloras(florasData.map(mapFlora));
-      } catch (e) {
+      } catch {
         if (!cancelled) setError("Could not load profile.");
       } finally {
         if (!cancelled) setLoading(false);

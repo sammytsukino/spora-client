@@ -123,7 +123,7 @@ export function exportUserToPdf(user: AdminUserSummary): void {
   y = drawKeyValue(doc, y, "Status:", user.status ?? "");
   y = drawKeyValue(doc, y, "Floras:", String(user.florasCount ?? 0));
   y = drawKeyValue(doc, y, "Joined:", user.joinedAt ?? "");
-  y = drawKeyValue(doc, y, "ID:", user.id ?? "");
+  drawKeyValue(doc, y, "ID:", user.id ?? "");
 
   finalizePdf(
     doc,

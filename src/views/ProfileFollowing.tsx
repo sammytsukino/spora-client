@@ -31,7 +31,7 @@ export default function ProfileFollowing() {
         const following = await getFollowing(publicUser.id);
         if (cancelled) return;
         setUsers(following);
-      } catch (e) {
+      } catch {
         if (!cancelled) setError("Could not load following.");
       } finally {
         if (!cancelled) setLoading(false);
