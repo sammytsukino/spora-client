@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import type { RefObject } from "react"
 
 interface Dimensions {
@@ -6,6 +6,10 @@ interface Dimensions {
   height: number
 }
 
+/**
+ * Tracks the size of a DOM node. Uses ResizeObserver so layout changes
+ * (content, fonts, flex siblings) update size — not only window resize.
+ */
 export function useDimensions(
   ref: RefObject<HTMLElement | SVGElement | null>
 ): Dimensions {
@@ -14,18 +18,30 @@ export function useDimensions(
     height: 0,
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+
     const updateDimensions = () => {
-      if (ref.current) {
-        const { width, height } = ref.current.getBoundingClientRect()
-        setDimensions({ width, height })
-      }
+      const node = ref.current
+      if (!node) return
+      const { width, height } = node.getBoundingClientRect()
+      setDimensions((prev) =>
+        prev.width === width && prev.height === height ? prev : { width, height }
+      )
     }
 
     updateDimensions()
+
+    const ro = new ResizeObserver(updateDimensions)
+    ro.observe(el)
+
     window.addEventListener("resize", updateDimensions)
 
-    return () => window.removeEventListener("resize", updateDimensions)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener("resize", updateDimensions)
+    }
   }, [ref])
 
   return dimensions
