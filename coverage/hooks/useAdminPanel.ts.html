@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.84% </span>
+                <span class="strong">90.61% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>248/273</span>
+                <span class='fraction'>251/277</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">49.18% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>30/60</span>
+                <span class='fraction'>30/61</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.84% </span>
+                <span class="strong">90.61% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>248/273</span>
+                <span class='fraction'>251/277</span>
             </div>
         
             
@@ -413,11 +413,7 @@
 <a name='L348'></a><a href='#L348'>348</a>
 <a name='L349'></a><a href='#L349'>349</a>
 <a name='L350'></a><a href='#L350'>350</a>
-<a name='L351'></a><a href='#L351'>351</a>
-<a name='L352'></a><a href='#L352'>352</a>
-<a name='L353'></a><a href='#L353'>353</a>
-<a name='L354'></a><a href='#L354'>354</a>
-<a name='L355'></a><a href='#L355'>355</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L351'></a><a href='#L351'>351</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -482,16 +478,9 @@
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -502,6 +491,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -835,31 +827,26 @@ function mapApiUser(u: {
   };
 }
 &nbsp;
-function mapApiReport(r: {
-  _id: string;
-  reportedBy: { username?: string } | string;
-  reportedFlora?: { _id?: string; title?: string; author?: string } | string;
-  reportedFloraId?: { _id?: string } | string;
-  category: string;
-  reason: string;
-  status: string;
-  createdAt: string;
-}): AdminReport {
+function mapApiReport(r: ApiReport): AdminReport {
   const reporterUsername =
-    typeof r.reportedBy === "object" &amp;&amp; r.reportedBy?.username
-      ? r.reportedBy.username.startsWith("@"<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
-<span class="cstat-no" title="statement not covered" >        ? r.reportedBy.username</span>
-        : `@${r.reportedBy.username<span class="branch-0 cbranch-no" title="branch not covered" >}`</span>
-<span class="cstat-no" title="statement not covered" >      : "@Unknown";</span>
+    r.source === <span class="branch-0 cbranch-no" title="branch not covered" >"language_screen"</span>
+<span class="cstat-no" title="statement not covered" >      ? "System"</span>
+      : typeof r.reportedBy === "object" &amp;&amp; r.reportedBy?.username
+        ? r.reportedBy.username.startsWith("@"<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
+<span class="cstat-no" title="statement not covered" >          ? r.reportedBy.username</span>
+          : `@${r.reportedBy.username<span class="branch-0 cbranch-no" title="branch not covered" >}`</span>
+<span class="cstat-no" title="statement not covered" >        : "@Unknown";</span>
   const flora = (r.<span class="branch-0 cbranch-no" title="branch not covered" >reportedFlora ?? r.reportedFloraId) as { _id?: string } | string;</span>
   const targetId =
     typeof flora === "object" &amp;&amp; flora?._id
       ? String(flora._id<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
 <span class="cstat-no" title="statement not covered" >      : String(flora);</span>
-  const categoryMap: Record&lt;string, "spam" | "abuse" | "copyright" | "other"&gt; = {
+  const categoryMap: Record&lt;string, AdminReport["type"]&gt; = {
     spam: "spam",
     harassment: "abuse",
     inappropriate: "abuse",
+    copyright: "copyright",
+    language_review: "language_review",
     other: "other",
   };
   const type = categoryMap[r.category<span class="branch-0 cbranch-no" title="branch not covered" >] ?? "other";</span>
@@ -879,6 +866,7 @@ function mapApiReport(r: {
     targetId,
     reason: r.reason,
     createdAt: r.createdAt,
+    source: r.source,
   };
 }
 &nbsp;
@@ -1132,7 +1120,7 @@ export function useAdminPanel() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-26T09:29:16.793Z
+                at 2026-04-06T10:44:56.387Z
             </div>
         <script src="../prettify.js"></script>
         <script>
