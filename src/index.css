@@ -342,7 +342,7 @@ body {
   --color-spora-primary-hover: var(--spora-primary-hover);
 
   --z-spora-loader: 100;
-  --z-spora-consent: 110;
+  --z-spora-consent: 5000;
   /* Above lab iframe (inline z-index 9998/9999) so first-visit tutorial stays visible and interactive */
   --z-spora-tutorial: 10020;
 

@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 
 const CONSENT_KEY = "spora_consent_v1";
-const IGNORE_SECONDS = 8;
 
 export function getConsentGiven(): boolean {
   if (typeof localStorage === "undefined") return false;
@@ -48,23 +47,16 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
     setVisible(false);
   };
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      dismiss(true);
-    }, IGNORE_SECONDS * 1000);
-    return () => clearTimeout(t);
-  }, [onAccept]);
-
   if (!visible) return null;
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-spora-consent w-[calc(100%-2rem)] max-w-sm"
+      className="fixed bottom-6 right-6 z-(--z-spora-consent) w-[calc(100%-3rem)] max-w-sm"
       role="dialog"
       aria-modal="false"
       aria-labelledby="consent-title"
     >
-      <div className="bg-spora-primary-light border-2 border-spora-primary p-4 shadow-lg relative">
+      <div className="bg-spora-primary-light border-2 border-spora-primary p-6 shadow-lg relative">
         <button
           type="button"
           onClick={() => dismiss(true)}
