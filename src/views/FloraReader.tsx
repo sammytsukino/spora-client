@@ -6,7 +6,7 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
-import { Shuffle, Volume2 } from "lucide-react";
+import { Music, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
@@ -74,7 +74,7 @@ export default function FloraReader() {
   >("idle");
   const [ttsError, setTtsError] = useState<string | null>(null);
   
-  const [ttsSpeed, setTtsSpeed] = useState(1);
+  const [ttsSpeed, setTtsSpeed] = useState(0.8);
 
   const releaseTtsResources = useCallback(() => {
     const a = ttsAudioRef.current;
@@ -698,20 +698,20 @@ export default function FloraReader() {
           summaryClassName="mb-0"
           summaryStyle={textShadowStyle}
           panelStyle={textShadowStyle}
-          panelClassName="flora-reader-scroll max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 text-[10px] sm:text-xs"
+          panelClassName="flora-reader-scroll max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 text-[10px] sm:text-xs !items-start text-left"
           aria-label="Reader options: layout, wind, music, listen"
         >
-          <div className="flex flex-col gap-2 w-full items-end">
+          <div className="flex w-full flex-col items-start gap-2">
             <button
               type="button"
               onClick={handleRegenerate}
-              className="bg-transparent border-0 shadow-none px-0 py-1 cursor-pointer hover:underline transition-opacity flex items-center gap-2 w-full justify-end text-right"
+              className="flex w-full cursor-pointer items-center justify-start gap-2 border-0 bg-transparent px-0 py-1 text-left shadow-none transition-opacity hover:underline"
             >
-              <span>Shuffle layout</span>
               <Shuffle className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
+              <span>Shuffle layout</span>
             </button>
-            <div className="flex flex-col gap-1 w-full items-end">
-              <label htmlFor="reader-wind" className="opacity-80 whitespace-nowrap">
+            <div className="flex w-full flex-col items-start gap-1">
+              <label htmlFor="reader-wind" className="whitespace-nowrap opacity-80">
                 Wind
               </label>
               <input
@@ -729,10 +729,11 @@ export default function FloraReader() {
             <button
               type="button"
               onClick={() => setMusicPlaying((v) => !v)}
-              className="bg-transparent border-0 shadow-none px-0 py-1 no-underline hover:underline transition-opacity w-full text-right"
+              className="flex w-full items-center justify-start gap-2 border-0 bg-transparent px-0 py-1 text-left shadow-none no-underline transition-opacity hover:underline"
               aria-pressed={musicPlaying}
             >
-              {musicPlaying ? "⏸ Music" : "♪ Music"}
+              <Music className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+              <span>{musicPlaying ? "Pause music" : "Music"}</span>
             </button>
           </div>
 
@@ -746,16 +747,16 @@ export default function FloraReader() {
             />
           </div>
 
-          <div className="flex flex-col gap-2 w-full items-end">
-            <span className="opacity-80 normal-case tracking-normal text-[10px] sm:text-[11px] flex items-center gap-1.5 justify-end w-full">
+          <div className="flex w-full flex-col items-start gap-2">
+            <span className="flex w-full items-center justify-start gap-1.5 text-[10px] normal-case tracking-normal opacity-80 sm:text-[11px]">
               <Volume2 className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
-              Listen (ElevenLabs)
+              Listen
             </span>
-            <div className="flex flex-col gap-1 w-full items-end">
-              <label htmlFor="reader-tts-speed" className="opacity-80 whitespace-nowrap">
+            <div className="flex w-full flex-col items-start gap-1">
+              <label htmlFor="reader-tts-speed" className="whitespace-nowrap opacity-80">
                 Speed
               </label>
-              <div className="flex items-center gap-2 w-full max-w-[220px] justify-end flex-wrap">
+              <div className="flex w-full max-w-[220px] flex-wrap items-center justify-start gap-2">
                 <input
                   id="reader-tts-speed"
                   type="range"
@@ -764,23 +765,23 @@ export default function FloraReader() {
                   step={0.05}
                   value={ttsSpeed}
                   onChange={(e) => handleTtsSpeedChange(parseFloat(e.target.value))}
-                  className="flex-1 min-w-[100px] cursor-pointer"
+                  className="min-w-[100px] flex-1 cursor-pointer"
                   style={{ accentColor: isLightBg ? "var(--spora-primary)" : "white" }}
                 />
                 <span
-                  className="opacity-80 tabular-nums shrink-0 text-[10px] min-w-10 text-right normal-case"
+                  className="min-w-10 shrink-0 text-[10px] tabular-nums normal-case opacity-80"
                   aria-live="polite"
                 >
                   {ttsSpeed.toFixed(2)}×
                 </span>
               </div>
             </div>
-            <div className="flex flex-wrap gap-3 justify-end">
+            <div className="flex flex-wrap justify-start gap-3">
               <button
                 type="button"
                 onClick={() => void handleTtsMain()}
                 disabled={!canListen || ttsPhase === "loading"}
-                className="bg-transparent border-0 shadow-none px-0 py-1 hover:underline transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                className="border-0 bg-transparent px-0 py-1 shadow-none transition-opacity hover:underline disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {ttsPhase === "loading"
                   ? "Generating…"
@@ -794,14 +795,14 @@ export default function FloraReader() {
                 type="button"
                 onClick={handleTtsStop}
                 disabled={ttsPhase === "idle"}
-                className="bg-transparent border-0 shadow-none px-0 py-1 hover:underline transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                className="border-0 bg-transparent px-0 py-1 shadow-none transition-opacity hover:underline disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Stop
               </button>
             </div>
             {ttsError && (
               <p
-                className={`normal-case tracking-normal text-[10px] font-medium leading-snug text-right ${
+                className={`text-left text-[10px] font-medium leading-snug normal-case tracking-normal ${
                   isLightBg ? "text-red-600" : "text-red-300"
                 }`}
               >

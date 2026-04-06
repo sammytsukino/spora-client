@@ -744,6 +744,21 @@
             justify-content: center;
         }
 
+        #visualPoetryCanvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        html:not([data-visual-poetry-feature="1"]) #vpFeatureSection,
+        html:not([data-visual-poetry-feature="1"]) #visualPoetryCanvas {
+            display: none !important;
+        }
+
         canvas {
             display: block;
             position: absolute;
@@ -1062,6 +1077,59 @@
             </details>
         </section>
 
+        <section class="laboratory-only" id="vpFeatureSection">
+            <details>
+                <summary>VISUAL_POETRY_GRID</summary>
+                <p style="font-family: var(--font-mono); font-size: 9px; opacity: 0.75; margin-bottom: 10px;">
+                    Visual Poetry layout (segmentation, noise grid, seeded shuffle). Transparent layer; font and cell colors follow detected mood (same rules as organic profile) or random presets when mood is neutral.
+                </p>
+                <div class="control-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+                    <div>
+                        <label>Columns</label>
+                        <input type="number" id="inpVpCols" min="2" max="32" value="8"
+                            oninput="renderVisualPoetryDebounced()" />
+                    </div>
+                    <div>
+                        <label>Rows</label>
+                        <input type="number" id="inpVpRows" min="2" max="32" value="16"
+                            oninput="renderVisualPoetryDebounced()" />
+                    </div>
+                </div>
+                <div class="control-box">
+                    <label><input type="checkbox" id="chkVpUseDensity" checked onchange="renderVisualPoetryDebounced()" />
+                        Density-driven grid (noise)</label>
+                </div>
+                <div class="control-box">
+                    <label id="lblVpDensity">Density: 17</label>
+                    <input type="range" id="rngVpDensity" min="15" max="20" step="1" value="17"
+                        oninput="updateUI('lblVpDensity', 'Density', this.value, ''); renderVisualPoetryDebounced();" />
+                </div>
+                <div class="control-box">
+                    <label><input type="checkbox" id="chkVpStretch" checked onchange="renderVisualPoetryDebounced()" />
+                        Stretch text to fill cell (Visual Poetry)</label>
+                </div>
+                <div class="control-box">
+                    <label><input type="checkbox" id="chkVpShowGrid" onchange="renderVisualPoetryDebounced()" /> Show grid
+                        lines</label>
+                </div>
+                <div class="control-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+                    <div>
+                        <label>Text (single-color mode)</label>
+                        <input type="color" id="colVpText" value="#f5f5f5" oninput="renderVisualPoetryDebounced()" />
+                    </div>
+                </div>
+                <div class="control-box">
+                    <label><input type="checkbox" id="chkVpRandomPalette" checked onchange="renderVisualPoetryDebounced()" />
+                        Random preset colors (cells + light text)</label>
+                </div>
+                <div class="control-box">
+                    <button type="button" onclick="visualPoetryNewSeed()">NEW SEED</button>
+                    <span id="vpSeedDisplay" style="font-family: var(--font-mono); font-size: 9px; margin-left: 8px;"></span>
+                    <input type="hidden" id="inpVpSeed" value="0" />
+                </div>
+            </details>
+        </section>
+
         <section
             style="margin-top: auto; padding-top: 25px; border-top: 2px solid var(--spora-dark); overflow: visible;">
             <h2>SYSTEM_EXPORT</h2>
@@ -1100,7 +1168,9 @@
         </section>
     </aside>
 
-    <div id="canvas-container"></div>
+    <div id="canvas-container">
+        <canvas id="visualPoetryCanvas" width="800" height="600" aria-hidden="true"></canvas>
+    </div>
 
     <div id="confirmModal" class="confirm-modal-overlay" aria-hidden="true">
         <div class="confirm-modal" role="document">
@@ -1142,6 +1212,17 @@
             }
         })();
         const INSTALLATION_MODE = true;
+        /**
+         * Visual Poetry backdrop layer — shipped off for v1.0; enable for v1.1 by setting default to true below.
+         * QA / dev: add ?visualPoetry=1 or ?vp=1 to the Installation URL to preview the feature.
+         */
+        const VISUAL_POETRY_FEATURE = (() => {
+            try {
+                const q = new URLSearchParams(window.location.search || "");
+                if (q.get("visualPoetry") === "1" || q.get("vp") === "1") return true;
+            } catch (e) { }
+            return false;
+        })();
         let flowers = [];
         let targetFlowerSet = null;
         let lastUsedSet = "daisy";
@@ -1166,8 +1247,492 @@
             colors: { maskA: "#fef08a", maskB: "#fef9c3", stem: "#00ff00", text: "#ffffff", bgA: "#0000ff", bgB: "#ffffff", auto: false },
             geometry: { scale: 2.1, fontSize: 28, font: "'JetBrains Mono', monospace" },
             style: { mask: false, grad: false, outline: false, outlineW: "2" },
-            background: { mode: "gradient", angle: "0" }
+            background: { mode: "gradient", angle: "0" },
+            visualPoetry: {
+                version: 1,
+                enabled: true,
+                columns: 8,
+                rows: 16,
+                seed: 0,
+                densityStrength: 17,
+                useDensity: true,
+                stretchText: true,
+                showGrid: false,
+                textColor: "#f5f5f5",
+                bgColor: "transparent",
+                randomPalette: true
+            }
         };
+
+        const VISUAL_POETRY_VERSION = 1;
+
+        function mergeVisualPoetry(vp) {
+            const d = DEFAULT_LAB_STATE.visualPoetry;
+            if (!vp || typeof vp !== "object") return { ...d, enabled: true };
+            return {
+                ...d,
+                ...vp,
+                enabled: true,
+                version: VISUAL_POETRY_VERSION
+            };
+        }
+
+        function vpMulberry32(a) {
+            let state = a >>> 0;
+            return function () {
+                state = (state + 0x6D2B79F5) >>> 0;
+                let t = state;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+        }
+
+        const VP_COLOR_PALETTES = [
+            ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8"],
+            ["#6C5CE7", "#A29BFE", "#FD79A8", "#FDCB6E", "#E17055"],
+            ["#00B894", "#00CEC9", "#55EFC4", "#81ECEC", "#74B9FF"],
+            ["#2D3436", "#636E72", "#B2BEC3", "#DFE6E9", "#FDCB6E"],
+            ["#E84393", "#FD79A8", "#FDCB6E", "#E17055", "#D63031"],
+            ["#0984E3", "#74B9FF", "#A29BFE", "#6C5CE7", "#FD79A8"],
+            ["#00B894", "#55EFC4", "#81ECEC", "#74B9FF", "#A29BFE"],
+            ["#2D3436", "#636E72", "#B2BEC3", "#DFE6E9", "#FFFFFF"]
+        ];
+
+        const VP_NOISE_SIZE = 256;
+        let vpNoiseGrid = null;
+        let vpNoiseRand = null;
+
+        function vpNoiseSeed(seed) {
+            vpNoiseRand = vpMulberry32(seed >>> 0);
+            vpNoiseGrid = new Float32Array(VP_NOISE_SIZE * VP_NOISE_SIZE);
+            for (let i = 0; i < vpNoiseGrid.length; i++) {
+                vpNoiseGrid[i] = vpNoiseRand();
+            }
+        }
+
+        function vpNoise2D(x, y) {
+            const xi = Math.floor(x) % VP_NOISE_SIZE;
+            const yi = Math.floor(y) % VP_NOISE_SIZE;
+            const xf = x - Math.floor(x);
+            const yf = y - Math.floor(y);
+            const i00 = ((yi + VP_NOISE_SIZE) % VP_NOISE_SIZE) * VP_NOISE_SIZE + ((xi + VP_NOISE_SIZE) % VP_NOISE_SIZE);
+            const i10 = ((yi + VP_NOISE_SIZE) % VP_NOISE_SIZE) * VP_NOISE_SIZE + ((xi + 1 + VP_NOISE_SIZE) % VP_NOISE_SIZE);
+            const i01 = ((yi + 1 + VP_NOISE_SIZE) % VP_NOISE_SIZE) * VP_NOISE_SIZE + ((xi + VP_NOISE_SIZE) % VP_NOISE_SIZE);
+            const i11 = ((yi + 1 + VP_NOISE_SIZE) % VP_NOISE_SIZE) * VP_NOISE_SIZE + ((xi + 1 + VP_NOISE_SIZE) % VP_NOISE_SIZE);
+            const v00 = vpNoiseGrid[i00];
+            const v10 = vpNoiseGrid[i10];
+            const v01 = vpNoiseGrid[i01];
+            const v11 = vpNoiseGrid[i11];
+            const vx0 = v00 + (v10 - v00) * xf;
+            const vx1 = v01 + (v11 - v01) * xf;
+            return vx0 + (vx1 - vx0) * yf;
+        }
+
+        function vpGenerateDensityPositions(n, a, b, densityFn, strength) {
+            const minSize = 5;
+            const eps = 1e-4;
+            const weights = new Array(n);
+            for (let i = 0; i < n; i++) {
+                const t = (i + 0.5) / n;
+                let d = densityFn(t);
+                const w = 1 + (strength * 0.2) * (d - 0.5) * 2;
+                weights[i] = Math.max(eps, w);
+            }
+            const totalWidth = b - a;
+            const sum = weights.reduce((s, v) => s + v, 0);
+            let pixelWidths = weights.map((w) => (w / sum) * totalWidth);
+            if (totalWidth >= n * minSize) {
+                let currentWidths = pixelWidths.slice();
+                const isFixed = new Array(n).fill(false);
+                for (let iter = 0; iter < n; iter++) {
+                    let satisfied = true;
+                    const flexibleIndices = [];
+                    let flexibleWeightSum = 0;
+                    let fixedSpace = 0;
+                    for (let i = 0; i < n; i++) {
+                        if (!isFixed[i] && currentWidths[i] < minSize - 0.01) {
+                            isFixed[i] = true;
+                            currentWidths[i] = minSize;
+                            satisfied = false;
+                        }
+                        if (isFixed[i]) fixedSpace += currentWidths[i];
+                        else {
+                            flexibleIndices.push(i);
+                            flexibleWeightSum += weights[i];
+                        }
+                    }
+                    if (satisfied) break;
+                    const remainingSpace = totalWidth - fixedSpace;
+                    if (remainingSpace < 0) break;
+                    if (flexibleWeightSum > 0) {
+                        for (const idx of flexibleIndices) {
+                            currentWidths[idx] = (weights[idx] / flexibleWeightSum) * remainingSpace;
+                        }
+                    }
+                }
+                pixelWidths = currentWidths;
+            }
+            let acc = 0;
+            const arr = new Array(n + 1);
+            arr[0] = a;
+            for (let i = 0; i < n; i++) {
+                acc += pixelWidths[i];
+                arr[i + 1] = a + acc;
+            }
+            return arr;
+        }
+
+        function deriveVisualPoetrySeed(title, text) {
+            const s = getSeed(String(title || "") + "\n" + String(text || ""), 90211);
+            return Math.max(1, Math.floor(s * 2147483646) + 1);
+        }
+
+        function vpSegmentText(text) {
+            if (!text || !String(text).trim()) return [];
+            const segments = [];
+            const lines = String(text).split(/\n/);
+            const punctuationRegex = /[，。、；：！？,.;:!?]/g;
+            for (const line of lines) {
+                if (!line.trim()) continue;
+                const hasPunctuation = /[，。、；：！？,.;:!?]/.test(line);
+                const parts = line.split(punctuationRegex);
+                if (hasPunctuation) {
+                    for (const part of parts) {
+                        const trimmed = part.trim();
+                        if (!trimmed) continue;
+                        if (trimmed.includes(" ")) {
+                            const words = trimmed.split(/\s+/);
+                            for (const word of words) {
+                                if (word.trim()) segments.push(word.trim());
+                            }
+                        } else {
+                            segments.push(trimmed);
+                        }
+                    }
+                } else {
+                    const trimmed = line.trim();
+                    if (trimmed.includes(" ")) {
+                        const words = trimmed.split(/\s+/);
+                        for (const word of words) {
+                            if (word.trim()) segments.push(word.trim());
+                        }
+                    } else {
+                        segments.push(trimmed);
+                    }
+                }
+            }
+            return segments.filter((seg) => seg && seg.trim());
+        }
+
+        function vpBuildGrid(canvasWidth, canvasHeight, vp) {
+            const cols = vp.columns;
+            const rows = vp.rows;
+            const useDensity = vp.useDensity;
+            const densityStrength = vp.densityStrength;
+            const padding = 20;
+            const workAreaX = padding;
+            const workAreaY = padding;
+            const workAreaW = canvasWidth - padding * 2;
+            const workAreaH = canvasHeight - padding * 2;
+            let xs;
+            let ys;
+            if (useDensity && densityStrength > 0) {
+                vpNoiseSeed(vp.seed >>> 0);
+                const noiseScale = 0.015;
+                const densityFnX = (t) => {
+                    const xx = workAreaX + t * workAreaW;
+                    const yy = workAreaY + workAreaH * 0.5;
+                    return vpNoise2D(xx * noiseScale, yy * noiseScale);
+                };
+                const densityFnY = (t) => {
+                    const xx = workAreaX + workAreaW * 0.5;
+                    const yy = workAreaY + t * workAreaH;
+                    return vpNoise2D(xx * noiseScale, yy * noiseScale);
+                };
+                xs = vpGenerateDensityPositions(cols, workAreaX, workAreaX + workAreaW, densityFnX, densityStrength);
+                ys = vpGenerateDensityPositions(rows, workAreaY, workAreaY + workAreaH, densityFnY, densityStrength);
+            } else {
+                xs = [];
+                ys = [];
+                for (let i = 0; i <= cols; i++) xs.push(workAreaX + (workAreaW / cols) * i);
+                for (let i = 0; i <= rows; i++) ys.push(workAreaY + (workAreaH / rows) * i);
+            }
+            const gridData = [];
+            for (let r = 0; r < rows; r++) {
+                const row = [];
+                for (let c = 0; c < cols; c++) {
+                    row.push({
+                        x: xs[c],
+                        y: ys[r],
+                        width: xs[c + 1] - xs[c],
+                        height: ys[r + 1] - ys[r],
+                        text: null,
+                        color: null
+                    });
+                }
+                gridData.push(row);
+            }
+            return gridData;
+        }
+
+        function vpAssignTextToGrid(gridData, textSegments, vp, cellPalette) {
+            const rows = gridData.length;
+            const cols = gridData[0] ? gridData[0].length : 0;
+            const totalCells = cols * rows;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    gridData[r][c].text = null;
+                    gridData[r][c].color = null;
+                }
+            }
+            if (totalCells === 0 || !textSegments.length) return;
+            const cellsToSelect = Math.min(textSegments.length, totalCells);
+            const allCellIndices = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    allCellIndices.push({ r, c });
+                }
+            }
+            const shuffleRand = vpMulberry32((vp.seed ^ 0x6a09e667) >>> 0);
+            for (let i = allCellIndices.length - 1; i > 0; i--) {
+                const j = Math.floor(shuffleRand() * (i + 1));
+                const t = allCellIndices[i];
+                allCellIndices[i] = allCellIndices[j];
+                allCellIndices[j] = t;
+            }
+            const selectedCells = allCellIndices.slice(0, cellsToSelect);
+            selectedCells.sort((a, b) => (a.r !== b.r ? a.r - b.r : a.c - b.c));
+            const useRandom = vp.randomPalette !== false;
+            const paletteRand = vpMulberry32((vp.seed ^ 0x9e3779b9) >>> 0);
+            const fallbackPreset = VP_COLOR_PALETTES[Math.floor(paletteRand() * VP_COLOR_PALETTES.length)];
+            const selectedPalette = useRandom && cellPalette && cellPalette.length ? cellPalette : fallbackPreset;
+            const n = Math.min(textSegments.length, selectedCells.length);
+            for (let i = 0; i < n; i++) {
+                const cell = selectedCells[i];
+                const { r, c } = cell;
+                gridData[r][c].text = textSegments[i];
+                gridData[r][c].color = useRandom ? selectedPalette[i % selectedPalette.length] : vp.textColor;
+            }
+        }
+
+        function vpGetBodyFontFamily() {
+            try {
+                return getComputedStyle(document.body).fontFamily || "sans-serif";
+            } catch (e) {
+                return "system-ui, -apple-system, sans-serif";
+            }
+        }
+
+        function vpDrawGrid(ctx, gridData, vp, wCss, hCss, fontFamily) {
+            const stretchText = vp.stretchText !== false;
+            const useRandomColors = vp.randomPalette !== false;
+            const textColorSingle = vp.textColor || "#f5f5f5";
+            ctx.clearRect(0, 0, wCss, hCss);
+            const fontStack = fontFamily || vpGetBodyFontFamily();
+
+            for (let r = 0; r < gridData.length; r++) {
+                for (let c = 0; c < gridData[r].length; c++) {
+                    const cell = gridData[r][c];
+                    if (!cell.text) continue;
+                    const x = cell.x;
+                    const y = cell.y;
+                    const w = cell.width;
+                    const h = cell.height;
+                    if (useRandomColors && cell.color) {
+                        ctx.fillStyle = cell.color;
+                        ctx.fillRect(x, y, w, h);
+                    }
+                    ctx.fillStyle = useRandomColors ? "#FFFFFF" : (cell.color || textColorSingle);
+                    const aspectRatio = w / h;
+                    const isHorizontal = aspectRatio > 1;
+                    if (stretchText) {
+                        ctx.save();
+                        if (isHorizontal) {
+                            ctx.textAlign = "left";
+                            ctx.textBaseline = "top";
+                            const baseFontSize = 40;
+                            ctx.font = "bold " + baseFontSize + "px " + fontStack;
+                            const textMetrics = ctx.measureText(cell.text);
+                            const textWidth = textMetrics.width;
+                            const textHeight = baseFontSize;
+                            const scaleX = w / textWidth;
+                            const scaleY = h / textHeight;
+                            ctx.translate(x, y);
+                            ctx.scale(scaleX, scaleY);
+                            ctx.fillText(cell.text, 0, 0);
+                        } else {
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "top";
+                            const baseFontSize = 40;
+                            ctx.font = "bold " + baseFontSize + "px " + fontStack;
+                            const chars = cell.text.split("");
+                            const charCount = chars.length;
+                            if (charCount === 0) {
+                                ctx.restore();
+                                continue;
+                            }
+                            const charHeight = h / charCount;
+                            const sampleCharMetrics = ctx.measureText(chars[0] || " ");
+                            const sampleCharWidth = sampleCharMetrics.width;
+                            const sampleCharHeight = baseFontSize;
+                            const scaleX = w / sampleCharWidth;
+                            const scaleY = charHeight / sampleCharHeight;
+                            ctx.translate(x, y);
+                            ctx.scale(scaleX, scaleY);
+                            for (let i = 0; i < chars.length; i++) {
+                                const charY = i * sampleCharHeight;
+                                ctx.fillText(chars[i], sampleCharWidth / 2, charY);
+                            }
+                        }
+                        ctx.restore();
+                    } else {
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        let fontSize = Math.min((w / Math.max(1, cell.text.length)) * 1.5, h * 0.8);
+                        ctx.font = "bold " + fontSize + "px " + fontStack;
+                        if (isHorizontal) {
+                            ctx.fillText(cell.text, x + w / 2, y + h / 2);
+                        } else {
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "top";
+                            const chars = cell.text.split("");
+                            const charCount = chars.length;
+                            const ch = h / charCount;
+                            for (let i = 0; i < chars.length; i++) {
+                                ctx.fillText(chars[i], x + w / 2, y + i * ch);
+                            }
+                        }
+                    }
+                }
+            }
+            if (vp.showGrid) {
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+                ctx.lineWidth = 1;
+                for (let rr = 0; rr < gridData.length; rr++) {
+                    for (let cc = 0; cc < gridData[rr].length; cc++) {
+                        const cell = gridData[rr][cc];
+                        ctx.strokeRect(cell.x, cell.y, cell.width, cell.height);
+                    }
+                }
+            }
+        }
+
+        let visualPoetryDebounceTimer = null;
+        function renderVisualPoetryDebounced() {
+            if (!VISUAL_POETRY_FEATURE) return;
+            clearTimeout(visualPoetryDebounceTimer);
+            visualPoetryDebounceTimer = setTimeout(renderVisualPoetry, 80);
+        }
+
+        function maybeRenderVisualPoetry() {
+            if (!VISUAL_POETRY_FEATURE) return;
+            renderVisualPoetry();
+        }
+
+        function visualPoetryNewSeed() {
+            if (!VISUAL_POETRY_FEATURE) return;
+            const el = document.getElementById("inpVpSeed");
+            if (!el) return;
+            const r = vpMulberry32((Date.now() ^ Math.floor(Math.random() * 0x7fffffff)) >>> 0);
+            el.value = String(Math.floor(r() * 2147483646) + 1);
+            renderVisualPoetry();
+        }
+
+        function syncVisualPoetryToUI(vp) {
+            const m = mergeVisualPoetry(vp);
+            const title = (document.getElementById("inpTitle") && document.getElementById("inpTitle").value) || "";
+            const body = typeof getFullText === "function" ? getFullText() : "";
+            let seed = m.seed;
+            if (!seed || seed <= 0) {
+                seed = deriveVisualPoetrySeed(title, body);
+            }
+            const cols = document.getElementById("inpVpCols");
+            if (cols) cols.value = String(m.columns);
+            const rows = document.getElementById("inpVpRows");
+            if (rows) rows.value = String(m.rows);
+            const hid = document.getElementById("inpVpSeed");
+            if (hid) hid.value = String(seed);
+            const rngD = document.getElementById("rngVpDensity");
+            if (rngD) rngD.value = String(m.densityStrength);
+            const chkD = document.getElementById("chkVpUseDensity");
+            if (chkD) chkD.checked = m.useDensity !== false;
+            const chkG = document.getElementById("chkVpShowGrid");
+            if (chkG) chkG.checked = !!m.showGrid;
+            const colT = document.getElementById("colVpText");
+            if (colT) colT.value = m.textColor || "#f5f5f5";
+            const chkP = document.getElementById("chkVpRandomPalette");
+            if (chkP) chkP.checked = m.randomPalette !== false;
+            const chkStretch = document.getElementById("chkVpStretch");
+            if (chkStretch) chkStretch.checked = m.stretchText !== false;
+            const disp = document.getElementById("vpSeedDisplay");
+            if (disp) disp.textContent = "seed " + seed;
+            if (typeof updateUI === "function") {
+                updateUI("lblVpDensity", "Density", m.densityStrength, "");
+            }
+        }
+
+        function getVisualPoetryFromUI() {
+            if (!document.getElementById("inpVpCols")) {
+                return mergeVisualPoetry(currentLabState && currentLabState.visualPoetry);
+            }
+            const title = (document.getElementById("inpTitle") && document.getElementById("inpTitle").value) || "";
+            const body = typeof getFullText === "function" ? getFullText() : "";
+            let seed = parseInt(document.getElementById("inpVpSeed") && document.getElementById("inpVpSeed").value, 10);
+            if (!Number.isFinite(seed) || seed <= 0) {
+                seed = deriveVisualPoetrySeed(title, body);
+            }
+            return {
+                version: VISUAL_POETRY_VERSION,
+                enabled: true,
+                columns: Math.max(2, Math.min(32, parseInt(document.getElementById("inpVpCols") && document.getElementById("inpVpCols").value, 10) || 8)),
+                rows: Math.max(2, Math.min(32, parseInt(document.getElementById("inpVpRows") && document.getElementById("inpVpRows").value, 10) || 16)),
+                seed: seed,
+                densityStrength: Math.max(15, Math.min(20, parseInt(document.getElementById("rngVpDensity") && document.getElementById("rngVpDensity").value, 10) || 17)),
+                useDensity: !!(document.getElementById("chkVpUseDensity") && document.getElementById("chkVpUseDensity").checked),
+                stretchText: !!(document.getElementById("chkVpStretch") && document.getElementById("chkVpStretch").checked),
+                showGrid: !!(document.getElementById("chkVpShowGrid") && document.getElementById("chkVpShowGrid").checked),
+                textColor: (document.getElementById("colVpText") && document.getElementById("colVpText").value) || "#f5f5f5",
+                bgColor: "transparent",
+                randomPalette: !!(document.getElementById("chkVpRandomPalette") && document.getElementById("chkVpRandomPalette").checked)
+            };
+        }
+
+        function renderVisualPoetry() {
+            if (!VISUAL_POETRY_FEATURE) {
+                const c = document.getElementById("visualPoetryCanvas");
+                if (c) {
+                    const x = c.getContext("2d");
+                    if (x) c.width = c.width;
+                }
+                return;
+            }
+            const canvas = document.getElementById("visualPoetryCanvas");
+            const container = document.getElementById("canvas-container");
+            if (!canvas || !container) return;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+            const vp = getVisualPoetryFromUI();
+            const wCss = container.clientWidth || 800;
+            const hCss = container.clientHeight || 600;
+            const dpr = Math.min(2, typeof window.devicePixelRatio === "number" ? window.devicePixelRatio : 1);
+            canvas.width = Math.max(1, Math.floor(wCss * dpr));
+            canvas.height = Math.max(1, Math.floor(hCss * dpr));
+            canvas.style.width = wCss + "px";
+            canvas.style.height = hCss + "px";
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            const title = (document.getElementById("inpTitle") && document.getElementById("inpTitle").value) || "";
+            const fullText = (title ? title.trim() + "\n\n" : "") + (typeof getFullText === "function" ? getFullText() : "");
+            const segments = vpSegmentText(fullText);
+            ctx.scale(dpr, dpr);
+            const gridData = vpBuildGrid(wCss, hCss, vp);
+            const cellPalette = resolveVisualPoetryCellPalette(vp);
+            const vpFont = resolveVisualPoetryFont();
+            vpAssignTextToGrid(gridData, segments, vp, cellPalette);
+            vpDrawGrid(ctx, gridData, vp, wCss, hCss, vpFont);
+            const disp = document.getElementById("vpSeedDisplay");
+            if (disp) disp.textContent = "seed " + vp.seed;
+        }
 
         function getContentSignature(txt) {
             return (txt || "").trim().toLowerCase().replace(/\s+/g, " ");
@@ -1979,7 +2544,11 @@
 
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
-            const txt = getFullText().trim(); if (!txt) return;
+            const txt = getFullText().trim();
+            if (!txt) {
+                maybeRenderVisualPoetry();
+                return;
+            }
             const bS = parseInt(document.getElementById("rngSize").value), sS = parseFloat(document.getElementById("rngScale").value), oW = parseInt(document.getElementById("rngOutlineWidth").value);
             const sets = Object.keys(loadedAssets), activeS = targetFlowerSet || sets[floor(random(sets.length))];
             lastUsedSet = activeS; const imgs = loadedAssets[activeS];
@@ -2000,7 +2569,10 @@
             if (words.length < count) for (let i = 0; i < count; i++) chunks.push(txt.split(""));
             else { let wPF = ceil(words.length / count); for (let i = 0; i < count; i++) chunks.push(words.slice(i * wPF, (i + 1) * wPF).join(" ").split("")); }
             chunks = chunks.filter(c => c.length > 0);
-            if (chunks.length === 0) return;
+            if (chunks.length === 0) {
+                maybeRenderVisualPoetry();
+                return;
+            }
             const bloomCount = chunks.length;
             const maxW = Math.min(w, 1400);
             const globalCharScale = avgCharsPerBloom > 50 ? constrain(map(avgCharsPerBloom, 50, 300, 1.0, 0.4), 0.4, 1.0) : 1.0;
@@ -2017,6 +2589,7 @@
             }
             flowers.sort((a, b) => a.ty - b.ty);
             document.getElementById("statusText").innerText = `READY | BLOOMS: ${flowers.length}`;
+            maybeRenderVisualPoetry();
         }
 
         function updateVisuals() {
@@ -2070,7 +2643,11 @@
             cont.style.backgroundSize = mode === "tile" ? "100px 100px" : mode === "stretch" ? "100% 100%" : "auto";
         }
 
-        function triggerRegen() { clearTimeout(debounceTimer); debounceTimer = setTimeout(generateOrganicProfile, 500); }
+        function triggerRegen() {
+            if (VISUAL_POETRY_FEATURE && typeof renderVisualPoetryDebounced === "function") renderVisualPoetryDebounced();
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(generateOrganicProfile, 500);
+        }
         function triggerVisuals() { clearTimeout(visualDebounce); visualDebounce = setTimeout(updateVisuals, 100); }
         function applyFlowerSet(val) {
             if (!val || !Object.keys(maskUrls).includes(val)) return;
@@ -2092,6 +2669,7 @@
         }
 
         function collectState() {
+            const vpPersist = VISUAL_POETRY_FEATURE ? { visualPoetry: getVisualPoetryFromUI() } : {};
             if (isBlossomingMode && currentLabState) {
                 const fullText = getFullText();
                 return {
@@ -2106,6 +2684,7 @@
                     geometry: currentLabState.geometry || { scale: 1.5, fontSize: 16, font: "'Inter', sans-serif" },
                     style: currentLabState.style || { mask: true, grad: true, outline: true, outlineW: 1 },
                     background: currentLabState.background || { mode: "gradient", angle: 180 },
+                    ...vpPersist,
                 };
             }
             const pulseVal = parseFloat(document.getElementById("rngPulse").value);
@@ -2146,6 +2725,7 @@
                     mode: document.getElementById("selBgMode").value,
                     angle: document.getElementById("rngBgAngle").value,
                 },
+                ...vpPersist,
             };
         }
 
@@ -2173,6 +2753,7 @@
         }
 
         function onTitleInputChanged() {
+            if (VISUAL_POETRY_FEATURE && typeof renderVisualPoetryDebounced === "function") renderVisualPoetryDebounced();
             const v = (document.getElementById("inpTitle")?.value || "").trim();
             if (!v) return;
             clearTitleRequiredUI();
@@ -2570,6 +3151,49 @@
             solitude: { flowerSet: "violet", wind: { active: false, strength: 0.05 }, chaos: { scramble: false, scrambleForce: 0.05, jitter: 0.08, pulse: { active: true, strength: 0.15 }, wave: { active: false, strength: 0.1 } }, colors: { maskA: "#F5F5DC", maskB: "#E8E8E8", stem: "#00FF00", bgA: "#2F4F4F", bgB: "#708090", auto: true }, geometry: { scale: 1.0, fontSize: 16, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 1 }, background: { mode: "gradient", angle: 180 } }
         };
 
+        function resolveVisualPoetryFont() {
+            const text = (typeof getFullText === "function" ? getFullText() : "") || "";
+            const morph = currentMorph || (text.trim() ? extractMorphology(text) : null);
+            const sel = document.getElementById("selFont");
+            const fontArray = ["'Space Mono', monospace", "'Grenze Gotisch', cursive", "'Playfair Display', serif", "'Syne', sans-serif", "'BioRhyme', serif", "'Inter', sans-serif", "'Cormorant Garamond', serif", "'DM Sans', sans-serif"];
+            if (!morph) {
+                return (sel && sel.value && String(sel.value).trim()) ? sel.value : "'Inter', sans-serif";
+            }
+            const isLiteral = morph.sentimentStrength >= LITERAL_THRESHOLD && morph.dominantMood !== "neutral";
+            if (isLiteral) {
+                const lit = moodProfiles[morph.dominantMood];
+                if (lit && lit.geometry && lit.geometry.font) return lit.geometry.font;
+            }
+            if (morph.dominantMood === "neutral") {
+                return (sel && sel.value && String(sel.value).trim()) ? sel.value : "'Inter', sans-serif";
+            }
+            const seedChaos = getSeed(text || " ", 4);
+            const fontIdx = Math.floor((morph.vowelDensity * 3 + morph.entropy * 2 + morph.contentWordRatio * 2 + seedChaos) * fontArray.length) % fontArray.length;
+            return fontArray[fontIdx];
+        }
+
+        function resolveVisualPoetryCellPalette(vp) {
+            const text = (typeof getFullText === "function" ? getFullText() : "") || "";
+            const title = (document.getElementById("inpTitle") && document.getElementById("inpTitle").value) || "";
+            const fullSig = title + "\n" + text;
+            const morph = currentMorph || (text.trim() ? extractMorphology(text) : null);
+            const paletteRand = vpMulberry32((vp.seed ^ 0x9e3779b9) >>> 0);
+            if (!morph || morph.dominantMood === "neutral") {
+                return VP_COLOR_PALETTES[Math.floor(paletteRand() * VP_COLOR_PALETTES.length)];
+            }
+            const family = COLOR_FAMILIES[morph.dominantMood];
+            if (!family) {
+                return VP_COLOR_PALETTES[Math.floor(paletteRand() * VP_COLOR_PALETTES.length)];
+            }
+            return [
+                pickFromPool(family.mask, getSeed(fullSig, 20)),
+                pickFromPool(family.mask, getSeed(fullSig, 21)),
+                pickFromPool(family.bg, getSeed(fullSig, 22)),
+                pickFromPool(family.bg, getSeed(fullSig, 23)),
+                pickFromPool(family.bgB, getSeed(fullSig, 24))
+            ];
+        }
+
         const PALETTE_EXAMPLES = {
             joy: { text: "I feel so happy and excited! This day is amazing! Sunshine and laughter everywhere!", desc: "Yellow + Blue" },
             void: { text: "The void consumes me. Emptiness. Darkness. Nothing remains.", desc: "Magenta + Purple / Black" },
@@ -2636,7 +3260,8 @@
                 colors: { maskA: rC(), maskB: rC(), stem: "#00FF00", bgA: rC(), bgB: rC(), auto: true },
                 geometry: { scale: random(0.5, 2.5), fontSize: random(10, 70), font: random(f) },
                 style: { mask: random() > 0.2, grad: random() > 0.5, outline: random() > 0.3, outlineW: floor(random(6)) + 1 },
-                background: { mode: random(["solid", "gradient"]), angle: random(360) }
+                background: { mode: random(["solid", "gradient"]), angle: random(360) },
+                visualPoetry: currentLabState && currentLabState.visualPoetry ? mergeVisualPoetry(currentLabState.visualPoetry) : mergeVisualPoetry(null)
             });
         }
 
@@ -2646,6 +3271,12 @@
                 setTimeout(() => applyVisualState(s, (retryCount || 0) + 1), 50);
                 return;
             }
+            const hasSavedTitleField = s && Object.prototype.hasOwnProperty.call(s, "title");
+            if (!s.visualPoetry && !hasSavedTitleField && currentLabState && currentLabState.visualPoetry) {
+                s = { ...s, visualPoetry: currentLabState.visualPoetry };
+            }
+            s = { ...s, visualPoetry: mergeVisualPoetry(s.visualPoetry) };
+            if (VISUAL_POETRY_FEATURE && typeof syncVisualPoetryToUI === "function") syncVisualPoetryToUI(s.visualPoetry);
             currentLabState = s;
             if (s.dominantMood && currentMorph) {
                 currentMorph = { ...currentMorph, dominantMood: s.dominantMood };
@@ -2678,14 +3309,21 @@
             ui("rngScale").value = s.geometry.scale; ui("rngSize").value = s.geometry.fontSize; ui("selFont").value = s.geometry.font;
             if (s.background) { ui("selBgMode").value = s.background.mode; ui("rngBgAngle").value = s.background.angle; }
             updateBackground(); updateUI("lblScale", "SCALE", s.geometry.scale, "x"); updateUI("lblSize", "SIZE", s.geometry.fontSize, "px"); generateGarden();
+            maybeRenderVisualPoetry();
             if (INSTALLATION_MODE) updateHUD();
             if (isBlossomingMode) {
                 setBlossomingMode(true);
             }
         }
 
-        function windowResized() { const c = document.getElementById("canvas-container"); resizeCanvas(c.clientWidth, c.clientHeight); generateGarden(); }
+        function windowResized() {
+            const c = document.getElementById("canvas-container");
+            resizeCanvas(c.clientWidth, c.clientHeight);
+            generateGarden();
+            maybeRenderVisualPoetry();
+        }
         window.addEventListener("DOMContentLoaded", () => {
+            document.documentElement.setAttribute("data-visual-poetry-feature", VISUAL_POETRY_FEATURE ? "1" : "0");
             const fullLab = getQueryParam("full") === "1" || getQueryParam("admin") === "1";
             const readerMode = getQueryParam("reader") === "1";
             if (readerMode) {
