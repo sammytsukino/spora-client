@@ -509,7 +509,7 @@ export default function FloraReader() {
                 style={textShadowStyle}
               >
                 {text || (
-                  <span className="opacity-70 italic">No text in this flora.</span>
+                  <span className="opacity-70 italic">No text in this Flora.</span>
                 )}
               </div>
             </article>
@@ -582,7 +582,7 @@ export default function FloraReader() {
                                         ? "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary-light hover:text-spora-primary"
                                         : "border-white bg-white/20 text-white hover:bg-white hover:text-spora-primary"
                                     }`}
-                                    title="View flora"
+                                    title="View Flora"
                                   >
                                     {item.handle}
                                   </Link>

@@ -92,8 +92,8 @@ export default function Garden() {
       })
       .catch((e) => {
         if (!isActive) return;
-        if (e?.response?.status === 401) setError("Sign in to see floras from people you follow.");
-        else setError("Could not load floras.");
+        if (e?.response?.status === 401) setError("Sign in to see Floras from people you follow.");
+        else setError("Could not load Floras.");
       })
       .finally(() => {
         if (!isActive) return;
@@ -180,12 +180,12 @@ export default function Garden() {
             />
           ) : error ? (
             <EmptyState
-              title="Could not load floras"
+              title="Could not load Floras"
               description={error}
             />
           ) : visibleFloras.length === 0 ? (
             <EmptyState
-              title={useFollowingFilter ? "No floras from people you follow" : "No flora found"}
+              title={useFollowingFilter ? "No Floras from people you follow" : "No Flora found"}
               description={
                 useFollowingFilter
                   ? "Follow cultivators from the Garden or Greenhouse to fill your feed."

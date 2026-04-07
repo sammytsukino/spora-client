@@ -59,8 +59,8 @@ export default function AdminFlaggedContent({
     if (!onHideFlora) return;
     setConfirm({
       open: true,
-      title: "Hide flora",
-      description: `Are you sure you want to hide this flora? It will no longer be visible to other users.`,
+      title: "Hide Flora",
+      description: `Are you sure you want to hide this Flora? It will no longer be visible to other users.`,
       onConfirm: () => {
         onHideFlora(item.contentId);
         setConfirm((c) => ({ ...c, open: false }));
@@ -88,7 +88,7 @@ export default function AdminFlaggedContent({
     setConfirm({
       open: true,
       title: `Batch ${actionLabels[action]}`,
-      description: `Are you sure you want to ${action} ${ids.length} flora${ids.length !== 1 ? "s" : ""}?${action === "delete" ? " This cannot be undone." : ""}`,
+      description: `Are you sure you want to ${action} ${ids.length} Flora${ids.length !== 1 ? "s" : ""}?${action === "delete" ? " This cannot be undone." : ""}`,
       variant: action === "delete" ? "danger" : "default",
       onConfirm: () => {
         onBatchFloras(ids, action);
@@ -252,7 +252,7 @@ export default function AdminFlaggedContent({
                     onClick={() => handleHideFlora(item)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
                   >
-                    Hide flora
+                    Hide Flora
                   </button>
                 )}
                 {onSuspendAuthor && item.status === "pending" && (

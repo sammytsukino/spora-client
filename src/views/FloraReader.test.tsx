@@ -64,7 +64,7 @@ describe("FloraReader", () => {
     })
   })
 
-  it("shows error when flora fetch fails", async () => {
+  it("shows error when Flora fetch fails", async () => {
     getFlora.mockRejectedValueOnce(new Error("nope"))
     renderAtFlora("missing")
 

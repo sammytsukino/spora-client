@@ -190,7 +190,7 @@ export default function PublicProfile() {
           </div>
           {floras.length === 0 ? (
             <p className="font-supply-mono text-sm text-spora-primary opacity-80">
-              No floras yet.
+              No Floras yet.
             </p>
           ) : (
             <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">

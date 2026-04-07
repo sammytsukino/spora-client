@@ -62,9 +62,9 @@ export default function AdminReports({
     if (!onHideFlora) return;
     setConfirm({
       open: true,
-      title: "Hide flora",
+      title: "Hide Flora",
       description:
-        "Are you sure you want to hide this flora? It will no longer be visible to other users.",
+        "Are you sure you want to hide this Flora? It will no longer be visible to other users.",
       onConfirm: () => {
         onHideFlora(report.targetId);
         setConfirm((c) => ({ ...c, open: false }));
@@ -305,7 +305,7 @@ export default function AdminReports({
                     onClick={() => handleHideFlora(report)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
                   >
-                    Hide flora
+                    Hide Flora
                   </button>
                 )}
                 {(report.targetType === "flora" || report.targetType === "comment") && (

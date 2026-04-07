@@ -69,8 +69,8 @@ export default function AdminFlorasManagement({
     if (action === "delete") {
       setConfirm({
         open: true,
-        title: "Delete floras",
-        description: `Delete ${n} flora${plural}? This cannot be undone.`,
+        title: "Delete Floras",
+        description: `Delete ${n} Flora${plural}? This cannot be undone.`,
         variant: "danger",
         confirmLabel: "DELETE",
         onConfirm: () => {
@@ -83,8 +83,8 @@ export default function AdminFlorasManagement({
     const verb = action === "hide" ? "hide" : "unhide";
     setConfirm({
       open: true,
-      title: action === "hide" ? "Hide floras" : "Unhide floras",
-      description: `${verb.charAt(0).toUpperCase() + verb.slice(1)} ${n} flora${plural}?`,
+      title: action === "hide" ? "Hide Floras" : "Unhide Floras",
+      description: `${verb.charAt(0).toUpperCase() + verb.slice(1)} ${n} Flora${plural}?`,
       variant: "default",
       confirmLabel: action === "hide" ? "HIDE" : "UNHIDE",
       onConfirm: () => {
@@ -112,10 +112,10 @@ export default function AdminFlorasManagement({
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-4">
           <h2 className="font-supply-mono font-bold text-sm uppercase">
-            All floras
+            All Floras
           </h2>
           <span className="font-supply-mono text-[11px] opacity-80">
-            {floras.length} flora{floras.length !== 1 ? "s" : ""}
+            {floras.length} Flora{floras.length !== 1 ? "s" : ""}
           </span>
           <label className="flex items-center gap-2 cursor-pointer font-supply-mono text-[11px]">
             <input
@@ -240,7 +240,7 @@ export default function AdminFlorasManagement({
       </ul>
       {floras.length === 0 && (
         <p className="font-supply-mono text-sm opacity-70 py-8 text-center">
-          No floras found.
+          No Floras found.
         </p>
       )}
       <ConfirmModal

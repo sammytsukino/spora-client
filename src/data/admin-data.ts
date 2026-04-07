@@ -89,7 +89,7 @@ export const defaultAdminReports: AdminReport[] = [
     reporterUsername: "@UserA",
     targetType: "flora",
     targetId: "FLR/042",
-    reason: "Repetitive content. User has submitted the same flora multiple times.",
+    reason: "Repetitive content. User has submitted the same Flora multiple times.",
     createdAt: "2025-02-01T14:30:00Z",
   },
   {

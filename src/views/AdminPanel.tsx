@@ -33,7 +33,7 @@ const defaultMetrics = {
   flaggedContent: 0,
 };
 
-const reportsSubViews = ["By flora", "By report"] as const;
+const reportsSubViews = ["By Flora", "By report"] as const;
 const reportStatusFilters = ["Pending", "All"] as const;
 
 export default function AdminPanel() {
@@ -54,7 +54,7 @@ export default function AdminPanel() {
 
   const [reportsSubView, setReportsSubView] = useState<
     (typeof reportsSubViews)[number]
-  >("By flora");
+  >("By Flora");
   const [reportStatusFilter, setReportStatusFilter] = useState<
     (typeof reportStatusFilters)[number]
   >("Pending");
@@ -200,10 +200,10 @@ export default function AdminPanel() {
                     />
                   )}
                 </div>
-                {reportsSubView === "By flora" ? (
+                {reportsSubView === "By Flora" ? (
                   <AdminFlaggedContent
                     items={flagged}
-                    title="Reported floras"
+                    title="Reported Floras"
                     onItemClick={(item) =>
                       navigate(floraPath(item.contentId), { state: floraOpenState })
                     }

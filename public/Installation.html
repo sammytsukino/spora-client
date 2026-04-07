@@ -794,7 +794,7 @@
         <section class="laboratory-only" id="titleSection">
             <h2>ARTWORK_TITLE</h2>
             <div class="control-box">
-                <input type="text" id="inpTitle" placeholder="Name your flora (required)..." required
+                <input type="text" id="inpTitle" placeholder="Name your Flora (required)..." required
                     oninput="onTitleInputChanged()" />
             </div>
         </section>
@@ -1138,13 +1138,13 @@
                 <span class="publish-tooltip-wrap">
                     <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH
                         BLOSSOMING</button>
-                    <span class="publish-tooltip" role="tooltip">Blossoming — Your flora stays open for editing and can
+                    <span class="publish-tooltip" role="tooltip">Blossoming — Your Flora stays open for editing and can
                         receive cuttings from other cultivators.</span>
                 </span>
                 <span class="publish-tooltip-wrap">
                     <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH
                         SEALED</button>
-                    <span class="publish-tooltip" role="tooltip">Sealed — Your flora is finalized and immutable. No more
+                    <span class="publish-tooltip" role="tooltip">Sealed — Your Flora is finalized and immutable. No more
                         edits, no more cuttings.</span>
                 </span>
             </div>
@@ -1176,7 +1176,7 @@
         <div class="confirm-modal" role="document">
             <h2 id="confirmModalTitle" class="confirm-modal-title">Leave the Laboratory?</h2>
             <p id="confirmModalDesc" class="confirm-modal-desc">If you leave the Laboratory you'll lose the current
-                words, tweaks and generation settings for this flora.</p>
+                words, tweaks and generation settings for this Flora.</p>
             <div class="confirm-modal-actions">
                 <button id="confirmCancelBtn" type="button" class="confirm-modal-btn">STAY HERE</button>
                 <button id="confirmOkBtn" type="button" class="confirm-modal-btn confirm-modal-btn-confirm">GO
@@ -1188,16 +1188,17 @@
     <div id="screeningAdvisoryModal" class="confirm-modal-overlay" aria-hidden="true" role="dialog"
         aria-modal="true" aria-labelledby="screeningAdvisoryTitle">
         <div class="confirm-modal confirm-modal--wide" role="document">
-            <h2 id="screeningAdvisoryTitle" class="confirm-modal-title">All set</h2>
+            <h2 id="screeningAdvisoryTitle" class="confirm-modal-title">Review before publishing</h2>
             <div class="confirm-modal-desc confirm-modal-desc--prose">
-                <p>Your flora is live. We did notice that one of its words could be misread outside its artistic
-                    context.</p>
+                <p>We noticed that one of its words could be misread outside its artistic context.</p>
                 <p>Because SPORA treats art as human expression, this piece may receive a quick human review to make
                     sure it comes from a place of good faith. This is not an automatic judgment, just a second look.</p>
+                <p><strong>Your Flora is not published yet.</strong> Go back to edit, or publish anyway if you are
+                    comfortable proceeding.</p>
             </div>
             <div class="confirm-modal-actions">
-                <button type="button" id="screeningCloseBtn">CLOSE</button>
-                <button type="button" id="screeningContinueBtn" class="screening-btn-primary">CONTINUE</button>
+                <button type="button" id="screeningCloseBtn">BACK TO EDIT</button>
+                <button type="button" id="screeningContinueBtn" class="screening-btn-primary">PUBLISH ANYWAY</button>
             </div>
         </div>
     </div>
@@ -2373,7 +2374,7 @@
             baseTextDisplay.textContent = lockedBaseText;
             baseTextDisplay.setAttribute("contenteditable", "false");
             newTextInput.setAttribute("contenteditable", "true");
-            newTextInput.setAttribute('data-placeholder', 'Continue here to make your flora grow...');
+            newTextInput.setAttribute('data-placeholder', 'Continue here to make your Flora grow...');
             newTextInput.textContent = (newTextToRestore != null && newTextToRestore !== undefined) ? String(newTextToRestore) : "";
 
             setTimeout(() => {
@@ -2861,6 +2862,35 @@
             } catch (e) { }
         }
 
+        async function performFloraPost(payload, token, apiBase, status, s) {
+            try {
+                const res = await fetch(apiBase + "/floras", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token,
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    s.innerText = (data && data.error) ? data.error.toUpperCase() : "SAVE FAILED";
+                    return;
+                }
+
+                const baseStatus = status === "sealed" ? "SEALED" : "BLOSSOMING";
+                s.innerText = baseStatus;
+
+                const floraId = data._id;
+                setTimeout(function () {
+                    window.open("/flora/" + floraId, "_blank");
+                }, 800);
+            } catch (err) {
+                s.innerText = "NETWORK ERROR";
+            }
+        }
+
         async function submitFlora(status) {
             const s = document.getElementById("statusText");
             const state = collectState();
@@ -2875,7 +2905,7 @@
                 return;
             }
 
-            s.innerText = "SAVING...";
+            s.innerText = "GETTING READY...";
             const apiBase = getApiBase();
 
             let token = await ensureValidToken(apiBase);
@@ -2997,40 +3027,36 @@
                 }));
             }
 
+            s.innerText = "CHECKING...";
             try {
-                const res = await fetch(apiBase + "/floras", {
+                const previewRes = await fetch(apiBase + "/floras/screen-preview", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": "Bearer " + token,
                     },
-                    body: JSON.stringify(payload),
+                    body: JSON.stringify({ title: payload.title, text: payload.text }),
                 });
-
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok) {
-                    s.innerText = (data && data.error) ? data.error.toUpperCase() : "SAVE FAILED";
+                const previewData = await previewRes.json().catch(() => ({}));
+                if (!previewRes.ok) {
+                    s.innerText = (previewData && previewData.error) ? String(previewData.error).toUpperCase() : "CHECK FAILED";
                     return;
                 }
-
-                const baseStatus = status === "sealed" ? "SEALED" : "BLOSSOMING";
-                s.innerText = baseStatus;
-
-                const floraId = data._id;
-                const openReaderTab = function () {
-                    setTimeout(function () {
-                        window.open("/flora/" + floraId, "_blank");
-                    }, 800);
-                };
-
-                if (data.contentScreening && data.contentScreening.flagged) {
+                if (previewData.contentScreening && previewData.contentScreening.flagged) {
+                    s.innerText = "NOT PUBLISHED — CONFIRM OR EDIT";
                     openScreeningAdvisoryModal({
-                        onContinue: openReaderTab,
-                        onClose: function () { },
+                        onContinue: function () {
+                            s.innerText = "SAVING...";
+                            performFloraPost(payload, token, apiBase, status, s);
+                        },
+                        onClose: function () {
+                            s.innerText = "NOT PUBLISHED — EDIT AND TRY AGAIN";
+                        },
                     });
-                } else {
-                    openReaderTab();
+                    return;
                 }
+                s.innerText = "SAVING...";
+                await performFloraPost(payload, token, apiBase, status, s);
             } catch (err) {
                 s.innerText = "NETWORK ERROR";
             }

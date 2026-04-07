@@ -100,8 +100,8 @@ export default function Greenhouse() {
       })
       .catch((e) => {
         if (!isActive) return;
-        if (e?.response?.status === 401) setError("Sign in to see floras from people you follow.");
-        else setError("Could not load floras.");
+        if (e?.response?.status === 401) setError("Sign in to see Floras from people you follow.");
+        else setError("Could not load Floras.");
       })
       .finally(() => {
         if (!isActive) return;
@@ -194,15 +194,15 @@ export default function Greenhouse() {
             />
           ) : error ? (
             <EmptyState
-              title="Could not load floras"
+              title="Could not load Floras"
               description={error}
             />
           ) : visibleFloras.length === 0 ? (
             <EmptyState
               title={
                 useFollowingFilter && !authorId
-                  ? "No floras from people you follow"
-                  : "No flora found"
+                  ? "No Floras from people you follow"
+                  : "No Flora found"
               }
               description={
                 useFollowingFilter && !authorId

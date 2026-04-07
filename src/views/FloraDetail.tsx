@@ -394,7 +394,7 @@ export default function FloraDetail() {
                             <Link
                               to={`/flora/${encodeURIComponent(item.floraId)}`}
                               className="max-w-full truncate px-3 py-1 border border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary-light hover:text-spora-primary transition-colors cursor-pointer no-underline"
-                              title="View flora"
+                              title="View Flora"
                             >
                               {item.handle}
                             </Link>
@@ -602,7 +602,7 @@ export default function FloraDetail() {
                 id="report-modal-title"
                 className="text-sm font-bold uppercase tracking-wider"
               >
-                Report flora
+                Report Flora
               </h2>
               <button
                 type="button"
