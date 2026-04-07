@@ -6,9 +6,7 @@ import FooterAlter from "@/components/layout/FooterAlter";
 import { getFollowers, type FollowUser } from "@/lib/followApi";
 import { getUserByUsername } from "@/lib/usersApi";
 import { ROUTES, profilePath } from "@/constants/routes";
-
-const DEFAULT_AVATAR =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
+import { DEFAULT_PROFILE_AVATAR_URL } from "@/data/profile-data";
 
 export default function ProfileFollowers() {
   const { username } = useParams<{ username: string }>();
@@ -69,7 +67,7 @@ export default function ProfileFollowers() {
                   className="flex items-center gap-4 w-full text-left p-3 border border-spora-primary bg-transparent hover:bg-spora-primary/5 transition-colors"
                 >
                   <img
-                    src={u.avatar || DEFAULT_AVATAR}
+                    src={u.avatar || DEFAULT_PROFILE_AVATAR_URL}
                     alt=""
                     className="w-12 h-12 rounded-full object-cover border border-spora-primary"
                   />

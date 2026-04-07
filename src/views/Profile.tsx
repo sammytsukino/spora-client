@@ -23,7 +23,7 @@ import {
   type ProfileDangerZoneConfig,
   type ProfileSocialInteraction,
 } from "@/data/profile-data";
-import { getStoredToken, clearSession } from "@/lib/auth";
+import { getStoredToken, logout } from "@/lib/auth";
 import { fetchProfileData, unsignMyAccount } from "@/lib/profileApi";
 import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
 import { readerNavState } from "@/lib/floraViewBack";
@@ -128,7 +128,7 @@ export default function Profile({
     try {
       setUnsigning(true);
       await unsignMyAccount();
-      clearSession();
+      await logout();
       navigate(ROUTES.SIGN_IN, { replace: true });
     } catch (e) {
       setUnsigning(false);

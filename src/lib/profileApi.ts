@@ -1,12 +1,13 @@
 import { api } from "./api";
-import type {
-  ProfileUser,
-  ProfileFloraItem,
-  ProfileMetricsData,
-  ProfileSocialData,
-  ProfileSocialInteraction,
+import {
+  DEFAULT_PROFILE_AVATAR_URL,
+  type ProfileUser,
+  type ProfileFloraItem,
+  type ProfileMetricsData,
+  type ProfileSocialData,
+  type ProfileSocialInteraction,
+  type ProfileFloraStatus,
 } from "@/data/profile-data";
-import type { ProfileFloraStatus } from "@/data/profile-data";
 
 export interface MeUser {
   id: string;
@@ -41,9 +42,6 @@ export interface ApiFlora {
   updatedAt?: string;
 }
 
-const DEFAULT_AVATAR =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
-
 function statusToProfileStatus(status?: string): ProfileFloraStatus | undefined {
   if (!status) return undefined;
   const map: Record<string, ProfileFloraStatus> = {
@@ -58,7 +56,7 @@ export function mapMeToProfileUser(me: MeUser, floras: ApiFlora[]): ProfileUser 
   const originals = floras.filter((f) => (f.lineage?.generation ?? 0) === 0);
   const cuttings = floras.filter((f) => (f.lineage?.generation ?? 0) > 0);
   return {
-    avatar: me.avatar || DEFAULT_AVATAR,
+    avatar: me.avatar || DEFAULT_PROFILE_AVATAR_URL,
     username: me.username.startsWith("@") ? me.username : `@${me.username}`,
     fullName: me.displayName || me.username,
     bio: me.bio || "",
@@ -143,8 +141,7 @@ export async function fetchProfileData(): Promise<{
   const user = mapMeToProfileUser(me, floras);
   const profileFloras = floras.map((f) => mapApiFloraToProfileItem(f, me.username));
   const metrics = mapFlorasToMetrics(floras);
-  const userAvatar =
-    me.avatar || "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
+  const userAvatar = me.avatar || DEFAULT_PROFILE_AVATAR_URL;
   const recentInteractions = buildRecentActivityFromFloras(floras, userAvatar);
   const social: ProfileSocialData = {
     followersCount: me.followersCount ?? 0,

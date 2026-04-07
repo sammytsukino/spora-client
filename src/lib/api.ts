@@ -13,6 +13,7 @@ export const API_BASE_URL =
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -63,11 +64,7 @@ api.interceptors.response.use(
       clearSession();
       return Promise.reject(err);
     }
-    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
-    if (!refreshToken) {
-      clearSession();
-      return Promise.reject(err);
-    }
+    const legacyRefresh = localStorage.getItem(REFRESH_TOKEN_KEY);
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         refreshSubscribers.push({
@@ -81,13 +78,21 @@ api.interceptors.response.use(
     (originalRequest as typeof originalRequest & { _retry?: boolean })._retry =
       true;
     try {
-      const { data } = await axios.post<{
+      const refreshClient = axios.create({
+        baseURL: API_BASE_URL,
+        withCredentials: true,
+      });
+      const { data } = await refreshClient.post<{
         token: string;
-        refreshToken: string;
+        refreshToken?: string;
         user: object;
-      }>(`${API_BASE_URL}/auth/refresh`, { refreshToken });
+      }>("/auth/refresh", legacyRefresh ? { refreshToken: legacyRefresh } : {});
       localStorage.setItem(TOKEN_KEY, data.token);
-      localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
+      if (data.refreshToken) {
+        localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
+      } else {
+        localStorage.removeItem(REFRESH_TOKEN_KEY);
+      }
       onRefreshed(data.token);
       originalRequest.headers.Authorization = `Bearer ${data.token}`;
       return api(originalRequest);

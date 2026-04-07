@@ -4,7 +4,9 @@ import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FloraCard from "@/components/flora/FloraCard";
-import FilterTabs from "@/components/shared/FilterTabs";
+import GalleryFeedFilters, {
+  type GalleryFeedScope,
+} from "@/components/shared/GalleryFeedFilters";
 import LoadingIndicator from "@/components/shared/LoadingIndicator";
 import EmptyState from "@/components/shared/EmptyState";
 import { floraFilters, ITEMS_PER_PAGE, floraImages } from "@/data/flora-data";
@@ -53,12 +55,10 @@ function mapFlora(flora: ApiFlora, index: number): UiFlora {
   };
 }
 
-const gardenFiltersWithFollowing = ["All Units", "Following", ...floraFilters.slice(1)] as const;
-
 export default function Garden() {
   const isLoggedIn = !!getStoredToken();
-  const filters = isLoggedIn ? gardenFiltersWithFollowing : floraFilters;
-  const [activeFilter, setActiveFilter] = useState<string>(filters[0]);
+  const [feedScope, setFeedScope] = useState<GalleryFeedScope>("all");
+  const [activeGeneration, setActiveGeneration] = useState<string>(floraFilters[0]);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [floras, setFloras] = useState<UiFlora[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,7 +66,15 @@ export default function Garden() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const useFollowingFilter = activeFilter === "Following";
+  const useFollowingFilter = feedScope === "following";
+
+  useEffect(() => {
+    if (!isLoggedIn) setFeedScope("all");
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [feedScope, activeGeneration]);
 
   useEffect(() => {
     if (useFollowingFilter && !isLoggedIn) return;
@@ -96,9 +104,9 @@ export default function Garden() {
   }, [useFollowingFilter, isLoggedIn]);
 
   const filteredFloras = useMemo(() => {
-    if (activeFilter === "All Units" || activeFilter === "Following") return floras;
-    return floras.filter((flora) => flora.generation === activeFilter);
-  }, [activeFilter, floras]);
+    if (activeGeneration === "All Units") return floras;
+    return floras.filter((flora) => flora.generation === activeGeneration);
+  }, [activeGeneration, floras]);
 
   const loadMoreCards = useCallback(() => {
     if (visibleCount < filteredFloras.length) {
@@ -152,18 +160,15 @@ export default function Garden() {
           />
         </div>
 
-        <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="w-full border-b border-spora-primary" />
-          </div>
-
-          <div className="flex w-full min-w-0 justify-end sm:w-auto sm:shrink-0">
-            <FilterTabs
-              filters={filters as readonly string[]}
-              activeFilter={activeFilter}
-              onFilterChange={setActiveFilter}
-            />
-          </div>
+        <div className="mb-8 w-full">
+          <GalleryFeedFilters
+            showFollowingOption={isLoggedIn}
+            feedScope={feedScope}
+            onFeedScopeChange={setFeedScope}
+            generationFilters={floraFilters}
+            activeGeneration={activeGeneration}
+            onGenerationChange={setActiveGeneration}
+          />
         </div>
 
         <div>
@@ -180,9 +185,9 @@ export default function Garden() {
             />
           ) : visibleFloras.length === 0 ? (
             <EmptyState
-              title={activeFilter === "Following" ? "No floras from people you follow" : "No flora found"}
+              title={useFollowingFilter ? "No floras from people you follow" : "No flora found"}
               description={
-                activeFilter === "Following"
+                useFollowingFilter
                   ? "Follow cultivators from the Garden or Greenhouse to fill your feed."
                   : "Try adjusting your filters to see more results."
               }

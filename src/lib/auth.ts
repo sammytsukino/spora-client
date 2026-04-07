@@ -36,6 +36,8 @@ export function saveSession(session: AuthResponse) {
   localStorage.setItem(TOKEN_KEY, session.token);
   if (session.refreshToken) {
     localStorage.setItem(REFRESH_TOKEN_KEY, session.refreshToken);
+  } else {
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
   }
   localStorage.setItem(USER_KEY, JSON.stringify(session.user));
 }
@@ -128,15 +130,25 @@ export async function fetchMe() {
 }
 
 export async function refreshAccessToken(): Promise<AuthResponse | null> {
-  const refreshToken = getStoredRefreshToken();
-  if (!refreshToken) return null;
   try {
-    const { data } = await api.post<AuthResponse>("/auth/refresh", {
-      refreshToken,
-    });
+    const legacy = getStoredRefreshToken();
+    const { data } = await api.post<AuthResponse>(
+      "/auth/refresh",
+      legacy ? { refreshToken: legacy } : {}
+    );
     saveSession(data);
     return data;
   } catch {
     return null;
   }
+}
+
+/** Clears httpOnly refresh cookie on the server; call on sign-out. */
+export async function logout(): Promise<void> {
+  try {
+    await api.post("/auth/logout");
+  } catch {
+    /* ignore network errors */
+  }
+  clearSession();
 }

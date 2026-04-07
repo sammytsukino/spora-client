@@ -3,7 +3,9 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/layout/FooterAlter";
-import FilterTabs from "@/components/shared/FilterTabs";
+import GalleryFeedFilters, {
+  type GalleryFeedScope,
+} from "@/components/shared/GalleryFeedFilters";
 import LoadingIndicator from "@/components/shared/LoadingIndicator";
 import EmptyState from "@/components/shared/EmptyState";
 import FeaturedFlora from "@/components/flora/FeaturedFlora";
@@ -35,8 +37,6 @@ function formatSeed(flora: ApiFlora) {
   return `#${seedSource.slice(-6).toUpperCase()}`;
 }
 
-const greenhouseFiltersWithFollowing = ["All Units", "Following", ...floraFilters.slice(1)] as const;
-
 function mapFlora(flora: ApiFlora, index: number): UiFlora {
   const author = flora.authorUsername
     ? flora.authorUsername.startsWith("@")
@@ -61,10 +61,10 @@ export default function Greenhouse() {
   const authorId = searchParams.get("authorId") ?? undefined;
   const authorLabel = searchParams.get("username") ?? undefined;
   const isLoggedIn = !!getStoredToken();
-  const showFollowingFilter = isLoggedIn && !authorId;
-  const filters = showFollowingFilter ? greenhouseFiltersWithFollowing : floraFilters;
+  const showFollowingOption = isLoggedIn && !authorId;
 
-  const [activeFilter, setActiveFilter] = useState<string>(filters[0]);
+  const [feedScope, setFeedScope] = useState<GalleryFeedScope>("all");
+  const [activeGeneration, setActiveGeneration] = useState<string>(floraFilters[0]);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [floras, setFloras] = useState<UiFlora[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,7 +72,15 @@ export default function Greenhouse() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const useFollowingFilter = activeFilter === "Following";
+  const useFollowingFilter = feedScope === "following";
+
+  useEffect(() => {
+    if (!isLoggedIn) setFeedScope("all");
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [feedScope, activeGeneration, authorId]);
 
   useEffect(() => {
     if (useFollowingFilter && !isLoggedIn) return;
@@ -83,7 +91,7 @@ export default function Greenhouse() {
 
     const params: Parameters<typeof listFloras>[0] = { status: "sealed" };
     if (authorId) params.authorId = authorId;
-    if (useFollowingFilter) params.followingOnly = true;
+    if (useFollowingFilter && !authorId) params.followingOnly = true;
 
     listFloras(params)
       .then((data) => {
@@ -104,9 +112,9 @@ export default function Greenhouse() {
   }, [authorId, useFollowingFilter, isLoggedIn]);
 
   const filteredFloras = useMemo(() => {
-    if (activeFilter === "All Units" || activeFilter === "Following") return floras;
-    return floras.filter((flora) => flora.generation === activeFilter);
-  }, [activeFilter, floras]);
+    if (activeGeneration === "All Units") return floras;
+    return floras.filter((flora) => flora.generation === activeGeneration);
+  }, [activeGeneration, floras]);
 
   const loadMoreCards = useCallback(() => {
     if (visibleCount < filteredFloras.length) {
@@ -166,18 +174,15 @@ export default function Greenhouse() {
           className="mb-8"
         />
 
-        <div className="mb-8 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="w-full border-b border-spora-primary" />
-          </div>
-
-          <div className="flex w-full min-w-0 justify-end sm:w-auto sm:shrink-0">
-            <FilterTabs
-              filters={filters as readonly string[]}
-              activeFilter={activeFilter}
-              onFilterChange={setActiveFilter}
-            />
-          </div>
+        <div className="mb-8 w-full">
+          <GalleryFeedFilters
+            showFollowingOption={showFollowingOption}
+            feedScope={feedScope}
+            onFeedScopeChange={setFeedScope}
+            generationFilters={floraFilters}
+            activeGeneration={activeGeneration}
+            onGenerationChange={setActiveGeneration}
+          />
         </div>
 
         <div>
@@ -194,9 +199,13 @@ export default function Greenhouse() {
             />
           ) : visibleFloras.length === 0 ? (
             <EmptyState
-              title={activeFilter === "Following" ? "No floras from people you follow" : "No flora found"}
+              title={
+                useFollowingFilter && !authorId
+                  ? "No floras from people you follow"
+                  : "No flora found"
+              }
               description={
-                activeFilter === "Following"
+                useFollowingFilter && !authorId
                   ? "Follow cultivators from the Garden or Greenhouse to fill your feed."
                   : "Try adjusting your filters to see more results."
               }

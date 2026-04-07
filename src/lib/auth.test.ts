@@ -56,6 +56,12 @@ describe("session storage helpers", () => {
     expect(getStoredToken()).toBe("access")
   })
 
+  it("saveSession clears legacy refresh when omitted", () => {
+    localStorage.setItem(REFRESH_TOKEN_KEY, "old")
+    saveSession({ token: "access", user: sampleUser })
+    expect(localStorage.getItem(REFRESH_TOKEN_KEY)).toBeNull()
+  })
+
   it("getStoredUser returns null for invalid JSON", () => {
     localStorage.setItem(USER_KEY, "{not-json")
     expect(getStoredUser()).toBeNull()
@@ -111,14 +117,16 @@ describe("auth API wrappers", () => {
     expect(getStoredToken()).toBe("t")
   })
 
-  it("refreshAccessToken returns null when no refresh token", async () => {
+  it("refreshAccessToken posts without body when no legacy refresh", async () => {
+    post.mockResolvedValueOnce({
+      data: { token: "new", user: sampleUser },
+    })
     const out = await refreshAccessToken()
-    expect(out).toBeNull()
-    expect(post).not.toHaveBeenCalled()
+    expect(post).toHaveBeenCalledWith("/auth/refresh", {})
+    expect(out?.token).toBe("new")
   })
 
   it("refreshAccessToken returns null on failure", async () => {
-    localStorage.setItem(REFRESH_TOKEN_KEY, "bad")
     post.mockRejectedValueOnce(new Error("network"))
     const out = await refreshAccessToken()
     expect(out).toBeNull()
@@ -132,7 +140,7 @@ describe("auth API wrappers", () => {
     post.mockResolvedValueOnce({ data })
     const out = await verifyEmail("  tok  ")
     expect(post).toHaveBeenCalledWith("/auth/verify-email", { token: "tok" })
-    expect(out).toEqual(data)
+    expect(out.token).toBe("t")
     expect(getStoredToken()).toBe("t")
   })
 

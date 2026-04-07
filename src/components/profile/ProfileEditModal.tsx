@@ -5,9 +5,7 @@ import { updateProfile, fileToBase64 } from "@/lib/profileApi";
 import { updateStoredUser } from "@/lib/auth";
 import MainButton from "@/components/ui/MainButton";
 import UnderlineField from "@/components/ui/UnderlineField";
-
-const DEFAULT_AVATAR =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
+import { DEFAULT_PROFILE_AVATAR_URL } from "@/data/profile-data";
 
 interface ProfileEditModalProps {
   user: ProfileUser;
@@ -18,7 +16,9 @@ interface ProfileEditModalProps {
 export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEditModalProps) {
   const [displayName, setDisplayName] = useState(user.fullName);
   const [bio, setBio] = useState(user.bio);
-  const [avatarPreview, setAvatarPreview] = useState(user.avatar || DEFAULT_AVATAR);
+  const [avatarPreview, setAvatarPreview] = useState(
+    user.avatar || DEFAULT_PROFILE_AVATAR_URL
+  );
   const [avatarData, setAvatarData] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);

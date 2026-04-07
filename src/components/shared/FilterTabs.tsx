@@ -1,7 +1,11 @@
+import { cn } from "@/lib/utils";
+
 interface FilterTabsProps {
   filters: readonly string[];
   activeFilter: string;
   onFilterChange: (filter: string) => void;
+  /** Extra classes for the tab row container (e.g. justify-start). */
+  className?: string;
 }
 
 function FilterTabLabel({ filter }: { filter: string }) {
@@ -33,9 +37,19 @@ function FilterTabLabel({ filter }: { filter: string }) {
   return <>{filter}</>;
 }
 
-export default function FilterTabs({ filters, activeFilter, onFilterChange }: FilterTabsProps) {
+export default function FilterTabs({
+  filters,
+  activeFilter,
+  onFilterChange,
+  className,
+}: FilterTabsProps) {
   return (
-    <div className="filter-tabs flex max-w-full min-w-0 flex-wrap justify-end gap-2">
+    <div
+      className={cn(
+        "filter-tabs flex max-w-full min-w-0 flex-wrap justify-end gap-2",
+        className
+      )}
+    >
       {filters.map((filter) => (
         <button
           key={filter}

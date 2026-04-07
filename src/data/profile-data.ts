@@ -1,5 +1,8 @@
 import { generateFloraData, type FloraItem } from "./flora-data";
 
+export const DEFAULT_PROFILE_AVATAR_URL =
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/q_auto/f_auto/v1775567135/DEFAULT_awejhp.png";
+
 export interface ProfileUser {
   avatar: string;
   username: string;
@@ -69,7 +72,7 @@ export const defaultProfileSocial: ProfileSocialData = {
 };
 
 export const defaultProfileUser: ProfileUser = {
-  avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+  avatar: DEFAULT_PROFILE_AVATAR_URL,
   username: "@Reinyourheart",
   fullName: "Naoi Rei",
   bio: "Rebel in your heart",

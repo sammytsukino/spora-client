@@ -4,7 +4,7 @@ import { Menu, X, User, LogOut, FileText, Shield } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
 import CyclingLogo from "@/components/layout/CyclingLogo";
 import { ROUTES } from "@/constants/routes";
-import { getStoredToken, clearSession, isLabFullAccessible, getStoredUser } from "@/lib/auth";
+import { getStoredToken, logout, isLabFullAccessible, getStoredUser } from "@/lib/auth";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
 type NavbarPosition = "fixed" | "sticky";
@@ -57,10 +57,12 @@ export default function NavbarBase({
   }, [menuOpen]);
 
   const handleLogout = () => {
-    clearSession();
-    setMenuOpen(false);
-    setIsLoggedIn(false);
-    navigate(ROUTES.HOME);
+    void (async () => {
+      await logout();
+      setMenuOpen(false);
+      setIsLoggedIn(false);
+      navigate(ROUTES.HOME);
+    })();
   };
   const isTransparent = variant === "transparent";
   const isLaboratory = variant === "laboratory";

@@ -13,9 +13,7 @@ import { getStoredToken } from "@/lib/auth";
 import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
 import { readerNavState } from "@/lib/floraViewBack";
 import MainButton from "@/components/ui/MainButton";
-
-const DEFAULT_AVATAR =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1768395876/Group_33_eu3kbv.svg";
+import { DEFAULT_PROFILE_AVATAR_URL } from "@/data/profile-data";
 
 interface UiFlora {
   id: string;
@@ -143,7 +141,7 @@ export default function PublicProfile() {
       <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
         <header className="border border-spora-primary bg-spora-primary-light p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
           <img
-            src={user.avatar || DEFAULT_AVATAR}
+            src={user.avatar || DEFAULT_PROFILE_AVATAR_URL}
             alt={user.displayName || user.username}
             className="w-24 h-24 rounded-full object-cover border border-spora-primary shrink-0"
           />
