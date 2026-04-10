@@ -7,7 +7,6 @@
 ## ✦ Table of Contents
 
 - [What is SPORA Client?](#-what-is-spora-client)
-- [Project Status](#-project-status)
 - [Frontend Architecture](#-frontend-architecture)
 - [Main User Journeys (Client Side)](#-main-user-journeys-client-side)
 - [Tech Stack](#-tech-stack)
@@ -24,42 +23,21 @@
 
 ## ✿ What is SPORA Client?
 
-`spora-client` is the frontend application of SPORA: a generative, collaborative writing platform where each published text becomes a visual organism (**Flora**).
+`spora-client` is the living interface of SPORA: the place where writing turns into visual life and collaborative creation remains traceable, layered, and non-destructive.
 
-This repository contains the full user-facing experience:
-♦ Public discovery (Garden / Greenhouse)  
-♦ Creation flow (Laboratory / Installation)  
-♦ Profile + social layer (follow system)  
-♦ Moderation dashboard (Admin Panel)  
-♦ Reading experience with voice playback (Flora Reader)
-
-⟡ ═════════════════════════════════════════ ⟡
-
-## ✧ Project Status
-
-SPORA is currently in a **solid ~95% implementation stage**.
-
-### Implemented and stable
-▸ Full navigation and route guards (guest/protected/lab-full)  
-▸ Flora creation and publication workflows  
-▸ Garden and Greenhouse browsing flows  
-▸ Public and private profile experiences  
-▸ Follow / followers / following views  
-▸ Admin panel modules (users, reports, flagged content, metrics)  
-▸ Email verification flow UI  
-▸ Core test coverage with Vitest + Testing Library
-
-### In active refinement
-▹ UX polish for edge states and transitions  
-▹ Final documentation and deployment hardening  
-▹ Minor visual and content consistency passes
+This repository holds the complete front-of-house experience:
+♦ Discovery spaces (Garden / Greenhouse)  
+♦ Creation ritual (Laboratory / Installation)  
+♦ Identity and social continuity (profiles + follow graph)  
+♦ Stewardship tools (Admin Panel)  
+♦ Reading layer with optional voice playback (Flora Reader)
 
 ⟡ ═════════════════════════════════════════ ⟡
 
 ## ♢ Frontend Architecture
 
 ### Routing and Access Model
-The app is built on `react-router-dom` with clear route segmentation:
+The application uses `react-router-dom` with intentional route boundaries:
 ▸ Public pages (`/`, `/garden`, `/greenhouse`, `/flora/:id`, `/team`, `/terms`, etc.)  
 ▸ Guest-only auth pages (`/signin`, `/signup`)  
 ▸ Auth-only routes (`/laboratory`)  
@@ -84,25 +62,25 @@ The app is built on `react-router-dom` with clear route segmentation:
 ## ❖ Main User Journeys (Client Side)
 
 ### 1) Discover
-Browse community creations through:
+Explore the shared ecosystem through:
 ▸ **Garden** (active/blossoming ecosystem)  
 ▸ **Greenhouse** (sealed/final works)
 
 ### 2) Create
-In **Laboratory / Installation**, users:
+In **Laboratory / Installation**, cultivators:
 ▸ Write text  
 ▸ Trigger generative analysis + visual preview  
 ▸ Configure publication state and output
 
 ### 3) Connect
-Profiles support:
+Profiles preserve social and authorship continuity through:
 ▸ Public identity pages  
 ▸ Follow relationships  
 ▸ Followers/following lists  
 ▸ Personal metrics and editable profile fields
 
 ### 4) Moderate
-Admins can:
+Admins can safeguard the ecosystem by:
 ▸ Audit users and content  
 ▸ Review reports and flagged items  
 ▸ Track platform metrics and usage charts
@@ -220,7 +198,7 @@ spora-client/
 
 ## ◉ Backend Contract (Required)
 
-This client expects `spora-server` API endpoints under `/api`, including:
+This client grows on top of `spora-server` endpoints under `/api`, including:
 ▸ Auth (`/auth/*`) with email verification + refresh token flow  
 ▸ Floras (`/floras/*`) for browse/create/update  
 ▸ Reader (`/reader/tts`) for voice generation (optional server config)  
@@ -229,13 +207,13 @@ This client expects `spora-server` API endpoints under `/api`, including:
 ▸ Reports (`/reports/*`) for moderation reports  
 ▸ Admin (`/admin/*`) for role-based moderation and metrics
 
-Without a reachable backend, most app features are intentionally unavailable.
+Without a reachable backend, the collaborative lifecycle cannot be completed.
 
 ⟡ ═════════════════════════════════════════ ⟡
 
 ## ◑ Testing Notes
 
-The test suite includes:
+The test suite protects both interaction quality and platform behavior:
 ▸ Component rendering and interaction tests  
 ▸ API wrapper unit tests  
 ▸ Auth flow integration tests  
