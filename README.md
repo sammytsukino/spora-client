@@ -4,340 +4,274 @@
 
 ⟡ ═════════════════════════════════════════ ⟡
 
+## ✦ Table of Contents
 
-## ✿ What is SPORA?
-
-SPORA is a full-stack collaborative platform where written text transforms into unique generative botanical visualizations. Every word you write becomes a digital organism (a **flora**) shaped by its emotional tone, rhythmic structure, and linguistic properties.
-
-### Core Concept
-
-♦ **Write** → Your text is analyzed automatically (sentiment, morphology, rhythm)  
-♦ **Watch it bloom** → Real-time generative visualization based on your words  
-♦ **Collaborate** → Take "cuttings" from others' works, add your text, create new branches  
-♦ **Preserve** → Original works remain untouched; lineage is fully traceable
-
-
-⟡ ═════════════════════════════════════════ ⟡
-
-
-## ✧ Key Features
-
-### ❀ The Garden
-Gallery of **blossoming works** (open for collaboration). Browse, explore, and take cuttings.
-
-### ❦ The Greenhouse  
-Gallery of **sealed works** (finalized creations, closed to further cuttings).
-
-### ❖ The Laboratory
-Your creative workspace. Write, preview in real-time, choose your license, and publish.
-
-### ✣ Cuttings (Non-Destructive Forking)
-▸ Take a cutting from any open work  
-▸ Add your own text after " / "  
-▸ Generate a new visual identity  
-▸ Original stays intact, lineage tracked forever
-
-### ✤ Genealogical Trees
-Every flora maintains its complete family tree (from root (Gen 0) through all derivative generations).
+- [What is SPORA Client?](#-what-is-spora-client)
+- [Project Status](#-project-status)
+- [Frontend Architecture](#-frontend-architecture)
+- [Main User Journeys (Client Side)](#-main-user-journeys-client-side)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Available Scripts](#-available-scripts)
+- [Project Structure](#-project-structure)
+- [Backend Contract (Required)](#-backend-contract-required)
+- [Testing Notes](#-testing-notes)
+- [License](#-license)
+- [Author](#-author)
+- [Contact](#-contact)
 
 ⟡ ═════════════════════════════════════════ ⟡
 
+## ✿ What is SPORA Client?
 
-## ♢ Architecture
+`spora-client` is the frontend application of SPORA: a generative, collaborative writing platform where each published text becomes a visual organism (**Flora**).
 
-### The Soil/Seed Model
-
-**Soil** = Static visual template  
-Assigned based on emotional analysis of the text (negative, neutral, positive). Defines color palette, growth pattern, and visual style.
-
-**Seed** = Dynamic parameters  
-Extracted from text morphology (character count, word density, rhythm, structure). These parameters drive the actual rendering.
-
-This separation ensures:  
-▹ Lightweight database storage (only parameters, not full renders)  
-▹ Portability across visual environments  
-▹ Regeneration of works without data loss
+This repository contains the full user-facing experience:
+♦ Public discovery (Garden / Greenhouse)  
+♦ Creation flow (Laboratory / Installation)  
+♦ Profile + social layer (follow system)  
+♦ Moderation dashboard (Admin Panel)  
+♦ Reading experience with voice playback (Flora Reader)
 
 ⟡ ═════════════════════════════════════════ ⟡
 
+## ✧ Project Status
+
+SPORA is currently in a **solid ~95% implementation stage**.
+
+### Implemented and stable
+▸ Full navigation and route guards (guest/protected/lab-full)  
+▸ Flora creation and publication workflows  
+▸ Garden and Greenhouse browsing flows  
+▸ Public and private profile experiences  
+▸ Follow / followers / following views  
+▸ Admin panel modules (users, reports, flagged content, metrics)  
+▸ Email verification flow UI  
+▸ Core test coverage with Vitest + Testing Library
+
+### In active refinement
+▹ UX polish for edge states and transitions  
+▹ Final documentation and deployment hardening  
+▹ Minor visual and content consistency passes
+
+⟡ ═════════════════════════════════════════ ⟡
+
+## ♢ Frontend Architecture
+
+### Routing and Access Model
+The app is built on `react-router-dom` with clear route segmentation:
+▸ Public pages (`/`, `/garden`, `/greenhouse`, `/flora/:id`, `/team`, `/terms`, etc.)  
+▸ Guest-only auth pages (`/signin`, `/signup`)  
+▸ Auth-only routes (`/laboratory`)  
+▸ Session-unlock route for advanced lab mode (`/laboratory/full`)  
+▸ Role-gated admin area (`/admin`)
+
+### UI and State Strategy
+▸ Component-driven UI in `src/components`  
+▸ Feature views in `src/views`  
+▸ API layer in `src/lib` (auth, floras, reports, admin, profile, follows)  
+▸ Reusable hooks in `src/hooks`  
+▸ Typed route helpers in `src/constants/routes.ts`
+
+### Visual Layer
+▸ React + TypeScript + Vite  
+▸ Three.js ecosystem (`@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`)  
+▸ Tailwind CSS v4 + utility helpers (`clsx`, `tailwind-merge`)  
+▸ Motion-driven UI animation
+
+⟡ ═════════════════════════════════════════ ⟡
+
+## ❖ Main User Journeys (Client Side)
+
+### 1) Discover
+Browse community creations through:
+▸ **Garden** (active/blossoming ecosystem)  
+▸ **Greenhouse** (sealed/final works)
+
+### 2) Create
+In **Laboratory / Installation**, users:
+▸ Write text  
+▸ Trigger generative analysis + visual preview  
+▸ Configure publication state and output
+
+### 3) Connect
+Profiles support:
+▸ Public identity pages  
+▸ Follow relationships  
+▸ Followers/following lists  
+▸ Personal metrics and editable profile fields
+
+### 4) Moderate
+Admins can:
+▸ Audit users and content  
+▸ Review reports and flagged items  
+▸ Track platform metrics and usage charts
+
+⟡ ═════════════════════════════════════════ ⟡
 
 ## ⚙ Tech Stack
 
-This project is split into two repositories for better organization and deployment flexibility.
+### Core
+▸ React 19  
+▸ TypeScript  
+▸ Vite 7  
+▸ React Router 7
 
-### Frontend Repository
+### Styling and Motion
+▸ Tailwind CSS 4  
+▸ Motion  
+▸ Lucide icons
 
-**Technologies:**  
-▸ React + TypeScript  
-▸ Tailwind CSS for styling  
-▸ p5.js / Three.js for generative visualizations
+### Generative / 3D
+▸ Three.js  
+▸ `@react-three/fiber`  
+▸ `@react-three/drei`  
+▸ `@react-three/rapier`
 
-**Repository:** `spora-client`
+### Data and Utilities
+▸ Axios  
+▸ UUID  
+▸ jsPDF + autotable (admin exports)
 
-### Backend Repository
-
-**Technologies:**  
-▸ Node.js + Express  
-▸ MongoDB + Mongoose ODM  
-▸ RESTful API architecture  
-▸ MVC pattern (Models, Controllers, Routes)
-
-**Authentication & Security:**  
-▸ JWT (JSON Web Tokens) for authentication  
-▸ bcrypt for password hashing  
-▸ Helmet for security headers  
-▸ CORS configuration
-
-**Text Analysis:**  
-▸ Natural.js for morphological analysis  
-▸ Sentiment.js for emotional detection  
-▸ Custom algorithms for rhythm and structure extraction
-
-**Repository:** `spora-server`
+### Quality
+▸ ESLint 9  
+▸ Vitest + Testing Library + jsdom
 
 ⟡ ═════════════════════════════════════════ ⟡
-
-
-## ♡ User Roles
-
-### ○ Guest
-▹ Browse Garden and Greenhouse  
-▹ View flora details and lineage trees  
-▹ Try Laboratory in demo mode (no publishing)
-
-### ❀ Cultivator
-▹ Full access: create, publish, take cuttings  
-▹ Manage own works (edit title, seal, hide, delete)  
-▹ Download visualizations  
-▹ Build collaborative genealogies
-
-### ★ Admin
-▹ Moderation tools (hide/delete content)  
-▹ User management (suspend/delete accounts)  
-▹ Review reports  
-▹ Access activity logs
-
-⟡ ═════════════════════════════════════════ ⟡
-
-
-## ◈ Key Policies
-
-### Immutable Text
-Once published, text cannot be edited. This protects:  
-▸ Historical integrity  
-▸ Coherence with derivative works  
-▸ Trust in the collaborative system
-
-### Protected Collaboration
-Works with cuttings **cannot be deleted** (only hidden). This ensures:  
-▸ Derivative works remain functional  
-▸ Co-authors' contributions are protected  
-▸ Lineage integrity is preserved
-
-### GDPR-Compliant Anonymization
-Users can delete their account via soft delete:  
-▹ All personal data eliminated (email, password, profile)  
-▹ Works preserved as `[forgotten author]`  
-▹ Cuttings continue functioning normally  
-▹ Lineage remains traceable
-
-⟡ ═════════════════════════════════════════ ⟡
-
-
-## ◉ License System
-
-Works are published under:  
-▸ **CC-BY** (Attribution - Recommended)  
-
-**License Inheritance:**  
-Cuttings inherit license restrictions from parent work according to Creative Commons standard rules.
-
-⟡ ═════════════════════════════════════════ ⟡
-
-
-## ⊙ Project Goals
-
-### Technical
-▹ Build a functional full-stack application  
-▹ Implement dual-phase text analysis (emotional + morphological)  
-▹ Create parametric generative rendering system  
-▹ Design a data architecture supporting forking and genealogy
-
-### Artistic & Conceptual
-▹ Explore direct relationship between textual and visual properties  
-▹ Democratize generative art creation (no coding required)  
-▹ Investigate shared authorship and organic collaboration models  
-▹ Create inseparable bond between text and visual output
-
-### Educational
-▹ Master complete web development lifecycle  
-▹ Gain advanced NLP experience in artistic context  
-▹ Understand complexities of collaborative systems with traceability
-
-⟡ ═════════════════════════════════════════ ⟡
-
 
 ## ◆ Getting Started
 
 ### Prerequisites
 ```bash
-Node.js >= 18.x
-MongoDB >= 5.x (local or Docker)
-npm or yarn
+Node.js >= 18
+npm >= 9
+spora-server running locally or remotely
 ```
 
 ### Installation
-
-**Frontend Repository:**
 ```bash
-# Clone frontend repository
 git clone https://github.com/sammytsukino/spora-client.git
 cd spora-client
-
-# Install dependencies
 npm install
-
-# Set up environment variables (create .env file)
-# VITE_API_URL=http://localhost:4000/api
-
-# Run development server
-npm run dev
-```
-
-**Backend Repository:**
-```bash
-# Clone backend repository
-git clone https://github.com/sammytsukino/spora-server.git
-cd spora-server
-
-# Install dependencies
-npm install
-
-# Set up environment variables (create .env file)
-# PORT=4000
-# MONGO_URL=mongodb://localhost:27017/sporadb
-# JWT_SECRET=your_secret_here
-# CORS_ORIGIN=http://localhost:5173
-
-# Start MongoDB (if using Docker)
-docker run -d --name spora-mongo -p 27017:27017 mongo:latest
-
-# Run development server
-npm run dev
 ```
 
 ### Environment Variables
+Create a `.env` file in the project root:
 
-**Frontend (.env):**
-```
-VITE_API_URL=http://localhost:4000/api
+```env
+VITE_API_BASE_URL=http://localhost:4000/api
 ```
 
-**Backend (.env):**
+If your backend runs elsewhere, point this variable to that API base URL.
+
+### Run
+```bash
+npm run dev
 ```
-PORT=4000
-MONGO_URL=mongodb://localhost:27017/sporadb
-JWT_SECRET=your_jwt_secret_change_in_production
-CORS_ORIGIN=http://localhost:5173
+
+Default local URL is usually `http://localhost:5173`.
+
+⟡ ═════════════════════════════════════════ ⟡
+
+## ◈ Available Scripts
+
+```bash
+npm run dev               # Start Vite dev server
+npm run build             # Type-check + production build
+npm run preview           # Preview production build
+npm run lint              # Run ESLint
+npm run test              # Run tests (watch mode)
+npm run test:ui           # Vitest UI
+npm run test:coverage     # Coverage report
+npm run generate:lexicons # Generate installation lexicons
 ```
 
 ⟡ ═════════════════════════════════════════ ⟡
 
 ## ◈ Project Structure
 
-**Frontend Repository (spora-client):**
-```
+```text
 spora-client/
+├── public/                     # Static files
+├── scripts/                    # Build-time content scripts
 ├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Main views (Garden, Laboratory, etc.)
-│   ├── router/         # Routing configuration
-│   ├── services/       # API communication
-│   └── styles/         # Global styles
-├── public/             # Static assets
-└── docs/               # Frontend documentation
-```
-
-**Backend Repository (spora-server):**
-```
-spora-server/
-├── src/
-│   ├── app.js                    # Express app configuration
-│   ├── server.js                 # Server entry point
-│   ├── config/
-│   │   └── db.js                 # MongoDB connection
-│   ├── models/                   # Mongoose schemas
-│   │   ├── User.js               # User model (auth, roles)
-│   │   ├── Flora.js              # Flora model (text + generative data)
-│   │   ├── Report.js             # Report model (moderation)
-│   │   └── AdminLog.js           # Admin action logs
-│   ├── controllers/              # Business logic
-│   │   ├── authController.js     # Signup, signin, JWT
-│   │   ├── floraController.js    # CRUD operations
-│   │   ├── reportController.js   # Report creation
-│   │   └── adminController.js    # Admin panel
-│   ├── routes/                   # Express routes
-│   │   ├── auth.js               # Auth endpoints
-│   │   ├── floras.js             # Flora endpoints
-│   │   ├── reports.js            # Report endpoints
-│   │   └── admin.js              # Admin endpoints
-│   ├── middleware/               # Auth & validation
-│   │   ├── auth.js               # JWT verification, role checking
-│   │   └── error.js              # Error handling
-│   └── services/                 # Text analysis (future)
-├── postman_collection.json       # API testing
-├── .env                          # Environment variables
-└── package.json                  # Dependencies
+│   ├── components/             # Reusable UI by domain
+│   │   ├── admin/
+│   │   ├── flora/
+│   │   ├── home/
+│   │   ├── laboratory/
+│   │   ├── layout/
+│   │   ├── profile/
+│   │   ├── shared/
+│   │   └── ui/
+│   ├── constants/              # Route constants/helpers
+│   ├── data/                   # Static and generated datasets
+│   ├── hooks/                  # Reusable React hooks
+│   ├── integration/            # Integration tests
+│   ├── lib/                    # API clients + core frontend logic
+│   ├── router/                 # Router configuration
+│   ├── test/                   # Test setup
+│   ├── views/                  # Top-level pages
+│   └── main.tsx                # App bootstrap
+└── README.md
 ```
 
 ⟡ ═════════════════════════════════════════ ⟡
 
+## ◉ Backend Contract (Required)
 
-## ◑ Contributing
+This client expects `spora-server` API endpoints under `/api`, including:
+▸ Auth (`/auth/*`) with email verification + refresh token flow  
+▸ Floras (`/floras/*`) for browse/create/update  
+▸ Reader (`/reader/tts`) for voice generation (optional server config)  
+▸ Follows (`/follows/*`) for social graph  
+▸ Users (`/users/*`) for profile/public data  
+▸ Reports (`/reports/*`) for moderation reports  
+▸ Admin (`/admin/*`) for role-based moderation and metrics
 
-This is an academic project. Contributions are not currently accepted, but feedback is welcome!
+Without a reachable backend, most app features are intentionally unavailable.
 
 ⟡ ═════════════════════════════════════════ ⟡
 
+## ◑ Testing Notes
+
+The test suite includes:
+▸ Component rendering and interaction tests  
+▸ API wrapper unit tests  
+▸ Auth flow integration tests  
+▸ Route guard behavior tests
+
+For CI-like validation:
+```bash
+npm run lint
+npm run test:coverage
+npm run build
+```
+
+⟡ ═════════════════════════════════════════ ⟡
 
 ## ◍ License
 
-This project is licensed under [LICENSE TYPE]. See LICENSE file for details.
+This repository is part of the SPORA project.
+Code license details should be defined in the project `LICENSE` file.
 
-Individual floras created on the platform are licensed by their respective authors.
+Individual Floras published in the platform are licensed by their authors under the platform licensing rules.
 
 ⟡ ═════════════════════════════════════════ ⟡
-
 
 ## ◕ Author
 
 **Sammy Cabello**  
-SPORA ▸ CEI: Centros de Estudios de Innovación  
+SPORA ▸ CEI: Centros de Estudios de Innovacion  
 Academic Year: 2025-2026
 
-
 ⟡ ═════════════════════════════════════════ ⟡
-
-
-## ♥ Acknowledgments
-
-▹ Creative Commons for licensing framework  
-▹ p5.js community for generative art tools  
-▹ Open source NLP libraries (Natural.js, Sentiment.js)  
-▹ Inspiration: GitHub (forking model), Wikipedia (collaborative content), Stack Overflow (attribution system)
-
-
-⟡ ═════════════════════════════════════════ ⟡
-
 
 ## ◈ Contact
 
-▸ **Email:** sammy.cabello.g@gmail.com
-▸ **GitHub:** [@sammytsukino](https://github.com/sammytsukino)  
-▸ **Project Demo:** [https://spora.com](https://spora.com)
-
+▸ **Email:** sammy.cabello.g@gmail.com  
+▸ **GitHub:** [@sammytsukino](https://github.com/sammytsukino)
 
 ⟡ ═════════════════════════════════════════ ⟡
 
-
-**SPORA** ♡ Where every text has roots, and every collaboration branches into new possibilities.
+**SPORA Client** ♡ The interface where text takes root, blooms, and branches.
