@@ -6,7 +6,7 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
-import { Music, Shuffle, Volume2 } from "lucide-react";
+import { AudioLines, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
@@ -38,13 +38,13 @@ function ensureHandle(username: string) {
 }
 
 export default function FloraReader() {
-  const [musicPlaying, setMusicPlaying] = useState(false);
-  const musicRef = useRef<HTMLAudioElement>(null);
+  const [ambiencePlaying, setAmbiencePlaying] = useState(false);
+  const ambienceRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    const audio = musicRef.current;
+    const audio = ambienceRef.current;
     if (!audio) return;
-    if (musicPlaying) {
+    if (ambiencePlaying) {
       audio.currentTime = 0;
       audio.play();
     } else {
@@ -54,7 +54,7 @@ export default function FloraReader() {
     return () => {
       audio.pause();
     };
-  }, [musicPlaying]);
+  }, [ambiencePlaying]);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -327,12 +327,12 @@ export default function FloraReader() {
     }
 
     if (ttsPhase === "paused" && ttsObjectUrlRef.current) {
-      const bg = musicRef.current;
+      const bg = ambienceRef.current;
       if (bg) {
         bg.pause();
         bg.currentTime = 0;
       }
-      setMusicPlaying(false);
+      setAmbiencePlaying(false);
       try {
         await ttsAudioRef.current?.play();
         setTtsPhase("playing");
@@ -370,12 +370,12 @@ export default function FloraReader() {
         return;
       }
       audio.src = url;
-      const bg = musicRef.current;
+      const bg = ambienceRef.current;
       if (bg) {
         bg.pause();
         bg.currentTime = 0;
       }
-      setMusicPlaying(false);
+      setAmbiencePlaying(false);
       await audio.play();
       setTtsPhase("playing");
     } catch {
@@ -699,7 +699,7 @@ export default function FloraReader() {
           summaryStyle={textShadowStyle}
           panelStyle={textShadowStyle}
           panelClassName="flora-reader-scroll max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 text-[10px] sm:text-xs !items-start text-left"
-          aria-label="Reader options: layout, wind, music, listen"
+          aria-label="Reader options: layout, wind, ambience, listen"
         >
           <div className="flex w-full flex-col items-start gap-2">
             <button
@@ -728,12 +728,12 @@ export default function FloraReader() {
             </div>
             <button
               type="button"
-              onClick={() => setMusicPlaying((v) => !v)}
+              onClick={() => setAmbiencePlaying((v) => !v)}
               className="flex w-full items-center justify-start gap-2 border-0 bg-transparent px-0 py-1 text-left shadow-none no-underline transition-opacity hover:underline"
-              aria-pressed={musicPlaying}
+              aria-pressed={ambiencePlaying}
             >
-              <Music className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-              <span>{musicPlaying ? "Pause music" : "Music"}</span>
+              <AudioLines className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+              <span>{ambiencePlaying ? "Pause ambience" : "Ambience"}</span>
             </button>
           </div>
 
@@ -813,8 +813,8 @@ export default function FloraReader() {
         </SporaDetailsMenu>
 
         <audio
-          ref={musicRef}
-          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1772048674/something-comforting_e3grxc.mp3"
+          ref={ambienceRef}
+          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1775810665/spora-ambience_ml2iyp.mp3"
           loop
           className="hidden"
         />
