@@ -53,30 +53,30 @@ function RouterContent() {
         <ConsentModal onAccept={() => setConsentGiven(true)} />
       )}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Navigate to={ROUTES.HOME} replace />} />
-        <Route path="/garden" element={<Garden />} />
-        <Route path="/greenhouse" element={<Greenhouse />} />
-        <Route path="/flora/:id" element={<FloraView />} />
-        <Route path="/flora/:id/details" element={<FloraDetail />} />
-        <Route path="/grow" element={<LabFullUnlock />} />
-        <Route path="/laboratory/full" element={<LabFullRoute><Installation fullLab /></LabFullRoute>} />
-        <Route path="/laboratory" element={<ProtectedRoute><Installation /></ProtectedRoute>} />
-        <Route path="/installation" element={<Navigate to={ROUTES.LABORATORY} replace />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/terms" element={<TermsConditions />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.HOME_LEGACY} element={<Navigate to={ROUTES.HOME} replace />} />
+        <Route path={ROUTES.GARDEN} element={<Garden />} />
+        <Route path={ROUTES.GREENHOUSE} element={<Greenhouse />} />
+        <Route path={`${ROUTES.FLORA}/:id`} element={<FloraView />} />
+        <Route path={`${ROUTES.FLORA}/:id/details`} element={<FloraDetail />} />
+        <Route path={ROUTES.GROW} element={<LabFullUnlock />} />
+        <Route path={ROUTES.LABORATORY_FULL} element={<LabFullRoute><Installation fullLab /></LabFullRoute>} />
+        <Route path={ROUTES.LABORATORY} element={<ProtectedRoute><Installation /></ProtectedRoute>} />
+        <Route path={ROUTES.INSTALLATION} element={<Navigate to={ROUTES.LABORATORY} replace />} />
+        <Route path={ROUTES.TEAM} element={<Team />} />
+        <Route path={ROUTES.TERMS} element={<TermsConditions />} />
         <Route path={ROUTES.RESEARCH} element={<Navigate to={ROUTES.TERMS} replace />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/signin" element={<GuestRoute><SignIn /></GuestRoute>} />
-        <Route path="/signup" element={<GuestRoute><SignUp /></GuestRoute>} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/:username/followers" element={<ProfileFollowers />} />
-        <Route path="/profile/:username/following" element={<ProfileFollowing />} />
-        <Route path="/profile/:username" element={<PublicProfile />} />
-        <Route path="/licensing" element={<Licensing />} />
-        <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-        <Route path="/background" element={<Background />} />
+        <Route path={ROUTES.CONTACT} element={<Contact />} />
+        <Route path={ROUTES.SIGN_IN} element={<GuestRoute><SignIn /></GuestRoute>} />
+        <Route path={ROUTES.SIGN_UP} element={<GuestRoute><SignUp /></GuestRoute>} />
+        <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmail />} />
+        <Route path={ROUTES.PROFILE} element={<Profile />} />
+        <Route path={`${ROUTES.PROFILE}/:username/followers`} element={<ProfileFollowers />} />
+        <Route path={`${ROUTES.PROFILE}/:username/following`} element={<ProfileFollowing />} />
+        <Route path={`${ROUTES.PROFILE}/:username`} element={<PublicProfile />} />
+        <Route path={ROUTES.LICENSING} element={<Licensing />} />
+        <Route path={ROUTES.ADMIN} element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+        <Route path={ROUTES.BACKGROUND} element={<Background />} />
       </Routes>
     </>
   );

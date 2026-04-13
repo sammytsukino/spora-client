@@ -73,9 +73,13 @@ function mapApiReport(r: ApiReport): AdminReport {
         : "@Unknown";
   const flora = (r.reportedFlora ?? r.reportedFloraId) as { _id?: string } | string;
   const targetId =
-    typeof flora === "object" && flora?._id
-      ? String(flora._id)
-      : String(flora);
+    typeof flora === "object"
+      ? flora?._id
+        ? String(flora._id)
+        : ""
+      : typeof flora === "string"
+        ? flora
+        : "";
   const categoryMap: Record<string, AdminReport["type"]> = {
     spam: "spam",
     harassment: "abuse",

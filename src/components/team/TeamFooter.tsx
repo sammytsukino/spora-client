@@ -47,7 +47,7 @@ export default function TeamFooter() {
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => navigate("/greenhouse")}
+              onClick={() => navigate(ROUTES.GREENHOUSE)}
             >
               Greenhouse
             </button>

@@ -1,10 +1,12 @@
 
 export const ROUTES = {
   HOME: "/",
+  HOME_LEGACY: "/home",
   GARDEN: "/garden",
   GREENHOUSE: "/greenhouse",
   LABORATORY: "/laboratory",
   LABORATORY_FULL: "/laboratory/full",
+  INSTALLATION: "/installation",
   TEAM: "/team",
   TERMS: "/terms",
   RESEARCH: "/research",

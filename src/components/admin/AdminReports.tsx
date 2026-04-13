@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Download, ExternalLink, UserX, Eye, Trash2, Mail } from "lucide-react";
+import { Download, ExternalLink, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { AdminReport, ReportStatus } from "@/data/admin-data";
 
@@ -9,10 +9,7 @@ interface AdminReportsProps {
   onStatusChange?: (reportId: string, status: ReportStatus) => void;
   onDownloadReport?: (report: AdminReport) => void;
   onViewTarget?: (report: AdminReport) => void;
-  onSuspendTarget?: (report: AdminReport) => void;
-  onViewPreview?: (report: AdminReport) => void;
   onRemoveTarget?: (report: AdminReport) => void;
-  onContactTarget?: (report: AdminReport) => void;
   onHideFlora?: (floraId: string) => void;
   onBatchReports?: (ids: string[], action: "resolve" | "dismiss") => void;
 }
@@ -42,10 +39,7 @@ export default function AdminReports({
   onStatusChange,
   onDownloadReport,
   onViewTarget,
-  onSuspendTarget,
-  onViewPreview,
   onRemoveTarget,
-  onContactTarget,
   onHideFlora,
   onBatchReports,
 }: AdminReportsProps) {
@@ -67,20 +61,6 @@ export default function AdminReports({
         "Are you sure you want to hide this Flora? It will no longer be visible to other users.",
       onConfirm: () => {
         onHideFlora(report.targetId);
-        setConfirm((c) => ({ ...c, open: false }));
-      },
-    });
-  };
-
-  const handleResolve = (report: AdminReport) => {
-    if (!onStatusChange) return;
-    setConfirm({
-      open: true,
-      title: "Resolve report",
-      description:
-        "Mark this report as resolved. The report will be closed.",
-      onConfirm: () => {
-        onStatusChange(report.id, "resolved");
         setConfirm((c) => ({ ...c, open: false }));
       },
     });
@@ -291,60 +271,28 @@ export default function AdminReports({
                     View target
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => onViewPreview?.(report)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
-                >
-                  <Eye className="size-3.5" aria-hidden />
-                  Preview
-                </button>
-                {report.targetType === "flora" && onHideFlora && (
-                  <button
-                    type="button"
-                    onClick={() => handleHideFlora(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
-                  >
-                    Hide Flora
-                  </button>
-                )}
-                {(report.targetType === "flora" || report.targetType === "comment") && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
-                  >
-                    <Trash2 className="size-3.5" aria-hidden />
-                    Remove content
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={() => onContactTarget?.(report)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
-                >
-                  <Mail className="size-3.5" aria-hidden />
-                  Contact
-                </button>
-                {onSuspendTarget && report.targetType === "user" && (
-                  <button
-                    type="button"
-                    onClick={() => onSuspendTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
-                  >
-                    <UserX className="size-3.5" aria-hidden />
-                    Suspend user
-                  </button>
-                )}
                 {onStatusChange && report.status === "pending" && (
                   <>
-                    <button
-                      type="button"
-                      onClick={() => handleResolve(report)}
-                      className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 hover:text-white text-overline-xs uppercase"
-                    >
-                      Resolve
-                    </button>
+                    {report.targetType === "flora" && onHideFlora && (
+                      <button
+                        type="button"
+                        onClick={() => handleHideFlora(report)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
+                      >
+                        Hide Flora
+                      </button>
+                    )}
+                    {onRemoveTarget &&
+                      (report.targetType === "flora" || report.targetType === "comment") && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTarget(report)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
+                      >
+                        <Trash2 className="size-3.5" aria-hidden />
+                        Remove content
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => handleDismiss(report)}

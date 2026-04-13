@@ -55,9 +55,9 @@ export default function SignUpForm() {
           },
         })
       } else if (result.token && result.user) {
-        navigate("/garden")
+        navigate(ROUTES.GARDEN)
       } else {
-        navigate("/signin")
+        navigate(ROUTES.SIGN_IN)
       }
     } catch {
       setError("Could not create account. Try again.")

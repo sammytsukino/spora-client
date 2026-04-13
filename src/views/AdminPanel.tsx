@@ -105,6 +105,11 @@ export default function AdminPanel() {
   } = useAdminPanel();
 
   const pendingReports = reports.filter((r) => r.status === "pending");
+  const hasValidFloraTarget = (targetId: string) =>
+    typeof targetId === "string" &&
+    targetId.trim() !== "" &&
+    targetId !== "undefined" &&
+    targetId !== "null";
 
   if (!user || user.role !== "admin") {
     return (
@@ -223,23 +228,45 @@ export default function AdminPanel() {
                         ? pendingReports
                         : reports
                     }
-                    onReportClick={(r) =>
-                      navigate(`/flora/${r.targetId}`, { state: floraOpenState })
-                    }
+                    onReportClick={(r) => {
+                      if (!hasValidFloraTarget(r.targetId)) return;
+                      navigate(floraPath(r.targetId), { state: floraOpenState });
+                    }}
                     onStatusChange={onReportStatusChange}
                     onDownloadReport={(r) =>
                       safePdfExport(() => exportReportToPdf(r))
                     }
-                    onViewTarget={(r) =>
-                      navigate(floraPath(r.targetId), { state: floraOpenState })
-                    }
-                    onViewPreview={(r) =>
-                      window.open(floraPath(r.targetId), "_blank")
-                    }
-                    onRemoveTarget={() => {}}
-                    onContactTarget={() => {}}
-                    onSuspendTarget={() => {}}
-                    onHideFlora={onHideFlora}
+                    onViewTarget={(r) => {
+                      if (!hasValidFloraTarget(r.targetId)) {
+                        setPdfAlert({
+                          open: true,
+                          title: "Target unavailable",
+                          description:
+                            "This report does not have a valid target reference.",
+                          tone: "error",
+                        });
+                        return;
+                      }
+                      navigate(floraPath(r.targetId), { state: floraOpenState });
+                    }}
+                    onRemoveTarget={(r) => {
+                      if (!hasValidFloraTarget(r.targetId)) return;
+                      void (async () => {
+                        await onBatchFloras([r.targetId], "delete");
+                        await onReportStatusChange(r.id, "resolved");
+                      })();
+                    }}
+                    onHideFlora={(floraId) => {
+                      const report = reports.find((r) => r.targetId === floraId);
+                      if (!report) {
+                        void onHideFlora(floraId);
+                        return;
+                      }
+                      void (async () => {
+                        await onHideFlora(floraId);
+                        await onReportStatusChange(report.id, "resolved");
+                      })();
+                    }}
                     onBatchReports={onBatchReports}
                   />
                 )}

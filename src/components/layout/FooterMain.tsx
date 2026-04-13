@@ -63,7 +63,7 @@ export default function FooterMain() {
               <button
                 type="button"
                 className="hover:underline cursor-pointer"
-                onClick={() => navigate("/garden")}
+                onClick={() => navigate(ROUTES.GARDEN)}
               >
                 Garden
               </button>

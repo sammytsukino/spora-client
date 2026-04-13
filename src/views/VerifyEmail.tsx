@@ -66,7 +66,7 @@ export default function VerifyEmail() {
               </p>
               <button
                 type="button"
-                onClick={() => navigate("/garden")}
+                onClick={() => navigate(ROUTES.GARDEN)}
                 className="px-4 py-2 border border-spora-primary bg-spora-primary text-spora-primary-light font-supply-mono text-xs uppercase tracking-[0.25em] hover:bg-black cursor-pointer"
               >
                 Go to garden

@@ -106,7 +106,7 @@ export default function NavbarBase({
   const isGarden = pathname.startsWith(ROUTES.GARDEN);
   const isGreenhouse = pathname.startsWith(ROUTES.GREENHOUSE);
   const isLaboratoryPath =
-    pathname.startsWith(ROUTES.LABORATORY) || pathname.startsWith("/installation");
+    pathname.startsWith(ROUTES.LABORATORY) || pathname.startsWith(`${ROUTES.LABORATORY}/`);
 
   const textColor = isDark
     ? "text-spora-text-secondary"
@@ -276,7 +276,7 @@ export default function NavbarBase({
                         type="button"
                         onClick={() => {
                           setMenuOpen(false);
-                          navigate("/terms");
+                          navigate(ROUTES.TERMS);
                         }}
                         className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
@@ -313,7 +313,7 @@ export default function NavbarBase({
                   variant={isDark || (isTransparent && transparentUseLightText) ? "navbar" : "compact"}
                   size="sm"
                   type="button"
-                  onClick={() => navigate("/signin")}
+                  onClick={() => navigate(ROUTES.SIGN_IN)}
                   className={isTransparent ? "bg-transparent" : ""}
                 >
                   SIGN IN
