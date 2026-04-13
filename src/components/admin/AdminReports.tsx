@@ -228,6 +228,11 @@ export default function AdminReports({
                   >
                     {report.status}
                   </span>
+                  {report.status !== "pending" && (
+                    <span className="px-2 py-0.5 border border-spora-primary bg-spora-primary-light uppercase shrink-0 text-overline-xs opacity-80">
+                      Read-only
+                    </span>
+                  )}
                 </div>
                 <span className="opacity-70 text-overline-xs">
                   {formatDate(report.createdAt)}

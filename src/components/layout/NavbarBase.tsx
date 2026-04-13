@@ -5,6 +5,7 @@ import MainButton from "@/components/ui/MainButton";
 import CyclingLogo from "@/components/layout/CyclingLogo";
 import { ROUTES } from "@/constants/routes";
 import { getStoredToken, logout, isLabFullAccessible, getStoredUser } from "@/lib/auth";
+import { fetchAdminReportSignal } from "@/lib/admin-api";
 
 type NavbarVariant = "default" | "transparent" | "laboratory" | "team";
 type NavbarPosition = "fixed" | "sticky";
@@ -38,12 +39,44 @@ export default function NavbarBase({
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!getStoredToken());
   const menuRef = useRef<HTMLDivElement>(null);
+  const [adminPendingReports, setAdminPendingReports] = useState(0);
 
   const isDark = variant === "default";
 
   useEffect(() => {
     setIsLoggedIn(!!getStoredToken());
   }, [location.pathname]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const user = getStoredUser();
+    const isAdmin = user?.role === "admin";
+    if (!isAdmin || !isLoggedIn) {
+      setAdminPendingReports(0);
+      return;
+    }
+
+    const loadSignal = async () => {
+      try {
+        const data = await fetchAdminReportSignal();
+        if (!cancelled) {
+          setAdminPendingReports(Math.max(0, Number(data.pendingCount || 0)));
+        }
+      } catch {
+        if (!cancelled) setAdminPendingReports(0);
+      }
+    };
+
+    void loadSignal();
+    const timer = window.setInterval(() => {
+      void loadSignal();
+    }, 30000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [isLoggedIn, location.pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -293,7 +326,14 @@ export default function NavbarBase({
                           className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                         >
                           <Shield className="w-4 h-4 shrink-0" />
-                          Admin panel
+                          <span className="flex items-center gap-2">
+                            Admin panel
+                            {adminPendingReports > 0 && (
+                              <span className="inline-flex min-w-5 h-5 px-1 items-center justify-center rounded-full bg-red-600 text-white text-[10px] leading-none">
+                                {adminPendingReports > 99 ? "99+" : adminPendingReports}
+                              </span>
+                            )}
+                          </span>
                         </button>
                       )}
                       <hr className={isDark || (isTransparent && transparentUseLightText) ? "border-(--spora-text-secondary)/30" : "border-spora-primary/30"} />

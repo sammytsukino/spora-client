@@ -68,6 +68,11 @@ export interface ApiFlaggedFlora {
   createdAt: string;
 }
 
+export interface AdminReportSignalResponse {
+  pendingCount: number;
+  latestPendingAt: string | null;
+}
+
 export async function fetchAdminMetrics(): Promise<AdminMetricsResponse> {
   const { data } = await api.get<AdminMetricsResponse>("/admin/metrics");
   return data;
@@ -94,6 +99,11 @@ export async function fetchAdminReports(params?: {
   status?: string;
 }): Promise<ApiReport[]> {
   const { data } = await api.get<ApiReport[]>("/admin/reports", { params });
+  return data;
+}
+
+export async function fetchAdminReportSignal(): Promise<AdminReportSignalResponse> {
+  const { data } = await api.get<AdminReportSignalResponse>("/admin/reports/signal");
   return data;
 }
 
