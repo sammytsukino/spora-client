@@ -1,174 +1,176 @@
 window.INSTALLATION_MASK_URLS = {
-daisy : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636190/img-4_oqbcpb.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636194/img-3_pm6vm5.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636194/img-2_tosyul.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636193/img-1_wopfs4.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770637077/filled-1_2_vsngfl.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770637078/filled-0_2_w9rh7y.png"
-],
-carnation : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636207/img-8_xeah1b.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636207/img-7_hzirh9.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636204/img-5_koy5ks.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636832/filled-4_sn6mnd.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636834/filled-3_ukp1hd.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636856/filled-2_aurbfg.png"
-],
-orchid : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636219/img-12_spjimp.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636227/img-16_wvlvci.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636220/img-13_oofcme.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636849/filled-0_t10fbi.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636848/filled-10_guyxib.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636839/filled-9_qpc2dd.png"
-],
-lotus : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636219/img-12_spjimp.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636227/img-16_wvlvci.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636220/img-13_oofcme.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636849/filled-0_t10fbi.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636848/filled-10_guyxib.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636839/filled-9_qpc2dd.png"
-],
-lavender : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965349/Recurso_100flw_urobdw.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965348/Recurso_99flw_adrrgn.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965346/Recurso_98flw_apni9l.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965344/Recurso_102flw_dmwz72.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965343/Recurso_101flw_nnxguf.png"
-],
-rose : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636237/img-19_dksffa.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636245/img-23_vel44w.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636238/img-18_xjxkrf.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636236/img-17_mtu34q.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636853/filled-1_a0npdc.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636836/filled-7_qcnn41.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1770636838/filled-8_fnbj0j.png"
-],
-trilium : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957158/Recurso_15flw_ie1frt.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957158/Recurso_14flw_gjqhhy.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957157/Recurso_18flw_ene3na.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957157/Recurso_17flw_ivkvlp.png"
-],
-sakura : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957145/Recurso_9flw_lydmjw.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957142/Recurso_8flw_qicif7.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957126/Recurso_7flw_zorpp3.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957126/Recurso_12flw_hnqetg.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957125/Recurso_11flw_evdlfr.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957125/Recurso_10flw_pk9f9h.png"
-],
-hyacinths : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957105/Recurso_4flw_jja6h4.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957071/Recurso_3flw_lkvguf.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957043/Recurso_5flw_lrunee.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957043/Recurso_2flw_g5fwns.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771957043/Recurso_1flw_emcmer.png"
-],
-trumpet : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958221/Recurso_23flw_ap0lvn.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958219/Recurso_22flw_zlcqzc.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958218/Recurso_21flw_fulxde.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958217/Recurso_19flw_a9cszn.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958216/Recurso_20flw_wgxsha.png"
-],
-pansy : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958201/Recurso_25flw_i3zw6q.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958201/Recurso_24flw_fkjrqg.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958153/Recurso_29flw_httamc.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958152/Recurso_28flw_huhsyy.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958151/Recurso_27flw_g6fqqk.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958151/Recurso_26flw_kxdmy8.png"
-],
-anemone : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958919/Recurso_34flw_tpiqpl.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958917/Recurso_33flw_tlotxa.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958916/Recurso_32flw_zpwyls.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958915/Recurso_31flw_ytolfq.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771958914/Recurso_30flw_ccjqw9.png"
-],
-poppies : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960112/Recurso_38flw_cwwk4z.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960119/Recurso_37flw_wvcct3.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960116/Recurso_35flw_gun4e2.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960115/Recurso_36flw_twqvvm.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960112/Recurso_39flw_ahv5qv.png"
-],
-dahlias : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960960/Recurso_45flw_gngdax.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960958/Recurso_44flw_nmt3bl.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960956/Recurso_43flw_om1dlx.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960955/Recurso_42flw_acy3nx.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960953/Recurso_41flw_hu54ei.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771960952/Recurso_40flw_mdqwcz.png"
-],
-chamomile : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961311/Recurso_47flw_krxdkp.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961311/Recurso_48flw_avxt48.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961332/Recurso_49flw_e7h5ny.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961376/Recurso_46flw_shxcga.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961376/Recurso_50flw_aniu83.png"
-],
-larkspur : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961888/Recurso_64flw_pdrnnf.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961888/Recurso_63flw_v3vcwz.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961887/Recurso_62flw_vdpfcl.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961887/Recurso_65flw_y9cf11.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771961887/Recurso_61flw_zvtb4o.png"
-],
-tuberose : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771962272/Recurso_66flw_jdij0f.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771962271/Recurso_70flw_nr6o7m.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771962270/Recurso_69flw_vkai56.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771962270/Recurso_68flw_onbexg.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771962269/Recurso_67flw_jdd5aj.png"
-],
-marigold : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963038/Recurso_75flw_fv7eyj.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963038/Recurso_74flw_rqzp8q.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963036/Recurso_73flw_aj57ol.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963035/Recurso_72flw_zvkfvx.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963034/Recurso_71flw_jffjfq.png"
-],
-iris : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963617/Recurso_76flw_ujo27m.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963616/Recurso_80flw_jq5emv.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963612/Recurso_79flw_vvkjxv.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963601/Recurso_78flw_llwcds.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963600/Recurso_77flw_rmct14.png"
-],
-magnolia : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963941/Recurso_81flw_bfsv6i.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963940/Recurso_86flw_lbqrgl.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963939/Recurso_85flw_ja8kuo.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963937/Recurso_84flw_o0fqlq.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963936/Recurso_83flw_xkytgc.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771963935/Recurso_82flw_uixana.png"
-],
-narciso : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964767/Recurso_93flw_xk685z.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964766/Recurso_97flw_bnkkxs.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964764/Recurso_96flw_khoymo.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964740/Recurso_94flw_osmxhx.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964739/Recurso_95flw_gjuzac.png"
-],
-forgetmenot : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964373/Recurso_90flw_skpkrz.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964372/Recurso_91flw_tjlea0.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964368/Recurso_89flw_hnqm7q.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964353/Recurso_88flw_va6txw.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771964352/Recurso_87flw_scrf8f.png"
-],
-violet : [
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965349/Recurso_100flw_urobdw.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965348/Recurso_99flw_adrrgn.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965346/Recurso_98flw_apni9l.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965344/Recurso_102flw_dmwz72.png",
-"https://res.cloudinary.com/dsy30p7gf/image/upload/v1771965343/Recurso_101flw_nnxguf.png"
-]
-
-
-};
+    daisy: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074211/halftone-DAISY-0001_sv4smz.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074210/halftone-DAISY-0002_jwesav.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074210/halftone-DAISY-0003_ciqras.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074209/halftone-DAISY-0004_dykvmi.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074208/halftone-DAISY-0005_o99pp4.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074207/halftone-DAISY-0006_gva8fd.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074207/halftone-DAISY-0007_rtdntu.png"
+    ],
+    carnation: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074215/halftone-CARNATION-0001_bquk5p.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074214/halftone-CARNATION-0002_fsbrdo.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074214/halftone-CARNATION-0003_xgbf6m.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074212/halftone-CARNATION-0004_wh56ul.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074212/halftone-CARNATION-0005_hdfehs.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074211/halftone-CARNATION-0006_ocje4x.png"
+    ],
+    orchid: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074224/halftone-ORCHID-0001_dgt1we.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074223/halftone-ORCHID-0002_vack8z.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074223/halftone-ORCHID-0003_yje7ua.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074222/halftone-ORCHID-0004_oztrum.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074221/halftone-ORCHID-0005_udkoj6.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074221/halftone-ORCHID-0006_oq7qlf.png"
+    ],
+    lotus: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074201/halftone-LOTUS-0001_la81wr.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074201/halftone-LOTUS-0002_leiqou.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074200/halftone-LOTUS-0003_sd9qpy.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074200/halftone-LOTUS-0004_astcw7.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074225/halftone-LOTUS-0005_x6iqmm.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074225/halftone-LOTUS-0006_vszfnr.png"
+    ],
+    lavender: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074206/halftone-LAVENDER-0001_p2iewz.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074205/halftone-LAVENDER-0002_c88eoa.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074205/halftone-LAVENDER-0003_mgxxrb.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074204/halftone-LAVENDER-0004_oi0rmi.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074203/halftone-LAVENDER-0005_o3anji.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074203/halftone-LAVENDER-0006_gzmmhf.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074202/halftone-LAVENDER-0007_pvtxot.png"
+    ],
+    rose: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074220/halftone-ROSE-0001_ejz1ik.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074219/halftone-ROSE-0002_aushud.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074219/halftone-ROSE-0003_blhxl4.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074218/halftone-ROSE-0004_cr3v8e.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074217/halftone-ROSE-0005_jwlk02.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074216/halftone-ROSE-0006_gczfgu.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776074216/halftone-ROSE-0007_vcowjg.png"
+    ],
+    trilium: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072745/halftone-TRILIUM-0001_w0g25p.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072745/halftone-TRILIUM-0002_qbbsto.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072745/halftone-TRILIUM-0003_hi4nv0.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072744/halftone-TRILIUM-0004_d2b5k7.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072744/halftone-TRILIUM-0005_pg4nuc.png"
+    ],
+    sakura: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072748/halftone-SAKURA-0001_vzeicq.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072748/halftone-SAKURA-0002_t4tcuh.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072747/halftone-SAKURA-0003_yiggen.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072747/halftone-SAKURA-0004_boitwv.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072746/halftone-SAKURA-0005_izmxhz.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072746/halftone-SAKURA-0006_bkj1nk.png"
+    ],
+    hyacinths: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072795/halftone-HIACYNTHS-0001_leh4za.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072794/halftone-HIACYNTHS-0002_eyqeqe.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072794/halftone-HIACYNTHS-0003_iqedmw.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072793/halftone-HIACYNTHS-0004_bieplu.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072793/halftone-HIACYNTHS-0005_g08hdf.png"
+    ],
+    trumpet: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072686/halftone-TRUMPETS-0001_fmwfrn.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072646/halftone-TRUMPETS-0002_hwrjbn.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072646/halftone-TRUMPETS-0003_agpndv.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072645/halftone-TRUMPETS-0004_li65yl.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072644/halftone-TRUMPETS-0005_s90wj4.png"
+    ],
+    pansy: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072778/halftone-PANSY-0001_uvtutp.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072777/halftone-PANSY-0002_xykj2v.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072777/halftone-PANSY-0003_c0lwp4.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072777/halftone-PANSY-0004_s8r9dz.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072752/halftone-PANSY-0005_hhooxe.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072751/halftone-PANSY-0006_ytret8.png"
+    ],
+    anemone: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072640/halftone-ANEMONES-0001_elmtec.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072805/halftone-ANEMONES-0002_hp9xov.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072804/halftone-ANEMONES-0003_m294mm.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072804/halftone-ANEMONES-0004_boqkdk.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072803/halftone-ANEMONES-0005_u6qja9.png"
+    ],
+    poppies: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072751/halftone-POPPIES-0001_tycxlr.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072750/halftone-POPPIES-0002_afxtpd.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072750/halftone-POPPIES-0003_znsabt.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072749/halftone-POPPIES-0004_jsm2ji.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072749/halftone-POPPIES-0005_q1ygfd.png"
+    ],
+    dahlias: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072800/halftone-DAHLIAS-0001_sepc8w.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072800/halftone-DAHLIAS-0002_fqkbo7.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072799/halftone-DAHLIAS-0003_sffybv.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072799/halftone-DAHLIAS-0004_ga23gm.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072798/halftone-DAHLIAS-0005_wq4dmc.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072798/halftone-DAHLIAS-0006_bqx6g7.png"
+    ],
+    chamomile: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072803/halftone-CHAMOMILE-0001_k24ody.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072802/halftone-CHAMOMILE-0002_d5vked.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072802/halftone-CHAMOMILE-0003_mf8aau.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072801/halftone-CHAMOMILE-0004_ubqbr1.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072801/halftone-CHAMOMILE-0005_lvsoji.png"
+    ],
+    larkspur: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072790/halftone-LARKSPUR-0001_hmbbvl.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072790/halftone-LARKSPUR-0002_ajnudg.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072789/halftone-LARKSPUR-0003_lafeol.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072788/halftone-LARKSPUR-0004_mesiur.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072788/halftone-LARKSPUR-0005_gf19hd.png"
+    ],
+    tuberose: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072644/halftone-TUBEROSE-0001_dhuwor.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072644/halftone-TUBEROSE-0002_yykabv.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072643/halftone-TUBEROSE-0003_ea0jfn.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072643/halftone-TUBEROSE-0004_ffzgem.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072642/halftone-TUBEROSE-0005_notb34.png"
+    ],
+    marigold: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072785/halftone-MARIGOLD-0001_ferzvs.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072784/halftone-MARIGOLD-0002_u44sz2.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072784/halftone-MARIGOLD-0003_tt9wl2.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072784/halftone-MARIGOLD-0004_iqkmhm.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072781/halftone-MARIGOLD-0005_jds38r.png"
+    ],
+    iris: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072792/halftone-IRIS-0001_zhgmnp.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072792/halftone-IRIS-0002_vpz9no.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072791/halftone-IRIS-0003_rlztro.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072791/halftone-IRIS-0004_n3vozl.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072790/halftone-IRIS-0005_pyhdix.png"
+    ],
+    magnolia: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072788/halftone-MAGNOLIAS-0001_maxiex.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072787/halftone-MAGNOLIAS-0002_lrjzcd.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072786/halftone-MAGNOLIAS-0003_fekkro.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072786/halftone-MAGNOLIAS-0004_ctbypv.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072786/halftone-MAGNOLIAS-0005_qqns3d.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072785/halftone-MAGNOLIAS-0006_hzha5g.png"
+    ],
+    narciso: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072781/halftone-NARCISO-0001_fkhpwa.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072780/halftone-NARCISO-0002_yjlmtk.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072780/halftone-NARCISO-0003_olsnfn.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072779/halftone-NARCISO-0004_ep9fx6.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072778/halftone-NARCISO-0005_rt107b.png"
+    ],
+    forgetmenot: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072797/halftone-FORGET-ME-NOT-0001_wqbmjr.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072797/halftone-FORGET-ME-NOT-0002_krso3m.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072796/halftone-FORGET-ME-NOT-0003_n6wtzr.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072796/halftone-FORGET-ME-NOT-0004_efyjet.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072795/halftone-FORGET-ME-NOT-0005_c03bom.png"
+    ],
+    violet: [
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072641/halftone-VIOLETS-0001_bg0fw8.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072641/halftone-VIOLETS-0002_xy32if.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072641/halftone-VIOLETS-0003_tbn67k.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072640/halftone-VIOLETS-0004_jwicxx.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776072641/halftone-VIOLETS-0005_m1zlii.png"
+    ]
+  };
