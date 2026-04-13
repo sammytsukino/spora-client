@@ -2134,7 +2134,7 @@
                     const cBgB = pickFromPool(family.bgB, getSeed(text, 3));
                     const _sr4 = getSeed(text, 8), _sr5 = getSeed(text, 9);
                     const _bgF = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + _sr4 * 0.5;
-                    const _bgM = _bgF > 0.66 ? "gradient" : _bgF > 0.33 ? "gradient-radial" : "solid";
+                    const _bgM = _bgF > 0.8 ? "gradient" : _bgF > 0.33 ? "gradient-radial" : "solid";
                     const _bgA = [0, 45, 90, 135, 180, 225, 270, 315][Math.floor((morph.asciiAngle / 45 + _sr5 * 2) % 8)];
                     const dynamicProfile = {
                         ...literalProfile,
@@ -2155,7 +2155,7 @@
                     blended.dominantMood = effectiveBaseMood + "+" + newMood;
                     const _sr4 = getSeed(text, 8), _sr5 = getSeed(text, 9);
                     const _bgF = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + _sr4 * 0.5;
-                    blended.background = { mode: _bgF > 0.66 ? "gradient" : _bgF > 0.33 ? "gradient-radial" : "solid", angle: [0, 45, 90, 135, 180, 225, 270, 315][Math.floor((morph.asciiAngle / 45 + _sr5 * 2) % 8)] };
+                    blended.background = { mode: _bgF > 0.8 ? "gradient" : _bgF > 0.33 ? "gradient-radial" : "solid", angle: [0, 45, 90, 135, 180, 225, 270, 315][Math.floor((morph.asciiAngle / 45 + _sr5 * 2) % 8)] };
                     currentMorph = { ...morph, dominantMood: blended.dominantMood };
                     currentLabState = blended;
                     lastUsedSet = blended.flowerSet;
@@ -2228,7 +2228,7 @@
             finalOutlineW = constrain(finalOutlineW, 1, 6);
             let hasGradFill = seedForm > 0.45;
             const bgModeFactor = morph.avgWordLength * 0.05 + morph.entropy * 0.4 + seedRand4 * 0.5;
-            let bgMode = bgModeFactor > 0.66 ? "gradient" : bgModeFactor > 0.33 ? "gradient-radial" : "solid";
+            let bgMode = bgModeFactor > 0.8 ? "gradient" : bgModeFactor > 0.33 ? "gradient-radial" : "solid";
             const bgAngles = [0, 45, 90, 135, 180, 225, 270, 315];
             let bgAngle = bgAngles[Math.floor((morph.asciiAngle / 45 + seedRand5 * 2) % 8)];
             const pulseStrength = constrain(rhymeContrib * 0.6 + morph.contentWordRatio * 1.5 + seedPhysics * 1.8, 0, 2);
