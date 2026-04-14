@@ -112,7 +112,7 @@ export const MarqueeAlongSvgPathBase = ({
   baseVelocity = 5,
   direction = "normal",
   easing,
-  repeat = 3,
+  repeat = 1,
 
   slowdownOnHover = false,
   slowDownFactor = 0.3,

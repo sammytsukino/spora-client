@@ -2,15 +2,17 @@ interface LoadingIndicatorProps {
   current: number;
   total: number;
   message?: string;
+  showCount?: boolean;
 }
 
-export default function LoadingIndicator({ 
-  current, 
-  total, 
-  message = "LOADING MORE..." 
+export default function LoadingIndicator({
+  current,
+  total,
+  message = "LOADING MORE...",
+  showCount = true,
 }: LoadingIndicatorProps) {
   const progress = total > 0 ? (current / total) * 100 : 0;
-  
+
   return (
     <div className="py-8 md:py-12 text-center">
       <div className="inline-flex flex-col items-center gap-3 font-supply-mono text-xs text-[var(--spora-primary)]">
@@ -21,12 +23,16 @@ export default function LoadingIndicator({
           <span className="uppercase tracking-[0.2em]">{message}</span>
         </div>
         <div className="w-32 h-[2px] bg-[var(--spora-primary)]/20 overflow-hidden">
-          <div 
+          <div
             className="h-full bg-[var(--spora-primary)] transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className="text-[10px] opacity-75">{current} / {total}</span>
+        {showCount ? (
+          <span className="text-[10px] opacity-75">
+            {current} / {total}
+          </span>
+        ) : null}
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import { useRef, type ReactNode } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+import { floraPath } from "@/constants/routes"
+import { readerNavState } from "@/lib/floraViewBack"
 import {
   motion,
   useAnimationFrame,
@@ -124,6 +126,7 @@ export default function SimpleMarquee({
   slowDownFactor = 0.1,
   slowDownSpringConfig = { damping: 60, stiffness: 300 },
 }: SimpleMarqueeProps) {
+  const location = useLocation()
   const defaultImages = [
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
     "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-21_dzwlna.png",
@@ -181,9 +184,23 @@ export default function SimpleMarquee({
     <MarqueeItem key={i}>
       {item.id ? (
         <Link
-          to={`/flora/${item.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
+          to={floraPath(item.id)}
+          state={{
+            ...readerNavState(location.pathname, location.search),
+            ...(item.title !== undefined
+              ? {
+                  flora: {
+                    id: item.id,
+                    title: item.title ?? "",
+                    author: item.author ?? "@Anonymous",
+                    excerpt: item.excerpt ?? "",
+                    seed: item.seed ?? `#${String(item.id).slice(-6).toUpperCase()}`,
+                    generation: item.generation ?? "GEN_0",
+                    image: item.url,
+                  },
+                }
+              : {}),
+          }}
           className="group relative block cursor-pointer"
         >
           <img

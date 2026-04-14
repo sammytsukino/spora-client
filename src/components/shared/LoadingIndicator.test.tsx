@@ -12,5 +12,13 @@ describe("LoadingIndicator", () => {
   it("uses default message", () => {
     render(<LoadingIndicator current={0} total={1} />)
     expect(screen.getByText("LOADING MORE...")).toBeInTheDocument()
+    expect(screen.getByText("0 / 1")).toBeInTheDocument()
+  })
+
+  it("hides count when showCount is false", () => {
+    render(
+      <LoadingIndicator current={0} total={1} showCount={false} message="LOADING FLORAS..." />
+    )
+    expect(screen.queryByText("0 / 1")).not.toBeInTheDocument()
   })
 })

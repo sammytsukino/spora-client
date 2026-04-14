@@ -218,7 +218,7 @@ export default function FloraReader() {
         author: state.flora.author,
         authorUsername: stateCanLink ? stateUsername : null,
         seed: state.flora.seed,
-        generation: "GEN_0",
+        generation: state.flora.generation || "GEN_0",
         image: state.flora.image,
         text: state.flora.excerpt ?? "",
         lineageItems: [{ handle: state.flora.author, floraId: state.flora.id }],
@@ -389,12 +389,10 @@ export default function FloraReader() {
 
   if (isLoading && !derived) {
     return (
-      <div className="fixed inset-0 bg-spora-primary-light">
+      <div className="fixed inset-0 z-[10050] bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="flex min-h-screen items-center justify-center pt-24 px-6">
-          <p className="font-supply-mono text-xs uppercase tracking-[0.25em] text-spora-primary">
-            Loading...
-          </p>
+          <SporaImageLoader />
         </main>
       </div>
     );

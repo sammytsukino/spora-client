@@ -177,6 +177,7 @@ export default function Garden() {
               current={0}
               total={1}
               message="LOADING FLORAS..."
+              showCount={false}
             />
           ) : error ? (
             <EmptyState

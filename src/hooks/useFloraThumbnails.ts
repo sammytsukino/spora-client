@@ -1,13 +1,36 @@
 import { useState, useEffect } from "react";
-import { listFloras } from "@/lib/floras";
+import { listFloras, type ApiFlora } from "@/lib/floras";
 import { floraImages } from "@/data/flora-data";
 import { getOptimizedThumbnailUrl } from "@/lib/cloudinary";
 
 const MIN_THUMBNAILS = 6;
 
+function readerPreviewFields(f: ApiFlora) {
+  const authorName = f.authorUsername
+    ? f.authorUsername.startsWith("@")
+      ? f.authorUsername
+      : `@${f.authorUsername}`
+    : "@Anonymous";
+  const seedSource = f.generative?.soilId || f.generative?.soilName || f._id;
+  const seed = `#${String(seedSource).slice(-6).toUpperCase()}`;
+  const gen = Number.isFinite(f.lineage?.generation) ? Number(f.lineage?.generation) : 0;
+  return {
+    title: f.title,
+    author: authorName,
+    excerpt: (f.text || "").slice(0, 500),
+    seed,
+    generation: `GEN_${gen}`,
+  };
+}
+
 export interface FloraThumbnail {
   url: string;
   id?: string;
+  title?: string;
+  author?: string;
+  excerpt?: string;
+  seed?: string;
+  generation?: string;
 }
 
 export function useFloraThumbnails(limit = 40) {
@@ -28,6 +51,7 @@ export function useFloraThumbnails(limit = 40) {
           .map((f) => ({
             url: getOptimizedThumbnailUrl(f.thumbnailUrl),
             id: f.shortId ?? f._id,
+            ...readerPreviewFields(f),
           }));
         const fallback = floraImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }));
         const combined =

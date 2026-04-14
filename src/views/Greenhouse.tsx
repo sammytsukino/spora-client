@@ -191,6 +191,7 @@ export default function Greenhouse() {
               current={0}
               total={1}
               message="LOADING SEALED FLORAS..."
+              showCount={false}
             />
           ) : error ? (
             <EmptyState
