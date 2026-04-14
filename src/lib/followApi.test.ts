@@ -68,4 +68,14 @@ describe("followApi", () => {
       params: { limit: 50, skip: 0 },
     })
   })
+
+  it("getFollowers returns empty array when data missing", async () => {
+    get.mockResolvedValueOnce({ data: undefined })
+    await expect(getFollowers("u1")).resolves.toEqual([])
+  })
+
+  it("getFollowing returns empty array when data missing", async () => {
+    get.mockResolvedValueOnce({ data: undefined })
+    await expect(getFollowing("u1")).resolves.toEqual([])
+  })
 })

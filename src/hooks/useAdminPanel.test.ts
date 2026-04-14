@@ -183,4 +183,241 @@ describe("useAdminPanel", () => {
     })
     expect(batchUpdateUserStatus).toHaveBeenCalled()
   })
+
+  it("sets 404-specific error when a fetch rejects with 404", async () => {
+    fetchAdminMetrics.mockRejectedValueOnce({ response: { status: 404 } })
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.error).toMatch(/404/i)
+  })
+
+  it("sets generic message when rejection is not an Error instance", async () => {
+    fetchAdminMetrics.mockRejectedValueOnce("weird")
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.error).toBe("Failed to load admin data")
+  })
+
+  it("maps legacy metrics payload without nested users/floras", async () => {
+    fetchAdminMetrics.mockResolvedValueOnce({
+      totalUsers: 9,
+      totalFloras: 4,
+      pendingReports: 2,
+    })
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.metrics?.totalUsers).toBe(9)
+    expect(result.current.metrics?.totalFloras).toBe(4)
+    expect(result.current.metrics?.totalBlossoming).toBe(0)
+  })
+
+  it("maps admin users, reports, and flora targets for list display", async () => {
+    fetchAdminUsers.mockResolvedValueOnce([
+      {
+        _id: "u1",
+        username: "@already",
+        email: "a@a.com",
+        role: "admin" as const,
+        accountStatus: "deleted" as const,
+        createdAt: "2025-02-02T00:00:00Z",
+        florasCount: 5,
+      },
+    ])
+    fetchAdminReports.mockResolvedValueOnce([
+      {
+        _id: "r1",
+        source: "language_screen" as const,
+        reportedBy: null,
+        reportedFloraId: "flora-string-id",
+        category: "copyright",
+        reason: "x",
+        status: "reviewing",
+        createdAt: "2025-01-01T00:00:00Z",
+      },
+      {
+        _id: "r2",
+        reportedBy: { username: "plain" },
+        reportedFlora: {},
+        category: "unknown_cat",
+        reason: "y",
+        status: "unknown_stat",
+        createdAt: "2025-01-02T00:00:00Z",
+      },
+      {
+        _id: "r3",
+        reportedBy: "not-an-object",
+        reportedFlora: { _id: "nested" },
+        category: "spam",
+        reason: "z",
+        status: "pending",
+        createdAt: "2025-01-03T00:00:00Z",
+      },
+    ])
+
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.users[0]?.status).toBe("banned")
+    expect(result.current.users[0]?.username).toBe("@already")
+    expect(result.current.users[0]?.role).toBe("admin")
+    expect(result.current.reports[0]?.reporterUsername).toBe("System")
+    expect(result.current.reports[0]?.targetId).toBe("flora-string-id")
+    expect(result.current.reports[1]?.reporterUsername).toBe("@plain")
+    expect(result.current.reports[1]?.targetId).toBe("")
+    expect(result.current.reports[1]?.type).toBe("other")
+    expect(result.current.reports[2]?.reporterUsername).toBe("@Unknown")
+    expect(result.current.reports[2]?.targetId).toBe("nested")
+  })
+
+  it("onUserRoleChange maps creator to cultivator API role", async () => {
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await act(async () => {
+      await result.current.onUserRoleChange("u1", "creator")
+    })
+    expect(updateUserRole).toHaveBeenCalledWith("u1", "cultivator")
+  })
+
+  it("onUserRoleChange rethrows and triggers quiet reload after failure", async () => {
+    updateUserRole.mockRejectedValueOnce(new Error("role denied"))
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await expect(
+      act(async () => {
+        await result.current.onUserRoleChange("u1", "admin")
+      })
+    ).rejects.toThrow("role denied")
+
+    await waitFor(() => {
+      expect(fetchAdminMetrics.mock.calls.length).toBeGreaterThanOrEqual(2)
+    })
+  })
+
+  it("onBatchFloras surfaces partial failure counts", async () => {
+    fetchAdminFloras.mockResolvedValueOnce([
+      { _id: "f1", title: "A", text: "t", authorUsername: "x" },
+    ])
+    batchUpdateFloras.mockResolvedValueOnce({ updated: 0, failed: ["f1"] })
+
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await act(async () => {
+      await result.current.onBatchFloras(["f1"], "hide")
+    })
+
+    await waitFor(() => {
+      expect(result.current.error).toMatch(/could not be updated/i)
+    })
+  })
+
+  it("onBatchFloras surfaces mixed failure and success", async () => {
+    batchUpdateFloras.mockResolvedValueOnce({ updated: 2, failed: ["bad"] })
+
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await act(async () => {
+      await result.current.onBatchFloras(["f1"], "unhide")
+    })
+
+    await waitFor(() => {
+      expect(result.current.error).toMatch(/failed; 2 were updated/i)
+    })
+  })
+
+  it("onBatchReports surfaces failure messages", async () => {
+    batchUpdateReports.mockResolvedValueOnce({ updated: 0, failed: ["r9"] })
+
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await act(async () => {
+      await result.current.onBatchReports(["r9"], "resolve")
+    })
+
+    await waitFor(() => {
+      expect(result.current.error).toMatch(/report\(s\) could not be updated/i)
+    })
+  })
+
+  it("onBatchUsers surfaces mixed batch outcome", async () => {
+    batchUpdateUserStatus.mockResolvedValueOnce({ updated: 1, failed: ["u2"] })
+
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await act(async () => {
+      await result.current.onBatchUsers(["u1", "u2"], "suspend")
+    })
+
+    await waitFor(() => {
+      expect(result.current.error).toMatch(/user\(s\) failed/i)
+    })
+  })
+
+  it("onUserStatusChange rethrows and triggers quiet reload after failure", async () => {
+    updateUserStatus.mockRejectedValueOnce(new Error("status fail"))
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    await expect(
+      act(async () => {
+        await result.current.onUserStatusChange("u1", "suspended")
+      })
+    ).rejects.toThrow("status fail")
+
+    await waitFor(() => {
+      expect(fetchAdminUsers.mock.calls.length).toBeGreaterThanOrEqual(2)
+    })
+  })
+
+  it("clearError resets error state", async () => {
+    fetchAdminMetrics.mockRejectedValueOnce({ response: { status: 500 } })
+    const { result } = renderHook(() => useAdminPanel())
+
+    await waitFor(() => {
+      expect(result.current.error).toBeTruthy()
+    })
+
+    act(() => {
+      result.current.clearError()
+    })
+    expect(result.current.error).toBeNull()
+  })
 })

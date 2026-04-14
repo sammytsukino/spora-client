@@ -23,6 +23,7 @@ function renderSignIn(initialPath = "/signin", state?: object) {
         <Route path={ROUTES.SIGN_IN} element={<SignInForm />} />
         <Route path={ROUTES.GARDEN} element={<p>Garden</p>} />
         <Route path={ROUTES.VERIFY_EMAIL} element={<p>Verify</p>} />
+        <Route path={ROUTES.PROFILE} element={<p>Profile page</p>} />
       </Routes>
     </MemoryRouter>
   )
@@ -78,6 +79,57 @@ describe("SignInForm", () => {
 
     expect(
       await screen.findByText(/verify your email/i)
+    ).toBeInTheDocument()
+  })
+
+  it("navigates to prior route from location state when safe", async () => {
+    const user = userEvent.setup()
+    signIn.mockResolvedValue(undefined)
+    renderSignIn(ROUTES.SIGN_IN, {
+      from: { pathname: ROUTES.PROFILE, search: "", hash: "", state: null },
+    })
+
+    await user.type(screen.getByLabelText(/username/i), "u1")
+    await user.type(screen.getByLabelText(/^password$/i), "password1")
+    await user.click(screen.getByRole("button", { name: /login/i }))
+
+    expect(await screen.findByText("Profile page")).toBeInTheDocument()
+  })
+
+  it("shows server error string when sign-in fails", async () => {
+    const user = userEvent.setup()
+    signIn.mockRejectedValue({
+      response: { data: { error: "Server says no." } },
+    })
+    renderSignIn()
+
+    await user.type(screen.getByLabelText(/username/i), "u")
+    await user.type(screen.getByLabelText(/^password$/i), "p")
+    await user.click(screen.getByRole("button", { name: /login/i }))
+
+    expect(await screen.findByText("Server says no.")).toBeInTheDocument()
+  })
+
+  it("shows generic credentials message when error payload lacks detail", async () => {
+    const user = userEvent.setup()
+    signIn.mockRejectedValue({ response: { data: {} } })
+    renderSignIn()
+
+    await user.type(screen.getByLabelText(/username/i), "u")
+    await user.type(screen.getByLabelText(/^password$/i), "p")
+    await user.click(screen.getByRole("button", { name: /login/i }))
+
+    expect(
+      await screen.findByText(/invalid credentials or server error/i)
+    ).toBeInTheDocument()
+  })
+
+  it("shows post-signup message from location state", async () => {
+    renderSignIn(ROUTES.SIGN_IN, {
+      message: "Welcome back — verify complete.",
+    })
+    expect(
+      screen.getByText("Welcome back — verify complete.")
     ).toBeInTheDocument()
   })
 

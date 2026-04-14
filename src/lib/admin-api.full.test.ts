@@ -11,6 +11,8 @@ vi.mock("./api", () => ({
 import {
   fetchAdminFlagged,
   fetchAdminFloras,
+  fetchAdminReports,
+  fetchAdminReportSignal,
   updateUserStatus,
   updateReportStatus,
   unsignUser,
@@ -27,6 +29,23 @@ beforeEach(() => {
 })
 
 describe("admin-api remaining endpoints", () => {
+  it("fetchAdminReports passes optional query params", async () => {
+    get.mockResolvedValueOnce({ data: [] })
+    await fetchAdminReports({ limit: 20, status: "pending" })
+    expect(get).toHaveBeenCalledWith("/admin/reports", {
+      params: { limit: 20, status: "pending" },
+    })
+  })
+
+  it("fetchAdminReportSignal GET /admin/reports/signal", async () => {
+    get.mockResolvedValueOnce({
+      data: { pendingCount: 3, latestPendingAt: "2025-01-01T00:00:00Z" },
+    })
+    const s = await fetchAdminReportSignal()
+    expect(get).toHaveBeenCalledWith("/admin/reports/signal")
+    expect(s.pendingCount).toBe(3)
+  })
+
   it("fetchAdminFlagged", async () => {
     get.mockResolvedValueOnce({ data: [] })
     await fetchAdminFlagged()

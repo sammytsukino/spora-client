@@ -50,6 +50,46 @@ describe("fetchProfileData", () => {
     expect(out.floras.length).toBe(1)
   })
 
+  it("builds recent activity with updated vs created and sorts by date", async () => {
+    const created = "2025-01-01T00:00:00.000Z"
+    const updated = "2025-01-01T00:05:00.000Z"
+    get.mockResolvedValueOnce({
+      data: {
+        id: "u1",
+        username: "me",
+        email: "m@e.com",
+        role: "cultivator",
+        accountStatus: "active",
+      },
+    })
+    get.mockResolvedValueOnce({
+      data: [
+        {
+          _id: "f-old",
+          title: "Old",
+          text: "t",
+          createdAt: created,
+          updatedAt: created,
+        },
+        {
+          _id: "f-new",
+          title: "New",
+          text: "t",
+          createdAt: created,
+          updatedAt: updated,
+        },
+      ],
+    })
+
+    const out = await fetchProfileData()
+
+    const updatedEntry = out.social.recentInteractions.find((x) => x.floraId === "f-new")
+    expect(updatedEntry?.action).toBe("updated")
+    const createdEntry = out.social.recentInteractions.find((x) => x.floraId === "f-old")
+    expect(createdEntry?.action).toBe("created")
+    expect(out.social.recentInteractions[0]?.floraId).toBe("f-new")
+  })
+
   it("updateProfile PATCH /auth/me", async () => {
     patch.mockResolvedValueOnce({
       data: {

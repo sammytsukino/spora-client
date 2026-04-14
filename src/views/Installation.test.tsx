@@ -1,15 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import { render, screen } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
-import Installation from "./Installation"
+
+const tutorial = vi.hoisted(() => ({ done: true }))
 
 vi.mock("@/components/laboratory/LabTutorialOverlay", () => ({
-  default: () => null,
-  getLabTutorialDone: () => true,
+  default: () => <div data-testid="lab-tutorial">tutorial</div>,
+  getLabTutorialDone: () => tutorial.done,
 }))
+
+import Installation from "./Installation"
 
 describe("Installation", () => {
   beforeEach(() => {
+    tutorial.done = true
     vi.useFakeTimers({ shouldAdvanceTime: true })
   })
 
@@ -32,6 +36,18 @@ describe("Installation", () => {
     expect(src).toContain("floraId=fid-1")
     expect(src).not.toContain("from=")
     expect(src).toContain("apiBase=")
+  })
+
+  it("renders tutorial overlay when lab tutorial not done", async () => {
+    tutorial.done = false
+    render(
+      <MemoryRouter initialEntries={["/installation"]}>
+        <Routes>
+          <Route path="/installation" element={<Installation />} />
+        </Routes>
+      </MemoryRouter>
+    )
+    expect(await screen.findByTestId("lab-tutorial")).toBeInTheDocument()
   })
 
   it("includes full=1 when fullLab", async () => {

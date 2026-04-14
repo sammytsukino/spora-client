@@ -22,7 +22,7 @@ function renderSignUp() {
       <Routes>
         <Route path={ROUTES.SIGN_UP} element={<SignUpForm />} />
         <Route path={ROUTES.SIGN_IN} element={<p>Sign in page</p>} />
-        <Route path="/garden" element={<p>Garden</p>} />
+        <Route path={ROUTES.GARDEN} element={<p>Garden</p>} />
       </Routes>
     </MemoryRouter>
   )
@@ -84,5 +84,90 @@ describe("SignUpForm", () => {
       password: "password1",
     })
     expect(await screen.findByText("Sign in page")).toBeInTheDocument()
+  })
+
+  it("rejects usernames with invalid characters", async () => {
+    const user = userEvent.setup()
+    renderSignUp()
+
+    await user.type(screen.getByLabelText(/^username/i), "bad*name")
+    await user.type(screen.getByLabelText(/^name/i), "N")
+    await user.type(screen.getByLabelText(/^email/i), "n@e.com")
+    await user.type(screen.getByLabelText(/^password$/i), "password1")
+    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.click(screen.getByRole("button", { name: /create account/i }))
+
+    expect(
+      screen.getByText(/letters, numbers, and underscores/i)
+    ).toBeInTheDocument()
+    expect(signUp).not.toHaveBeenCalled()
+  })
+
+  it("rejects passwords shorter than 8 characters", async () => {
+    const user = userEvent.setup()
+    renderSignUp()
+
+    await user.type(screen.getByLabelText(/^username/i), "goodname")
+    await user.type(screen.getByLabelText(/^name/i), "N")
+    await user.type(screen.getByLabelText(/^email/i), "n@e.com")
+    await user.type(screen.getByLabelText(/^password$/i), "short")
+    await user.type(screen.getByLabelText(/confirm password/i), "short")
+    await user.click(screen.getByRole("button", { name: /create account/i }))
+
+    expect(
+      screen.getByText(/password must be at least 8 characters/i)
+    ).toBeInTheDocument()
+    expect(signUp).not.toHaveBeenCalled()
+  })
+
+  it("navigates to garden when token and user returned", async () => {
+    const user = userEvent.setup()
+    signUp.mockResolvedValue({
+      emailSent: false,
+      token: "t",
+      user: { id: "1" },
+    })
+    renderSignUp()
+
+    await user.type(screen.getByLabelText(/^username/i), "user1")
+    await user.type(screen.getByLabelText(/^name/i), "N")
+    await user.type(screen.getByLabelText(/^email/i), "n@e.com")
+    await user.type(screen.getByLabelText(/^password$/i), "password1")
+    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.click(screen.getByRole("button", { name: /create account/i }))
+
+    expect(await screen.findByText("Garden")).toBeInTheDocument()
+  })
+
+  it("navigates to sign in without message when signup returns empty result", async () => {
+    const user = userEvent.setup()
+    signUp.mockResolvedValue({ emailSent: false })
+    renderSignUp()
+
+    await user.type(screen.getByLabelText(/^username/i), "user1")
+    await user.type(screen.getByLabelText(/^name/i), "N")
+    await user.type(screen.getByLabelText(/^email/i), "n@e.com")
+    await user.type(screen.getByLabelText(/^password$/i), "password1")
+    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.click(screen.getByRole("button", { name: /create account/i }))
+
+    expect(await screen.findByText("Sign in page")).toBeInTheDocument()
+  })
+
+  it("shows generic error when signup throws", async () => {
+    const user = userEvent.setup()
+    signUp.mockRejectedValue(new Error("network"))
+    renderSignUp()
+
+    await user.type(screen.getByLabelText(/^username/i), "user1")
+    await user.type(screen.getByLabelText(/^name/i), "N")
+    await user.type(screen.getByLabelText(/^email/i), "n@e.com")
+    await user.type(screen.getByLabelText(/^password$/i), "password1")
+    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.click(screen.getByRole("button", { name: /create account/i }))
+
+    expect(
+      await screen.findByText(/could not create account/i)
+    ).toBeInTheDocument()
   })
 })
