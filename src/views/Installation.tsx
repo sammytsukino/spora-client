@@ -2,6 +2,9 @@ import { useLocation } from "react-router-dom";
 import { useRef, useEffect, useState } from "react";
 import LabTutorialOverlay, { getLabTutorialDone } from "@/components/laboratory/LabTutorialOverlay";
 import { API_BASE_URL } from "@/lib/api";
+import SporaImageLoader, {
+  SPORA_IFRAME_LOADER_MIN_MS,
+} from "@/components/shared/SporaImageLoader";
 
 interface InstallationProps {
   fullLab?: boolean;
@@ -24,7 +27,7 @@ export default function Installation({ fullLab = false }: InstallationProps) {
 
   useEffect(() => {
     setCanReveal(false);
-    const t = setTimeout(() => setCanReveal(true), 1000);
+    const t = setTimeout(() => setCanReveal(true), SPORA_IFRAME_LOADER_MIN_MS);
     return () => clearTimeout(t);
   }, [src]);
 
@@ -68,12 +71,10 @@ export default function Installation({ fullLab = false }: InstallationProps) {
       </div>
       {!canReveal && (
         <div
-          className="fixed inset-0 z-spora-loader flex items-center justify-center bg-spora-primary-light"
+          className="fixed inset-0 z-[10050] flex items-center justify-center bg-spora-primary-light"
           aria-hidden
         >
-          <p className="font-supply-mono text-overline-xs sm:text-xs uppercase tracking-[0.25em] text-spora-primary">
-            Loading...
-          </p>
+          <SporaImageLoader />
         </div>
       )}
     </>

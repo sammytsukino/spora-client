@@ -9,6 +9,7 @@ import { extractMorphology } from "@/lib/morphology";
 import { isLabFullAccessible, getStoredToken, getStoredUser } from "@/lib/auth";
 import { createReport, type ReportCategory } from "@/lib/reports-api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
+import SporaImageLoader from "@/components/shared/SporaImageLoader";
 
 interface FloraLocationState extends FloraViewLocationState {
   flora?: {
@@ -246,10 +247,8 @@ export default function FloraDetail() {
     return (
       <div className="w-full overflow-x-hidden bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
-        <main className="pt-24 pb-10 px-6 md:px-12 lg:px-16">
-          <p className="font-supply-mono text-xs uppercase tracking-[0.25em]">
-            Loading Flora...
-          </p>
+        <main className="flex min-h-[50vh] flex-col items-center justify-center pt-24 pb-10 px-6 md:px-12 lg:px-16">
+          <SporaImageLoader />
         </main>
         <FooterAlter />
       </div>

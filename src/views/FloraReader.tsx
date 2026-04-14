@@ -10,6 +10,9 @@ import { AudioLines, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
+import SporaImageLoader, {
+  SPORA_IFRAME_LOADER_MIN_MS,
+} from "@/components/shared/SporaImageLoader";
 
 interface FloraLocationState extends FloraViewLocationState {
   flora?: {
@@ -283,7 +286,7 @@ export default function FloraReader() {
 
   useEffect(() => {
     if (!derived?.id) return;
-    const t = setTimeout(() => setMinLoadTimeElapsed(true), 1000);
+    const t = setTimeout(() => setMinLoadTimeElapsed(true), SPORA_IFRAME_LOADER_MIN_MS);
     return () => clearTimeout(t);
   }, [derived?.id]);
 
@@ -448,14 +451,12 @@ export default function FloraReader() {
       </div>
 
       <div
-        className={`fixed inset-0 z-spora-loader flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
+        className={`fixed inset-0 z-[10050] flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
           canReveal ? "opacity-0 pointer-events-none" : ""
         }`}
         aria-hidden
       >
-        <p className="font-supply-mono text-overline-xs sm:text-xs uppercase tracking-[0.25em] text-spora-primary">
-          Loading...
-        </p>
+        <SporaImageLoader />
       </div>
 
       <TransparentNavbar showScrollBackground useLightText={!isLightBg} />

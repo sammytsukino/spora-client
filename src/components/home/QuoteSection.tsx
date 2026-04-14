@@ -28,7 +28,7 @@ export default function QuoteSection({ quote, author, buttonText, onButtonClick 
 
       <div className="relative z-10 h-full flex flex-col md:items-end items-center md:justify-start justify-center px-6 md:px-12 lg:px-16 py-8 md:py-12 lg:py-16">
         <p className="font-bizud-mincho text-[var(--spora-text-secondary)] max-w-6xl md:text-right text-center text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-relaxed pointer-events-none mb-4 md:mb-8">
-          {quote}"
+        『 {quote} 』
         </p>
 
         <p className="font-supply-mono italic text-[var(--spora-text-secondary)] md:text-right text-center text-sm md:text-base mb-6 md:mb-12 pointer-events-none">
