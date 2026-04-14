@@ -127,7 +127,7 @@ export default function PublicProfile() {
       <div className="w-full min-h-screen bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="pt-24 px-6">
-          <p className="font-supply-mono text-sm text-red-600">{error || "User not found."}</p>
+          <p className="font-supply-mono text-sm text-rose-500">{error || "User not found."}</p>
         </main>
       </div>
     );

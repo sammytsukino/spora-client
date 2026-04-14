@@ -55,21 +55,21 @@ export default function AlertModal({
 
   const panelClass =
     tone === "error"
-      ? "border-red-600/80 ring-1 ring-red-600/25"
+      ? "border-rose-500/80 ring-1 ring-rose-500/25"
       : tone === "warning"
         ? "border-amber-600/80 ring-1 ring-amber-600/20"
         : "border-spora-primary";
 
   const titleClass =
     tone === "error"
-      ? "text-red-700"
+      ? "text-rose-500"
       : tone === "warning"
         ? "text-amber-800"
         : "text-spora-primary";
 
   const buttonClass =
     tone === "error"
-      ? "border-red-700 bg-red-700 text-white hover:bg-red-800"
+      ? "border-rose-500 bg-rose-500 text-white hover:bg-rose-600"
       : tone === "warning"
         ? "border-amber-800 bg-amber-800 text-white hover:bg-amber-900"
         : "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black";

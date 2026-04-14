@@ -329,7 +329,7 @@ export default function NavbarBase({
                           <span className="flex items-center gap-2">
                             Admin panel
                             {adminPendingReports > 0 && (
-                              <span className="inline-flex min-w-5 h-5 px-1 items-center justify-center rounded-full bg-red-600 text-white text-[10px] leading-none">
+                              <span className="inline-flex min-w-5 h-5 px-1 items-center justify-center rounded-full bg-rose-500 text-white text-[10px] leading-none">
                                 {adminPendingReports > 99 ? "99+" : adminPendingReports}
                               </span>
                             )}

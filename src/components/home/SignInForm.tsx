@@ -69,7 +69,7 @@ export default function SignInForm() {
               </p>
             ) : null}
             {error ? (
-              <div className="mb-4 text-sm text-red-700 font-supply-mono">
+              <div className="mb-4 text-sm text-rose-600 font-supply-mono">
                 <p>{error}</p>
                 {error.includes("verify your email") && (
                   <button

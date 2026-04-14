@@ -173,7 +173,7 @@ export default function AdminFlaggedContent({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("delete")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className="px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Delete ({selectedIds.size})
             </button>
@@ -278,7 +278,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onSuspendAuthor(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
                   >
                     <UserX className="size-3.5" aria-hidden />
                     Suspend author
@@ -320,7 +320,7 @@ export default function AdminFlaggedContent({
                           },
                         })
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
                     >
                       <Trash2 className="size-3.5" aria-hidden />
                       Remove content

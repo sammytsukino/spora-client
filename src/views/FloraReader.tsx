@@ -802,7 +802,7 @@ export default function FloraReader() {
             {ttsError && (
               <p
                 className={`text-left text-[10px] font-medium leading-snug normal-case tracking-normal ${
-                  isLightBg ? "text-red-600" : "text-red-300"
+                  isLightBg ? "text-rose-500" : "text-rose-300"
                 }`}
               >
                 {ttsError}

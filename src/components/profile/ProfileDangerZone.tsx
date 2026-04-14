@@ -44,7 +44,7 @@ export default function ProfileDangerZone({
         <div className="flex flex-col gap-4 max-w-md">
           <div>
             <label htmlFor="unsign-confirm" className="block font-supply-mono text-[11px] mb-1 uppercase">
-              Type <span className="font-bold text-red-600">{expected || "your username"}</span> to confirm
+              Type <span className="font-bold text-rose-500">{expected || "your username"}</span> to confirm
             </label>
             <input
               id="unsign-confirm"
@@ -52,7 +52,7 @@ export default function ProfileDangerZone({
               value={confirmInput}
               onChange={(e) => setConfirmInput(e.target.value)}
               placeholder="your username"
-              className="w-full font-supply-mono text-[11px] px-3 py-2 border border-spora-primary bg-transparent focus:outline-none focus:border-red-600"
+              className="w-full font-supply-mono text-[11px] px-3 py-2 border border-spora-primary bg-transparent focus:outline-none focus:border-rose-500"
               autoComplete="off"
               disabled={unsigning}
             />
@@ -61,7 +61,7 @@ export default function ProfileDangerZone({
             type="button"
             onClick={() => canSubmit && onUnsign?.()}
             disabled={!canSubmit}
-            className="font-supply-mono text-caption-sm px-4 py-2 border border-red-600 text-red-600 bg-spora-primary-light uppercase w-fit hover:bg-red-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-spora-primary-light disabled:hover:text-red-600"
+            className="font-supply-mono text-caption-sm px-4 py-2 border border-rose-500 text-rose-500 bg-spora-primary-light uppercase w-fit hover:bg-rose-500 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-spora-primary-light disabled:hover:text-rose-500"
           >
             {unsigning ? "Processing…" : buttonLabel}
           </button>

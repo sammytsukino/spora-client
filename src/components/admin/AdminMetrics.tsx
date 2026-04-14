@@ -64,7 +64,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
             <span className="font-bold">{growth.usersLast7Days}</span>
             <span className="opacity-70">vs {growth.usersPrev7Days} prev</span>
             {growth.usersGrowth !== 0 && (
-              <span className={growth.usersGrowth > 0 ? "text-lime-600" : "text-red-600"}>
+              <span className={growth.usersGrowth > 0 ? "text-lime-600" : "text-rose-500"}>
                 {growth.usersGrowth > 0 ? <TrendingUp className="inline size-3.5" /> : <TrendingDown className="inline size-3.5" />}
                 {Math.abs(growth.usersGrowth)}%
               </span>
@@ -75,7 +75,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
             <span className="font-bold">{growth.florasLast7Days}</span>
             <span className="opacity-70">vs {growth.florasPrev7Days} prev</span>
             {growth.florasGrowth !== 0 && (
-              <span className={growth.florasGrowth > 0 ? "text-lime-600" : "text-red-600"}>
+              <span className={growth.florasGrowth > 0 ? "text-lime-600" : "text-rose-500"}>
                 {growth.florasGrowth > 0 ? <TrendingUp className="inline size-3.5" /> : <TrendingDown className="inline size-3.5" />}
                 {Math.abs(growth.florasGrowth)}%
               </span>

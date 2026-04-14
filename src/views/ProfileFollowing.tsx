@@ -52,7 +52,7 @@ export default function ProfileFollowing() {
         {loading ? (
           <p className="font-supply-mono text-sm text-spora-primary">Loading…</p>
         ) : error ? (
-          <p className="font-supply-mono text-sm text-red-600">{error}</p>
+          <p className="font-supply-mono text-sm text-rose-500">{error}</p>
         ) : users.length === 0 ? (
           <p className="font-supply-mono text-sm text-spora-primary opacity-80">
             Not following anyone yet.

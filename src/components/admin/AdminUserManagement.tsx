@@ -31,8 +31,8 @@ const roleStyles: Record<UserRole, string> = {
 const statusStyles: Record<UserStatus, string> = {
   active: "border-lime-300 bg-lime-300",
   suspended: "border-amber-600 bg-amber-100",
-  banned: "border-red-600 bg-red-100",
-  deleted: "border-red-600 bg-red-100",
+  banned: "border-rose-500 bg-rose-100",
+  deleted: "border-rose-500 bg-rose-100",
 };
 
 export default function AdminUserManagement({
@@ -246,7 +246,7 @@ export default function AdminUserManagement({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("ban")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className="px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Ban ({selectedIds.size})
             </button>
@@ -392,7 +392,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleBan(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
+                        className="inline-flex items-center gap-1 px-2 py-1 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
                       >
                         <Ban className="size-3" aria-hidden />
                         Ban

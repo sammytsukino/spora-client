@@ -403,6 +403,14 @@ const MarqueeItem = ({
   )
 }
 
+const MARQUEE_SVG_MAX_THUMBS = 65
+
+function subsampleThumbnailsForPath(items: FloraThumbnail[]): FloraThumbnail[] {
+  if (items.length <= MARQUEE_SVG_MAX_THUMBS) return items
+  const stride = Math.max(1, Math.ceil(items.length / MARQUEE_SVG_MAX_THUMBS))
+  return items.filter((_, i) => i % stride === 0).slice(0, MARQUEE_SVG_MAX_THUMBS)
+}
+
 const path =
   "M.43,420.62c52.72,68.49,109.19,137.1,185.23,195.06,148.97,114.13,423.68,239.51,652.56,182.16,289.78-71.72,544.96-445.73,531.22-650.01-3.97-83.39-65.57-163.07-200.2-144.6-175.72,28.63-302.34,179.08-339.84,294.57-72.36,201.33,34.88,471.46,378.03,497.1,313.54,18.39,633.89-101.06,840.03-273.18,136.07-113.61,285.75-246.67,442.57-515.23"
 
@@ -432,8 +440,11 @@ export function MarqueeBackground({
   children?: React.ReactNode
   items?: FloraThumbnail[]
 }) {
-  const displayItems: FloraThumbnail[] =
-    items && items.length > 0 ? items : imgs.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
+  const displayItems: FloraThumbnail[] = subsampleThumbnailsForPath(
+    items && items.length > 0
+      ? items
+      : imgs.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
+  )
   return (
     <div className={className || "w-full h-full relative overflow-hidden"}>
       <MarqueeAlongSvgPathBase

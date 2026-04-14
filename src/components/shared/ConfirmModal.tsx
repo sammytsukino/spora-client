@@ -79,7 +79,7 @@ export default function ConfirmModal({
         tabIndex={-1}
         className={`bg-spora-primary-light max-w-md w-full max-h-[min(85vh,32rem)] overflow-y-auto border shadow-spora-modal outline-none transition-transform duration-normal ${
           isDanger
-            ? "border-red-600/80 ring-1 ring-red-600/25"
+            ? "border-rose-500/80 ring-1 ring-rose-500/25"
             : "border-spora-primary"
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -89,7 +89,7 @@ export default function ConfirmModal({
           <h2
             id={titleId}
             className={`font-bizud-mincho-bold text-xl mb-3 ${
-              isDanger ? "text-red-700" : "text-spora-primary"
+              isDanger ? "text-rose-500" : "text-spora-primary"
             }`}
           >
             {title}
@@ -114,7 +114,7 @@ export default function ConfirmModal({
               disabled={pending}
               className={`px-4 py-2.5 border uppercase tracking-[0.2em] cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed ${
                 isDanger
-                  ? "border-red-700 bg-red-700 text-white hover:bg-red-800"
+                  ? "border-rose-500 bg-rose-500 text-white hover:bg-rose-600"
                   : "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black"
               }`}
               onClick={() => void onConfirm()}

@@ -11,7 +11,7 @@ export default function ErrorState({
 }: ErrorStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 md:py-24 px-6 text-center">
-      <div className="mb-6 text-red-500 opacity-60">
+      <div className="mb-6 text-rose-500 opacity-60">
         <svg 
           className="w-12 h-12" 
           fill="none" 

@@ -328,7 +328,7 @@ export default function AdminReports({
                       <button
                         type="button"
                         onClick={() => handleRemoveTarget(report)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
                       >
                         <Trash2 className="size-3.5" aria-hidden />
                         Remove content

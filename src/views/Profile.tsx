@@ -171,7 +171,7 @@ export default function Profile({
       <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen">
         <TransparentNavbar showScrollBackground />
         <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
-          <p className="font-supply-mono text-sm text-red-600 uppercase">{error}</p>
+          <p className="font-supply-mono text-sm text-rose-500 uppercase">{error}</p>
         </section>
       </div>
     );

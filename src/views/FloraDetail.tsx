@@ -710,7 +710,7 @@ export default function FloraDetail() {
                   </span>
                 </div>
                 {reportError && (
-                  <p className="text-overline-xs text-red-600">{reportError}</p>
+                  <p className="text-overline-xs text-rose-500">{reportError}</p>
                 )}
                 <div className="flex gap-2 justify-end pt-2">
                   <button

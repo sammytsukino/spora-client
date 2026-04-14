@@ -82,7 +82,7 @@ export default function SignUpForm() {
 
           <form onSubmit={handleSignUp} className="flex-1 min-w-0">
             {error ? (
-              <p className="mb-6 text-sm text-red-700 font-supply-mono">
+              <p className="mb-6 text-sm text-rose-600 font-supply-mono">
                 {error}
               </p>
             ) : null}

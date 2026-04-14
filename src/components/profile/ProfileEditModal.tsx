@@ -146,7 +146,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
           </div>
 
           {error && (
-            <p className="text-red-600 text-xs uppercase">{error}</p>
+            <p className="text-rose-500 text-xs uppercase">{error}</p>
           )}
 
           <div className="flex gap-3 pt-2">
