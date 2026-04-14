@@ -2781,6 +2781,13 @@
         }
 
         function getApiBase() {
+            var fromQuery = getQueryParam("apiBase");
+            if (fromQuery) {
+                fromQuery = String(fromQuery).trim();
+                if (/^(https?:)\/\//i.test(fromQuery)) {
+                    return fromQuery.replace(/\/$/, "");
+                }
+            }
             const h = window.location.hostname;
             if (h === "localhost" || h === "127.0.0.1") {
                 return window.location.protocol + "//" + h + ":4000/api";

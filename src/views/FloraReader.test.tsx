@@ -61,6 +61,7 @@ describe("FloraReader", () => {
       expect(iframe.getAttribute("src")).toContain("/Installation.html")
       expect(iframe.getAttribute("src")).toContain(encodeURIComponent("flora123"))
       expect(iframe.getAttribute("src")).toContain("reader=1")
+      expect(iframe.getAttribute("src")).toContain("apiBase=")
     })
   })
 

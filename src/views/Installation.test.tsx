@@ -31,6 +31,7 @@ describe("Installation", () => {
     expect(src.startsWith("/Installation.html")).toBe(true)
     expect(src).toContain("floraId=fid-1")
     expect(src).not.toContain("from=")
+    expect(src).toContain("apiBase=")
   })
 
   it("includes full=1 when fullLab", async () => {

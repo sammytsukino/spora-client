@@ -411,7 +411,7 @@ export default function FloraReader() {
   }
 
 
-  const installationSrc = `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1`;
+  const installationSrc = `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1&apiBase=${encodeURIComponent(API_BASE_URL)}`;
   const canReveal = minLoadTimeElapsed;
 
   const lineageRows: (typeof derived.lineageItems)[] = [];

@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useRef, useEffect, useState } from "react";
 import LabTutorialOverlay, { getLabTutorialDone } from "@/components/laboratory/LabTutorialOverlay";
+import { API_BASE_URL } from "@/lib/api";
 
 interface InstallationProps {
   fullLab?: boolean;
@@ -15,6 +16,9 @@ export default function Installation({ fullLab = false }: InstallationProps) {
   const floraId = params.get("floraId");
   const search = new URLSearchParams(location.search || "");
   search.delete("from");
+  if (!search.has("apiBase")) {
+    search.set("apiBase", API_BASE_URL);
+  }
   if (fullLab) search.set("full", "1");
   const src = `/Installation.html${search.toString() ? "?" + search.toString() : ""}`;
 
