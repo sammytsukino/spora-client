@@ -133,7 +133,8 @@ export async function updateReportStatus(
   status: "pending" | "reviewing" | "resolved" | "dismissed",
   adminNotes?: string
 ): Promise<ApiReport> {
-  const { data } = await api.patch<ApiReport>(`/admin/reports/${reportId}`, {
+  const id = encodeURIComponent(String(reportId).trim());
+  const { data } = await api.patch<ApiReport>(`/admin/reports/${id}`, {
     status,
     adminNotes,
   });
@@ -170,9 +171,10 @@ export async function batchUpdateReports(
   ids: string[],
   action: "resolve" | "dismiss"
 ): Promise<{ updated: number; failed: string[] }> {
+  const normalized = ids.map((x) => String(x).trim()).filter(Boolean);
   const { data } = await api.patch<{ updated: number; failed: string[] }>(
     "/admin/reports/batch",
-    { ids, action }
+    { ids: normalized, action }
   );
   return data;
 }

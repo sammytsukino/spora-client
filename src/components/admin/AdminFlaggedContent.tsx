@@ -11,11 +11,11 @@ interface AdminFlaggedContentProps {
   onViewContent?: (item: AdminFlaggedItem) => void;
   onDownload?: (item: AdminFlaggedItem) => void;
   onSuspendAuthor?: (item: AdminFlaggedItem) => void;
-  onHideFlora?: (floraId: string) => void;
+  onHideFlora?: (floraId: string) => void | Promise<void>;
   onBatchFloras?: (
     ids: string[],
     action: "hide" | "unhide" | "delete"
-  ) => void;
+  ) => void | Promise<void>;
 }
 
 const statusStyles: Record<FlaggedStatus, string> = {
@@ -47,13 +47,14 @@ export default function AdminFlaggedContent({
   onBatchFloras,
 }: AdminFlaggedContentProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [confirmPending, setConfirmPending] = useState(false);
   const [confirm, setConfirm] = useState<{
     open: boolean;
     title: string;
     description: string;
     variant?: "default" | "danger";
-    onConfirm: () => void;
-  }>({ open: false, title: "", description: "", onConfirm: () => {} });
+    onConfirm: () => void | Promise<void>;
+  }>({ open: false, title: "", description: "", onConfirm: async () => {} });
 
   const handleHideFlora = (item: AdminFlaggedItem) => {
     if (!onHideFlora) return;
@@ -61,9 +62,16 @@ export default function AdminFlaggedContent({
       open: true,
       title: "Hide Flora",
       description: `Are you sure you want to hide this Flora? It will no longer be visible to other users.`,
-      onConfirm: () => {
-        onHideFlora(item.contentId);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onHideFlora(item.contentId);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -90,10 +98,17 @@ export default function AdminFlaggedContent({
       title: `Batch ${actionLabels[action]}`,
       description: `Are you sure you want to ${action} ${ids.length} Flora${ids.length !== 1 ? "s" : ""}?${action === "delete" ? " This cannot be undone." : ""}`,
       variant: action === "delete" ? "danger" : "default",
-      onConfirm: () => {
-        onBatchFloras(ids, action);
-        setSelectedIds(new Set());
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onBatchFloras(ids, action);
+          setSelectedIds(new Set());
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -140,29 +155,33 @@ export default function AdminFlaggedContent({
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("hide")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Hide ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("unhide")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Unhide ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("delete")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Delete ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Clear selection
             </button>
@@ -318,8 +337,11 @@ export default function AdminFlaggedContent({
         title={confirm.title}
         description={confirm.description}
         variant={confirm.variant}
+        pending={confirmPending}
         onConfirm={confirm.onConfirm}
-        onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
+        onCancel={() =>
+          !confirmPending && setConfirm((c) => ({ ...c, open: false }))
+        }
       />
     </section>
   );

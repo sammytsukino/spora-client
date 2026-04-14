@@ -93,6 +93,7 @@ export default function AdminPanel() {
     allFloras,
     loading,
     error,
+    clearError,
     refresh,
     onUserRoleChange,
     onUserStatusChange,
@@ -140,14 +141,21 @@ export default function AdminPanel() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 border border-red-600 bg-red-50 font-supply-mono text-xs">
-            {error}
+          <div className="mb-6 p-4 border border-red-600 bg-red-50 font-supply-mono text-xs flex flex-wrap items-center gap-3">
+            <span className="min-w-0 flex-1">{error}</span>
             <button
               type="button"
               onClick={() => refresh()}
-              className="ml-4 underline"
+              className="underline shrink-0"
             >
               Retry
+            </button>
+            <button
+              type="button"
+              onClick={() => clearError()}
+              className="underline shrink-0"
+            >
+              Dismiss
             </button>
           </div>
         )}
@@ -249,23 +257,28 @@ export default function AdminPanel() {
                       }
                       navigate(floraPath(r.targetId), { state: floraOpenState });
                     }}
-                    onRemoveTarget={(r) => {
-                      if (!hasValidFloraTarget(r.targetId)) return;
-                      void (async () => {
-                        await onBatchFloras([r.targetId], "delete");
-                        await onReportStatusChange(r.id, "resolved");
-                      })();
-                    }}
-                    onHideFlora={(floraId) => {
-                      const report = reports.find((r) => r.targetId === floraId);
-                      if (!report) {
-                        void onHideFlora(floraId);
+                    onRemoveTarget={async (r) => {
+                      if (!hasValidFloraTarget(r.targetId)) {
+                        setPdfAlert({
+                          open: true,
+                          title: "Target unavailable",
+                          description:
+                            "This report does not have a valid Flora reference, so the content cannot be removed from here.",
+                          tone: "error",
+                        });
                         return;
                       }
-                      void (async () => {
+                      await onBatchFloras([r.targetId], "delete");
+                      await onReportStatusChange(r.id, "resolved");
+                    }}
+                    onHideFlora={async (floraId) => {
+                      const report = reports.find((rep) => rep.targetId === floraId);
+                      if (!report) {
                         await onHideFlora(floraId);
-                        await onReportStatusChange(report.id, "resolved");
-                      })();
+                        return;
+                      }
+                      await onHideFlora(floraId);
+                      await onReportStatusChange(report.id, "resolved");
                     }}
                     onBatchReports={onBatchReports}
                   />

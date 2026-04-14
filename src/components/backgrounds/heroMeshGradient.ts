@@ -10,7 +10,6 @@ const HERO_MESH_GRADIENT_COLORS = [
   '#EDEDED',
 ] as const;
 
-/** Same shader params as the home hero — shared by {@link Gradient.tsx} wrappers. */
 export const heroMeshGradientDefaults = {
   speed: 1,
   scale: 1,

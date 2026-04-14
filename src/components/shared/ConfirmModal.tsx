@@ -8,9 +8,9 @@ interface ConfirmModalProps {
   description: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  /** Destructive actions: red confirm control and stronger visual cue. */
   variant?: ConfirmModalVariant;
-  onConfirm: () => void;
+  pending?: boolean;
+  onConfirm: () => void | Promise<void>;
   onCancel: () => void;
 }
 
@@ -21,6 +21,7 @@ export default function ConfirmModal({
   confirmLabel = "CONFIRM",
   cancelLabel = "CANCEL",
   variant = "default",
+  pending = false,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
@@ -35,6 +36,7 @@ export default function ConfirmModal({
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (pending) return;
       if (event.key === "Escape" || event.key === "Esc") {
         event.stopPropagation();
         onCancel();
@@ -46,7 +48,7 @@ export default function ConfirmModal({
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open, onCancel]);
+  }, [open, onCancel, pending]);
 
   useEffect(() => {
     if (!open) return;
@@ -63,7 +65,9 @@ export default function ConfirmModal({
   return (
     <div
       className="fixed inset-0 z-[var(--z-spora-loader)] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 duration-normal"
-      onClick={onCancel}
+      onClick={() => {
+        if (!pending) onCancel();
+      }}
       style={{ animation: "fadeIn var(--duration-fast) var(--ease-spora-out)" }}
     >
       <div
@@ -99,21 +103,23 @@ export default function ConfirmModal({
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 font-supply-mono text-caption-sm sm:text-xs">
             <button
               type="button"
-              className="px-4 py-2.5 border border-spora-primary bg-spora-primary-light text-spora-primary uppercase tracking-[0.2em] hover:bg-spora-primary-lighter cursor-pointer shrink-0"
+              disabled={pending}
+              className="px-4 py-2.5 border border-spora-primary bg-spora-primary-light text-spora-primary uppercase tracking-[0.2em] hover:bg-spora-primary-lighter cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={onCancel}
             >
               {cancelLabel}
             </button>
             <button
               type="button"
-              className={`px-4 py-2.5 border uppercase tracking-[0.2em] cursor-pointer shrink-0 ${
+              disabled={pending}
+              className={`px-4 py-2.5 border uppercase tracking-[0.2em] cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed ${
                 isDanger
                   ? "border-red-700 bg-red-700 text-white hover:bg-red-800"
                   : "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black"
               }`}
-              onClick={onConfirm}
+              onClick={() => void onConfirm()}
             >
-              {confirmLabel}
+              {pending ? "…" : confirmLabel}
             </button>
           </div>
         </div>

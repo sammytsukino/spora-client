@@ -143,12 +143,10 @@ export async function refreshAccessToken(): Promise<AuthResponse | null> {
   }
 }
 
-/** Clears httpOnly refresh cookie on the server; call on sign-out. */
 export async function logout(): Promise<void> {
   try {
     await api.post("/auth/logout");
   } catch {
-    /* ignore network errors */
   }
   clearSession();
 }

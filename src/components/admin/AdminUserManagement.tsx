@@ -6,18 +6,18 @@ import type { AdminUserSummary, UserRole, UserStatus } from "@/data/admin-data";
 interface AdminUserManagementProps {
   users: AdminUserSummary[];
   onUserClick?: (user: AdminUserSummary) => void;
-  onRoleChange?: (userId: string, role: UserRole) => void;
-  onStatusChange?: (userId: string, status: UserStatus) => void;
-  onUnsign?: (user: AdminUserSummary) => void;
+  onRoleChange?: (userId: string, role: UserRole) => void | Promise<void>;
+  onStatusChange?: (userId: string, status: UserStatus) => void | Promise<void>;
+  onUnsign?: (user: AdminUserSummary) => void | Promise<void>;
   onExportUsers?: () => void;
   onExportUser?: (user: AdminUserSummary) => void;
-  onSuspend?: (user: AdminUserSummary) => void;
-  onBan?: (user: AdminUserSummary) => void;
-  onActivate?: (user: AdminUserSummary) => void;
+  onSuspend?: (user: AdminUserSummary) => void | Promise<void>;
+  onBan?: (user: AdminUserSummary) => void | Promise<void>;
+  onActivate?: (user: AdminUserSummary) => void | Promise<void>;
   onBatchUsers?: (
     ids: string[],
     status: "suspend" | "ban" | "activate"
-  ) => void;
+  ) => void | Promise<void>;
 }
 
 const roleStyles: Record<UserRole, string> = {
@@ -48,13 +48,14 @@ export default function AdminUserManagement({
   onBatchUsers,
 }: AdminUserManagementProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [confirmPending, setConfirmPending] = useState(false);
   const [confirm, setConfirm] = useState<{
     open: boolean;
     title: string;
     description: string;
     variant?: "default" | "danger";
-    onConfirm: () => void;
-  }>({ open: false, title: "", description: "", onConfirm: () => {} });
+    onConfirm: () => void | Promise<void>;
+  }>({ open: false, title: "", description: "", onConfirm: async () => {} });
 
   const handleUnsign = (user: AdminUserSummary) => {
     if (!onUnsign) return;
@@ -63,9 +64,16 @@ export default function AdminUserManagement({
       title: "Unsign user",
       description: `This will anonymize all Floras by ${user.username}. Authorship will be removed and attributed to "Forgotten Author". This action cannot be undone.`,
       variant: "danger",
-      onConfirm: () => {
-        onUnsign(user);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onUnsign(user);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -77,9 +85,16 @@ export default function AdminUserManagement({
       title: "Suspend user",
       description: `Suspend ${user.username}? The user will not be able to access their account.`,
       variant: "danger",
-      onConfirm: () => {
-        onSuspend(user);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onSuspend(user);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -91,9 +106,16 @@ export default function AdminUserManagement({
       title: "Ban user",
       description: `Permanently ban ${user.username}? The user will not be able to access their account.`,
       variant: "danger",
-      onConfirm: () => {
-        onBan(user);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onBan(user);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -104,9 +126,16 @@ export default function AdminUserManagement({
       open: true,
       title: "Activate user",
       description: `Reactivate ${user.username}'s account?`,
-      onConfirm: () => {
-        onActivate(user);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onActivate(user);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -118,9 +147,16 @@ export default function AdminUserManagement({
       open: true,
       title: "Change role",
       description: `Change ${targetUser?.username ?? "this user"}'s role to ${role}?`,
-      onConfirm: () => {
-        onRoleChange(userId, role);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onRoleChange(userId, role);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -146,10 +182,17 @@ export default function AdminUserManagement({
       title: `Batch ${labels[status]}`,
       description: `Are you sure you want to ${labels[status]} ${ids.length} user${ids.length !== 1 ? "s" : ""}?`,
       variant: status === "activate" ? "default" : "danger",
-      onConfirm: () => {
-        onBatchUsers(ids, status);
-        setSelectedIds(new Set());
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onBatchUsers(ids, status);
+          setSelectedIds(new Set());
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          void 0;
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -193,29 +236,33 @@ export default function AdminUserManagement({
           <>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("suspend")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Suspend ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("ban")}
-              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Ban ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("activate")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Activate ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Clear
             </button>
@@ -390,8 +437,11 @@ export default function AdminUserManagement({
         title={confirm.title}
         description={confirm.description}
         variant={confirm.variant}
+        pending={confirmPending}
         onConfirm={confirm.onConfirm}
-        onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
+        onCancel={() =>
+          !confirmPending && setConfirm((c) => ({ ...c, open: false }))
+        }
       />
     </section>
   );

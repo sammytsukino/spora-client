@@ -7,12 +7,10 @@ interface AlertModalProps {
   title: string;
   description: string;
   okLabel?: string;
-  /** Neutral notice, caution, or error-style framing (matches ConfirmModal danger for `error`). */
   tone?: AlertModalTone;
   onClose: () => void;
 }
 
-/** Single-action dialog for notices (replaces `window.alert`). Visual match to `ConfirmModal`. */
 export default function AlertModal({
   open,
   title,

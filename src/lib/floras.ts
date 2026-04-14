@@ -1,6 +1,5 @@
 import { api } from "./api";
 
-/** Present on POST/PATCH /floras responses when the server ran lexical screening. */
 export interface ContentScreening {
   flagged: boolean;
   matchCount: number;

@@ -6,10 +6,6 @@ interface Dimensions {
   height: number
 }
 
-/**
- * Tracks the size of a DOM node. Uses ResizeObserver so layout changes
- * (content, fonts, flex siblings) update size — not only window resize.
- */
 export function useDimensions(
   ref: RefObject<HTMLElement | SVGElement | null>
 ): Dimensions {

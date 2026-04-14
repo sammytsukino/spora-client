@@ -6,12 +6,12 @@ import type { AdminReport, ReportStatus } from "@/data/admin-data";
 interface AdminReportsProps {
   reports: AdminReport[];
   onReportClick?: (report: AdminReport) => void;
-  onStatusChange?: (reportId: string, status: ReportStatus) => void;
+  onStatusChange?: (reportId: string, status: ReportStatus) => void | Promise<void>;
   onDownloadReport?: (report: AdminReport) => void;
   onViewTarget?: (report: AdminReport) => void;
-  onRemoveTarget?: (report: AdminReport) => void;
-  onHideFlora?: (floraId: string) => void;
-  onBatchReports?: (ids: string[], action: "resolve" | "dismiss") => void;
+  onRemoveTarget?: (report: AdminReport) => void | Promise<void>;
+  onHideFlora?: (floraId: string) => void | Promise<void>;
+  onBatchReports?: (ids: string[], action: "resolve" | "dismiss") => void | Promise<void>;
 }
 
 const statusStyles: Record<ReportStatus, string> = {
@@ -44,53 +44,79 @@ export default function AdminReports({
   onBatchReports,
 }: AdminReportsProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [confirmPending, setConfirmPending] = useState(false);
   const [confirm, setConfirm] = useState<{
     open: boolean;
     title: string;
     description: string;
     variant?: "default" | "danger";
-    onConfirm: () => void;
-  }>({ open: false, title: "", description: "", onConfirm: () => {} });
+    onConfirm: () => void | Promise<void>;
+  }>({ open: false, title: "", description: "", onConfirm: async () => {} });
+
+  const openConfirm = (next: typeof confirm) => {
+    setConfirm({ ...next, open: true });
+  };
 
   const handleHideFlora = (report: AdminReport) => {
     if (!onHideFlora) return;
-    setConfirm({
+    openConfirm({
       open: true,
       title: "Hide Flora",
       description:
         "Are you sure you want to hide this Flora? It will no longer be visible to other users.",
-      onConfirm: () => {
-        onHideFlora(report.targetId);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onHideFlora(report.targetId);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          setConfirm((c) => ({ ...c, open: false }));
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
 
   const handleDismiss = (report: AdminReport) => {
     if (!onStatusChange) return;
-    setConfirm({
+    openConfirm({
       open: true,
       title: "Dismiss report",
       description:
         "Dismiss this report. No action will be taken on the reported content.",
-      onConfirm: () => {
-        onStatusChange(report.id, "dismissed");
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onStatusChange(report.id, "dismissed");
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          setConfirm((c) => ({ ...c, open: false }));
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
 
   const handleRemoveTarget = (report: AdminReport) => {
     if (!onRemoveTarget) return;
-    setConfirm({
+    openConfirm({
       open: true,
       title: "Remove content",
       description:
         "Are you sure you want to remove the reported content? This action cannot be undone.",
       variant: "danger",
-      onConfirm: () => {
-        onRemoveTarget(report);
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onRemoveTarget(report);
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          setConfirm((c) => ({ ...c, open: false }));
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -111,15 +137,22 @@ export default function AdminReports({
   const runBatch = (action: "resolve" | "dismiss") => {
     if (!onBatchReports || selectedIds.size === 0) return;
     const ids = Array.from(selectedIds);
-    setConfirm({
+    openConfirm({
       open: true,
       title: action === "resolve" ? "Resolve reports" : "Dismiss reports",
       description: `Are you sure you want to ${action} ${ids.length} report${ids.length !== 1 ? "s" : ""}?`,
       variant: action === "dismiss" ? "danger" : "default",
-      onConfirm: () => {
-        onBatchReports(ids, action);
-        setSelectedIds(new Set());
-        setConfirm((c) => ({ ...c, open: false }));
+      onConfirm: async () => {
+        setConfirmPending(true);
+        try {
+          await onBatchReports(ids, action);
+          setSelectedIds(new Set());
+          setConfirm((c) => ({ ...c, open: false }));
+        } catch {
+          setConfirm((c) => ({ ...c, open: false }));
+        } finally {
+          setConfirmPending(false);
+        }
       },
     });
   };
@@ -166,22 +199,25 @@ export default function AdminReports({
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("resolve")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Resolve ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => runBatch("dismiss")}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Dismiss ({selectedIds.size})
             </button>
             <button
               type="button"
+              disabled={confirmPending}
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono"
+              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
             >
               Clear selection
             </button>
@@ -317,8 +353,9 @@ export default function AdminReports({
         title={confirm.title}
         description={confirm.description}
         variant={confirm.variant}
+        pending={confirmPending}
         onConfirm={confirm.onConfirm}
-        onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
+        onCancel={() => !confirmPending && setConfirm((c) => ({ ...c, open: false }))}
       />
     </section>
   );

@@ -4,7 +4,6 @@ interface FilterTabsProps {
   filters: readonly string[];
   activeFilter: string;
   onFilterChange: (filter: string) => void;
-  /** Extra classes for the tab row container (e.g. justify-start). */
   className?: string;
 }
 
