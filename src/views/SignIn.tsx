@@ -24,7 +24,7 @@ export default function SignIn() {
         </div>
 
         <div className="relative z-10">
-          <FooterAlter />
+          <FooterAlter className="px-4 sm:px-6 md:px-12 lg:px-16" />
         </div>
       </Section>
     </div>

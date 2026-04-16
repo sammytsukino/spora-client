@@ -2,14 +2,20 @@ import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { isLabFullAccessible } from "@/lib/auth"
 import CyclingLogo from "@/components/layout/CyclingLogo"
+import { cn } from "@/lib/utils"
 
-export default function FooterAlter() {
+export default function FooterAlter({ className }: { className?: string }) {
   const navigate = useNavigate()
 
   return (
-    <footer className="relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-spora-primary overflow-hidden">
+    <footer
+      className={cn(
+        "relative w-full shrink-0 px-6 md:px-12 lg:px-16 py-8 flex flex-col justify-between text-spora-primary overflow-hidden",
+        className
+      )}
+    >
       <div className="relative z-10 flex flex-col justify-between">
-        <div className="mt-8 flex min-w-0 w-full items-end gap-3">
+        <div className="mt-8 flex min-w-0 w-full items-center lg:items-end justify-between gap-3">
           <div className="flex shrink-0 items-end">
             <CyclingLogo
               logos={[
