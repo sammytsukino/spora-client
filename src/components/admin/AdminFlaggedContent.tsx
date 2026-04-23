@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Download, ExternalLink, UserX, Check, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { AdminFlaggedItem, FlaggedStatus } from "@/data/admin-data";
+import {
+  adminButtonDanger,
+  adminButtonNeutral,
+  adminButtonSuccess,
+  adminButtonWarning,
+} from "@/components/admin/adminButtonStyles";
 
 interface AdminFlaggedContentProps {
   items: AdminFlaggedItem[];
@@ -113,6 +119,17 @@ export default function AdminFlaggedContent({
     });
   };
 
+  const shouldToggleFromCard = (item: AdminFlaggedItem) =>
+    Boolean(onBatchFloras && item.contentType === "flora");
+
+  const handleCardInteraction = (item: AdminFlaggedItem) => {
+    if (shouldToggleFromCard(item)) {
+      toggleSelect(item.contentId);
+      return;
+    }
+    onItemClick?.(item);
+  };
+
   if (items.length === 0) {
     return (
       <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
@@ -157,7 +174,7 @@ export default function AdminFlaggedContent({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("hide")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonWarning}
             >
               Hide ({selectedIds.size})
             </button>
@@ -165,7 +182,7 @@ export default function AdminFlaggedContent({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("unhide")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonSuccess}
             >
               Unhide ({selectedIds.size})
             </button>
@@ -173,7 +190,7 @@ export default function AdminFlaggedContent({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("delete")}
-              className="px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonDanger}
             >
               Delete ({selectedIds.size})
             </button>
@@ -181,7 +198,7 @@ export default function AdminFlaggedContent({
               type="button"
               disabled={confirmPending}
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonNeutral}
             >
               Clear selection
             </button>
@@ -193,14 +210,15 @@ export default function AdminFlaggedContent({
           <li key={item.id}>
             <article
               className={`border bg-spora-primary-light p-4 font-supply-mono text-caption-sm transition-colors ${selectedIds.has(item.contentId) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
-              onClick={() => onItemClick?.(item)}
-              onKeyDown={(e) =>
-                onItemClick &&
-                (e.key === "Enter" || e.key === " ") &&
-                onItemClick(item)
-              }
-              role={onItemClick ? "button" : undefined}
-              tabIndex={onItemClick ? 0 : undefined}
+              onClick={() => handleCardInteraction(item)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleCardInteraction(item);
+                }
+              }}
+              role={onItemClick || shouldToggleFromCard(item) ? "button" : undefined}
+              tabIndex={onItemClick || shouldToggleFromCard(item) ? 0 : undefined}
             >
               <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -249,7 +267,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onViewContent(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                    className={`inline-flex items-center gap-1.5 ${adminButtonNeutral}`}
                   >
                     <ExternalLink className="size-3.5" aria-hidden />
                     View content
@@ -259,7 +277,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onDownload(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                    className={`inline-flex items-center gap-1.5 ${adminButtonNeutral}`}
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
@@ -269,7 +287,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => handleHideFlora(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
+                    className={`inline-flex items-center gap-1.5 ${adminButtonWarning}`}
                   >
                     Hide Flora
                   </button>
@@ -278,7 +296,7 @@ export default function AdminFlaggedContent({
                   <button
                     type="button"
                     onClick={() => onSuspendAuthor(item)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
+                    className={`inline-flex items-center gap-1.5 ${adminButtonDanger}`}
                   >
                     <UserX className="size-3.5" aria-hidden />
                     Suspend author
@@ -300,7 +318,7 @@ export default function AdminFlaggedContent({
                           },
                         })
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 hover:text-white text-overline-xs uppercase"
+                      className={`inline-flex items-center gap-1.5 ${adminButtonSuccess}`}
                     >
                       <Check className="size-3.5" aria-hidden />
                       Approve
@@ -320,7 +338,7 @@ export default function AdminFlaggedContent({
                           },
                         })
                       }
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
+                      className={`inline-flex items-center gap-1.5 ${adminButtonDanger}`}
                     >
                       <Trash2 className="size-3.5" aria-hidden />
                       Remove content

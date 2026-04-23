@@ -338,6 +338,12 @@ export function useAdminPanel() {
       setReports((prev) => prev.filter((r) => r.targetId !== floraId));
       try {
         await hideFlora(floraId);
+        const relatedPendingReportIds = reports
+          .filter((r) => r.targetId === floraId && r.status === "pending")
+          .map((r) => r.id);
+        if (relatedPendingReportIds.length > 0) {
+          await batchUpdateReports(relatedPendingReportIds, "resolve");
+        }
       } catch (e) {
         setError(getMutationErrorMessage(e));
         await load({ quiet: true });
@@ -345,7 +351,7 @@ export function useAdminPanel() {
       }
       await load({ quiet: true });
     },
-    [load]
+    [load, reports]
   );
 
   const handleBatchFloras = useCallback(
@@ -381,6 +387,18 @@ export function useAdminPanel() {
           }
           return;
         }
+        if (action === "hide" || action === "delete") {
+          const relatedPendingReportIds = reports
+            .filter(
+              (r) =>
+                floraIds.includes(r.targetId) &&
+                r.status === "pending"
+            )
+            .map((r) => r.id);
+          if (relatedPendingReportIds.length > 0) {
+            await batchUpdateReports(relatedPendingReportIds, "resolve");
+          }
+        }
       } catch (e) {
         setError(getMutationErrorMessage(e));
         await load({ quiet: true });
@@ -388,7 +406,7 @@ export function useAdminPanel() {
       }
       await load({ quiet: true });
     },
-    [load]
+    [load, reports]
   );
 
   const handleBatchReports = useCallback(

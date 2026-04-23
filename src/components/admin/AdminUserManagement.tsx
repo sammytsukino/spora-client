@@ -2,6 +2,17 @@ import { useState } from "react";
 import { Download, User, UserX, Ban, CheckCircle, UserMinus } from "lucide-react";
 import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { AdminUserSummary, UserRole, UserStatus } from "@/data/admin-data";
+import {
+  adminButtonDanger,
+  adminButtonDangerSm,
+  adminButtonNeutral,
+  adminButtonNeutralSm,
+  adminButtonNeutralXs,
+  adminButtonSuccess,
+  adminButtonSuccessSm,
+  adminButtonWarning,
+  adminButtonWarningSm,
+} from "@/components/admin/adminButtonStyles";
 
 interface AdminUserManagementProps {
   users: AdminUserSummary[];
@@ -238,7 +249,7 @@ export default function AdminUserManagement({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("suspend")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonWarning}
             >
               Suspend ({selectedIds.size})
             </button>
@@ -246,7 +257,7 @@ export default function AdminUserManagement({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("ban")}
-              className="px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonDanger}
             >
               Ban ({selectedIds.size})
             </button>
@@ -254,7 +265,7 @@ export default function AdminUserManagement({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("activate")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonSuccess}
             >
               Activate ({selectedIds.size})
             </button>
@@ -262,7 +273,7 @@ export default function AdminUserManagement({
               type="button"
               disabled={confirmPending}
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonNeutral}
             >
               Clear
             </button>
@@ -272,7 +283,7 @@ export default function AdminUserManagement({
           <button
             type="button"
             onClick={onExportUsers}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-lime-300 font-supply-mono text-overline-xs uppercase"
+            className={`inline-flex items-center gap-1.5 ${adminButtonNeutral}`}
           >
             <Download className="size-3.5" aria-hidden />
             Export all users
@@ -351,7 +362,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => onUserClick(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1 ${adminButtonNeutralSm}`}
                       >
                         <User className="size-3" aria-hidden />
                         View
@@ -361,7 +372,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => onExportUser(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1 ${adminButtonNeutralSm}`}
                       >
                         <Download className="size-3" aria-hidden />
                         Export
@@ -371,7 +382,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleUnsign(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1 ${adminButtonWarningSm}`}
                         title="Withdraw signature: anonymize author on all Floras by this user while preserving content and Lineage"
                       >
                         <UserMinus className="size-3" aria-hidden />
@@ -382,7 +393,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleSuspend(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1 ${adminButtonWarningSm}`}
                       >
                         <UserX className="size-3" aria-hidden />
                         Suspend
@@ -392,7 +403,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleBan(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1 ${adminButtonDangerSm}`}
                       >
                         <Ban className="size-3" aria-hidden />
                         Ban
@@ -402,7 +413,7 @@ export default function AdminUserManagement({
                       <button
                         type="button"
                         onClick={() => handleActivate(user)}
-                        className="inline-flex items-center gap-1 px-2 py-1 border border-lime-300 text-spora-primary hover:bg-lime-300 hover:text-white text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1 ${adminButtonSuccessSm}`}
                       >
                         <CheckCircle className="size-3" aria-hidden />
                         Activate
@@ -417,7 +428,7 @@ export default function AdminUserManagement({
                                 key={role}
                                 type="button"
                                 onClick={() => handleRoleChange(user.id, role)}
-                                className="px-2 py-0.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                                className={adminButtonNeutralXs}
                               >
                                 {role}
                               </button>

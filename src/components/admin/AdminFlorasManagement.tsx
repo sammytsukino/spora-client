@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { ApiFlora } from "@/lib/admin-api";
-import { floraPath } from "@/constants/routes";
-import { readerNavState } from "@/lib/floraViewBack";
+import {
+  adminButtonDanger,
+  adminButtonNeutral,
+  adminButtonSuccess,
+  adminButtonWarning,
+} from "@/components/admin/adminButtonStyles";
 
 interface AdminFlorasManagementProps {
   floras: ApiFlora[];
@@ -29,8 +32,6 @@ export default function AdminFlorasManagement({
   floras,
   onBatchFloras,
 }: AdminFlorasManagementProps) {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [working, setWorking] = useState(false);
   const [confirm, setConfirm] = useState<{
@@ -135,7 +136,7 @@ export default function AdminFlorasManagement({
               type="button"
               disabled={working}
               onClick={() => requestBatch("hide")}
-              className="px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonWarning}
             >
               Hide ({selectedIds.size})
             </button>
@@ -143,7 +144,7 @@ export default function AdminFlorasManagement({
               type="button"
               disabled={working}
               onClick={() => requestBatch("unhide")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonSuccess}
             >
               Unhide ({selectedIds.size})
             </button>
@@ -151,14 +152,14 @@ export default function AdminFlorasManagement({
               type="button"
               disabled={working}
               onClick={() => requestBatch("delete")}
-              className="px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonDanger}
             >
               Delete ({selectedIds.size})
             </button>
             <button
               type="button"
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-spora-accent-secondary text-overline-xs uppercase font-supply-mono"
+              className={adminButtonNeutral}
             >
               Clear selection
             </button>
@@ -174,17 +175,13 @@ export default function AdminFlorasManagement({
                   ? "border-amber-600 bg-amber-50/50"
                   : "border-spora-primary bg-spora-primary-light hover:bg-spora-primary-lighter"
               }`}
-              onClick={() =>
-                navigate(floraPath(flora._id), {
-                  state: readerNavState(location.pathname, location.search),
-                })
-              }
-              onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") &&
-                  navigate(floraPath(flora._id), {
-                    state: readerNavState(location.pathname, location.search),
-                  })
-              }
+              onClick={() => toggleSelect(flora._id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggleSelect(flora._id);
+                }
+              }}
               role="button"
               tabIndex={0}
             >

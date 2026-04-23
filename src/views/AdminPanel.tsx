@@ -10,6 +10,10 @@ import AdminReports from "@/components/admin/AdminReports";
 import AdminUserManagement from "@/components/admin/AdminUserManagement";
 import AdminFlaggedContent from "@/components/admin/AdminFlaggedContent";
 import AdminFlorasManagement from "@/components/admin/AdminFlorasManagement";
+import {
+  adminButtonDangerSm,
+  adminButtonNeutralSm,
+} from "@/components/admin/adminButtonStyles";
 import { adminSectionTabs, type AdminSection } from "@/data/admin-data";
 import { useAdminPanel } from "@/hooks/useAdminPanel";
 import { getStoredUser } from "@/lib/auth";
@@ -146,14 +150,14 @@ export default function AdminPanel() {
             <button
               type="button"
               onClick={() => refresh()}
-              className="underline shrink-0"
+              className={`shrink-0 ${adminButtonNeutralSm}`}
             >
               Retry
             </button>
             <button
               type="button"
               onClick={() => clearError()}
-              className="underline shrink-0"
+              className={`shrink-0 ${adminButtonDangerSm}`}
             >
               Dismiss
             </button>
@@ -217,9 +221,6 @@ export default function AdminPanel() {
                   <AdminFlaggedContent
                     items={flagged}
                     title="Reported Floras"
-                    onItemClick={(item) =>
-                      navigate(floraPath(item.contentId), { state: floraOpenState })
-                    }
                     onViewContent={(item) =>
                       window.open(floraPath(item.contentId), "_blank")
                     }
@@ -236,10 +237,6 @@ export default function AdminPanel() {
                         ? pendingReports
                         : reports
                     }
-                    onReportClick={(r) => {
-                      if (!hasValidFloraTarget(r.targetId)) return;
-                      navigate(floraPath(r.targetId), { state: floraOpenState });
-                    }}
                     onStatusChange={onReportStatusChange}
                     onDownloadReport={(r) =>
                       safePdfExport(() => exportReportToPdf(r))

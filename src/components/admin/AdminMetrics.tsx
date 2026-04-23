@@ -1,5 +1,6 @@
 import { Download, TrendingUp, TrendingDown } from "lucide-react";
 import type { AdminMetricsData } from "@/data/admin-data";
+import { adminButtonNeutral } from "@/components/admin/adminButtonStyles";
 
 interface AdminMetricsProps {
   metrics: AdminMetricsData;
@@ -50,7 +51,7 @@ export default function AdminMetrics({ metrics, onExportMetrics }: AdminMetricsP
           <button
             type="button"
             onClick={onExportMetrics}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-spora-primary hover:bg-spora-primary hover:text-lime-300 font-supply-mono text-overline-xs uppercase shrink-0"
+            className={`inline-flex items-center gap-1.5 shrink-0 ${adminButtonNeutral}`}
           >
             <Download className="size-3.5" aria-hidden />
             Export metrics

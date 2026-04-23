@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Download, ExternalLink, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/shared/ConfirmModal";
 import type { AdminReport, ReportStatus } from "@/data/admin-data";
+import {
+  adminButtonDanger,
+  adminButtonNeutral,
+  adminButtonSuccess,
+  adminButtonWarning,
+} from "@/components/admin/adminButtonStyles";
 
 interface AdminReportsProps {
   reports: AdminReport[];
@@ -157,6 +163,17 @@ export default function AdminReports({
     });
   };
 
+  const shouldToggleFromCard = (report: AdminReport) =>
+    Boolean(onBatchReports && report.status === "pending");
+
+  const handleCardInteraction = (report: AdminReport) => {
+    if (shouldToggleFromCard(report)) {
+      toggleSelect(report.id);
+      return;
+    }
+    onReportClick?.(report);
+  };
+
   if (reports.length === 0) {
     return (
       <section className="border border-[var(--spora-primary)] bg-spora-primary-light p-6">
@@ -201,7 +218,7 @@ export default function AdminReports({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("resolve")}
-              className="px-3 py-1.5 border border-lime-300 text-spora-primary hover:bg-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonSuccess}
             >
               Resolve ({selectedIds.size})
             </button>
@@ -209,7 +226,7 @@ export default function AdminReports({
               type="button"
               disabled={confirmPending}
               onClick={() => runBatch("dismiss")}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonDanger}
             >
               Dismiss ({selectedIds.size})
             </button>
@@ -217,7 +234,7 @@ export default function AdminReports({
               type="button"
               disabled={confirmPending}
               onClick={() => setSelectedIds(new Set())}
-              className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase font-supply-mono disabled:opacity-50"
+              className={adminButtonNeutral}
             >
               Clear selection
             </button>
@@ -229,14 +246,15 @@ export default function AdminReports({
           <li key={report.id}>
             <article
               className={`border bg-spora-primary-light p-4 font-supply-mono text-caption-sm transition-colors ${selectedIds.has(report.id) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
-              onClick={() => onReportClick?.(report)}
-              onKeyDown={(e) =>
-                onReportClick &&
-                (e.key === "Enter" || e.key === " ") &&
-                onReportClick(report)
-              }
-              role={onReportClick ? "button" : undefined}
-              tabIndex={onReportClick ? 0 : undefined}
+              onClick={() => handleCardInteraction(report)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleCardInteraction(report);
+                }
+              }}
+              role={onReportClick || shouldToggleFromCard(report) ? "button" : undefined}
+              tabIndex={onReportClick || shouldToggleFromCard(report) ? 0 : undefined}
             >
               <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -296,7 +314,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onDownloadReport(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                    className={`inline-flex items-center gap-1.5 ${adminButtonNeutral}`}
                   >
                     <Download className="size-3.5" aria-hidden />
                     Download
@@ -306,7 +324,7 @@ export default function AdminReports({
                   <button
                     type="button"
                     onClick={() => onViewTarget(report)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                    className={`inline-flex items-center gap-1.5 ${adminButtonNeutral}`}
                   >
                     <ExternalLink className="size-3.5" aria-hidden />
                     View target
@@ -318,7 +336,7 @@ export default function AdminReports({
                       <button
                         type="button"
                         onClick={() => handleHideFlora(report)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1.5 ${adminButtonWarning}`}
                       >
                         Hide Flora
                       </button>
@@ -328,7 +346,7 @@ export default function AdminReports({
                       <button
                         type="button"
                         onClick={() => handleRemoveTarget(report)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white text-overline-xs uppercase"
+                        className={`inline-flex items-center gap-1.5 ${adminButtonDanger}`}
                       >
                         <Trash2 className="size-3.5" aria-hidden />
                         Remove content
@@ -337,7 +355,7 @@ export default function AdminReports({
                     <button
                       type="button"
                       onClick={() => handleDismiss(report)}
-                      className="px-3 py-1.5 border border-[var(--spora-primary)] hover:bg-spora-primary hover:text-lime-300 text-overline-xs uppercase"
+                      className={adminButtonDanger}
                     >
                       Dismiss
                     </button>
