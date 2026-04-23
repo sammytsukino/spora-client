@@ -169,7 +169,7 @@ export default function Greenhouse() {
           description={
             authorId
               ? "Sealed Floras by this Cultivator."
-              : "The exhibition space for Sealed Floras—completed and finalized creations."
+              : "The exhibition space for Sealed Floras: completed and finalized creations."
           }
           className="mb-8"
         />
