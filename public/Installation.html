@@ -2101,6 +2101,95 @@
             return pool[Math.floor(seed * pool.length)];
         }
 
+        function hexToRgb(hex) {
+            const n = String(hex || "").replace("#", "").trim();
+            if (n.length !== 6) return { r: 0, g: 255, b: 0 };
+            return { r: parseInt(n.slice(0, 2), 16), g: parseInt(n.slice(2, 4), 16), b: parseInt(n.slice(4, 6), 16) };
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
+        }
+
+        function rgbToHsl(r, g, b) {
+            const rn = r / 255, gn = g / 255, bn = b / 255;
+            const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn);
+            let h = 0, s = 0;
+            const l = (max + min) / 2;
+            const d = max - min;
+            if (d !== 0) {
+                s = d / (1 - Math.abs(2 * l - 1));
+                switch (max) {
+                    case rn: h = ((gn - bn) / d + (gn < bn ? 6 : 0)); break;
+                    case gn: h = ((bn - rn) / d + 2); break;
+                    default: h = ((rn - gn) / d + 4); break;
+                }
+                h *= 60;
+            }
+            return { h, s, l };
+        }
+
+        function hslToRgb(h, s, l) {
+            const c = (1 - Math.abs(2 * l - 1)) * s;
+            const hp = (h % 360) / 60;
+            const x = c * (1 - Math.abs(hp % 2 - 1));
+            let r1 = 0, g1 = 0, b1 = 0;
+            if (hp >= 0 && hp < 1) { r1 = c; g1 = x; b1 = 0; }
+            else if (hp < 2) { r1 = x; g1 = c; b1 = 0; }
+            else if (hp < 3) { r1 = 0; g1 = c; b1 = x; }
+            else if (hp < 4) { r1 = 0; g1 = x; b1 = c; }
+            else if (hp < 5) { r1 = x; g1 = 0; b1 = c; }
+            else { r1 = c; g1 = 0; b1 = x; }
+            const m = l - c / 2;
+            return { r: (r1 + m) * 255, g: (g1 + m) * 255, b: (b1 + m) * 255 };
+        }
+
+        function boostSaturation(hex, satMul, lightDelta) {
+            const rgb = hexToRgb(hex);
+            const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+            const s = Math.max(0, Math.min(1, hsl.s * satMul));
+            const l = Math.max(0, Math.min(1, hsl.l + lightDelta));
+            const boosted = hslToRgb(hsl.h, s, l);
+            return rgbToHex(boosted.r, boosted.g, boosted.b);
+        }
+
+        function relativeLuminance(hex) {
+            const { r, g, b } = hexToRgb(hex);
+            const [rn, gn, bn] = [r, g, b].map(v => {
+                const c = v / 255;
+                return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * rn + 0.7152 * gn + 0.0722 * bn;
+        }
+
+        function contrastRatio(hexA, hexB) {
+            const l1 = relativeLuminance(hexA);
+            const l2 = relativeLuminance(hexB);
+            const hi = Math.max(l1, l2), lo = Math.min(l1, l2);
+            return (hi + 0.05) / (lo + 0.05);
+        }
+
+        function deriveStemColorFromFamily(family) {
+            if (!family) return "#00ff00";
+            const backgrounds = [...(family.bg || []), ...(family.bgB || [])];
+            const candidates = [...(family.mask || []), ...(family.bg || []), ...(family.bgB || [])];
+            if (!backgrounds.length || !candidates.length) return "#00ff00";
+            let best = candidates[0];
+            let bestScore = -Infinity;
+            candidates.forEach((candidate) => {
+                const minContrast = backgrounds.reduce((acc, bg) => Math.min(acc, contrastRatio(candidate, bg)), Infinity);
+                if (minContrast > bestScore) {
+                    bestScore = minContrast;
+                    best = candidate;
+                }
+            });
+            return boostSaturation(best, 1.25, 0.02);
+        }
+
+        function getStemColorForMood(moodKey) {
+            return deriveStemColorFromFamily(COLOR_FAMILIES[moodKey] || COLOR_FAMILIES.neutral);
+        }
+
         function generateOrganicProfile() {
             const text = getFullText().trim();
             const contentSig = getContentSignature(text);
@@ -2153,7 +2242,7 @@
                     const dynamicProfile = {
                         ...literalProfile,
                         dominantMood: blendedMood,
-                        colors: { maskA: cMaskA, maskB: cMaskB, stem: "#00FF00", bgA: cBgA, bgB: cBgB, auto: true },
+                        colors: { maskA: cMaskA, maskB: cMaskB, stem: getStemColorForMood(blendedMood), bgA: cBgA, bgB: cBgB, auto: true },
                         background: { mode: _bgM, angle: _bgA }
                     };
                     currentLabState = dynamicProfile;
@@ -2208,7 +2297,7 @@
                 targetSet = availableSets[Math.floor(seedForm * availableSets.length)];
             }
 
-            const cStem = "#00FF00";
+            const cStem = getStemColorForMood(morph.dominantMood);
             const family = COLOR_FAMILIES[morph.dominantMood] || COLOR_FAMILIES.neutral;
             const cMaskA = pickFromPool(family.mask, seedColor);
             const cMaskB = pickFromPool(family.mask, seedRand);
@@ -3212,6 +3301,10 @@
             wonder: { flowerSet: "narciso", wind: { active: true, strength: 0.35 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.6 } }, colors: { maskA: "#E6E6FA", maskB: "#B0E0E6", stem: "#00FF00", bgA: "#191970", bgB: "#6A5ACD", auto: true }, geometry: { scale: 1.35, fontSize: 26, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 200 } },
             solitude: { flowerSet: "violet", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.08, pulse: { active: true, strength: 0.15 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#F5F5DC", maskB: "#E8E8E8", stem: "#00FF00", bgA: "#2F4F4F", bgB: "#708090", auto: true }, geometry: { scale: 1.0, fontSize: 16, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } }
         };
+        Object.keys(moodProfiles).forEach((moodKey) => {
+            if (!moodProfiles[moodKey] || !moodProfiles[moodKey].colors) return;
+            moodProfiles[moodKey].colors.stem = getStemColorForMood(moodKey);
+        });
 
         function resolveVisualPoetryFont() {
             const text = (typeof getFullText === "function" ? getFullText() : "") || "";
