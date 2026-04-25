@@ -25,8 +25,7 @@
     <style>
         @font-face {
             font-family: SupplyMono;
-            src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048421/supplyMono-Light_ifjxjr.ttf")
-                format("truetype");
+            src: url("https://res.cloudinary.com/dsy30p7gf/raw/upload/v1772048421/supplyMono-Light_ifjxjr.ttf") format("truetype");
             font-weight: 300;
             font-style: normal;
             font-display: swap;
@@ -1081,7 +1080,8 @@
             <details>
                 <summary>VISUAL_POETRY_GRID</summary>
                 <p style="font-family: var(--font-mono); font-size: 9px; opacity: 0.75; margin-bottom: 10px;">
-                    Visual Poetry layout (segmentation, noise grid, seeded shuffle). Transparent layer; font and cell colors follow detected mood (same rules as organic profile) or random presets when mood is neutral.
+                    Visual Poetry layout (segmentation, noise grid, seeded shuffle). Transparent layer; font and cell
+                    colors follow detected mood (same rules as organic profile) or random presets when mood is neutral.
                 </p>
                 <div class="control-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
                     <div>
@@ -1096,7 +1096,8 @@
                     </div>
                 </div>
                 <div class="control-box">
-                    <label><input type="checkbox" id="chkVpUseDensity" checked onchange="renderVisualPoetryDebounced()" />
+                    <label><input type="checkbox" id="chkVpUseDensity" checked
+                            onchange="renderVisualPoetryDebounced()" />
                         Density-driven grid (noise)</label>
                 </div>
                 <div class="control-box">
@@ -1109,7 +1110,8 @@
                         Stretch text to fill cell (Visual Poetry)</label>
                 </div>
                 <div class="control-box">
-                    <label><input type="checkbox" id="chkVpShowGrid" onchange="renderVisualPoetryDebounced()" /> Show grid
+                    <label><input type="checkbox" id="chkVpShowGrid" onchange="renderVisualPoetryDebounced()" /> Show
+                        grid
                         lines</label>
                 </div>
                 <div class="control-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
@@ -1119,12 +1121,14 @@
                     </div>
                 </div>
                 <div class="control-box">
-                    <label><input type="checkbox" id="chkVpRandomPalette" checked onchange="renderVisualPoetryDebounced()" />
+                    <label><input type="checkbox" id="chkVpRandomPalette" checked
+                            onchange="renderVisualPoetryDebounced()" />
                         Random preset colors (cells + light text)</label>
                 </div>
                 <div class="control-box">
                     <button type="button" onclick="visualPoetryNewSeed()">NEW SEED</button>
-                    <span id="vpSeedDisplay" style="font-family: var(--font-mono); font-size: 9px; margin-left: 8px;"></span>
+                    <span id="vpSeedDisplay"
+                        style="font-family: var(--font-mono); font-size: 9px; margin-left: 8px;"></span>
                     <input type="hidden" id="inpVpSeed" value="0" />
                 </div>
             </details>
@@ -1149,9 +1153,23 @@
                 </span>
             </div>
             <button type="button" id="btnRegenerate" class="btn-primary btn-with-icon" style="margin-bottom: 12px"
-                onclick="generateGarden()"><svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>SHUFFLE LAYOUT</button>
+                onclick="generateGarden()"><svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m18 14 4 4-4 4" />
+                    <path d="m18 2 4 4-4 4" />
+                    <path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" />
+                    <path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" />
+                    <path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" />
+                </svg>SHUFFLE LAYOUT</button>
             <div class="btn-group">
-                <button id="btnRenderPNG" class="btn-with-icon" onclick="saveFullArt()"><svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>DOWNLOAD IMAGE</button>
+                <button id="btnRenderPNG" class="btn-with-icon" onclick="saveFullArt()"><svg class="btn-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>DOWNLOAD IMAGE</button>
             </div>
             <div id="jsonExportGroup" style="display: none;">
                 <div class="btn-group" style="margin-top: 10px;">
@@ -1185,8 +1203,8 @@
         </div>
     </div>
 
-    <div id="screeningAdvisoryModal" class="confirm-modal-overlay" aria-hidden="true" role="dialog"
-        aria-modal="true" aria-labelledby="screeningAdvisoryTitle">
+    <div id="screeningAdvisoryModal" class="confirm-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="screeningAdvisoryTitle">
         <div class="confirm-modal confirm-modal--wide" role="document">
             <h2 id="screeningAdvisoryTitle" class="confirm-modal-title">Review before publishing</h2>
             <div class="confirm-modal-desc confirm-modal-desc--prose">
@@ -1213,10 +1231,6 @@
             }
         })();
         const INSTALLATION_MODE = true;
-        /**
-         * Visual Poetry backdrop layer — shipped off for v1.0; enable for v1.1 by setting default to true below.
-         * QA / dev: add ?visualPoetry=1 or ?vp=1 to the Installation URL to preview the feature.
-         */
         const VISUAL_POETRY_FEATURE = (() => {
             try {
                 const q = new URLSearchParams(window.location.search || "");
@@ -1967,122 +1981,122 @@
 
         const LITERAL_THRESHOLD = 5;
         const COLOR_FAMILIES = {
-    joy: {
-        mask: ["#FFEE00", "#FFD500", "#FFFAAA", "#FFD500"],
-        bg:   ["#0080FF", "#2200FF", "#00FFFF"],
-        bgB:  ["#FFD500", "#FFFFFF", "#FFFF00"]
-    },
-    void: {
-        mask: ["#000055", "#000088", "#000044"],
-        bg:   ["#000000", "#000000", "#000000"],
-        bgB:  ["#0000FF", "#0000FF"]
-    },
-    glitch: {
-        mask: ["#CC00FF", "#00FF88", "#FF0088", "#88FF00"],
-        bg:   ["#000000", "#110022", "#00001E"],
-        bgB:  ["#FF00FF", "#0000FF"]
-    },
-    editorial: {
-        mask: ["#FFFFFF", "#FFFFFF"],
-        bg:   ["#000000", "#000000"],
-        bgB:  ["#111111", "#222222"]
-    },
-    system: {
-        mask: ["#CCFF00", "#AAEE00", "#00FF88"],
-        bg:   ["#FFFFFF", "#000000"],
-        bgB:  ["#333333", "#444444"]
-    },
-    midnight: {
-        mask: ["#00CCFF", "#7788FF", "#AABBFF"],
-        bg:   ["#000000", "#000022", "#0000FF"],
-        bgB:  ["#0000FF", "#0000FF"]
-    },
-    warning: {
-        mask: ["#111100", "#221100"],
-        bg:   ["#FF5500", "#FF8800", "#FF5500"],
-        bgB:  ["#FF7700", "#FF8800"]
-    },
-    ethereal: {
-        mask: ["#AADDFF", "#CC88FF", "#88CCFF", "#BB88FF"],
-        bg:   ["#0000FF", "#0000FF", "#AA00FF", "#0000FF"],
-        bgB:  ["#00CCFF", "#00CCFF", "#AA00FF", "#00FFFF"]
-    },
-    melancholy: {
-        mask: ["#FF8800", "#AA00FF", "#FF4444", "#FFCC00"],
-        bg:   ["#880000", "#880000", "#0000FF", "#880000"],
-        bgB:  ["#0055FF", "#AA00FF", "#CC8800"]
-    },
-    aggression: {
-        mask: ["#FF4444", "#FF8800", "#FF5500", "#FF6666"],
-        bg:   ["#FF0000", "#FF0000", "#880000"],
-        bgB:  ["#FF5500", "#FF7700", "#FF0000"]
-    },
-    passion: {
-        mask: ["#FF55AA", "#FF2288", "#FF55BB", "#FF66FF"],
-        bg:   ["#FF0000", "#AA00FF", "#8800FF"],
-        bgB:  ["#FF8800", "#FF00FF"]
-    },
-    anxiety: {
-        mask: ["#AAFF00", "#00FFCC", "#44FF88", "#00FFDD"],
-        bg:   ["#00AA88", "#008800", "#006600"],
-        bgB:  ["#88FF00", "#00FF00", "#00FF55"]
-    },
-    serenity: {
-        mask: ["#55FFBB", "#88FFCC", "#44FFAA", "#77FFCC"],
-        bg:   ["#007755", "#00AA88", "#0055AA"],
-        bgB:  ["#00AAFF", "#00FFFF", "#00FF00"]
-    },
-    rage: {
-        mask: ["#FF2222", "#FF3333", "#FF1111"],
-        bg:   ["#000000", "#110000", "#550000"],
-        bgB:  ["#FF0000", "#FF0000"]
-    },
-    horror: {
-        mask: ["#33AA33", "#226622", "#118811"],
-        bg:   ["#000000", "#001100", "#003300"],
-        bgB:  ["#00FF00", "#00FF00"]
-    },
-    ecstasy: {
-        mask: ["#FFDD00", "#FFE844", "#FFCC00"],
-        bg:   ["#FFCC00", "#FFDD00", "#FFDD00"],
-        bgB:  ["#FFFF00", "#FFFF00"]
-    },
-    despair: {
-        mask: ["#222255", "#3333AA", "#444499"],
-        bg:   ["#000000", "#000011", "#000022"],
-        bgB:  ["#0000FF", "#0000FF"]
-    },
-    tenderness: {
-        mask: ["#FF88CC", "#FF99DD", "#FF77BB"],
-        bg:   ["#FF0055", "#FF0055", "#FF00AA"],
-        bgB:  ["#FF0055", "#FF00FF"]
-    },
-    zen: {
-        mask: ["#55FFEE", "#88FFEE", "#44FFEE"],
-        bg:   ["#008888", "#00AAAA", "#008888"],
-        bgB:  ["#00FFFF", "#00FFFF"]
-    },
-    nostalgia: {
-        mask: ["#FF8888", "#AA8888", "#CC8888", "#FFAA00"],
-        bg:   ["#553300", "#553300", "#332200"],
-        bgB:  ["#886633", "#AA6633"]
-    },
-    wonder: {
-        mask: ["#CCCCFF", "#88CCFF", "#CC88FF", "#88BBFF"],
-        bg:   ["#000088", "#000055", "#440088"],
-        bgB:  ["#6600FF", "#8800FF", "#FF00FF"]
-    },
-    solitude: {
-        mask: ["#FFFFFF", "#CCCCCC", "#AAAAAA", "#888888"],
-        bg:   ["#334444", "#334444", "#111111"],
-        bgB:  ["#668899", "#668899"]
-    },
-    neutral: {
-        mask: ["#FF88FF", "#88FFFF", "#FFDD44", "#55FFEE", "#CC88FF", "#88FFAA"],
-        bg:   ["#FF00FF", "#00FFFF", "#FF0000", "#0000FF"],
-        bgB:  ["#FF8800", "#00CCFF", "#AA00FF", "#00FF00"]
-    }
-};
+            joy: {
+                mask: ["#C9FC45", "#C8EB66", "#E7E7E7", "#C9FC45"],
+                bg: ["#FB9FE2", "#A1E2F3", "#C87BE0"],
+                bgB: ["#A1E2F3", "#F896DE", "#E7E7E7"]
+            },
+            void: {
+                mask: ["#D856D6", "#FE004F", "#D856D6"],
+                bg: ["#010001", "#000000", "#093049"],
+                bgB: ["#000000", "#042B15", "#010001"]
+            },
+            glitch: {
+                mask: ["#CC00FF", "#00FF88", "#FF0088", "#88FF00"],
+                bg: ["#000000", "#110022", "#00001E"],
+                bgB: ["#FF00FF", "#0000FF"]
+            },
+            editorial: {
+                mask: ["#8FA497", "#8D8765", "#8FA497"],
+                bg: ["#3A2718", "#432E1E", "#5B4837"],
+                bgB: ["#5B4837", "#432E1E", "#8D8765"]
+            },
+            system: {
+                mask: ["#27C854", "#23B5B4", "#27C854"],
+                bg: ["#142D18", "#206A4E", "#1D8534"],
+                bgB: ["#206A4E", "#1D8534", "#142D18"]
+            },
+            midnight: {
+                mask: ["#7E7882", "#7B81B9", "#7E7882"],
+                bg: ["#2E324C", "#232846", "#445137"],
+                bgB: ["#2D3144", "#445137", "#2E324C"]
+            },
+            warning: {
+                mask: ["#FEFEFE", "#FEE1BD", "#FF6164", "#FEFEFE"],
+                bg: ["#FB581B", "#F84A3D", "#F97F81"],
+                bgB: ["#F84A3D", "#FB581B", "#FEE1BD"]
+            },
+            ethereal: {
+                mask: ["#AADDFF", "#CC88FF", "#88CCFF", "#BB88FF"],
+                bg: ["#0000FF", "#0000FF", "#AA00FF", "#0000FF"],
+                bgB: ["#00CCFF", "#00CCFF", "#AA00FF", "#00FFFF"]
+            },
+            melancholy: {
+                mask: ["#829EE3", "#767BA5", "#829EE3", "#767BA5"],
+                bg: ["#402526", "#3D282C", "#432525"],
+                bgB: ["#767BA5", "#432525", "#3D282C"]
+            },
+            aggression: {
+                mask: ["#DF5C2E", "#D53A22", "#D2724B", "#DF5C2E"],
+                bg: ["#877C7D", "#848E95", "#D53A22"],
+                bgB: ["#DF5C2E", "#D2724B", "#848E95"]
+            },
+            passion: {
+                mask: ["#F33B43", "#E977A6", "#E6C6D9", "#F33B43"],
+                bg: ["#CDBDFB", "#FB7D6F", "#E977A6"],
+                bgB: ["#FB7D6F", "#CDBDFB", "#E6C6D9"]
+            },
+            anxiety: {
+                mask: ["#58E308", "#E02985", "#BDCCE1", "#58E308"],
+                bg: ["#3F3521", "#639FB3", "#3F3521"],
+                bgB: ["#E02985", "#639FB3", "#BDCCE1"]
+            },
+            serenity: {
+                mask: ["#FDF6EA", "#FCDBC5", "#FDAB86", "#FDF6EA"],
+                bg: ["#8EAED2", "#D4CBDA", "#8EAED2"],
+                bgB: ["#FCDBC5", "#D4CBDA", "#FDF6EA"]
+            },
+            rage: {
+                mask: ["#FF2222", "#FF3333", "#FF1111"],
+                bg: ["#000000", "#110000", "#550000"],
+                bgB: ["#FF0000", "#FF0000"]
+            },
+            horror: {
+                mask: ["#33AA33", "#226622", "#118811"],
+                bg: ["#000000", "#001100", "#003300"],
+                bgB: ["#00FF00", "#00FF00"]
+            },
+            ecstasy: {
+                mask: ["#A4FCAD", "#FE529B", "#D597FC", "#5EACFE"],
+                bg: ["#00BD98", "#5FBE90", "#A29AAE", "#FE2B16"],
+                bgB: ["#BBC6E5", "#8AC8E4", "#D597FC", "#FE2B16"]
+            },
+            despair: {
+                mask: ["#222255", "#3333AA", "#444499"],
+                bg: ["#000000", "#000011", "#000022"],
+                bgB: ["#0000FF", "#0000FF"]
+            },
+            tenderness: {
+                mask: ["#FF88CC", "#FF99DD", "#FF77BB"],
+                bg: ["#FF0055", "#FF0055", "#FF00AA"],
+                bgB: ["#FF0055", "#FF00FF"]
+            },
+            zen: {
+                mask: ["#D7F262", "#64BCCA", "#77C1C3", "#D7F262"],
+                bg: ["#2F3632", "#5A7E72", "#2F3632"],
+                bgB: ["#5A7E72", "#64BCCA", "#77C1C3"]
+            },
+            nostalgia: {
+                mask: ["#FF8888", "#AA8888", "#CC8888", "#FFAA00"],
+                bg: ["#553300", "#553300", "#332200"],
+                bgB: ["#886633", "#AA6633"]
+            },
+            wonder: {
+                mask: ["#CCCCFF", "#88CCFF", "#CC88FF", "#88BBFF"],
+                bg: ["#000088", "#000055", "#440088"],
+                bgB: ["#6600FF", "#8800FF", "#FF00FF"]
+            },
+            solitude: {
+                mask: ["#FFFFFF", "#CCCCCC", "#AAAAAA", "#888888"],
+                bg: ["#334444", "#334444", "#111111"],
+                bgB: ["#668899", "#668899"]
+            },
+            neutral: {
+                mask: ["#FF88FF", "#88FFFF", "#FFDD44", "#55FFEE", "#CC88FF", "#88FFAA"],
+                bg: ["#FF00FF", "#00FFFF", "#FF0000", "#0000FF"],
+                bgB: ["#FF8800", "#00CCFF", "#AA00FF", "#00FF00"]
+            }
+        };
         function pickFromPool(pool, seed) {
             return pool[Math.floor(seed * pool.length)];
         }
@@ -3175,29 +3189,29 @@
         }
 
         const moodProfiles = {
-    joy: { flowerSet: "daisy", wind: { active: true, strength: 0.2 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.3 }, wave: { active: true, strength: 0.4 } }, colors: { maskA: "#FFCF10", maskB: "#FFF189", stem: "#00FF00", bgA: "#00AAF7", bgB: "#FFD54A", auto: true }, geometry: { scale: 1.2, fontSize: 22, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 135 } },
-    void: { flowerSet: "sakura", wind: { active: true, strength: 0.08 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.15, pulse: { active: true, strength: 0.8 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#002456", maskB: "#0049AE", stem: "#00FF00", bgA: "#0A0A0A", bgB: "#003488", auto: true }, geometry: { scale: 0.85, fontSize: 14, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } },
-    glitch: { flowerSet: "carnation", wind: { active: true, strength: 1.8 }, chaos: { scramble: true, scrambleForce: 0.7, jitter: 1.4, pulse: { active: true, strength: 1.2 }, wave: { active: true, strength: 1.6 } }, colors: { maskA: "#FF00FF", maskB: "#00FF88", stem: "#00FF00", bgA: "#0F0F0F", bgB: "#330033", auto: true }, geometry: { scale: 1.8, fontSize: 52, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 5 }, background: { mode: "gradient", angle: 270 } },
-    editorial: { flowerSet: "trilium", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.1, pulse: { active: false, strength: 0 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#FFFFFF", maskB: "#F5F5F5", stem: "#00FF00", bgA: "#000000", bgB: "#171717", auto: true }, geometry: { scale: 1.4, fontSize: 48, font: "'Playfair Display', serif" }, style: { mask: false, grad: false, outline: false, outlineW: 0 }, background: { mode: "solid", angle: 0 } },
-    system: { flowerSet: "trumpet", wind: { active: true, strength: 0.5 }, chaos: { scramble: true, scrambleForce: 0.35, jitter: 0.4, pulse: { active: true, strength: 0.6 }, wave: { active: true, strength: 1 } }, colors: { maskA: "#BEFF46", maskB: "#E0FF80", stem: "#00FF00", bgA: "#999999", bgB: "#404040", auto: true }, geometry: { scale: 1.15, fontSize: 16, font: "'JetBrains Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 90 } },
-    midnight: { flowerSet: "pansy", wind: { active: true, strength: 0.45 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.75 } }, colors: { maskA: "#3DD1FF", maskB: "#5559FF", stem: "#00FF00", bgA: "#000015", bgB: "#0600B2", auto: true }, geometry: { scale: 1.4, fontSize: 30, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 }, background: { mode: "gradient", angle: 180 } },
-    warning: { flowerSet: "anemone", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 1.4 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#000000", maskB: "#1A1A1A", stem: "#00FF00", bgA: "#FF5400", bgB: "#FF7210", auto: true }, geometry: { scale: 1.7, fontSize: 58, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 4 }, background: { mode: "gradient", angle: 180 } },
-    ethereal: { flowerSet: "lotus", wind: { active: true, strength: 0.5 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.3, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.8 } }, colors: { maskA: "#00FFFF", maskB: "#E0B0FF", stem: "#00FF00", bgA: "#0600B2", bgB: "#00BADA", auto: true }, geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 }, background: { mode: "gradient", angle: 180 } },
-    melancholy: { flowerSet: "poppies", wind: { active: true, strength: 0.1 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.8 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#FFA335", maskB: "#C081FF", stem: "#00FF00", bgA: "#873100", bgB: "#4D97FF", auto: true }, geometry: { scale: 0.85, fontSize: 14, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 90 } },
-    aggression: { flowerSet: "dahlias", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.3, pulse: { active: true, strength: 1.2 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#FF4444", maskB: "#FF8800", stem: "#00FF00", bgA: "#D50000", bgB: "#F65400", auto: true }, geometry: { scale: 1.6, fontSize: 48, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 4 }, background: { mode: "gradient", angle: 180 } },
-    passion: { flowerSet: "rose", wind: { active: true, strength: 0.15 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.4 }, wave: { active: true, strength: 0.3 } }, colors: { maskA: "#FF69B4", maskB: "#FF1493", stem: "#00FF00", bgA: "#B10031", bgB: "#DF7700", auto: true }, geometry: { scale: 1.1, fontSize: 22, font: "'Playfair Display', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 135 } },
-    anxiety: { flowerSet: "chamomile", wind: { active: true, strength: 0.8 }, chaos: { scramble: true, scrambleForce: 0.3, jitter: 0.6, pulse: { active: true, strength: 0.9 }, wave: { active: true, strength: 0.7 } }, colors: { maskA: "#BFFF00", maskB: "#00FFCC", stem: "#00FF00", bgA: "#00857A", bgB: "#88E200", auto: true }, geometry: { scale: 1.0, fontSize: 18, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 270 } },
-    serenity: { flowerSet: "lavender", wind: { active: true, strength: 0.2 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.3 }, wave: { active: true, strength: 0.5 } }, colors: { maskA: "#7FFFD4", maskB: "#98FB98", stem: "#00FF00", bgA: "#007C58", bgB: "#00AAF7", auto: true }, geometry: { scale: 1.2, fontSize: 20, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 45 } },
-    rage: { flowerSet: "larkspur", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.35, pulse: { active: true, strength: 1.5 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#FF0303", maskB: "#D50000", stem: "#00FF00", bgA: "#0A0000", bgB: "#B40000", auto: true }, geometry: { scale: 1.7, fontSize: 56, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 5 }, background: { mode: "gradient", angle: 0 } },
-    horror: { flowerSet: "tuberose", wind: { active: true, strength: 0.9 }, chaos: { scramble: true, scrambleForce: 0.4, jitter: 0.7, pulse: { active: true, strength: 1 }, wave: { active: true, strength: 0.8 } }, colors: { maskA: "#007B2E", maskB: "#006728", stem: "#00FF00", bgA: "#000806", bgB: "#007B2E", auto: true }, geometry: { scale: 1.1, fontSize: 16, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 270 } },
-    ecstasy: { flowerSet: "marigold", wind: { active: true, strength: 0.4 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.4, pulse: { active: true, strength: 0.8 }, wave: { active: true, strength: 0.6 } }, colors: { maskA: "#FFE145", maskB: "#FFFAC2", stem: "#00FF00", bgA: "#FFC020", bgB: "#FFF189", auto: true }, geometry: { scale: 1.5, fontSize: 36, font: "'Cormorant Garamond', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 90 } },
-    despair: { flowerSet: "iris", wind: { active: true, strength: 0.05 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.1, pulse: { active: true, strength: 0.9 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#000051", maskB: "#000085", stem: "#00FF00", bgA: "#000000", bgB: "#000051", auto: true }, geometry: { scale: 0.75, fontSize: 11, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } },
-    tenderness: { flowerSet: "daisy", wind: { active: true, strength: 0.12 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.15, pulse: { active: true, strength: 0.25 }, wave: { active: true, strength: 0.35 } }, colors: { maskA: "#FFE4F3", maskB: "#FFE4F3", stem: "#00FF00", bgA: "#FFF1F2", bgB: "#FFA2AD", auto: true }, geometry: { scale: 1.05, fontSize: 20, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 135 } },
-    zen: { flowerSet: "magnolia", wind: { active: true, strength: 0.15 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.2 }, wave: { active: true, strength: 0.4 } }, colors: { maskA: "#90FFE9", maskB: "#C8FFF3", stem: "#00FF00", bgA: "#00615A", bgB: "#02FFDF", auto: true }, geometry: { scale: 1.15, fontSize: 18, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 45 } },
-    nostalgia: { flowerSet: "forgetmenot", wind: { active: true, strength: 0.08 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.12, pulse: { active: true, strength: 0.5 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#E8B4B8", maskB: "#C9A0A0", stem: "#00FF00", bgA: "#4A3728", bgB: "#8B7355", auto: true }, geometry: { scale: 0.95, fontSize: 18, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 160 } },
-    wonder: { flowerSet: "narciso", wind: { active: true, strength: 0.35 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.6 } }, colors: { maskA: "#E6E6FA", maskB: "#B0E0E6", stem: "#00FF00", bgA: "#191970", bgB: "#6A5ACD", auto: true }, geometry: { scale: 1.35, fontSize: 26, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 200 } },
-    solitude: { flowerSet: "violet", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.08, pulse: { active: true, strength: 0.15 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#F5F5DC", maskB: "#E8E8E8", stem: "#00FF00", bgA: "#2F4F4F", bgB: "#708090", auto: true }, geometry: { scale: 1.0, fontSize: 16, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } }
-};
+            joy: { flowerSet: "daisy", wind: { active: true, strength: 0.2 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.3 }, wave: { active: true, strength: 0.4 } }, colors: { maskA: "#C9FC45", maskB: "#C8EB66", stem: "#00FF00", bgA: "#FB9FE2", bgB: "#A1E2F3", auto: true }, geometry: { scale: 1.2, fontSize: 22, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 135 } },
+            void: { flowerSet: "sakura", wind: { active: true, strength: 0.08 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.15, pulse: { active: true, strength: 0.8 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#D856D6", maskB: "#FE004F", stem: "#00FF00", bgA: "#010001", bgB: "#000000", auto: true }, geometry: { scale: 0.85, fontSize: 14, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } },
+            glitch: { flowerSet: "carnation", wind: { active: true, strength: 1.8 }, chaos: { scramble: true, scrambleForce: 0.7, jitter: 1.4, pulse: { active: true, strength: 1.2 }, wave: { active: true, strength: 1.6 } }, colors: { maskA: "#FF00FF", maskB: "#00FF88", stem: "#00FF00", bgA: "#0F0F0F", bgB: "#330033", auto: true }, geometry: { scale: 1.8, fontSize: 52, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 5 }, background: { mode: "gradient", angle: 270 } },
+            editorial: { flowerSet: "trilium", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.1, pulse: { active: false, strength: 0 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#8FA497", maskB: "#8D8765", stem: "#00FF00", bgA: "#3A2718", bgB: "#5B4837", auto: true }, geometry: { scale: 1.4, fontSize: 48, font: "'Playfair Display', serif" }, style: { mask: false, grad: false, outline: false, outlineW: 0 }, background: { mode: "solid", angle: 0 } },
+            system: { flowerSet: "trumpet", wind: { active: true, strength: 0.5 }, chaos: { scramble: true, scrambleForce: 0.35, jitter: 0.4, pulse: { active: true, strength: 0.6 }, wave: { active: true, strength: 1 } }, colors: { maskA: "#27C854", maskB: "#23B5B4", stem: "#00FF00", bgA: "#142D18", bgB: "#206A4E", auto: true }, geometry: { scale: 1.15, fontSize: 16, font: "'JetBrains Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 90 } },
+            midnight: { flowerSet: "pansy", wind: { active: true, strength: 0.45 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.75 } }, colors: { maskA: "#7E7882", maskB: "#7B81B9", stem: "#00FF00", bgA: "#2E324C", bgB: "#2D3144", auto: true }, geometry: { scale: 1.4, fontSize: 30, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 }, background: { mode: "gradient", angle: 180 } },
+            warning: { flowerSet: "anemone", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 1.4 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#FEFEFE", maskB: "#FEE1BD", stem: "#00FF00", bgA: "#FB581B", bgB: "#F84A3D", auto: true }, geometry: { scale: 1.7, fontSize: 58, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 4 }, background: { mode: "gradient", angle: 180 } },
+            ethereal: { flowerSet: "lotus", wind: { active: true, strength: 0.5 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.3, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.8 } }, colors: { maskA: "#00FFFF", maskB: "#E0B0FF", stem: "#00FF00", bgA: "#0600B2", bgB: "#00BADA", auto: true }, geometry: { scale: 1.4, fontSize: 32, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: false, outlineW: 0 }, background: { mode: "gradient", angle: 180 } },
+            melancholy: { flowerSet: "poppies", wind: { active: true, strength: 0.1 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.8 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#829EE3", maskB: "#767BA5", stem: "#00FF00", bgA: "#402526", bgB: "#767BA5", auto: true }, geometry: { scale: 0.85, fontSize: 14, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 90 } },
+            aggression: { flowerSet: "dahlias", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.3, pulse: { active: true, strength: 1.2 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#DF5C2E", maskB: "#D53A22", stem: "#00FF00", bgA: "#877C7D", bgB: "#DF5C2E", auto: true }, geometry: { scale: 1.6, fontSize: 48, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 4 }, background: { mode: "gradient", angle: 180 } },
+            passion: { flowerSet: "rose", wind: { active: true, strength: 0.15 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.4 }, wave: { active: true, strength: 0.3 } }, colors: { maskA: "#F33B43", maskB: "#E977A6", stem: "#00FF00", bgA: "#CDBDFB", bgB: "#FB7D6F", auto: true }, geometry: { scale: 1.1, fontSize: 22, font: "'Playfair Display', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 135 } },
+            anxiety: { flowerSet: "chamomile", wind: { active: true, strength: 0.8 }, chaos: { scramble: true, scrambleForce: 0.3, jitter: 0.6, pulse: { active: true, strength: 0.9 }, wave: { active: true, strength: 0.7 } }, colors: { maskA: "#58E308", maskB: "#E02985", stem: "#00FF00", bgA: "#3F3521", bgB: "#E02985", auto: true }, geometry: { scale: 1.0, fontSize: 18, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 270 } },
+            serenity: { flowerSet: "lavender", wind: { active: true, strength: 0.2 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.3 }, wave: { active: true, strength: 0.5 } }, colors: { maskA: "#FDF6EA", maskB: "#FCDBC5", stem: "#00FF00", bgA: "#8EAED2", bgB: "#FCDBC5", auto: true }, geometry: { scale: 1.2, fontSize: 20, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 45 } },
+            rage: { flowerSet: "larkspur", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.35, pulse: { active: true, strength: 1.5 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#FF0303", maskB: "#D50000", stem: "#00FF00", bgA: "#0A0000", bgB: "#B40000", auto: true }, geometry: { scale: 1.7, fontSize: 56, font: "'BioRhyme', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 5 }, background: { mode: "gradient", angle: 0 } },
+            horror: { flowerSet: "tuberose", wind: { active: true, strength: 0.9 }, chaos: { scramble: true, scrambleForce: 0.4, jitter: 0.7, pulse: { active: true, strength: 1 }, wave: { active: true, strength: 0.8 } }, colors: { maskA: "#007B2E", maskB: "#006728", stem: "#00FF00", bgA: "#000806", bgB: "#007B2E", auto: true }, geometry: { scale: 1.1, fontSize: 16, font: "'Space Mono', monospace" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 270 } },
+            ecstasy: { flowerSet: "marigold", wind: { active: true, strength: 0.4 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.4, pulse: { active: true, strength: 0.8 }, wave: { active: true, strength: 0.6 } }, colors: { maskA: "#A4FCAD", maskB: "#FE529B", stem: "#00FF00", bgA: "#00BD98", bgB: "#BBC6E5", auto: true }, geometry: { scale: 1.5, fontSize: 36, font: "'Cormorant Garamond', serif" }, style: { mask: false, grad: false, outline: true, outlineW: 3 }, background: { mode: "gradient", angle: 90 } },
+            despair: { flowerSet: "iris", wind: { active: true, strength: 0.05 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.1, pulse: { active: true, strength: 0.9 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#000051", maskB: "#000085", stem: "#00FF00", bgA: "#000000", bgB: "#000051", auto: true }, geometry: { scale: 0.75, fontSize: 11, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } },
+            tenderness: { flowerSet: "daisy", wind: { active: true, strength: 0.12 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.15, pulse: { active: true, strength: 0.25 }, wave: { active: true, strength: 0.35 } }, colors: { maskA: "#FFE4F3", maskB: "#FFE4F3", stem: "#00FF00", bgA: "#FFF1F2", bgB: "#FFA2AD", auto: true }, geometry: { scale: 1.05, fontSize: 20, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 135 } },
+            zen: { flowerSet: "magnolia", wind: { active: true, strength: 0.15 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.2, pulse: { active: true, strength: 0.2 }, wave: { active: true, strength: 0.4 } }, colors: { maskA: "#D7F262", maskB: "#64BCCA", stem: "#00FF00", bgA: "#2F3632", bgB: "#5A7E72", auto: true }, geometry: { scale: 1.15, fontSize: 18, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 45 } },
+            nostalgia: { flowerSet: "forgetmenot", wind: { active: true, strength: 0.08 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.12, pulse: { active: true, strength: 0.5 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#E8B4B8", maskB: "#C9A0A0", stem: "#00FF00", bgA: "#4A3728", bgB: "#8B7355", auto: true }, geometry: { scale: 0.95, fontSize: 18, font: "'Grenze Gotisch', cursive" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 160 } },
+            wonder: { flowerSet: "narciso", wind: { active: true, strength: 0.35 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.25, pulse: { active: true, strength: 0.5 }, wave: { active: true, strength: 0.6 } }, colors: { maskA: "#E6E6FA", maskB: "#B0E0E6", stem: "#00FF00", bgA: "#191970", bgB: "#6A5ACD", auto: true }, geometry: { scale: 1.35, fontSize: 26, font: "'Syne', sans-serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 200 } },
+            solitude: { flowerSet: "violet", wind: { active: false, strength: 0 }, chaos: { scramble: false, scrambleForce: 0, jitter: 0.08, pulse: { active: true, strength: 0.15 }, wave: { active: false, strength: 0 } }, colors: { maskA: "#F5F5DC", maskB: "#E8E8E8", stem: "#00FF00", bgA: "#2F4F4F", bgB: "#708090", auto: true }, geometry: { scale: 1.0, fontSize: 16, font: "'Cormorant Garamond', serif" }, style: { mask: true, grad: true, outline: true, outlineW: 2 }, background: { mode: "gradient", angle: 180 } }
+        };
 
         function resolveVisualPoetryFont() {
             const text = (typeof getFullText === "function" ? getFullText() : "") || "";
@@ -3243,25 +3257,25 @@
         }
 
         const PALETTE_EXAMPLES = {
-            joy: { text: "I feel so happy and excited! This day is amazing! Sunshine and laughter everywhere!", desc: "Yellow + Blue" },
-            void: { text: "The void consumes me. Emptiness. Darkness. Nothing remains.", desc: "Magenta + Purple / Black" },
+            joy: { text: "I feel so happy and excited! This day is amazing! Sunshine and laughter everywhere!", desc: "Chartreuse + Pastel Cyan / Pink-Lilac" },
+            void: { text: "The void consumes me. Emptiness. Darkness. Nothing remains.", desc: "Orchid + Hot Fuchsia / Deep Black" },
             glitch: { text: "ERROR ERROR CORRUPT DATA SYSTEM OVERLOAD crash reboot", desc: "Magenta + Neon green / Black" },
-            editorial: { text: "Minimal. Typography. Pure contrast.", desc: "White / Black" },
-            system: { text: "> execute.init() / root access granted / protocol active", desc: "Neon green / Black" },
-            midnight: { text: "Deep midnight blue, stars above, the night speaks in cyan.", desc: "Cyan + Violet / Dark blue" },
-            warning: { text: "Attention! Danger! Stop! Alert! Critical!", desc: "Orange / Yellow" },
+            editorial: { text: "Minimal. Typography. Pure contrast.", desc: "Muted Teal + Dusty Olive / Dark Coffee" },
+            system: { text: "> execute.init() / root access granted / protocol active", desc: "Jade + Tropical Teal / Evergreen" },
+            midnight: { text: "Deep midnight blue, stars above, the night speaks in cyan.", desc: "Rosy Granite + Indigo / Forest Night" },
+            warning: { text: "Attention! Danger! Stop! Alert! Critical!", desc: "Cinnabar + Tiger Flame / Soft Apricot" },
             ethereal: { text: "Dreamy, soft, otherworldly light. Floating in clouds of violet.", desc: "Cyan + Lavender / Violet" },
-            melancholy: { text: "Sadness fills my heart. Tears fall. Sorrow and longing.", desc: "Lavender blue / Indigo" },
-            aggression: { text: "Anger! Hatred! Destroy! Attack! Fight!", desc: "Pure red" },
-            passion: { text: "I love you deeply. Desire burns. Heart racing.", desc: "Hot pink / Magenta" },
-            anxiety: { text: "Nervous stressed panic worry fear trembling", desc: "Yellow + Orange / Green" },
-            serenity: { text: "Peace flows. Calm waters. Gentle breeze. Tranquility.", desc: "Aqua + Turquoise" },
+            melancholy: { text: "Sadness fills my heart. Tears fall. Sorrow and longing.", desc: "Wisteria Blue / Espresso Mocha" },
+            aggression: { text: "Anger! Hatred! Destroy! Attack! Fight!", desc: "Spicy Paprika + Burnt Tangerine / Slate" },
+            passion: { text: "I love you deeply. Desire burns. Heart racing.", desc: "Strawberry Red + Rose Kiss / Periwinkle" },
+            anxiety: { text: "Nervous stressed panic worry fear trembling", desc: "Radioactive Green + Fuchsia / Dark Khaki" },
+            serenity: { text: "Peace flows. Calm waters. Gentle breeze. Tranquility.", desc: "Old Lace + Peach Fuzz / Powder Blue" },
             rage: { text: "RAGE! FURY! WRATH! VENGEANCE! BLOOD!", desc: "Intense red" },
             horror: { text: "Scream. Blood. Terror. Monsters. Death.", desc: "Dark red / Black" },
-            ecstasy: { text: "Euphoria! Joy! Glory! Triumph! Amazing!", desc: "Gold + Orange" },
+            ecstasy: { text: "Euphoria! Joy! Glory! Triumph! Amazing!", desc: "Mint + Mauve + Deep Pink / Electric Sky" },
             despair: { text: "Hopeless. Lost. Drowning. No escape. Endless blue.", desc: "Pure blue / Dark blue" },
             tenderness: { text: "Soft touch. Gentle hug. Sweet love. Warm embrace.", desc: "Pastel pink" },
-            zen: { text: "Breathe. Stillness. Balance. Harmony. Inner peace.", desc: "Turquoise / Teal" },
+            zen: { text: "Breathe. Stillness. Balance. Harmony. Inner peace.", desc: "Lime Cream + Pearl Aqua / Deep Teal" },
             nostalgia: { text: "I remember yesterday. Old photos. Childhood. Longing. Bittersweet memories.", desc: "Dusty rose / Sepia" },
             wonder: { text: "Amazing. Marvel. Miracle. Stars. Infinite. Cosmic. Awe. Revelation.", desc: "Lavender / Deep indigo" },
             solitude: { text: "Alone. Silent. Remote. Peace. Still. Calm. Refuge. One. Whole.", desc: "Beige / Slate" }
