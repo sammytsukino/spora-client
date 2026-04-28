@@ -76,7 +76,7 @@ export default function FloraReader() {
     "idle" | "loading" | "playing" | "paused" | "error"
   >("idle");
   const [ttsError, setTtsError] = useState<string | null>(null);
-  
+
   const [ttsSpeed, setTtsSpeed] = useState(0.8);
 
   const releaseTtsResources = useCallback(() => {
