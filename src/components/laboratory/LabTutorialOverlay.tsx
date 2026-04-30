@@ -64,11 +64,11 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
 
         <div className="flex items-center justify-between gap-4">
           <div className="flex gap-1">
-            {STEPS.map((_, i) => (
+            {STEPS.map((_, stepIndex) => (
               <span
-                key={i}
+                key={stepIndex}
                 className={`block w-2 h-2 rounded-full transition-colors ${
-                  i === step
+                  stepIndex === step
                     ? "bg-[var(--spora-primary)]"
                     : "bg-[var(--spora-primary)]/30"
                 }`}
@@ -95,7 +95,7 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
             ) : (
               <button
                 type="button"
-                onClick={() => setStep((s) => s + 1)}
+                onClick={() => setStep((previousStep) => previousStep + 1)}
                 className="px-4 py-1.5 font-supply-mono text-[11px] uppercase border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] hover:bg-black cursor-pointer"
               >
                 Next

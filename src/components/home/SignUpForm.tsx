@@ -5,6 +5,14 @@ import UnderlineField from "@/components/ui/UnderlineField"
 import { signUp } from "@/lib/auth"
 import { ROUTES } from "@/constants/routes"
 
+const AUTH_CONTAINER_CLASS =
+  "w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-spora-primary-light border border-spora-primary"
+const AUTH_LAYOUT_CLASS = "flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16"
+const FORM_ERROR_CLASS = "mb-6 text-sm text-rose-600 font-supply-mono"
+const MIN_USERNAME_LENGTH = 3
+const MIN_PASSWORD_LENGTH = 8
+const USERNAME_ALLOWED_PATTERN = /^[a-zA-Z0-9_]+$/
+
 export default function SignUpForm() {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
@@ -19,17 +27,17 @@ export default function SignUpForm() {
     e.preventDefault()
     setError(null)
 
-    if (username.trim().length < 3) {
+    if (username.trim().length < MIN_USERNAME_LENGTH) {
       setError("Username must be at least 3 characters.")
       return
     }
 
-    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    if (!USERNAME_ALLOWED_PATTERN.test(username)) {
       setError("Username can only contain letters, numbers, and underscores.")
       return
     }
 
-    if (password.length < 8) {
+    if (password.length < MIN_PASSWORD_LENGTH) {
       setError("Password must be at least 8 characters.")
       return
     }
@@ -67,8 +75,8 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-spora-primary-light border border-spora-primary">
-        <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
+    <div className={AUTH_CONTAINER_CLASS}>
+        <div className={AUTH_LAYOUT_CLASS}>
           <div className="min-w-0 sm:min-w-[200px] shrink-0">
             <h1 className="text-2xl sm:text-3xl text-spora-text-primary font-bold leading-tight mb-2 font-bizud-mincho-bold">
               Join SPORA
@@ -82,7 +90,7 @@ export default function SignUpForm() {
 
           <form onSubmit={handleSignUp} className="flex-1 min-w-0">
             {error ? (
-              <p className="mb-6 text-sm text-rose-600 font-supply-mono">
+              <p className={FORM_ERROR_CLASS}>
                 {error}
               </p>
             ) : null}

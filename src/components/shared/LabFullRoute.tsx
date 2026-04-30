@@ -24,8 +24,8 @@ export default function LabFullRoute({ children }: LabFullRouteProps) {
       sessionStorage.setItem(LAB_FULL_SESSION_KEY, "1");
       const next = new URLSearchParams(searchParams);
       next.delete("from");
-      const q = next.toString() ? `?${next.toString()}` : "";
-      navigate(`${location.pathname}${q}`, { replace: true });
+      const queryString = next.toString() ? `?${next.toString()}` : "";
+      navigate(`${location.pathname}${queryString}`, { replace: true });
     }
   }, [user?.role, fromGrow, searchParams, navigate, location.pathname]);
 

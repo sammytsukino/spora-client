@@ -13,9 +13,9 @@ export default function GreenhouseFloraCard({ flora, authorUsername, onClick }: 
       className="group bg-[var(--spora-primary-light)] p-4 md:p-5 flex flex-col relative transition-colors duration-fast ease-spora-out cursor-pointer hover:bg-[var(--spora-accent-secondary)] border border-[var(--spora-primary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2"
       onClick={onClick}
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
           onClick?.();
         }
       }}
@@ -38,15 +38,15 @@ export default function GreenhouseFloraCard({ flora, authorUsername, onClick }: 
           style={{
             filter: "grayscale(100%) contrast(120%)",
           }}
-          onLoad={(e) => {
-            const placeholder = e.currentTarget.parentElement?.querySelector(".animate-pulse");
-            if (placeholder) (placeholder as HTMLElement).style.display = "none";
+          onLoad={(event) => {
+            const placeholderElement = event.currentTarget.parentElement?.querySelector(".animate-pulse");
+            if (placeholderElement) (placeholderElement as HTMLElement).style.display = "none";
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)";
+          onMouseEnter={(event) => {
+            event.currentTarget.style.transform = "scale(1.05)";
           }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
+          onMouseLeave={(event) => {
+            event.currentTarget.style.transform = "scale(1)";
           }}
         />
       </div>
@@ -58,7 +58,7 @@ export default function GreenhouseFloraCard({ flora, authorUsername, onClick }: 
       </p>
       <div className="flex justify-between font-supply-mono text-[9px] md:text-[10px] opacity-75 mt-1">
         {authorUsername && flora.author !== "@Anonymous" ? (
-          <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+          <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(event) => event.stopPropagation()}>
             {flora.author}
           </Link>
         ) : (

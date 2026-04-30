@@ -1,6 +1,28 @@
 import { useEffect, useId, useRef } from "react";
 
 export type AlertModalTone = "default" | "warning" | "error";
+const FOCUS_DELAY_MS = 0;
+
+const ALERT_TONE_STYLES: Record<
+  AlertModalTone,
+  { panelClass: string; titleClass: string; buttonClass: string }
+> = {
+  default: {
+    panelClass: "border-spora-primary",
+    titleClass: "text-spora-primary",
+    buttonClass: "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black",
+  },
+  warning: {
+    panelClass: "border-amber-600/80 ring-1 ring-amber-600/20",
+    titleClass: "text-amber-800",
+    buttonClass: "border-amber-800 bg-amber-800 text-white hover:bg-amber-900",
+  },
+  error: {
+    panelClass: "border-rose-500/80 ring-1 ring-rose-500/25",
+    titleClass: "text-rose-500",
+    buttonClass: "border-rose-500 bg-rose-500 text-white hover:bg-rose-600",
+  },
+};
 
 interface AlertModalProps {
   open: boolean;
@@ -45,38 +67,19 @@ export default function AlertModal({
 
   useEffect(() => {
     if (!open) return;
-    const t = window.setTimeout(() => {
+    const focusTimeoutId = window.setTimeout(() => {
       panelRef.current?.focus();
-    }, 0);
-    return () => window.clearTimeout(t);
+    }, FOCUS_DELAY_MS);
+    return () => window.clearTimeout(focusTimeoutId);
   }, [open]);
 
   if (!open) return null;
 
-  const panelClass =
-    tone === "error"
-      ? "border-rose-500/80 ring-1 ring-rose-500/25"
-      : tone === "warning"
-        ? "border-amber-600/80 ring-1 ring-amber-600/20"
-        : "border-spora-primary";
-
-  const titleClass =
-    tone === "error"
-      ? "text-rose-500"
-      : tone === "warning"
-        ? "text-amber-800"
-        : "text-spora-primary";
-
-  const buttonClass =
-    tone === "error"
-      ? "border-rose-500 bg-rose-500 text-white hover:bg-rose-600"
-      : tone === "warning"
-        ? "border-amber-800 bg-amber-800 text-white hover:bg-amber-900"
-        : "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black";
+  const { panelClass, titleClass, buttonClass } = ALERT_TONE_STYLES[tone];
 
   return (
     <div
-      className="fixed inset-0 z-[var(--z-spora-loader)] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 duration-normal"
+      className="fixed inset-0 z-(--z-spora-loader) flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 duration-normal"
       onClick={onClose}
       style={{ animation: "fadeIn var(--duration-fast) var(--ease-spora-out)" }}
     >
@@ -88,7 +91,7 @@ export default function AlertModal({
         aria-describedby={descriptionId}
         tabIndex={-1}
         className={`bg-spora-primary-light max-w-md w-full max-h-[min(85vh,32rem)] overflow-y-auto border shadow-spora-modal outline-none transition-transform duration-normal ${panelClass}`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
         style={{ animation: "slideUp var(--duration-normal) var(--ease-spora-out)" }}
       >
         <div className="px-6 py-5">

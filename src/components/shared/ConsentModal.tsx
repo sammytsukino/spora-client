@@ -7,10 +7,10 @@ const CONSENT_KEY = "spora_consent_v1";
 export function getConsentGiven(): boolean {
   if (typeof localStorage === "undefined") return false;
   try {
-    const raw = localStorage.getItem(CONSENT_KEY);
-    if (!raw) return false;
-    const data = JSON.parse(raw);
-    return data?.terms === true;
+    const storedConsent = localStorage.getItem(CONSENT_KEY);
+    if (!storedConsent) return false;
+    const consentData = JSON.parse(storedConsent);
+    return consentData?.terms === true;
   } catch {
     return false;
   }
@@ -84,7 +84,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
           <input
             type="checkbox"
             checked={terms}
-            onChange={(e) => setTerms(e.target.checked)}
+            onChange={(event) => setTerms(event.target.checked)}
             className="mt-0.5 w-4 h-4 border-2 border-spora-primary accent-spora-primary cursor-pointer"
           />
           <span className="font-supply-mono text-[11px] text-spora-primary group-hover:underline">

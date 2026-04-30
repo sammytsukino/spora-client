@@ -32,20 +32,20 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
   const mousePosition = useRef({ x: 0, y: 0 })
 
   const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    (event: React.MouseEvent<HTMLDivElement>) => {
       if (!containerRef.current) return
 
       const rect = containerRef.current.getBoundingClientRect()
-      const x = Math.floor((e.clientX - rect.left) / pixelSize)
-      const y = Math.floor((e.clientY - rect.top) / pixelSize)
+      const columnIndex = Math.floor((event.clientX - rect.left) / pixelSize)
+      const rowIndex = Math.floor((event.clientY - rect.top) / pixelSize)
 
       mousePosition.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
       }
 
       const pixelElement = document.getElementById(
-        `${trailId}-pixel-${x}-${y}`
+        `${trailId}-pixel-${columnIndex}-${rowIndex}`
       )
       if (pixelElement) {
         const animatePixel = pixelAnimateMap.get(pixelElement)
@@ -82,8 +82,9 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
       const mouseY = mousePosition.current.y / height
       const colT = columns > 0 ? col / columns : 0
       const rowT = rows > 0 ? row / rows : 0
-      const t = (mouseX * 0.55 + mouseY * 0.35 + colT * 0.05 + rowT * 0.05) % 1
-      const index = Math.floor(t * palette.length)
+      const interpolationPoint =
+        (mouseX * 0.55 + mouseY * 0.35 + colT * 0.05 + rowT * 0.05) % 1
+      const index = Math.floor(interpolationPoint * palette.length)
       const nextIndex = (index + 1) % palette.length
 
       return `linear-gradient(180deg, ${palette[index]} 0%, ${palette[nextIndex]} 100%)`
@@ -206,13 +207,13 @@ const darkenHex = (hex: string, factor: number) => {
   const toHex = (value: number) =>
     Math.round(value).toString(16).padStart(2, "0")
 
-  const r = parseInt(full.slice(0, 2), 16)
-  const g = parseInt(full.slice(2, 4), 16)
-  const b = parseInt(full.slice(4, 6), 16)
+  const redChannel = parseInt(full.slice(0, 2), 16)
+  const greenChannel = parseInt(full.slice(2, 4), 16)
+  const blueChannel = parseInt(full.slice(4, 6), 16)
 
   const clamp = (value: number) => Math.min(255, Math.max(0, value))
 
-  return `#${toHex(clamp(r * factor))}${toHex(clamp(g * factor))}${toHex(
-    clamp(b * factor)
+  return `#${toHex(clamp(redChannel * factor))}${toHex(clamp(greenChannel * factor))}${toHex(
+    clamp(blueChannel * factor)
   )}`
 }

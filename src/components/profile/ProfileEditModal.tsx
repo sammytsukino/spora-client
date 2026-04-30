@@ -28,8 +28,8 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file || !file.type.startsWith("image/")) return;
     try {
       const base64 = await fileToBase64(file);
@@ -38,11 +38,11 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
     } catch {
       setError("Invalid image format");
     }
-    e.target.value = "";
+    event.target.value = "";
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setSaving(true);
     setError(null);
     try {
@@ -75,7 +75,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
     >
       <div
         className="relative w-full max-w-xl border border-spora-primary bg-spora-primary-light p-6 font-supply-mono"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 mb-6">
           <h2 id="profile-edit-title" className="font-bold text-sm uppercase shrink-0">
@@ -125,7 +125,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
                 label="Name"
                 id="displayName"
                 value={displayName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setDisplayName(e.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
                 placeholder="e.g. Dawn"
                 maxLength={100}
               />
@@ -135,7 +135,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
                   id="bio"
                   as="textarea"
                   value={bio}
-                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBio(e.target.value)}
+                  onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setBio(event.target.value)}
                   placeholder="e.g. Tell us about yourself..."
                   maxLength={500}
                   minRows={3}

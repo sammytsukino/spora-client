@@ -11,9 +11,9 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
       className="group bg-[var(--spora-primary-light)] p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 border border-[var(--spora-primary)]"
       onClick={onClick}
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
           onClick?.();
         }
       }}
@@ -33,18 +33,18 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
           style={{
             filter: "grayscale(100%) contrast(120%)",
           }}
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            const placeholder = img.parentElement?.querySelector('.animate-pulse') as HTMLElement | null;
-            if (placeholder) {
-              placeholder.style.display = 'none';
+          onLoad={(event) => {
+            const imageElement = event.currentTarget;
+            const placeholderElement = imageElement.parentElement?.querySelector('.animate-pulse') as HTMLElement | null;
+            if (placeholderElement) {
+              placeholderElement.style.display = 'none';
             }
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)"
+          onMouseEnter={(event) => {
+            event.currentTarget.style.transform = "scale(1.05)"
           }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)"
+          onMouseLeave={(event) => {
+            event.currentTarget.style.transform = "scale(1)"
           }}
         />
       </div>

@@ -347,9 +347,9 @@ const MarqueeItem = ({
 }: MarqueeItemProps) => {
   const itemRef = useRef<HTMLDivElement | null>(null)
 
-  const itemOffset = useTransform(baseOffset, (v) => {
+  const itemOffset = useTransform(baseOffset, (offsetValue) => {
     const position = (itemIndex * 100) / itemsLength
-    const wrappedValue = wrap(0, 100, v + position)
+    const wrappedValue = wrap(0, 100, offsetValue + position)
     return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
   })
 
@@ -408,7 +408,7 @@ const MARQUEE_SVG_MAX_THUMBS = 65
 function subsampleThumbnailsForPath(items: FloraThumbnail[]): FloraThumbnail[] {
   if (items.length <= MARQUEE_SVG_MAX_THUMBS) return items
   const stride = Math.max(1, Math.ceil(items.length / MARQUEE_SVG_MAX_THUMBS))
-  return items.filter((_, i) => i % stride === 0).slice(0, MARQUEE_SVG_MAX_THUMBS)
+  return items.filter((_, itemIndex) => itemIndex % stride === 0).slice(0, MARQUEE_SVG_MAX_THUMBS)
 }
 
 const path =
@@ -462,14 +462,14 @@ export function MarqueeBackground({
         grabCursor
       >
         {children ||
-          displayItems.map((item, i) => (
+          displayItems.map((item, itemIndex) => (
             <div
-              key={i}
+              key={itemIndex}
               className="w-18 h-22 sm:w-20 sm:h-28 md:w-24 md:h-32 hover:scale-110 duration-300 ease-in-out"
             >
               <img
                 src={item.url}
-                alt={`Gallery ${i + 1}`}
+                alt={`Gallery ${itemIndex + 1}`}
                 className="w-full h-full object-cover"
                 draggable={false}
               />

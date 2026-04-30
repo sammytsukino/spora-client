@@ -1,6 +1,23 @@
 import { useEffect, useId, useRef } from "react";
 
 export type ConfirmModalVariant = "default" | "danger";
+const FOCUS_DELAY_MS = 0;
+
+const CONFIRM_VARIANT_STYLES: Record<
+  ConfirmModalVariant,
+  { panelClass: string; titleClass: string; confirmButtonClass: string }
+> = {
+  default: {
+    panelClass: "border-spora-primary",
+    titleClass: "text-spora-primary",
+    confirmButtonClass: "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black",
+  },
+  danger: {
+    panelClass: "border-rose-500/80 ring-1 ring-rose-500/25",
+    titleClass: "text-rose-500",
+    confirmButtonClass: "border-rose-500 bg-rose-500 text-white hover:bg-rose-600",
+  },
+};
 
 interface ConfirmModalProps {
   open: boolean;
@@ -52,19 +69,19 @@ export default function ConfirmModal({
 
   useEffect(() => {
     if (!open) return;
-    const t = window.setTimeout(() => {
+    const focusTimeoutId = window.setTimeout(() => {
       panelRef.current?.focus();
-    }, 0);
-    return () => window.clearTimeout(t);
+    }, FOCUS_DELAY_MS);
+    return () => window.clearTimeout(focusTimeoutId);
   }, [open]);
 
   if (!open) return null;
 
-  const isDanger = variant === "danger";
+  const { panelClass, titleClass, confirmButtonClass } = CONFIRM_VARIANT_STYLES[variant];
 
   return (
     <div
-      className="fixed inset-0 z-[var(--z-spora-loader)] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 duration-normal"
+      className="fixed inset-0 z-(--z-spora-loader) flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 duration-normal"
       onClick={() => {
         if (!pending) onCancel();
       }}
@@ -77,20 +94,14 @@ export default function ConfirmModal({
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         tabIndex={-1}
-        className={`bg-spora-primary-light max-w-md w-full max-h-[min(85vh,32rem)] overflow-y-auto border shadow-spora-modal outline-none transition-transform duration-normal ${
-          isDanger
-            ? "border-rose-500/80 ring-1 ring-rose-500/25"
-            : "border-spora-primary"
-        }`}
-        onClick={(e) => e.stopPropagation()}
+        className={`bg-spora-primary-light max-w-md w-full max-h-[min(85vh,32rem)] overflow-y-auto border shadow-spora-modal outline-none transition-transform duration-normal ${panelClass}`}
+        onClick={(event) => event.stopPropagation()}
         style={{ animation: "slideUp var(--duration-normal) var(--ease-spora-out)" }}
       >
         <div className="px-6 py-5">
           <h2
             id={titleId}
-            className={`font-bizud-mincho-bold text-xl mb-3 ${
-              isDanger ? "text-rose-500" : "text-spora-primary"
-            }`}
+            className={`font-bizud-mincho-bold text-xl mb-3 ${titleClass}`}
           >
             {title}
           </h2>
@@ -113,9 +124,7 @@ export default function ConfirmModal({
               type="button"
               disabled={pending}
               className={`px-4 py-2.5 border uppercase tracking-[0.2em] cursor-pointer shrink-0 disabled:opacity-50 disabled:cursor-not-allowed ${
-                isDanger
-                  ? "border-rose-500 bg-rose-500 text-white hover:bg-rose-600"
-                  : "border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black"
+                confirmButtonClass
               }`}
               onClick={() => void onConfirm()}
             >

@@ -127,7 +127,7 @@ export default function AdminReports({
     });
   };
 
-  const pendingReports = reports.filter((r) => r.status === "pending");
+  const pendingReports = reports.filter((reportItem) => reportItem.status === "pending");
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -138,7 +138,7 @@ export default function AdminReports({
   };
   const selectAll = () => {
     if (selectedIds.size === pendingReports.length) setSelectedIds(new Set());
-    else setSelectedIds(new Set(pendingReports.map((r) => r.id)));
+    else setSelectedIds(new Set(pendingReports.map((reportItem) => reportItem.id)));
   };
   const runBatch = (action: "resolve" | "dismiss") => {
     if (!onBatchReports || selectedIds.size === 0) return;
@@ -153,9 +153,9 @@ export default function AdminReports({
         try {
           await onBatchReports(ids, action);
           setSelectedIds(new Set());
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } finally {
           setConfirmPending(false);
         }
@@ -203,7 +203,7 @@ export default function AdminReports({
                 type="checkbox"
                 checked={
                   pendingReports.length > 0 &&
-                  pendingReports.every((r) => selectedIds.has(r.id))
+                  pendingReports.every((reportItem) => selectedIds.has(reportItem.id))
                 }
                 onChange={selectAll}
                 className="w-4 h-4 border-2 border-[var(--spora-primary)]"
@@ -247,9 +247,9 @@ export default function AdminReports({
             <article
               className={`border bg-spora-primary-light p-4 font-supply-mono text-caption-sm transition-colors ${selectedIds.has(report.id) ? "border-amber-600 bg-amber-50/50" : "border-[var(--spora-primary)]"}`}
               onClick={() => handleCardInteraction(report)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
                   handleCardInteraction(report);
                 }
               }}
@@ -262,11 +262,11 @@ export default function AdminReports({
                     <input
                       type="checkbox"
                       checked={selectedIds.has(report.id)}
-                      onChange={(e) => {
-                        e.stopPropagation();
+                      onChange={(event) => {
+                        event.stopPropagation();
                         toggleSelect(report.id);
                       }}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(event) => event.stopPropagation()}
                       className="w-4 h-4 border-2 border-[var(--spora-primary)]"
                     />
                   )}
@@ -308,7 +308,7 @@ export default function AdminReports({
               )}
               <div
                 className="flex flex-wrap items-center gap-2 pt-3 border-t border-[var(--spora-primary)]"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
               >
                 {onDownloadReport && (
                   <button
@@ -373,7 +373,9 @@ export default function AdminReports({
         variant={confirm.variant}
         pending={confirmPending}
         onConfirm={confirm.onConfirm}
-        onCancel={() => !confirmPending && setConfirm((c) => ({ ...c, open: false }))}
+        onCancel={() =>
+          !confirmPending && setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }))
+        }
       />
     </section>
   );

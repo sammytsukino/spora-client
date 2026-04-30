@@ -35,9 +35,9 @@ export default function FloraCardBase({
       style={{ aspectRatio: '4/5' }}
       onClick={onClick}
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
           onClick?.();
         }
       }}
@@ -71,18 +71,18 @@ export default function FloraCardBase({
           style={{
             filter: 'grayscale(100%) contrast(120%)',
           }}
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            const placeholder = img.parentElement?.querySelector('.animate-pulse') as HTMLElement | null;
-            if (placeholder) {
-              placeholder.style.display = 'none';
+          onLoad={(event) => {
+            const imageElement = event.currentTarget;
+            const placeholderElement = imageElement.parentElement?.querySelector('.animate-pulse') as HTMLElement | null;
+            if (placeholderElement) {
+              placeholderElement.style.display = 'none';
             }
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.05)';
+          onMouseEnter={(event) => {
+            event.currentTarget.style.transform = 'scale(1.05)';
           }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
+          onMouseLeave={(event) => {
+            event.currentTarget.style.transform = 'scale(1)';
           }}
         />
       </div>
@@ -114,7 +114,7 @@ export default function FloraCardBase({
           }`}
         >
           {authorUsername && author !== '@Anonymous' ? (
-            <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+            <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(event) => event.stopPropagation()}>
               {author}
             </Link>
           ) : (

@@ -9,6 +9,13 @@ import {
   type ProfileFloraStatus,
 } from "@/data/profile-data";
 
+const FLORA_EXCERPT_MAX_LENGTH = 80;
+const SEED_LABEL_LENGTH = 6;
+const RECENT_ACTIVITY_MAX_ITEMS = 15;
+const ACTIVITY_UPDATE_THRESHOLD_MS = 60 * 1000;
+const PROFILE_ITEM_FALLBACK_IMAGE_URL =
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png";
+
 export interface MeUser {
   id: string;
   username: string;
@@ -68,17 +75,20 @@ export function mapMeToProfileUser(me: MeUser, floras: ApiFlora[]): ProfileUser 
 
 export function mapApiFloraToProfileItem(flora: ApiFlora, fallbackUsername: string): ProfileFloraItem {
   const gen = flora.lineage?.generation ?? 0;
-  const excerpt = flora.text?.length > 80 ? flora.text.slice(0, 80) + "…" : flora.text || "";
+  const excerpt =
+    flora.text?.length > FLORA_EXCERPT_MAX_LENGTH
+      ? flora.text.slice(0, FLORA_EXCERPT_MAX_LENGTH) + "…"
+      : flora.text || "";
   const author = flora.isAuthorAnonymized
     ? "Anonymous"
     : `@${flora.authorUsername || fallbackUsername}`;
   const seed = flora.generative?.seed?.sentiment?.label
-    ? `#${flora.generative.seed.sentiment.label.slice(0, 6).toUpperCase()}`
-    : `#${String(flora._id).slice(-6).toUpperCase()}`;
+    ? `#${flora.generative.seed.sentiment.label.slice(0, SEED_LABEL_LENGTH).toUpperCase()}`
+    : `#${String(flora._id).slice(-SEED_LABEL_LENGTH).toUpperCase()}`;
   return {
     id: flora._id,
     generation: `GEN_${gen}`,
-    image: flora.thumbnailUrl || "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
+    image: flora.thumbnailUrl || PROFILE_ITEM_FALLBACK_IMAGE_URL,
     title: flora.title,
     excerpt,
     author,
@@ -91,12 +101,11 @@ function buildRecentActivityFromFloras(
   floras: ApiFlora[],
   userAvatar: string
 ): ProfileSocialInteraction[] {
-  const ONE_MIN_MS = 60 * 1000;
   const activities: ProfileSocialInteraction[] = [];
   for (const f of floras) {
     const created = f.createdAt ? new Date(f.createdAt).getTime() : 0;
     const updated = f.updatedAt ? new Date(f.updatedAt).getTime() : 0;
-    const wasUpdated = updated > created + ONE_MIN_MS;
+    const wasUpdated = updated > created + ACTIVITY_UPDATE_THRESHOLD_MS;
     activities.push({
       id: wasUpdated ? `updated-${f._id}` : `created-${f._id}`,
       avatar: userAvatar,
@@ -112,7 +121,7 @@ function buildRecentActivityFromFloras(
     const db = b.date ? new Date(b.date).getTime() : 0;
     return db - da;
   });
-  return activities.slice(0, 15);
+  return activities.slice(0, RECENT_ACTIVITY_MAX_ITEMS);
 }
 
 export function mapFlorasToMetrics(floras: ApiFlora[]): ProfileMetricsData {

@@ -1,5 +1,12 @@
 import { api } from "./api";
 
+const DEFAULT_PAGINATION_LIMIT = 50;
+const DEFAULT_PAGINATION_SKIP = 0;
+
+function buildUserFollowListPath(userId: string, listType: "followers" | "following"): string {
+  return `/users/${encodeURIComponent(userId)}/${listType}`;
+}
+
 export async function follow(userId: string): Promise<void> {
   await api.post(`/follows/${userId}`);
 }
@@ -25,15 +32,23 @@ export interface FollowUser {
   avatar?: string;
 }
 
-export async function getFollowers(userId: string, limit = 50, skip = 0): Promise<FollowUser[]> {
-  const { data } = await api.get<FollowUser[]>("/users/" + encodeURIComponent(userId) + "/followers", {
+export async function getFollowers(
+  userId: string,
+  limit = DEFAULT_PAGINATION_LIMIT,
+  skip = DEFAULT_PAGINATION_SKIP
+): Promise<FollowUser[]> {
+  const { data } = await api.get<FollowUser[]>(buildUserFollowListPath(userId, "followers"), {
     params: { limit, skip },
   });
   return data ?? [];
 }
 
-export async function getFollowing(userId: string, limit = 50, skip = 0): Promise<FollowUser[]> {
-  const { data } = await api.get<FollowUser[]>("/users/" + encodeURIComponent(userId) + "/following", {
+export async function getFollowing(
+  userId: string,
+  limit = DEFAULT_PAGINATION_LIMIT,
+  skip = DEFAULT_PAGINATION_SKIP
+): Promise<FollowUser[]> {
+  const { data } = await api.get<FollowUser[]>(buildUserFollowListPath(userId, "following"), {
     params: { limit, skip },
   });
   return data ?? [];

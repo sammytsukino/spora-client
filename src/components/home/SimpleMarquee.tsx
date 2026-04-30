@@ -70,12 +70,12 @@ const MarqueeRow = ({
   const actualBaseVelocity =
     direction === "left" || direction === "up" ? -baseVelocity : baseVelocity
 
-  const x = useTransform(baseX, (v) => {
-    const wrappedValue = wrap(0, -100, v)
+  const x = useTransform(baseX, (offsetValue) => {
+    const wrappedValue = wrap(0, -100, offsetValue)
     return `${wrappedValue}%`
   })
-  const y = useTransform(baseY, (v) => {
-    const wrappedValue = wrap(0, -100, v)
+  const y = useTransform(baseY, (offsetValue) => {
+    const wrappedValue = wrap(0, -100, offsetValue)
     return `${wrappedValue}%`
   })
 
@@ -102,12 +102,12 @@ const MarqueeRow = ({
       onHoverStart={() => (isHovered.current = true)}
       onHoverEnd={() => (isHovered.current = false)}
     >
-      {Array.from({ length: repeat }, (_, i) => i).map((i) => (
+      {Array.from({ length: repeat }, (_, repeatIndex) => repeatIndex).map((repeatIndex) => (
         <motion.div
-          key={i}
+          key={repeatIndex}
           className={cn("shrink-0", isHorizontal && "flex")}
           style={isHorizontal ? { x } : { y }}
-          aria-hidden={i > 0}
+          aria-hidden={repeatIndex > 0}
         >
           {children}
         </motion.div>

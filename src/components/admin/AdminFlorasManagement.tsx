@@ -13,10 +13,10 @@ interface AdminFlorasManagementProps {
   onBatchFloras: (ids: string[], action: "hide" | "unhide" | "delete") => Promise<void>;
 }
 
-function formatDate(s?: string) {
-  if (!s) return "—";
+function formatDate(isoDate?: string) {
+  if (!isoDate) return "—";
   try {
-    return new Date(s).toLocaleDateString(undefined, {
+    return new Date(isoDate).toLocaleDateString(undefined, {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -52,7 +52,7 @@ export default function AdminFlorasManagement({
 
   const selectAll = () => {
     if (selectedIds.size === floras.length) setSelectedIds(new Set());
-    else setSelectedIds(new Set(floras.map((f) => f._id)));
+    else setSelectedIds(new Set(floras.map((floraItem) => floraItem._id)));
   };
 
   const toggleSelect = (id: string) => {
@@ -65,17 +65,17 @@ export default function AdminFlorasManagement({
   const requestBatch = (action: "hide" | "unhide" | "delete") => {
     const ids = Array.from(selectedIds);
     if (ids.length === 0) return;
-    const n = ids.length;
-    const plural = n !== 1 ? "s" : "";
+    const selectedCount = ids.length;
+    const plural = selectedCount !== 1 ? "s" : "";
     if (action === "delete") {
       setConfirm({
         open: true,
         title: "Delete Floras",
-        description: `Delete ${n} Flora${plural}? This cannot be undone.`,
+        description: `Delete ${selectedCount} Flora${plural}? This cannot be undone.`,
         variant: "danger",
         confirmLabel: "DELETE",
         onConfirm: () => {
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
           void runBatch(action, ids);
         },
       });
@@ -85,11 +85,11 @@ export default function AdminFlorasManagement({
     setConfirm({
       open: true,
       title: action === "hide" ? "Hide Floras" : "Unhide Floras",
-      description: `${verb.charAt(0).toUpperCase() + verb.slice(1)} ${n} Flora${plural}?`,
+      description: `${verb.charAt(0).toUpperCase() + verb.slice(1)} ${selectedCount} Flora${plural}?`,
       variant: "default",
       confirmLabel: action === "hide" ? "HIDE" : "UNHIDE",
       onConfirm: () => {
-        setConfirm((c) => ({ ...c, open: false }));
+        setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         void runBatch(action, ids);
       },
     });
@@ -176,9 +176,9 @@ export default function AdminFlorasManagement({
                   : "border-spora-primary bg-spora-primary-light hover:bg-spora-primary-lighter"
               }`}
               onClick={() => toggleSelect(flora._id)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
                   toggleSelect(flora._id);
                 }
               }}
@@ -189,11 +189,11 @@ export default function AdminFlorasManagement({
                 <input
                   type="checkbox"
                   checked={selectedIds.has(flora._id)}
-                  onChange={(e) => {
-                    e.stopPropagation();
+                  onChange={(event) => {
+                    event.stopPropagation();
                     toggleSelect(flora._id);
                   }}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(event) => event.stopPropagation()}
                   className="w-4 h-4 border-2 border-spora-primary shrink-0"
                 />
                 <div
@@ -247,7 +247,7 @@ export default function AdminFlorasManagement({
         variant={confirm.variant}
         confirmLabel={confirm.confirmLabel}
         onConfirm={confirm.onConfirm}
-        onCancel={() => setConfirm((c) => ({ ...c, open: false }))}
+        onCancel={() => setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }))}
       />
     </section>
   );

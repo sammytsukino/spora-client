@@ -79,7 +79,7 @@ export default function AdminUserManagement({
         setConfirmPending(true);
         try {
           await onUnsign(user);
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
           void 0;
         } finally {
@@ -100,7 +100,7 @@ export default function AdminUserManagement({
         setConfirmPending(true);
         try {
           await onSuspend(user);
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
           void 0;
         } finally {
@@ -121,7 +121,7 @@ export default function AdminUserManagement({
         setConfirmPending(true);
         try {
           await onBan(user);
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
           void 0;
         } finally {
@@ -141,7 +141,7 @@ export default function AdminUserManagement({
         setConfirmPending(true);
         try {
           await onActivate(user);
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
           void 0;
         } finally {
@@ -153,7 +153,7 @@ export default function AdminUserManagement({
 
   const handleRoleChange = (userId: string, role: UserRole) => {
     if (!onRoleChange) return;
-    const targetUser = users.find((u) => u.id === userId);
+    const targetUser = users.find((userItem) => userItem.id === userId);
     setConfirm({
       open: true,
       title: "Change role",
@@ -162,7 +162,7 @@ export default function AdminUserManagement({
         setConfirmPending(true);
         try {
           await onRoleChange(userId, role);
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
           void 0;
         } finally {
@@ -182,7 +182,7 @@ export default function AdminUserManagement({
   };
   const selectAll = () => {
     if (selectedIds.size === users.length) setSelectedIds(new Set());
-    else setSelectedIds(new Set(users.map((u) => u.id)));
+    else setSelectedIds(new Set(users.map((userItem) => userItem.id)));
   };
   const runBatch = (status: "suspend" | "ban" | "activate") => {
     if (!onBatchUsers || selectedIds.size === 0) return;
@@ -198,7 +198,7 @@ export default function AdminUserManagement({
         try {
           await onBatchUsers(ids, status);
           setSelectedIds(new Set());
-          setConfirm((c) => ({ ...c, open: false }));
+          setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }));
         } catch {
           void 0;
         } finally {
@@ -233,7 +233,7 @@ export default function AdminUserManagement({
               <input
                 type="checkbox"
                 checked={
-                  users.length > 0 && users.every((u) => selectedIds.has(u.id))
+                  users.length > 0 && users.every((userItem) => selectedIds.has(userItem.id))
                 }
                 onChange={selectAll}
                 className="w-4 h-4 border-2 border-[var(--spora-primary)]"
@@ -316,14 +316,14 @@ export default function AdminUserManagement({
                 className="border-b border-[var(--spora-primary)] hover:bg-lime-300 transition-colors align-top"
                 role={onUserClick ? "button" : undefined}
                 onClick={() => onUserClick?.(user)}
-                onKeyDown={(e) =>
+                onKeyDown={(event) =>
                   onUserClick &&
-                  (e.key === "Enter" || e.key === " ") &&
+                  (event.key === "Enter" || event.key === " ") &&
                   onUserClick(user)
                 }
                 tabIndex={onUserClick ? 0 : undefined}
               >
-                <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                <td className="p-3" onClick={(event) => event.stopPropagation()}>
                   {onBatchUsers ? (
                     <input
                       type="checkbox"
@@ -355,7 +355,7 @@ export default function AdminUserManagement({
                 <td className="p-3 opacity-80">{user.joinedAt}</td>
                 <td
                   className="p-3"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(event) => event.stopPropagation()}
                 >
                   <div className="flex flex-wrap items-center gap-2">
                     {onUserClick && (
@@ -422,15 +422,15 @@ export default function AdminUserManagement({
                     {onRoleChange && (
                       <span className="flex flex-wrap gap-1">
                         {(["cultivator", "admin"] as const).map(
-                          (role) =>
-                            role !== user.role && (
+                          (roleOption) =>
+                            roleOption !== user.role && (
                               <button
-                                key={role}
+                                key={roleOption}
                                 type="button"
-                                onClick={() => handleRoleChange(user.id, role)}
+                                onClick={() => handleRoleChange(user.id, roleOption)}
                                 className={adminButtonNeutralXs}
                               >
-                                {role}
+                                {roleOption}
                               </button>
                             )
                         )}
@@ -451,7 +451,7 @@ export default function AdminUserManagement({
         pending={confirmPending}
         onConfirm={confirm.onConfirm}
         onCancel={() =>
-          !confirmPending && setConfirm((c) => ({ ...c, open: false }))
+          !confirmPending && setConfirm((previousConfirm) => ({ ...previousConfirm, open: false }))
         }
       />
     </section>

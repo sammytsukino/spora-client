@@ -5,6 +5,13 @@ import UnderlineField from "@/components/ui/UnderlineField"
 import { signIn } from "@/lib/auth"
 import { ROUTES } from "@/constants/routes"
 
+const AUTH_CONTAINER_CLASS =
+  "w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-spora-primary-light border border-spora-primary"
+const AUTH_LAYOUT_CLASS = "flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16"
+const SUCCESS_MESSAGE_CLASS = "mb-4 text-sm text-lime-700 font-supply-mono"
+const ERROR_MESSAGE_CLASS = "mb-4 text-sm text-rose-600 font-supply-mono"
+const DISALLOWED_REDIRECT_ROUTES = new Set([ROUTES.SIGN_IN, ROUTES.SIGN_UP])
+
 export default function SignInForm() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -31,10 +38,7 @@ export default function SignInForm() {
       await signIn(username, password)
       const fromState = (location.state as { from?: Location; message?: string })?.from
       const fromPath = fromState?.pathname
-      const avoidLoop =
-        !fromPath ||
-        fromPath === ROUTES.SIGN_IN ||
-        fromPath === ROUTES.SIGN_UP
+      const avoidLoop = !fromPath || DISALLOWED_REDIRECT_ROUTES.has(fromPath)
       navigate(avoidLoop ? ROUTES.GARDEN : fromPath, { replace: true })
     } catch (err: unknown) {
       const res = err as { response?: { data?: { code?: string; error?: string } } }
@@ -49,8 +53,8 @@ export default function SignInForm() {
   }
 
   return (
-    <div className="w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-spora-primary-light border border-spora-primary">
-        <div className="flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16">
+    <div className={AUTH_CONTAINER_CLASS}>
+        <div className={AUTH_LAYOUT_CLASS}>
           <div className="min-w-0 sm:min-w-[200px] shrink-0">
             <h1 className="text-2xl sm:text-3xl text-spora-text-primary font-bold leading-tight mb-2 font-bizud-mincho-bold">
               Enter SPORA
@@ -64,12 +68,12 @@ export default function SignInForm() {
 
           <form onSubmit={handleLogin} className="flex-1 min-w-0">
             {message ? (
-              <p className="mb-4 text-sm text-lime-700 font-supply-mono">
+              <p className={SUCCESS_MESSAGE_CLASS}>
                 {message}
               </p>
             ) : null}
             {error ? (
-              <div className="mb-4 text-sm text-rose-600 font-supply-mono">
+              <div className={ERROR_MESSAGE_CLASS}>
                 <p>{error}</p>
                 {error.includes("verify your email") && (
                   <button

@@ -15,7 +15,7 @@ function BarChart({
   maxHeight?: number;
   ariaLabel: string;
 }) {
-  const max = Math.max(...data.map((d) => d.value), 1);
+  const maxValue = Math.max(...data.map((dataPoint) => dataPoint.value), 1);
 
   return (
     <div
@@ -30,7 +30,7 @@ function BarChart({
         >
           <div
             className="w-full border border-[var(--spora-primary)] bg-lime-300 min-h-[8px] transition-all"
-            style={{ height: `${(value / max) * maxHeight}px` }}
+            style={{ height: `${(value / maxValue) * maxHeight}px` }}
           />
           <span className="font-supply-mono text-[10px] uppercase truncate w-full text-center">
             {label}
@@ -64,7 +64,7 @@ export default function AdminUsageCharts({
             </p>
             <BarChart
               data={florasByDay}
-              ariaLabel={`Floras per day: ${florasByDay.map((d) => `${d.label} ${d.value}`).join(", ")}`}
+              ariaLabel={`Floras per day: ${florasByDay.map((dataPoint) => `${dataPoint.label} ${dataPoint.value}`).join(", ")}`}
             />
           </div>
         )}
@@ -76,7 +76,7 @@ export default function AdminUsageCharts({
             <BarChart
               data={newUsersByWeek}
               maxHeight={100}
-              ariaLabel={`New users per week: ${newUsersByWeek.map((d) => `${d.label} ${d.value}`).join(", ")}`}
+              ariaLabel={`New users per week: ${newUsersByWeek.map((dataPoint) => `${dataPoint.label} ${dataPoint.value}`).join(", ")}`}
             />
           </div>
         )}

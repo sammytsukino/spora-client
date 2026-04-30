@@ -8,8 +8,8 @@ interface ProfileDangerZoneProps extends ProfileDangerZoneConfig {
   unsigning?: boolean;
 }
 
-function normalizeUsername(u: string): string {
-  return u.replace(/^@/, "").trim().toLowerCase();
+function normalizeUsername(username: string): string {
+  return username.replace(/^@/, "").trim().toLowerCase();
 }
 
 export default function ProfileDangerZone({
@@ -50,7 +50,7 @@ export default function ProfileDangerZone({
               id="unsign-confirm"
               type="text"
               value={confirmInput}
-              onChange={(e) => setConfirmInput(e.target.value)}
+              onChange={(event) => setConfirmInput(event.target.value)}
               placeholder="your username"
               className="w-full font-supply-mono text-[11px] px-3 py-2 border border-spora-primary bg-transparent focus:outline-none focus:border-rose-500"
               autoComplete="off"

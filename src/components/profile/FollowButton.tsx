@@ -14,8 +14,8 @@ export default function FollowButton({ userId, onFollowChange, className = "" }:
   useEffect(() => {
     let cancelled = false;
     checkFollowStatus(userId)
-      .then((v) => {
-        if (!cancelled) setFollowing(v);
+      .then((isFollowing) => {
+        if (!cancelled) setFollowing(isFollowing);
       })
       .catch(() => {
         if (!cancelled) setFollowing(false);
