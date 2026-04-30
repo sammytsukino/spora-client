@@ -3525,6 +3525,9 @@
             if (e.data?.type === "spora:regenerate") {
                 if (typeof generateGarden === "function") generateGarden();
             }
+            if (e.data?.type === "spora:capture") {
+                if (typeof saveFullArt === "function") saveFullArt();
+            }
         });
     </script>
 </body>

@@ -6,7 +6,7 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
-import { AudioLines, Shuffle, Volume2 } from "lucide-react";
+import { AudioLines, Camera, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
@@ -299,6 +299,7 @@ export default function FloraReader() {
   }, []);
 
   const handleRegenerate = () => sendToInstallation({ type: "spora:regenerate" });
+  const handleCaptureImage = () => sendToInstallation({ type: "spora:capture" });
 
   const canListen =
     Boolean(derived?.id) &&
@@ -708,6 +709,14 @@ export default function FloraReader() {
             >
               <Shuffle className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
               <span>Shuffle layout</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleCaptureImage}
+              className="flex w-full cursor-pointer items-center justify-start gap-2 border-0 bg-transparent px-0 py-1 text-left shadow-none transition-opacity hover:underline"
+            >
+              <Camera className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
+              <span>Capture image</span>
             </button>
             <div className="flex w-full flex-col items-start gap-1">
               <label htmlFor="reader-wind" className="whitespace-nowrap opacity-80">

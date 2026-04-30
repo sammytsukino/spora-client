@@ -51,7 +51,7 @@ export default function SporaDetailsMenu({
       <summary
         className={cn(
           "font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase cursor-pointer list-none bg-transparent border-0 p-0 shadow-none outline-none ring-0",
-          "inline-block max-w-full focus-visible:underline",
+          "inline-block max-w-full hover:underline focus-visible:underline",
           align === "end" ? "ms-auto" : "me-auto",
           summaryClassName
         )}
