@@ -10,7 +10,10 @@ const AUTH_CONTAINER_CLASS =
 const AUTH_LAYOUT_CLASS = "flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16"
 const SUCCESS_MESSAGE_CLASS = "mb-4 text-sm text-lime-700 font-supply-mono"
 const ERROR_MESSAGE_CLASS = "mb-4 text-sm text-rose-600 font-supply-mono"
-const DISALLOWED_REDIRECT_ROUTES = new Set([ROUTES.SIGN_IN, ROUTES.SIGN_UP])
+const DISALLOWED_REDIRECT_ROUTES: ReadonlySet<string> = new Set([
+  ROUTES.SIGN_IN,
+  ROUTES.SIGN_UP,
+])
 
 export default function SignInForm() {
   const navigate = useNavigate()
