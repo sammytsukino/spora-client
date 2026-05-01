@@ -14,6 +14,7 @@
 - [Available Scripts](#-available-scripts)
 - [Project Structure](#-project-structure)
 - [Backend Contract (Required)](#-backend-contract-required)
+- [Language Support](#-language-support)
 - [Testing Notes](#-testing-notes)
 - [License](#-license)
 - [Author](#-author)
@@ -30,7 +31,8 @@ This repository holds the complete front-of-house experience:
 ♦ Creation ritual (Laboratory / Installation)  
 ♦ Identity and social continuity (profiles + follow graph)  
 ♦ Stewardship tools (Admin Panel)  
-♦ Reading layer with optional voice playback (Flora Reader)
+♦ Reading layer with optional voice playback (Flora Reader)  
+♦ Contact form flow that submits to backend and notifies admin emails
 
 ⟡ ═════════════════════════════════════════ ⟡
 
@@ -49,7 +51,8 @@ The application uses `react-router-dom` with intentional route boundaries:
 ▸ Feature views in `src/views`  
 ▸ API layer in `src/lib` (auth, floras, reports, admin, profile, follows)  
 ▸ Reusable hooks in `src/hooks`  
-▸ Typed route helpers in `src/constants/routes.ts`
+▸ Typed route helpers in `src/constants/routes.ts`  
+▸ Accessibility baseline across key views (main landmarks, keyboard-safe overlays, labels/ARIA updates)
 
 ### Visual Layer
 ▸ React + TypeScript + Vite  
@@ -205,9 +208,18 @@ This client grows on top of `spora-server` endpoints under `/api`, including:
 ▸ Follows (`/follows/*`) for social graph  
 ▸ Users (`/users/*`) for profile/public data  
 ▸ Reports (`/reports/*`) for moderation reports  
-▸ Admin (`/admin/*`) for role-based moderation and metrics
+▸ Admin (`/admin/*`) for role-based moderation and metrics  
+▸ Contact (`/contact`) for contact-form delivery to active admin recipients
 
 Without a reachable backend, the collaborative lifecycle cannot be completed.
+
+⟡ ═════════════════════════════════════════ ⟡
+
+## ◈ Language Support
+
+SPORA currently operates with mixed editorial/UI copy and supports usage in:
+▸ **Español**  
+▸ **Castellano**
 
 ⟡ ═════════════════════════════════════════ ⟡
 
