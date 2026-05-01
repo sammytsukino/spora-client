@@ -4,7 +4,9 @@ import FooterAlter from "@/components/layout/FooterAlter";
 import MainButton from "@/components/ui/MainButton";
 import UnderlineField from "@/components/ui/UnderlineField";
 import Section from "@/components/layout/Section";
-import { HeroMeshGradientBackground } from "@/components/backgrounds/Gradient";
+
+const FORM_BACKGROUND_VIDEO_URL =
+  "https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -29,7 +31,15 @@ export default function Contact() {
         className="relative flex flex-col justify-between min-h-dvh"
       >
         <div className="fixed inset-0 w-full h-full z-0">
-          <HeroMeshGradientBackground className="absolute inset-0" />
+          <video
+            className="fixed inset-0 h-full w-full object-cover"
+            src={FORM_BACKGROUND_VIDEO_URL}
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden="true"
+          />
         </div>
 
         <div className="relative z-10 shrink-0 h-16 sm:h-20" aria-hidden />

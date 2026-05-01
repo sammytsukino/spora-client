@@ -1,6 +1,8 @@
 import CyclingLogo from '@/components/layout/CyclingLogo';
 import { sporaLogos } from '@/data/logo-data';
-import { HeroMeshGradientBackground } from '@/components/backgrounds/Gradient';
+
+const HERO_BACKGROUND_VIDEO_URL =
+  'https://res.cloudinary.com/dsy30p7gf/video/upload/v1777649128/lumencolor5_4_prob4_5_uae4op.mp4';
 
 export default function HeroSection() {
   return (
@@ -36,9 +38,17 @@ export default function HeroSection() {
       </div>
 
       <div className="relative flex-1 w-full md:w-[80vw] min-h-[48vh] md:min-h-0">
-        <HeroMeshGradientBackground />
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={HERO_BACKGROUND_VIDEO_URL}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+        />
 
-        <div className="absolute inset-0 p-5 sm:p-6 md:p-0">
+        <div className="absolute inset-0 z-10 p-5 sm:p-6 md:p-0">
           <div className="md:absolute md:right-12 lg:right-16 md:top-20 lg:top-24 md:text-right">
             <p className="font-supply-mono text-sm sm:text-[15px] md:text-base lg:text-[16px] leading-relaxed text-[var(--spora-primary)] max-w-[40ch] md:max-w-[44ch] md:ml-auto">
               Generative art for everyone. A canvas for the smallest thing we share: our words. Words blooming into singular works that live, branch, and grow.

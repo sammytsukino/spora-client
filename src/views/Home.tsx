@@ -14,7 +14,6 @@ import Navbar from '@/components/layout/Navbar'
 import HeroSection from '@/components/home/HeroSection'
 import DeclarativeSection from '@/components/home/DeclarativeSection'
 import QuoteSection from '@/components/home/QuoteSection'
-import { HeroMeshGradientBackground } from '@/components/backgrounds/Gradient'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -113,10 +112,15 @@ donde mi cuerpo parece que es la puerta...
         containerized={false}
         className="relative overflow-hidden"
       >
-        <div className="absolute inset-0 w-full h-full">
-          <HeroMeshGradientBackground className="absolute inset-0" />
-        </div>
-
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+        />
         <div className="relative z-10">
           <FooterMain />
         </div>
