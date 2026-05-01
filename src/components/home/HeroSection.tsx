@@ -23,7 +23,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div className="block leading-none mt-2 sm:mt-3 md:mt-4">
+          <div className="block leading-none mt-4 sm:mt-3 md:mt-5">
             <CyclingLogo
               logos={sporaLogos}
               width="100%"
