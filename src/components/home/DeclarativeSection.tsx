@@ -59,11 +59,11 @@ export default function DeclarativeSection({
         <div
           className={
             imageSrc
-              ? 'px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16 pb-12 sm:pb-14 lg:pb-16'
-              : 'px-6 sm:px-10 lg:px-16 pt-10 sm:pt-12 lg:pt-16 pb-10 sm:pb-0'
+              ? 'px-6 sm:px-10 lg:px-20 pt-20 sm:pt-14 lg:pt-18 pb-12 sm:pb-14 lg:pb-20'
+              : 'px-6 sm:px-10 lg:px-20 pt-20 sm:pt-14 lg:pt-18 pb-12 sm:pb-14 lg:pb-20'
           }
         >
-          <p className="font-bizud-mincho text-stone-200 text-2xl leading-snug sm:text-3xl sm:leading-tight md:text-5xl lg:text-5xl xl:text-6xl w-full max-w-full [overflow-wrap:break-word]">
+          <p className="font-bizud-mincho text-stone-200 w-full max-w-full text-[clamp(2rem,1.1rem+3.9vw,11rem)] leading-[0.95] tracking-tight">
             {text}
           </p>
           {imageSrc ? (
@@ -79,9 +79,6 @@ export default function DeclarativeSection({
             </div>
           ) : null}
         </div>
-        {imageSrc ? null : (
-          <div className="flex-1 min-h-0 sm:min-h-[22vh] md:min-h-[36vh]" />
-        )}
       </div>
     </div>
   );

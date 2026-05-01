@@ -18,18 +18,18 @@ export default function TermsConditions() {
       <div className="relative flex flex-col flex-1">
         <TransparentNavbar showScrollBackground />
 
-        <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16 flex">
-          <div className="max-w-2xl w-full">
-        <PageTitle
-          supertitle="(04) LEGAL"
-          title="TERMS & CONDITIONS"
-          description="Terms of use, data protection, and your rights on SPORA."
-          className="mb-12"
-        />
+        <main className="flex-1 pt-20 pb-16 px-6 md:px-12 lg:px-16">
+          <PageTitle
+            supertitle="(04) LEGAL"
+            title="TERMS & CONDITIONS"
+            description="Terms of use, data protection, and your rights on SPORA."
+            className="mb-12"
+          />
 
-        <div className="space-y-10 font-supply-mono text-sm text-spora-primary">
+          <div className="w-full">
+            <div className="space-y-10 font-supply-mono text-sm text-spora-primary">
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               1. Acceptance of Terms
             </h2>
             <p className="leading-relaxed">
@@ -41,7 +41,7 @@ export default function TermsConditions() {
           </section>
 
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               2. Use of the Platform
             </h2>
             <p className="leading-relaxed mb-4">
@@ -57,7 +57,7 @@ export default function TermsConditions() {
           </section>
 
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               3. Account Responsibility
             </h2>
             <p className="leading-relaxed">
@@ -68,7 +68,7 @@ export default function TermsConditions() {
           </section>
 
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               4. Intellectual Property
             </h2>
             <p className="leading-relaxed">
@@ -79,7 +79,7 @@ export default function TermsConditions() {
           </section>
 
           <section id="cookies">
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               5. Data Protection & Privacy
             </h2>
             <p className="leading-relaxed mb-4">
@@ -105,7 +105,7 @@ export default function TermsConditions() {
           </section>
 
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               6. Limitation of Liability
             </h2>
             <p className="leading-relaxed">
@@ -116,7 +116,7 @@ export default function TermsConditions() {
           </section>
 
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               7. Changes to Terms
             </h2>
             <p className="leading-relaxed">
@@ -126,7 +126,7 @@ export default function TermsConditions() {
           </section>
 
           <section>
-            <h2 className="font-bizud-mincho-bold text-lg border-b border-[var(--spora-primary)] pb-2 mb-4">
+            <h2 className="font-bizud-mincho-bold text-lg border-b border-spora-primary pb-2 mb-4">
               8. Contact
             </h2>
             <p className="leading-relaxed">
@@ -134,7 +134,7 @@ export default function TermsConditions() {
               the Contact section.
             </p>
           </section>
-        </div>
+            </div>
           </div>
         </main>
 
