@@ -16,6 +16,10 @@ vi.mock("@/lib/auth", async () => {
 import SignUpForm from "./SignUpForm"
 import { ROUTES } from "@/constants/routes"
 
+/** Vitest-only mock password (not production credentials). */
+const MOCK_PW_OK = "__vitest_fixture_signup_password_a__"
+const MOCK_PW_OTHER = "__vitest_fixture_signup_password_b__"
+
 function renderSignUp() {
   return render(
     <MemoryRouter initialEntries={[ROUTES.SIGN_UP]}>
@@ -40,8 +44,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "ab")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OK)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(
@@ -57,8 +61,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "user1")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password2")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OTHER)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument()
@@ -73,15 +77,15 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "user1")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OK)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(signUp).toHaveBeenCalledWith({
       username: "user1",
       displayName: "N",
       email: "n@e.com",
-      password: "password1",
+      password: MOCK_PW_OK,
     })
     expect(await screen.findByText("Sign in page")).toBeInTheDocument()
   })
@@ -93,8 +97,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "bad*name")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OK)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(
@@ -132,8 +136,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "user1")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OK)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(await screen.findByText("Garden")).toBeInTheDocument()
@@ -147,8 +151,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "user1")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OK)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(await screen.findByText("Sign in page")).toBeInTheDocument()
@@ -162,8 +166,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "user1")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), "password1")
-    await user.type(screen.getByLabelText(/confirm password/i), "password1")
+    await user.type(screen.getByLabelText(/^password$/i), MOCK_PW_OK)
+    await user.type(screen.getByLabelText(/confirm password/i), MOCK_PW_OK)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(

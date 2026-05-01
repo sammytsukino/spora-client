@@ -1813,17 +1813,6 @@
             return pseudo - Math.floor(pseudo);
         }
 
-        function lerpHexColor(a, b, amount) {
-            const ah = parseInt(a.replace(/#/g, ''), 16),
-                ar = (ah >> 16) & 0xff, ag = (ah >> 8) & 0xff, ab = ah & 0xff,
-                bh = parseInt(b.replace(/#/g, ''), 16),
-                br = (bh >> 16) & 0xff, bg = (bh >> 8) & 0xff, bb = bh & 0xff,
-                rr = Math.round(ar + amount * (br - ar)),
-                rg = Math.round(ag + amount * (bg - ag)),
-                rb = Math.round(ab + amount * (bb - ab));
-            return '#' + ((1 << 24) | (rr << 16) | (rg << 8) | rb).toString(16).slice(1);
-        }
-
         const MOOD_LEXICONS = window.INSTALLATION_MOOD_LEXICONS;
 
         function extractMorphology(text) {
@@ -1948,14 +1937,6 @@
             const key1 = baseMood + "|" + newMood;
             const key2 = newMood + "|" + baseMood;
             return SENTIMENT_BLEND_MAP[key1] || SENTIMENT_BLEND_MAP[key2] || null;
-        }
-
-        function getBlendedMoodForBlossoming(baseText, newText) {
-            const baseMorph = baseText.trim() ? extractMorphology(baseText) : null;
-            const newMorph = newText.trim() ? extractMorphology(newText) : null;
-            const baseMood = baseMorph && baseMorph.dominantMood !== "neutral" && baseMorph.sentimentStrength > 0 ? baseMorph.dominantMood : null;
-            const newMood = newMorph && newMorph.dominantMood !== "neutral" && newMorph.sentimentStrength > 0 ? newMorph.dominantMood : null;
-            return blendMoods(baseMood, newMood);
         }
 
         function interpolateHex(hex1, hex2, t) {
@@ -3411,7 +3392,7 @@
                     swatch.appendChild(s);
                 });
                 const lbl = document.createElement("div");
-                lbl.innerHTML = `<strong>${key.toUpperCase()}</strong> — ${ex.desc}<br><span style="opacity:0.8">${ex.text.slice(0, 45)}…</span>`;
+                lbl.innerHTML = `<strong>${escapeHTML(key.toUpperCase())}</strong> — ${escapeHTML(ex.desc)}<br><span style="opacity:0.8">${escapeHTML(ex.text.slice(0, 45))}…</span>`;
                 row.appendChild(swatch);
                 row.appendChild(lbl);
                 row.onclick = () => {
