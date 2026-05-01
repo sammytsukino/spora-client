@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { isLabFullAccessible } from "@/lib/auth"
 import CyclingLogo from "@/components/layout/CyclingLogo"
 
 export default function FooterMain() {
-  const navigate = useNavigate()
+  const laboratoryRoute = isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY
 
   return (
     <footer className="flex h-full w-full flex-col justify-between px-6 py-8 text-spora-primary md:px-12 lg:px-16">
@@ -53,51 +53,25 @@ export default function FooterMain() {
         <div className="flex w-full min-w-0 justify-end">
           <div className="min-w-0 text-[10px] sm:text-xs font-supply-mono">
             <div className="grid grid-cols-1 gap-x-4 gap-y-1 justify-items-end text-right text-sm sm:grid-cols-2 sm:gap-x-8 sm:text-lg">
-              <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate(ROUTES.TEAM)}
-              >
+              <Link className="hover:underline cursor-pointer" to={ROUTES.TEAM}>
                 Team
-              </button>
-              <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate(ROUTES.GARDEN)}
-              >
+              </Link>
+              <Link className="hover:underline cursor-pointer" to={ROUTES.GARDEN}>
                 Garden
-              </button>
-              <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate(ROUTES.TERMS)}
-              >
+              </Link>
+              <Link className="hover:underline cursor-pointer" to={ROUTES.TERMS}>
                 <span className="md:hidden">Terms</span>
                 <span className="hidden md:inline">Terms & Conditions</span>
-              </button>
-              <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate(ROUTES.GREENHOUSE)}
-              >
+              </Link>
+              <Link className="hover:underline cursor-pointer" to={ROUTES.GREENHOUSE}>
                 Greenhouse
-              </button>
-              <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() => navigate(ROUTES.CONTACT)}
-              >
+              </Link>
+              <Link className="hover:underline cursor-pointer" to={ROUTES.CONTACT}>
                 Contact
-              </button>
-              <button
-                type="button"
-                className="hover:underline cursor-pointer"
-                onClick={() =>
-                  navigate(isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY)
-                }
-              >
+              </Link>
+              <Link className="hover:underline cursor-pointer" to={laboratoryRoute}>
                 Laboratory
-              </button>
+              </Link>
             </div>
           </div>
         </div>

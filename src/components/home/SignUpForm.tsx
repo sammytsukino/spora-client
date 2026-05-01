@@ -90,7 +90,7 @@ export default function SignUpForm() {
 
           <form onSubmit={handleSignUp} className="flex-1 min-w-0">
             {error ? (
-              <p className={FORM_ERROR_CLASS}>
+              <p className={FORM_ERROR_CLASS} role="alert">
                 {error}
               </p>
             ) : null}
@@ -100,6 +100,7 @@ export default function SignUpForm() {
                 <div className="flex flex-col gap-6 sm:gap-8">
                   <UnderlineField
                     label="Username"
+                    autoComplete="username"
                     value={username}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                     placeholder="e.g. cultivator_01"
@@ -109,6 +110,7 @@ export default function SignUpForm() {
                   />
                   <UnderlineField
                     label="Name"
+                    autoComplete="name"
                     value={name}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                     placeholder="e.g. Dawn"
@@ -117,6 +119,7 @@ export default function SignUpForm() {
                   <UnderlineField
                     label="Email"
                     type="email"
+                    autoComplete="email"
                     value={email}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     placeholder="e.g. dawn@example.com"
@@ -129,6 +132,7 @@ export default function SignUpForm() {
                   <UnderlineField
                     label="Password"
                     type="password"
+                    autoComplete="new-password"
                     value={password}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     placeholder="••••••••"
@@ -139,6 +143,7 @@ export default function SignUpForm() {
                   <UnderlineField
                     label="Confirm password"
                     type="password"
+                    autoComplete="new-password"
                     value={confirmPassword}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"

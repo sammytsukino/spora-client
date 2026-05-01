@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, User, LogOut, FileText, Shield } from "lucide-react";
 import MainButton from "@/components/ui/MainButton";
@@ -40,6 +40,7 @@ export default function NavbarBase({
   const [isLoggedIn, setIsLoggedIn] = useState(() => !!getStoredToken());
   const menuRef = useRef<HTMLDivElement>(null);
   const [adminPendingReports, setAdminPendingReports] = useState(0);
+  const userMenuId = useId();
 
   const isDark = variant === "default";
 
@@ -85,8 +86,22 @@ export default function NavbarBase({
         setMenuOpen(false);
       }
     };
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+    const focusTimeoutId = window.setTimeout(() => {
+      const firstMenuItem = menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]');
+      firstMenuItem?.focus();
+    }, 0);
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      window.clearTimeout(focusTimeoutId);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [menuOpen]);
 
   const handleLogout = () => {
@@ -195,6 +210,12 @@ export default function NavbarBase({
 
           {(isTeam || isDark || isTransparent) && (
             <div className="hidden md:flex items-center">
+              <button
+                type="button"
+                className="flex items-center cursor-pointer"
+                onClick={() => navigate(ROUTES.HOME)}
+                aria-label="Go to home"
+              >
                 <img
                   src={
                     useLightLogo
@@ -202,13 +223,13 @@ export default function NavbarBase({
                       : "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769075853/logo-grey_j6myjj.svg"
                   }
                   alt="Spora logo"
-                  className="h-7 sm:h-8 w-auto cursor-pointer"
-                  onClick={() => navigate(ROUTES.HOME)}
+                  className="h-7 sm:h-8 w-auto"
                 />
+              </button>
             </div>
           )}
 
-          <nav className="flex-1">
+          <nav className="flex-1" aria-label="Primary">
             <ul
               className={`flex items-center justify-start ${justifyNav} gap-2 sm:gap-3 md:gap-8 text-[8px] sm:text-[10px] md:text-xs tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] uppercase font-semibold whitespace-nowrap`}
             >
@@ -279,6 +300,8 @@ export default function NavbarBase({
                     className={`p-2 transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                     aria-label="User menu"
                     aria-expanded={menuOpen}
+                    aria-haspopup="menu"
+                    aria-controls={userMenuId}
                   >
                     {menuOpen ? (
                       <X className="w-5 h-5" strokeWidth={2} />
@@ -288,6 +311,8 @@ export default function NavbarBase({
                   </button>
                   {menuOpen && (
                     <div
+                      id={userMenuId}
+                      role="menu"
                       className={`absolute right-0 top-full mt-1 py-1 min-w-[200px] border font-supply-mono text-xs uppercase tracking-wider ${
                         isDark || (isTransparent && transparentUseLightText)
                           ? "bg-spora-primary border-spora-text-secondary text-spora-text-secondary"
@@ -300,6 +325,7 @@ export default function NavbarBase({
                           setMenuOpen(false);
                           navigate(ROUTES.PROFILE);
                         }}
+                        role="menuitem"
                         className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
                         <User className="w-4 h-4 shrink-0" />
@@ -311,6 +337,7 @@ export default function NavbarBase({
                           setMenuOpen(false);
                           navigate(ROUTES.TERMS);
                         }}
+                        role="menuitem"
                         className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
                         <FileText className="w-4 h-4 shrink-0" />
@@ -323,6 +350,7 @@ export default function NavbarBase({
                             setMenuOpen(false);
                             navigate(ROUTES.ADMIN);
                           }}
+                          role="menuitem"
                           className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                         >
                           <Shield className="w-4 h-4 shrink-0" />
@@ -340,6 +368,7 @@ export default function NavbarBase({
                       <button
                         type="button"
                         onClick={handleLogout}
+                        role="menuitem"
                         className={`w-full flex items-center gap-2 px-4 py-3 text-left transition-colors ${isDark || (isTransparent && transparentUseLightText) ? "hover:bg-white/10" : "hover:bg-black/5"}`}
                       >
                         <LogOut className="w-4 h-4 shrink-0" />

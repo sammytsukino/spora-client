@@ -9,6 +9,7 @@ interface CyclingLogoProps {
   className?: string
   aspectRatio?: number | string
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+  decorative?: boolean
 }
 
 export default function CyclingLogo({
@@ -22,6 +23,7 @@ export default function CyclingLogo({
   className = "",
   aspectRatio,
   fit = 'fill',
+  decorative = true,
 }: CyclingLogoProps) {
   const logoCount = logos.length
   const perLogoDuration = cycleDuration
@@ -48,6 +50,7 @@ export default function CyclingLogo({
   return (
     <div 
       className={`relative block ${className}`}
+      aria-hidden={decorative}
       style={{
         width: widthValue,
         height: containerHeightValue,
@@ -63,7 +66,7 @@ export default function CyclingLogo({
           <img
             key={index}
             src={logo}
-            alt={`Logo ${index + 1}`}
+            alt={decorative ? "" : `Logo ${index + 1}`}
             className={`logo-cycling logo-${index + 1} block`}
             style={{
               position: "absolute",

@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 interface FloraCardBaseProps {
   id: string;
   generation: string;
@@ -21,7 +19,6 @@ export default function FloraCardBase({
   excerpt,
   author,
   seed,
-  authorUsername,
   onClick,
   variant = 'garden',
 }: FloraCardBaseProps) {
@@ -29,12 +26,14 @@ export default function FloraCardBase({
 
   return (
     <article
-      className={`group bg-[var(--spora-primary-light)] flex flex-col relative transition-all duration-fast ease-spora-out cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 ${
+      className={`group bg-spora-primary-light flex flex-col relative transition-all duration-fast ease-spora-out cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 ${
         isGarden ? 'active:scale-[0.98]' : ''
-      } border border-[var(--spora-primary)]`}
+      } border border-spora-primary`}
       style={{ aspectRatio: '4/5' }}
       onClick={onClick}
       tabIndex={0}
+      role="button"
+      aria-label={`Open flora ${title}`}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
@@ -47,7 +46,7 @@ export default function FloraCardBase({
           {id}
         </span>
         <span
-          className={`font-supply-mono border border-[var(--spora-primary)] uppercase ${
+          className={`font-supply-mono border border-spora-primary uppercase ${
             isGarden
               ? 'text-[10px] px-2 py-0.5'
               : 'text-[9px] px-1.5 py-0.5'
@@ -58,12 +57,12 @@ export default function FloraCardBase({
       </div>
 
       <div
-        className={`relative overflow-hidden border border-[var(--spora-primary)] ${
+        className={`relative overflow-hidden border border-spora-primary ${
           isGarden ? 'flex-1 mx-6 mb-4' : 'mb-3'
         }`}
         style={{ aspectRatio: '4/5' }}
       >
-        <div className="absolute inset-0 bg-[var(--spora-primary-light)] animate-pulse" />
+        <div className="absolute inset-0 bg-spora-primary-light animate-pulse" />
         <img
           src={image}
           alt={title}
@@ -89,7 +88,7 @@ export default function FloraCardBase({
 
       <div className={`flex flex-col gap-2 ${isGarden ? 'px-6 pb-6' : 'p-0'}`}>
         <h2
-          className={`font-bizud-mincho-bold leading-none tracking-tight text-[var(--spora-primary)] line-clamp-1 ${
+          className={`font-bizud-mincho-bold leading-none tracking-tight text-spora-primary line-clamp-1 ${
             isGarden
               ? 'text-[28px]'
               : 'text-lg md:text-xl mb-1'
@@ -113,13 +112,7 @@ export default function FloraCardBase({
               : 'text-[9px] md:text-[10px] opacity-75'
           }`}
         >
-          {authorUsername && author !== '@Anonymous' ? (
-            <Link to={`/profile/${authorUsername}`} className="hover:underline" onClick={(event) => event.stopPropagation()}>
-              {author}
-            </Link>
-          ) : (
-            <span>{author}</span>
-          )}
+          <span>{author}</span>
           <span>{isGarden ? `SEED: ${seed}` : seed}</span>
         </div>
       </div>

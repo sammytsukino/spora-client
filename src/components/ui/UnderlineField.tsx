@@ -33,6 +33,7 @@ export default function UnderlineField({
   ...props
 }: UnderlineFieldProps) {
   const inputId = id ?? `${label.toLowerCase().replace(/\s/g, "-")}-field`;
+  const hintId = `${inputId}-hint`;
   const textareaMinH = minRows ? minRows * 52 : 80;
 
   return (
@@ -50,6 +51,7 @@ export default function UnderlineField({
       {as === "textarea" ? (
         <textarea
           id={inputId}
+          aria-describedby={hint ? hintId : undefined}
           className={
             inputBaseClass +
             (fillParent
@@ -63,14 +65,16 @@ export default function UnderlineField({
         <input
           id={inputId}
           type={type}
+          aria-describedby={hint ? hintId : undefined}
           className={inputBaseClass + (hintVisibleOnFocus && hint ? " peer" : "")}
           {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
         />
       )}
       <div className={underlineClass} />
       <div
+        id={hint ? hintId : undefined}
         className={
-          "mt-2 min-h-[2rem] text-xs text-spora-primary font-supply-mono leading-relaxed " +
+          "mt-2 min-h-8 text-xs text-spora-primary font-supply-mono leading-relaxed " +
           (hint
             ? hintVisibleOnFocus
               ? "opacity-0 transition-opacity peer-focus:opacity-100"

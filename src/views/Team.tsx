@@ -15,11 +15,12 @@ export default function Team() {
   }, [])
 
   return (
-    <div className="relative w-full overflow-x-hidden min-h-screen flex flex-col bg-[var(--spora-primary-light)]">
+    <div className="relative w-full overflow-x-hidden min-h-screen flex flex-col bg-spora-primary-light">
             <TransparentNavbar showScrollBackground />
 
 
-      <main className="relative min-h-[100dvh]">
+      <main id="main-content" className="relative min-h-dvh">
+        <h1 className="sr-only">SPORA Team</h1>
         <div className="absolute inset-0">
           <Lanyard position={[0, 0, 10]} gravity={[0, -40, 0]} />
         </div>

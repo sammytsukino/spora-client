@@ -115,7 +115,7 @@ export default function PublicProfile() {
     return (
       <div className="w-full min-h-screen bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
-        <main className="pt-24 px-6">
+        <main id="main-content" className="pt-24 px-6">
           <p className="font-supply-mono text-sm text-spora-primary">Loading…</p>
         </main>
       </div>
@@ -126,7 +126,7 @@ export default function PublicProfile() {
     return (
       <div className="w-full min-h-screen bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
-        <main className="pt-24 px-6">
+        <main id="main-content" className="pt-24 px-6">
           <p className="font-supply-mono text-sm text-rose-500">{error || "User not found."}</p>
         </main>
       </div>
@@ -138,7 +138,8 @@ export default function PublicProfile() {
   return (
     <div className="w-full overflow-x-hidden bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
-      <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
+      <main id="main-content" className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
+        <h1 className="sr-only">Profile of {user.username}</h1>
         <header className="border border-spora-primary bg-spora-primary-light p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
           <img
             src={user.avatar || DEFAULT_PROFILE_AVATAR_URL}
@@ -193,7 +194,7 @@ export default function PublicProfile() {
               No Floras yet.
             </p>
           ) : (
-            <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
               {visibleFloras.map((flora) => (
                 <FloraCard
                   key={flora.id}
@@ -208,7 +209,7 @@ export default function PublicProfile() {
                   onClick={() => handleCardClick(flora)}
                 />
               ))}
-            </main>
+            </div>
           )}
           {visibleCount < filteredFloras.length && (
             <MainButton
@@ -222,7 +223,7 @@ export default function PublicProfile() {
             </MainButton>
           )}
         </div>
-      </section>
+      </main>
       <FooterAlter />
     </div>
   );

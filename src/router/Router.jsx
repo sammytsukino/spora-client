@@ -29,6 +29,34 @@ import ConsentModal, { getConsentGiven } from "../components/shared/ConsentModal
 import { ROUTES } from "../constants/routes";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
+const DEFAULT_TITLE = "S P 0 R A";
+
+function getRouteTitle(pathname) {
+  if (pathname === ROUTES.HOME || pathname === ROUTES.HOME_LEGACY) return "SPORA - Home";
+  if (pathname === ROUTES.GARDEN) return "SPORA - Garden";
+  if (pathname.startsWith(ROUTES.GREENHOUSE)) return "SPORA - Greenhouse";
+  if (pathname.startsWith(ROUTES.FLORA)) return "SPORA - Flora";
+  if (pathname === ROUTES.LABORATORY || pathname === ROUTES.INSTALLATION) return "SPORA - Laboratory";
+  if (pathname === ROUTES.LABORATORY_FULL || pathname === ROUTES.GROW) return "SPORA - Full Laboratory";
+  if (pathname === ROUTES.TEAM) return "SPORA - Team";
+  if (pathname === ROUTES.TERMS || pathname === ROUTES.RESEARCH) return "SPORA - Terms & Conditions";
+  if (pathname === ROUTES.CONTACT) return "SPORA - Contact";
+  if (pathname === ROUTES.SIGN_IN) return "SPORA - Sign In";
+  if (pathname === ROUTES.SIGN_UP) return "SPORA - Sign Up";
+  if (pathname === ROUTES.VERIFY_EMAIL) return "SPORA - Verify Email";
+  if (pathname === ROUTES.PROFILE) return "SPORA - My Profile";
+  if (pathname.startsWith(`${ROUTES.PROFILE}/`) && pathname.endsWith("/followers")) {
+    return "SPORA - Followers";
+  }
+  if (pathname.startsWith(`${ROUTES.PROFILE}/`) && pathname.endsWith("/following")) {
+    return "SPORA - Following";
+  }
+  if (pathname.startsWith(`${ROUTES.PROFILE}/`)) return "SPORA - Profile";
+  if (pathname === ROUTES.LICENSING) return "SPORA - Licensing";
+  if (pathname === ROUTES.ADMIN) return "SPORA - Admin";
+  if (pathname === ROUTES.BACKGROUND) return "SPORA - Background";
+  return DEFAULT_TITLE;
+}
 
 function ClearLabFullSessionOnLeave() {
   const location = useLocation();
@@ -45,8 +73,18 @@ function RouterContent() {
   const location = useLocation();
   const isTermsPage = location.pathname === ROUTES.TERMS;
 
+  useEffect(() => {
+    document.title = getRouteTitle(location.pathname);
+  }, [location.pathname]);
+
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-spora-primary focus:px-4 focus:py-2 focus:text-spora-primary-light"
+      >
+        Skip to main content
+      </a>
       <ScrollToTop />
       <AccentColorOnRouteChange />
       {!consentGiven && !isTermsPage && (

@@ -10,9 +10,9 @@ export default function VideoTextSection() {
           playsInline
           disablePictureInPicture
           disableRemotePlayback
+          aria-hidden="true"
         >
           <source src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4" type="video/mp4" />
-          Your browser does not support the video element.
         </video>
       </div>
 

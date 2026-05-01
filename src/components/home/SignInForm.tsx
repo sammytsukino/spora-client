@@ -71,12 +71,12 @@ export default function SignInForm() {
 
           <form onSubmit={handleLogin} className="flex-1 min-w-0">
             {message ? (
-              <p className={SUCCESS_MESSAGE_CLASS}>
+              <p className={SUCCESS_MESSAGE_CLASS} aria-live="polite">
                 {message}
               </p>
             ) : null}
             {error ? (
-              <div className={ERROR_MESSAGE_CLASS}>
+              <div className={ERROR_MESSAGE_CLASS} role="alert">
                 <p>{error}</p>
                 {error.includes("verify your email") && (
                   <button
@@ -103,6 +103,7 @@ export default function SignInForm() {
                 <UnderlineField
                   label="Password"
                   type="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                   placeholder="••••••••"

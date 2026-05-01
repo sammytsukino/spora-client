@@ -202,10 +202,11 @@ export default function SimpleMarquee({
               : {}),
           }}
           className="group relative block cursor-pointer"
+          aria-label={`Open flora ${item.title ?? item.id}`}
         >
           <img
             src={item.url}
-            alt={`Flora ${i + 1}`}
+            alt={item.title ?? `Flora ${i + 1}`}
             className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover"
           />
           <span
@@ -218,7 +219,7 @@ export default function SimpleMarquee({
       ) : (
         <img
           src={item.url}
-          alt={`Flora ${i + 1}`}
+          alt={item.title ?? `Flora ${i + 1}`}
           className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover"
         />
       )}

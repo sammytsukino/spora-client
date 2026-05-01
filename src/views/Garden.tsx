@@ -151,7 +151,7 @@ export default function Garden() {
     <div className="w-full overflow-x-hidden bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
 
-      <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
+      <main id="main-content" className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
         <div className="mb-8">
           <PageTitle
             supertitle="(01)GARDEN"
@@ -194,7 +194,7 @@ export default function Garden() {
               }
             />
           ) : (
-            <main className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
               {visibleFloras.map((flora) => (
                 <FloraCard
                   key={flora.id}
@@ -209,7 +209,7 @@ export default function Garden() {
                   onClick={() => handleCardClick(flora)}
                 />
               ))}
-            </main>
+            </div>
           )}
         </div>
 
@@ -219,7 +219,7 @@ export default function Garden() {
             total={filteredFloras.length}
           />
         )}
-      </section>
+      </main>
 
       <FooterAlter />
     </div>

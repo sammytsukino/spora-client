@@ -8,9 +8,11 @@ interface FeaturedFloraProps {
 export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
   return (
     <section 
-      className="group bg-[var(--spora-primary-light)] p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-[var(--spora-accent-secondary)] focus-visible:ring-2 focus-visible:ring-[var(--spora-primary)] focus-visible:ring-offset-2 border border-[var(--spora-primary)]"
+      className="group bg-spora-primary-light p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 border border-spora-primary"
       onClick={onClick}
       tabIndex={0}
+      role="button"
+      aria-label={`Open flora ${flora.title}`}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
@@ -18,14 +20,14 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
         }
       }}
     >
-      <div className="absolute top-6 right-6 z-20 bg-[var(--spora-primary)] text-[var(--spora-accent-secondary)] font-supply-mono text-[9px] md:text-xs px-2.5 py-1 uppercase tracking-[0.18em]">
+      <div className="absolute top-6 right-6 z-20 bg-spora-primary text-spora-accent-secondary font-supply-mono text-[9px] md:text-xs px-2.5 py-1 uppercase tracking-[0.18em]">
         S-TIER // FEATURED
       </div>
       <div
-        className="w-full overflow-hidden mb-6 border border-[var(--spora-primary)] relative"
+        className="w-full overflow-hidden mb-6 border border-spora-primary relative"
         style={{ aspectRatio: "4 / 5" }}
       >
-        <div className="absolute inset-0 bg-[var(--spora-primary-light)] animate-pulse" />
+        <div className="absolute inset-0 bg-spora-primary-light animate-pulse" />
         <img
           src={flora.image}
           alt={flora.title}
@@ -49,13 +51,13 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
         />
       </div>
       <div>
-        <h2 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-[0.9] tracking-tight mb-3 text-[var(--spora-primary)] line-clamp-1">
+        <h2 className="font-bizud-mincho-bold text-3xl md:text-4xl lg:text-5xl leading-[0.9] tracking-tight mb-3 text-spora-primary line-clamp-1">
           {flora.title}
         </h2>
-        <p className="font-supply-mono text-[11px] md:text-xs italic opacity-90 line-clamp-2 mb-3 text-[var(--spora-primary)]">
+        <p className="font-supply-mono text-[11px] md:text-xs italic opacity-90 line-clamp-2 mb-3 text-spora-primary">
           "{flora.excerpt}"
         </p>
-        <div className="grid grid-cols-3 border-t border-[var(--spora-primary)] pt-2 font-supply-mono text-[10px] md:text-xs text-[var(--spora-primary)]">
+        <div className="grid grid-cols-3 border-t border-spora-primary pt-2 font-supply-mono text-[10px] md:text-xs text-spora-primary">
           <span>ID: {flora.id}</span>
           <span>GEN: {flora.generation}</span>
           <span>SEED: {flora.seed}</span>

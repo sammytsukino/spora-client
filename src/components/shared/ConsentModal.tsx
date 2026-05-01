@@ -55,13 +55,14 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
       role="dialog"
       aria-modal="false"
       aria-labelledby="consent-title"
+      aria-describedby="consent-description"
     >
       <div className="bg-spora-primary-light border-2 border-spora-primary p-6 shadow-lg relative">
         <button
           type="button"
           onClick={() => dismiss(true)}
           className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-spora-primary hover:bg-[#f0f0f0] font-supply-mono text-sm leading-none"
-          aria-label="Cerrar"
+          aria-label="Close"
         >
           ×
         </button>
@@ -72,7 +73,10 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
         >
           Terms & Conditions
         </h2>
-        <p className="font-supply-mono text-[11px] text-spora-primary mb-4 leading-relaxed">
+        <p
+          id="consent-description"
+          className="font-supply-mono text-[11px] text-spora-primary mb-4 leading-relaxed"
+        >
           By using SPORA you agree to our{" "}
           <Link to={ROUTES.TERMS} className="underline hover:no-underline">
             Terms & Conditions
@@ -80,8 +84,9 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
           . You can dismiss this to continue.
         </p>
 
-        <label className="flex items-start gap-3 cursor-pointer group mb-4">
+        <label htmlFor="consent-terms" className="flex items-start gap-3 cursor-pointer group mb-4">
           <input
+            id="consent-terms"
             type="checkbox"
             checked={terms}
             onChange={(event) => setTerms(event.target.checked)}

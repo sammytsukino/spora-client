@@ -157,7 +157,9 @@ export default function Profile({
     return (
       <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen flex items-center justify-center">
         <TransparentNavbar showScrollBackground />
-        <p className="font-supply-mono text-sm uppercase">Loading profile…</p>
+        <main id="main-content">
+          <p className="font-supply-mono text-sm uppercase">Loading profile…</p>
+        </main>
       </div>
     );
   }
@@ -170,9 +172,9 @@ export default function Profile({
     return (
       <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen">
         <TransparentNavbar showScrollBackground />
-        <section className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
+        <main id="main-content" className="pt-20 pb-6 px-6 md:px-12 lg:px-16">
           <p className="font-supply-mono text-sm text-rose-500 uppercase">{error}</p>
-        </section>
+        </main>
       </div>
     );
   }
@@ -181,7 +183,8 @@ export default function Profile({
     <div className="w-full overflow-x-hidden bg-spora-primary-light">
       <TransparentNavbar showScrollBackground />
 
-      <section className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
+      <main id="main-content" className="pt-20 pb-10 md:pb-12 px-6 md:px-12 lg:px-16">
+        <h1 className="sr-only">My profile</h1>
         <ProfileHeader
           user={effectiveUser}
           followersCount={effectiveSocial.followersCount}
@@ -222,7 +225,7 @@ export default function Profile({
             </div>
           </div>
           <div>
-            <main className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
               {filteredFloras.map((flora) => (
                 <FloraCard
                   key={flora.id}
@@ -236,7 +239,7 @@ export default function Profile({
                   onClick={() => handleCardClick(flora.id)}
                 />
               ))}
-            </main>
+            </div>
           </div>
         </div>
 
@@ -256,7 +259,7 @@ export default function Profile({
             unsigning={unsigning}
           />
         </div>
-      </section>
+      </main>
 
       <FooterAlter />
     </div>

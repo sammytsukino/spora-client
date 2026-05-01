@@ -32,98 +32,100 @@ export default function Home() {
   return (
     <div className="w-full overflow-x-hidden ">
       <Navbar position="fixed" showScrollProgress />
+      <main id="main-content">
+        <h1 className="sr-only">SPORA Home</h1>
+        <Section
+          variant="hero"
+          containerized={false}
+          className="relative overflow-hidden flex flex-col min-h-0 p-0 m-0"
+        >
+          <HeroSection />
+        </Section>
 
-      <Section
-        variant="hero"
-        containerized={false}
-        className="relative overflow-hidden flex flex-col min-h-0 p-0 m-0"
-      >
-        <HeroSection />
-      </Section>
+        <Section
+          variant="flush"
+          containerized={false}
+          className="items-stretch justify-start"
+        >
+          <DeclarativeSection
+            text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique Flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
+          />
+        </Section>
 
-      <Section
-        variant="flush"
-        containerized={false}
-        className="items-stretch justify-start"
-      >
-        <DeclarativeSection
-          text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique Flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
-        />
-      </Section>
+        <Section
+          variant="flush"
+          containerized={false}
+          className="items-stretch"
+        >
+          <MarqueeAlongSvgPath showText={true} items={floraThumbnails} />
+        </Section>
 
-      <Section
-        variant="flush"
-        containerized={false}
-        className="items-stretch"
-      >
-        <MarqueeAlongSvgPath showText={true} items={floraThumbnails} />
-      </Section>
+        <Section
+          variant="large"
+          containerized={false}
+          className="bg-spora-primary items-stretch max-md:h-auto!"
+        >
+          <VideoTextSection />
+        </Section>
 
-      <Section
-        variant="large"
-        containerized={false}
-        className="bg-spora-primary items-stretch max-md:h-auto!"
-      >
-        <VideoTextSection />
-      </Section>
-
-      <Section variant="compact" containerized={false}>
-        <div className="w-full h-full flex flex-col">
-          <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
-            <h2 className="text-xl sm:text-lg md:text-2xl font-supply-mono hover:underline cursor-pointer" onClick={() => navigate(ROUTES.GARDEN)}>
+        <Section variant="compact" containerized={false}>
+          <div className="w-full h-full flex flex-col">
+            <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
+              <h2 className="text-xl sm:text-lg md:text-2xl font-supply-mono">
               Featured Floras →
-            </h2>
-            <MainButton
-              variant="compact"
-              size="sm"
-              type="button"
-              onClick={() => navigate(ROUTES.GARDEN)}
-            >
-              VIEW ALL
-            </MainButton>
-          </div>
+              </h2>
+              <MainButton
+                variant="compact"
+                size="sm"
+                type="button"
+                onClick={() => navigate(ROUTES.GARDEN)}
+              >
+                VIEW ALL
+              </MainButton>
+            </div>
 
-          <div className="flex-1 overflow-hidden">
-            <SimpleMarquee items={floraThumbnails} />
+            <div className="flex-1 overflow-hidden">
+              <SimpleMarquee items={floraThumbnails} />
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
 
-      <Section
-        variant="large"
-        containerized={false}
-        className="items-stretch justify-start"
-      >
-        <QuoteSection
-          quote="Estoy luchando con desesperación
+        <Section
+          variant="large"
+          containerized={false}
+          className="items-stretch justify-start"
+        >
+          <QuoteSection
+            quote="Estoy luchando con desesperación
 contra cosas que no veo,
 cosas que proceden de otro mundo
 donde mi cuerpo parece que es la puerta...
 "
-          author="Fran Barreno"
-          buttonText="CREATE YOUR OWN"
-          onButtonClick={() => navigate(ROUTES.LABORATORY)}
-        />
-      </Section>
+            author="Fran Barreno"
+            buttonText="CREATE YOUR OWN"
+            onButtonClick={() => navigate(ROUTES.LABORATORY)}
+          />
+        </Section>
 
-      <Section
-        variant="compact"
-        containerized={false}
-        className="relative overflow-hidden"
-      >
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          aria-hidden="true"
-        />
-        <div className="relative z-10">
-          <FooterMain />
-        </div>
-      </Section>
+        <Section
+          variant="compact"
+          containerized={false}
+          className="relative overflow-hidden"
+        >
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden="true"
+          />
+          <div className="relative z-10">
+            <FooterMain />
+          </div>
+        </Section>
+      </main>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const LAB_TUTORIAL_KEY = "spora_lab_tutorial_done";
@@ -34,31 +34,84 @@ interface LabTutorialOverlayProps {
 
 export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps) {
   const [step, setStep] = useState(0);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     setLabTutorialDone();
     onClose();
-  };
+  }, [onClose]);
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
+
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusTimeoutId = window.setTimeout(() => {
+      panelRef.current?.focus();
+    }, 0);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        handleFinish();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const panel = panelRef.current;
+      if (!panel) return;
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.clearTimeout(focusTimeoutId);
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+      previousFocusRef.current?.focus();
+    };
+  }, [handleFinish]);
 
   const overlay = (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
       style={{ zIndex: 999_999 }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="lab-tutorial-title"
     >
-      <div className="bg-[var(--spora-primary-light)] border-2 border-[var(--spora-primary)] max-w-lg w-full p-6 shadow-lg">
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lab-tutorial-title"
+        tabIndex={-1}
+        className="bg-spora-primary-light border-2 border-spora-primary max-w-lg w-full p-6 shadow-lg"
+      >
         <h2
           id="lab-tutorial-title"
-          className="font-bizud-mincho-bold text-xl mb-2 text-[var(--spora-primary)]"
+          className="font-bizud-mincho-bold text-xl mb-2 text-spora-primary"
         >
           {current.title}
         </h2>
-        <p className="font-supply-mono text-sm text-[var(--spora-primary)] mb-6 leading-relaxed">
+        <p className="font-supply-mono text-sm text-spora-primary mb-6 leading-relaxed">
           {current.body}
         </p>
 
@@ -69,8 +122,8 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
                 key={stepIndex}
                 className={`block w-2 h-2 rounded-full transition-colors ${
                   stepIndex === step
-                    ? "bg-[var(--spora-primary)]"
-                    : "bg-[var(--spora-primary)]/30"
+                    ? "bg-spora-primary"
+                    : "bg-(--spora-primary)/30"
                 }`}
                 aria-hidden
               />
@@ -80,7 +133,7 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
             <button
               type="button"
               onClick={handleFinish}
-              className="px-3 py-1.5 font-supply-mono text-[11px] uppercase border border-[var(--spora-primary)] text-[var(--spora-primary)] hover:bg-[#f5f5f5] cursor-pointer"
+              className="px-3 py-1.5 font-supply-mono text-[11px] uppercase border border-spora-primary text-spora-primary hover:bg-[#f5f5f5] cursor-pointer"
             >
               Skip
             </button>
@@ -88,7 +141,7 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
               <button
                 type="button"
                 onClick={handleFinish}
-                className="px-4 py-1.5 font-supply-mono text-[11px] uppercase border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] hover:bg-black cursor-pointer"
+                className="px-4 py-1.5 font-supply-mono text-[11px] uppercase border border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black cursor-pointer"
               >
                 Get started
               </button>
@@ -96,7 +149,7 @@ export default function LabTutorialOverlay({ onClose }: LabTutorialOverlayProps)
               <button
                 type="button"
                 onClick={() => setStep((previousStep) => previousStep + 1)}
-                className="px-4 py-1.5 font-supply-mono text-[11px] uppercase border border-[var(--spora-primary)] bg-[var(--spora-primary)] text-[var(--spora-primary-light)] hover:bg-black cursor-pointer"
+                className="px-4 py-1.5 font-supply-mono text-[11px] uppercase border border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-black cursor-pointer"
               >
                 Next
               </button>

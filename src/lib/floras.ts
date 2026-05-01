@@ -24,6 +24,7 @@ export interface ApiFlora {
     isAnonymized?: boolean;
   }>;
   status?: "blossoming" | "sealed" | "hidden";
+  isHidden?: boolean;
   lineage?: {
     generation?: number;
     parentFloraId?: string;

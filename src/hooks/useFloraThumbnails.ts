@@ -47,7 +47,12 @@ export function useFloraThumbnails(limit = 40) {
       .then((floras) => {
         if (cancelled) return;
         const withThumb = floras
-          .filter((f) => f.thumbnailUrl)
+          .filter(
+            (f) =>
+              Boolean(f.thumbnailUrl) &&
+              f.status !== "hidden" &&
+              f.isHidden !== true
+          )
           .map((f) => ({
             url: getOptimizedThumbnailUrl(f.thumbnailUrl),
             id: f.shortId ?? f._id,

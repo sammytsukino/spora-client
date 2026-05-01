@@ -49,7 +49,7 @@ export default function VerifyEmail() {
   return (
     <div className="min-h-screen bg-spora-primary-light flex flex-col">
       <TransparentNavbar showScrollBackground />
-      <main className="flex-1 flex items-center justify-center px-6 pt-24 pb-16">
+      <main id="main-content" className="flex-1 flex items-center justify-center px-6 pt-24 pb-16">
         <div className="max-w-md w-full border border-spora-primary bg-spora-primary-light p-8 text-center">
           {status === "loading" && (
             <p className="font-supply-mono text-sm uppercase tracking-[0.25em] text-spora-primary">
@@ -101,8 +101,13 @@ export default function VerifyEmail() {
                 {errorMessage}
               </p>
               <div className="flex flex-col gap-3 mb-6">
+                <label htmlFor="resend-verification-email" className="sr-only">
+                  Email address
+                </label>
                 <input
+                  id="resend-verification-email"
                   type="email"
+                  autoComplete="email"
                   value={resendEmail}
                   onChange={(e) => setResendEmail(e.target.value)}
                   placeholder="your@email.com"
@@ -134,7 +139,7 @@ export default function VerifyEmail() {
                   {resending ? "Sending…" : "Resend verification email"}
                 </button>
                 {resendMessage && (
-                  <p className="font-supply-mono text-xs text-spora-primary">
+                  <p className="font-supply-mono text-xs text-spora-primary" aria-live="polite">
                     {resendMessage}
                   </p>
                 )}
