@@ -15,6 +15,7 @@
 - [Project Structure](#-project-structure)
 - [Backend Contract (Required)](#-backend-contract-required)
 - [Language Support](#-language-support)
+- [Clean Code Guidelines](#-clean-code-guidelines)
 - [Testing Notes](#-testing-notes)
 - [License](#-license)
 - [Author](#-author)
@@ -220,6 +221,44 @@ Without a reachable backend, the collaborative lifecycle cannot be completed.
 SPORA currently operates with mixed editorial/UI copy and supports usage in:
 ▸ **Español**  
 ▸ **Castellano**
+
+⟡ ═════════════════════════════════════════ ⟡
+
+## ◈ Clean Code Guidelines
+
+These conventions are the expected baseline for `spora-client`:
+
+### 1) Keep responsibilities separated
+▸ `views/` compose page-level layout and route behavior  
+▸ `components/` stay reusable and focused on one UI concern  
+▸ `lib/` owns API access and core client-side business helpers  
+▸ `hooks/` encapsulate reusable state/effects logic
+
+### 2) Accessibility is a default requirement
+▸ Use semantic landmarks/headings (`main`, valid heading order)  
+▸ Keep interactive elements keyboard-usable (`button`/`Link` over clickable `div`)  
+▸ Always provide labels/ARIA/alt text based on content meaning  
+▸ Mark decorative media as hidden from assistive tech when appropriate
+
+### 3) Prefer typed, explicit data contracts
+▸ Keep API interfaces in `lib/*` up to date with backend responses  
+▸ Avoid `any`; use narrow unions for status/role/route-related values  
+▸ Normalize mapping logic near API boundaries, not deep in presentational components
+
+### 4) Avoid duplicated UI logic
+▸ Reuse shared components (`UnderlineField`, `MainButton`, shared cards)  
+▸ Extract repeated class patterns/constants when duplication appears  
+▸ Keep one source of truth for routes (`constants/routes.ts`)
+
+### 5) Keep effects predictable
+▸ Use effects for external sync only (events, network, DOM integration)  
+▸ Prefer derived state/computed values over setState chains when possible  
+▸ Clean up listeners/timers/async flows to prevent stale UI behavior
+
+### 6) Keep docs and behavior aligned
+▸ When routes/endpoints/flows change (auth, contact, admin), update README contract notes  
+▸ Include minimal validation feedback in UI for user-facing forms  
+▸ Verify with `lint`, tests, and build before shipping
 
 ⟡ ═════════════════════════════════════════ ⟡
 
