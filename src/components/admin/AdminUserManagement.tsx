@@ -32,11 +32,11 @@ interface AdminUserManagementProps {
 }
 
 const roleStyles: Record<UserRole, string> = {
-  user: "border-spora-primary bg-spora-primary-light",
-  creator: "border-lime-300 bg-lime-300",
-  cultivator: "border-lime-300 bg-lime-300",
-  moderator: "border-sky-600 bg-sky-100",
-  admin: "border-amber-600 bg-amber-100",
+  user: "bg-spora-primary-light border-none",
+  creator: "bg-lime-300 border-none",
+  cultivator: "bg-lime-200 border-none",
+  moderator: "bg-sky-100 border-none",
+  admin: "bg-amber-100 border-none",
 };
 
 const statusStyles: Record<UserStatus, string> = {

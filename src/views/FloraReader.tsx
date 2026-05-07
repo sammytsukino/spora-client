@@ -6,7 +6,7 @@ import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
-import { AudioLines, Camera, Shuffle, Volume2 } from "lucide-react";
+import { AudioLines, Camera, Layers, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
@@ -67,6 +67,7 @@ export default function FloraReader() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [windStrength, setWindStrength] = useState(0.5);
+  const [vellumOn, setVellumOn] = useState(false);
   const [, setInstallationReady] = useState(false);
   const [minLoadTimeElapsed, setMinLoadTimeElapsed] = useState(false);
   const installationRef = useRef<HTMLIFrameElement>(null);
@@ -449,6 +450,23 @@ export default function FloraReader() {
         />
       </div>
 
+      {vellumOn ? (
+        <>
+          <div
+            className={`flora-reader-vellum z-5 ${
+              isLightBg ? "flora-reader-vellum--paper" : "flora-reader-vellum--ink"
+            }`}
+            style={{ opacity: canReveal ? 1 : 0 }}
+            aria-hidden
+          />
+          <div
+            className="flora-reader-grain z-6"
+            style={{ opacity: canReveal ? 0.32 : 0 }}
+            aria-hidden
+          />
+        </>
+      ) : null}
+
       <div
         className={`fixed inset-0 z-[10050] flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
           canReveal ? "opacity-0 pointer-events-none" : ""
@@ -505,7 +523,7 @@ export default function FloraReader() {
               </header>
 
               <div
-                className="flora-reader-scroll font-bizud-mincho text-[15px] sm:text-base leading-relaxed tracking-wide whitespace-pre-wrap flex-1 min-h-0 pr-2"
+                className="flora-reader-scroll font-bizud-mincho-bold text-[15px] sm:text-base leading-relaxed tracking-wide whitespace-pre-wrap flex-1 min-h-0 pr-2"
                 style={textShadowStyle}
               >
                 {text || (
@@ -742,6 +760,15 @@ export default function FloraReader() {
             >
               <AudioLines className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
               <span>{ambiencePlaying ? "Pause ambience" : "Ambience"}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setVellumOn((v) => !v)}
+              className="flex w-full cursor-pointer items-center justify-start gap-2 border-0 bg-transparent px-0 py-1 text-left shadow-none transition-opacity hover:underline"
+              aria-pressed={vellumOn}
+            >
+              <Layers className="h-4 w-4 shrink-0" size={16} strokeWidth={2} aria-hidden />
+              <span>{vellumOn ? "Vellum: on" : "Vellum: off"}</span>
             </button>
           </div>
 
