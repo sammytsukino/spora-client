@@ -1,34 +1,43 @@
 import { describe, it, expect } from "vitest"
 import { validatePasswordClient, PASSWORD_MIN_LENGTH } from "./passwordPolicy"
+import {
+  STRONG_FIXTURE,
+  TOO_SHORT_FIXTURE,
+  NO_UPPER_FIXTURE,
+  NO_LOWER_FIXTURE,
+  NO_DIGIT_FIXTURE,
+  NO_SPECIAL_FIXTURE,
+  WHITESPACE_FIXTURE,
+} from "@/test-utils/passwordFixtures"
 
 describe("validatePasswordClient", () => {
   it("accepts a password that satisfies every rule", () => {
-    expect(validatePasswordClient("Sp0ra!Garden2026")).toBeNull()
+    expect(validatePasswordClient(STRONG_FIXTURE)).toBeNull()
   })
 
   it("rejects passwords shorter than the minimum", () => {
-    expect(validatePasswordClient("Aa1!")).toMatch(
+    expect(validatePasswordClient(TOO_SHORT_FIXTURE)).toMatch(
       new RegExp(`at least ${PASSWORD_MIN_LENGTH}`)
     )
   })
 
   it("rejects passwords without an uppercase letter", () => {
-    expect(validatePasswordClient("sp0ra!garden2026")).toMatch(/uppercase/i)
+    expect(validatePasswordClient(NO_UPPER_FIXTURE)).toMatch(/uppercase/i)
   })
 
   it("rejects passwords without a lowercase letter", () => {
-    expect(validatePasswordClient("SP0RA!GARDEN2026")).toMatch(/lowercase/i)
+    expect(validatePasswordClient(NO_LOWER_FIXTURE)).toMatch(/lowercase/i)
   })
 
   it("rejects passwords without a number", () => {
-    expect(validatePasswordClient("Spora!Garden")).toMatch(/number/i)
+    expect(validatePasswordClient(NO_DIGIT_FIXTURE)).toMatch(/number/i)
   })
 
   it("rejects passwords without a special character", () => {
-    expect(validatePasswordClient("Sp0raGarden2026")).toMatch(/special/i)
+    expect(validatePasswordClient(NO_SPECIAL_FIXTURE)).toMatch(/special/i)
   })
 
   it("rejects passwords with whitespace", () => {
-    expect(validatePasswordClient("Sp0ra! Garden")).toMatch(/spaces/i)
+    expect(validatePasswordClient(WHITESPACE_FIXTURE)).toMatch(/spaces/i)
   })
 })

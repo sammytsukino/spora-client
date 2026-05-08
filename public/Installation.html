@@ -1158,13 +1158,13 @@
                 <span class="publish-tooltip-wrap">
                     <button id="btnPublishBlossoming" class="btn-primary" onclick="submitFlora('blossoming')">PUBLISH
                         BLOSSOMING</button>
-                    <span class="publish-tooltip" role="tooltip">Blossoming — Your Flora stays open for editing and can
+                    <span class="publish-tooltip" role="tooltip">Blossoming - Your Flora stays open for editing and can
                         receive cuttings from other cultivators.</span>
                 </span>
                 <span class="publish-tooltip-wrap">
                     <button id="btnPublishSealed" class="btn-primary" onclick="submitFlora('sealed')">PUBLISH
                         SEALED</button>
-                    <span class="publish-tooltip" role="tooltip">Sealed — Your Flora is finalized and immutable. No more
+                    <span class="publish-tooltip" role="tooltip">Sealed - Your Flora is finalized and immutable. No more
                         edits, no more cuttings.</span>
                 </span>
             </div>
@@ -2872,7 +2872,7 @@
                 banner.innerHTML = "<strong>Title required.</strong> Add a name in <strong>ARTWORK_TITLE</strong> at the top of this sidebar, then publish again.";
                 banner.classList.add("visible");
             }
-            if (statusEl) statusEl.innerText = "BLOCKED — ADD ARTWORK TITLE (SEE HIGHLIGHT ABOVE)";
+            if (statusEl) statusEl.innerText = "BLOCKED - ADD ARTWORK TITLE (SEE HIGHLIGHT ABOVE)";
             if (box) box.classList.add("title-field-error");
             const sec = document.getElementById("titleSection");
             if (sec) sec.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -3028,7 +3028,7 @@
 
             let token = await ensureValidToken(apiBase);
             if (!token) {
-                s.innerText = "SESSION EXPIRED — PLEASE LOG IN AGAIN";
+                s.innerText = "SESSION EXPIRED - PLEASE LOG IN AGAIN";
                 return;
             }
 
@@ -3164,14 +3164,14 @@
                     return;
                 }
                 if (previewData.contentScreening && previewData.contentScreening.flagged) {
-                    s.innerText = "NOT PUBLISHED — CONFIRM OR EDIT";
+                    s.innerText = "NOT PUBLISHED - CONFIRM OR EDIT";
                     openScreeningAdvisoryModal({
                         onContinue: function () {
                             s.innerText = "SAVING...";
                             performFloraPost(payload, token, apiBase, status, s);
                         },
                         onClose: function () {
-                            s.innerText = "NOT PUBLISHED — EDIT AND TRY AGAIN";
+                            s.innerText = "NOT PUBLISHED - EDIT AND TRY AGAIN";
                         },
                     });
                     return;
@@ -3392,7 +3392,7 @@
                     swatch.appendChild(s);
                 });
                 const lbl = document.createElement("div");
-                lbl.innerHTML = `<strong>${escapeHTML(key.toUpperCase())}</strong> — ${escapeHTML(ex.desc)}<br><span style="opacity:0.8">${escapeHTML(ex.text.slice(0, 45))}…</span>`;
+                lbl.innerHTML = `<strong>${escapeHTML(key.toUpperCase())}</strong> - ${escapeHTML(ex.desc)}<br><span style="opacity:0.8">${escapeHTML(ex.text.slice(0, 45))}…</span>`;
                 row.appendChild(swatch);
                 row.appendChild(lbl);
                 row.onclick = () => {

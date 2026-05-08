@@ -14,7 +14,7 @@ interface AdminFlorasManagementProps {
 }
 
 function formatDate(isoDate?: string) {
-  if (!isoDate) return "—";
+  if (!isoDate) return "-";
   try {
     return new Date(isoDate).toLocaleDateString(undefined, {
       year: "numeric",
@@ -24,7 +24,7 @@ function formatDate(isoDate?: string) {
       minute: "2-digit",
     });
   } catch {
-    return "—";
+    return "-";
   }
 }
 
@@ -209,7 +209,7 @@ export default function AdminFlorasManagement({
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-overline-xs text-[#888] font-supply-mono">
-                      —
+                      -
                     </div>
                   )}
                 </div>
@@ -217,14 +217,14 @@ export default function AdminFlorasManagement({
                   <span className="font-bold truncate max-w-[200px]" title={flora.title}>
                     {flora.title}
                   </span>
-                  <span className="uppercase opacity-80">{flora.status ?? "—"}</span>
+                  <span className="uppercase opacity-80">{flora.status ?? "-"}</span>
                   {flora.isHidden && (
                     <span className="px-2 py-0.5 border border-amber-600 bg-amber-100 text-amber-700 uppercase text-overline-xs">
                       Hidden
                     </span>
                   )}
                   <span className="opacity-70 truncate max-w-[120px]" title={flora.authorUsername}>
-                    {flora.authorUsername ?? "@—"}
+                    {flora.authorUsername ?? "@-"}
                   </span>
                 </div>
                 <span className="opacity-70 text-overline-xs shrink-0 ml-auto">

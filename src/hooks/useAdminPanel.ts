@@ -122,7 +122,7 @@ function mapApiFlagged(f: {
     id: f._id,
     contentType: "flora",
     contentId: f._id,
-    contentPreview: `${f.title} — excerpt: "${(f.text || "").slice(0, 80)}..."`,
+    contentPreview: `${f.title} - excerpt: "${(f.text || "").slice(0, 80)}..."`,
     reason: `${f.reportCount} report(s) pending`,
     reportedBy: "@Community",
     status: "pending",

@@ -150,7 +150,7 @@ export function exportReportToPdf(report: AdminReport): void {
 
   y += 2;
   y = drawSectionLabel(doc, y, "Target");
-  y = drawKeyValue(doc, y, "", `${report.targetType ?? ""} — ${report.targetId ?? ""}`);
+  y = drawKeyValue(doc, y, "", `${report.targetType ?? ""} - ${report.targetId ?? ""}`);
 
   if (report.reason) {
     y += 4;

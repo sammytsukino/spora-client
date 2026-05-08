@@ -26,6 +26,10 @@ import {
   fetchMe,
 } from "./auth"
 import type { AuthResponse, AuthUser } from "./auth"
+import {
+  STRONG_FIXTURE,
+  SIMPLE_LOGIN_FIXTURE,
+} from "@/test-utils/passwordFixtures"
 
 const sampleUser: AuthUser = {
   id: "u1",
@@ -93,10 +97,10 @@ describe("auth API wrappers", () => {
     }
     post.mockResolvedValueOnce({ data })
 
-    const out = await signIn("grower", "secret")
+    const out = await signIn("grower", SIMPLE_LOGIN_FIXTURE)
     expect(post).toHaveBeenCalledWith("/auth/signin", {
       username: "grower",
-      password: "secret",
+      password: SIMPLE_LOGIN_FIXTURE,
     })
     expect(out).toEqual(data)
     expect(getStoredToken()).toBe("tok")
@@ -110,13 +114,13 @@ describe("auth API wrappers", () => {
       username: "a",
       displayName: "A",
       email: "a@a.com",
-      password: "Sp0ra!Garden2026",
+      password: STRONG_FIXTURE,
     })
     expect(post).toHaveBeenCalledWith("/auth/signup", {
       username: "a",
       displayName: "A",
       email: "a@a.com",
-      password: "Sp0ra!Garden2026",
+      password: STRONG_FIXTURE,
     })
     expect(getStoredToken()).toBe("t")
   })

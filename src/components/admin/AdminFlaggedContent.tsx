@@ -251,7 +251,7 @@ export default function AdminFlaggedContent({
                 <span className="opacity-80">
                   Reported by: <strong>{item.reportedBy}</strong>
                 </span>
-                <span className="mx-2 opacity-50">—</span>
+                <span className="mx-2 opacity-50">-</span>
                 <span className="opacity-80 font-medium">{item.reason}</span>
               </div>
               {item.contentPreview && (

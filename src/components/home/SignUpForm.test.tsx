@@ -15,9 +15,13 @@ vi.mock("@/lib/auth", async () => {
 
 import SignUpForm from "./SignUpForm"
 import { ROUTES } from "@/constants/routes"
-
-const STRONG_PW = "Sp0ra!Garden2026"
-const STRONG_PW_OTHER = "Sp0ra!Forest2026"
+import {
+  STRONG_FIXTURE,
+  STRONG_FIXTURE_ALT,
+  TOO_SHORT_FIXTURE,
+  NO_UPPER_FIXTURE,
+  NO_SPECIAL_FIXTURE,
+} from "@/test-utils/passwordFixtures"
 
 function renderSignUp() {
   return render(
@@ -33,7 +37,7 @@ function renderSignUp() {
 
 async function fillValidFields(
   user: ReturnType<typeof userEvent.setup>,
-  password = STRONG_PW
+  password = STRONG_FIXTURE
 ) {
   await user.type(screen.getByLabelText(/^username/i), "user1")
   await user.type(screen.getByLabelText(/^name/i), "N")
@@ -54,8 +58,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "ab")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), STRONG_PW)
-    await user.type(screen.getByLabelText(/confirm password/i), STRONG_PW)
+    await user.type(screen.getByLabelText(/^password$/i), STRONG_FIXTURE)
+    await user.type(screen.getByLabelText(/confirm password/i), STRONG_FIXTURE)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(
@@ -71,8 +75,11 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "user1")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), STRONG_PW)
-    await user.type(screen.getByLabelText(/confirm password/i), STRONG_PW_OTHER)
+    await user.type(screen.getByLabelText(/^password$/i), STRONG_FIXTURE)
+    await user.type(
+      screen.getByLabelText(/confirm password/i),
+      STRONG_FIXTURE_ALT
+    )
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument()
@@ -83,7 +90,7 @@ describe("SignUpForm", () => {
     const user = userEvent.setup()
     renderSignUp()
 
-    await fillValidFields(user, "Sp0raGarden2026")
+    await fillValidFields(user, NO_SPECIAL_FIXTURE)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(screen.getByRole("alert").textContent).toMatch(/special character/i)
@@ -94,7 +101,7 @@ describe("SignUpForm", () => {
     const user = userEvent.setup()
     renderSignUp()
 
-    await fillValidFields(user, "Sp0!ra")
+    await fillValidFields(user, TOO_SHORT_FIXTURE)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(
@@ -107,7 +114,7 @@ describe("SignUpForm", () => {
     const user = userEvent.setup()
     renderSignUp()
 
-    await fillValidFields(user, "sp0ra!garden2026")
+    await fillValidFields(user, NO_UPPER_FIXTURE)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(screen.getByText(/uppercase/i)).toBeInTheDocument()
@@ -129,7 +136,7 @@ describe("SignUpForm", () => {
       username: "user1",
       displayName: "N",
       email: "n@e.com",
-      password: STRONG_PW,
+      password: STRONG_FIXTURE,
     })
     expect(await screen.findByText("Laboratory")).toBeInTheDocument()
   })
@@ -141,8 +148,8 @@ describe("SignUpForm", () => {
     await user.type(screen.getByLabelText(/^username/i), "bad*name")
     await user.type(screen.getByLabelText(/^name/i), "N")
     await user.type(screen.getByLabelText(/^email/i), "n@e.com")
-    await user.type(screen.getByLabelText(/^password$/i), STRONG_PW)
-    await user.type(screen.getByLabelText(/confirm password/i), STRONG_PW)
+    await user.type(screen.getByLabelText(/^password$/i), STRONG_FIXTURE)
+    await user.type(screen.getByLabelText(/confirm password/i), STRONG_FIXTURE)
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(
