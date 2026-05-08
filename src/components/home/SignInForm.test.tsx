@@ -22,7 +22,6 @@ function renderSignIn(initialPath = "/signin", state?: object) {
       <Routes>
         <Route path={ROUTES.SIGN_IN} element={<SignInForm />} />
         <Route path={ROUTES.GARDEN} element={<p>Garden</p>} />
-        <Route path={ROUTES.VERIFY_EMAIL} element={<p>Verify</p>} />
         <Route path={ROUTES.PROFILE} element={<p>Profile page</p>} />
       </Routes>
     </MemoryRouter>
@@ -46,40 +45,6 @@ describe("SignInForm", () => {
 
     expect(signIn).toHaveBeenCalledWith("u1", "password1")
     expect(await screen.findByText("Garden")).toBeInTheDocument()
-  })
-
-  it("navigates to verify email from inline link", async () => {
-    const user = userEvent.setup()
-    signIn.mockRejectedValue({
-      response: { data: { code: "EMAIL_NOT_VERIFIED" } },
-    })
-    renderSignIn()
-
-    await user.type(screen.getByLabelText(/username/i), "u")
-    await user.type(screen.getByLabelText(/^password$/i), "p")
-    await user.click(screen.getByRole("button", { name: /login/i }))
-    await user.click(
-      await screen.findByRole("button", {
-        name: /request new verification link/i,
-      })
-    )
-    expect(await screen.findByText("Verify")).toBeInTheDocument()
-  })
-
-  it("shows email verification message when API returns code", async () => {
-    const user = userEvent.setup()
-    signIn.mockRejectedValue({
-      response: { data: { code: "EMAIL_NOT_VERIFIED" } },
-    })
-    renderSignIn()
-
-    await user.type(screen.getByLabelText(/username/i), "u")
-    await user.type(screen.getByLabelText(/^password$/i), "p")
-    await user.click(screen.getByRole("button", { name: /login/i }))
-
-    expect(
-      await screen.findByText(/verify your email/i)
-    ).toBeInTheDocument()
   })
 
   it("navigates to prior route from location state when safe", async () => {
@@ -126,11 +91,9 @@ describe("SignInForm", () => {
 
   it("shows post-signup message from location state", async () => {
     renderSignIn(ROUTES.SIGN_IN, {
-      message: "Welcome back — verify complete.",
+      message: "Welcome back.",
     })
-    expect(
-      screen.getByText("Welcome back — verify complete.")
-    ).toBeInTheDocument()
+    expect(screen.getByText("Welcome back.")).toBeInTheDocument()
   })
 
   it("disables submit while submitting", async () => {

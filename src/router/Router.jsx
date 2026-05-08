@@ -12,7 +12,6 @@ import TermsConditions from "../views/TermsConditions";
 import Contact from "../views/Contact";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
-import VerifyEmail from "../views/VerifyEmail";
 import Profile from "../views/Profile";
 import PublicProfile from "../views/PublicProfile";
 import ProfileFollowers from "../views/ProfileFollowers";
@@ -43,7 +42,6 @@ function getRouteTitle(pathname) {
   if (pathname === ROUTES.CONTACT) return "SPORA - Contact";
   if (pathname === ROUTES.SIGN_IN) return "SPORA - Sign In";
   if (pathname === ROUTES.SIGN_UP) return "SPORA - Sign Up";
-  if (pathname === ROUTES.VERIFY_EMAIL) return "SPORA - Verify Email";
   if (pathname === ROUTES.PROFILE) return "SPORA - My Profile";
   if (pathname.startsWith(`${ROUTES.PROFILE}/`) && pathname.endsWith("/followers")) {
     return "SPORA - Followers";
@@ -107,7 +105,6 @@ function RouterContent() {
         <Route path={ROUTES.CONTACT} element={<Contact />} />
         <Route path={ROUTES.SIGN_IN} element={<GuestRoute><SignIn /></GuestRoute>} />
         <Route path={ROUTES.SIGN_UP} element={<GuestRoute><SignUp /></GuestRoute>} />
-        <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmail />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={`${ROUTES.PROFILE}/:username/followers`} element={<ProfileFollowers />} />
         <Route path={`${ROUTES.PROFILE}/:username/following`} element={<ProfileFollowing />} />

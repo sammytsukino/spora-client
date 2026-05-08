@@ -23,9 +23,7 @@ import {
   signIn,
   signUp,
   refreshAccessToken,
-  verifyEmail,
   fetchMe,
-  resendVerificationEmail,
 } from "./auth"
 import type { AuthResponse, AuthUser } from "./auth"
 
@@ -104,7 +102,7 @@ describe("auth API wrappers", () => {
     expect(getStoredToken()).toBe("tok")
   })
 
-  it("signUp saves session when token and user returned", async () => {
+  it("signUp posts payload and saves session when token returned", async () => {
     post.mockResolvedValueOnce({
       data: { token: "t", user: sampleUser },
     })
@@ -112,7 +110,13 @@ describe("auth API wrappers", () => {
       username: "a",
       displayName: "A",
       email: "a@a.com",
-      password: "password12",
+      password: "Sp0ra!Garden2026",
+    })
+    expect(post).toHaveBeenCalledWith("/auth/signup", {
+      username: "a",
+      displayName: "A",
+      email: "a@a.com",
+      password: "Sp0ra!Garden2026",
     })
     expect(getStoredToken()).toBe("t")
   })
@@ -132,31 +136,10 @@ describe("auth API wrappers", () => {
     expect(out).toBeNull()
   })
 
-  it("verifyEmail posts token and saves session", async () => {
-    const data: AuthResponse = {
-      token: "t",
-      user: sampleUser,
-    }
-    post.mockResolvedValueOnce({ data })
-    const out = await verifyEmail("  tok  ")
-    expect(post).toHaveBeenCalledWith("/auth/verify-email", { token: "tok" })
-    expect(out.token).toBe("t")
-    expect(getStoredToken()).toBe("t")
-  })
-
   it("fetchMe GET /auth/me", async () => {
     get.mockResolvedValueOnce({ data: sampleUser })
     const me = await fetchMe()
     expect(get).toHaveBeenCalledWith("/auth/me")
     expect(me).toEqual(sampleUser)
-  })
-
-  it("resendVerificationEmail posts email", async () => {
-    post.mockResolvedValueOnce({ data: { message: "sent" } })
-    const r = await resendVerificationEmail("a@b.com")
-    expect(post).toHaveBeenCalledWith("/auth/resend-verification", {
-      email: "a@b.com",
-    })
-    expect(r.message).toBe("sent")
   })
 })

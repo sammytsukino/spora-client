@@ -4,13 +4,16 @@ import MainButton from "@/components/ui/MainButton"
 import UnderlineField from "@/components/ui/UnderlineField"
 import { signUp } from "@/lib/auth"
 import { ROUTES } from "@/constants/routes"
+import {
+  PASSWORD_HINT,
+  validatePasswordClient,
+} from "@/lib/passwordPolicy"
 
 const AUTH_CONTAINER_CLASS =
   "w-full max-w-[1000px] px-6 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 bg-spora-primary-light border border-spora-primary"
 const AUTH_LAYOUT_CLASS = "flex flex-col sm:flex-row sm:items-start gap-8 sm:gap-12 md:gap-16"
 const FORM_ERROR_CLASS = "mb-6 text-sm text-rose-600 font-supply-mono"
 const MIN_USERNAME_LENGTH = 3
-const MIN_PASSWORD_LENGTH = 8
 const USERNAME_ALLOWED_PATTERN = /^[a-zA-Z0-9_]+$/
 
 export default function SignUpForm() {
@@ -37,8 +40,9 @@ export default function SignUpForm() {
       return
     }
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setError("Password must be at least 8 characters.")
+    const passwordError = validatePasswordClient(password)
+    if (passwordError) {
+      setError(passwordError)
       return
     }
 
@@ -55,20 +59,14 @@ export default function SignUpForm() {
         email,
         password,
       })
-      if (result.emailSent) {
-        navigate(ROUTES.SIGN_IN, {
-          state: {
-            message:
-              "Check your email and click the verification link to activate your account.",
-          },
-        })
-      } else if (result.token && result.user) {
-        navigate(ROUTES.GARDEN)
+      if (result.token && result.user) {
+        navigate(ROUTES.LABORATORY)
       } else {
         navigate(ROUTES.SIGN_IN)
       }
-    } catch {
-      setError("Could not create account. Try again.")
+    } catch (err: unknown) {
+      const res = err as { response?: { data?: { error?: string } } }
+      setError(res?.response?.data?.error || "Could not create account. Try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -136,7 +134,7 @@ export default function SignUpForm() {
                     value={password}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    hint="Minimum 8 characters."
+                    hint={PASSWORD_HINT}
                     hintVisibleOnFocus
                     required
                   />

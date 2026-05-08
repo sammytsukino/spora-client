@@ -83,7 +83,6 @@ export async function signIn(username: string, password: string) {
 
 export interface SignUpResponse {
   message?: string;
-  emailSent?: boolean;
   token?: string;
   refreshToken?: string;
   user?: AuthUser;
@@ -103,24 +102,6 @@ export async function signUp(payload: {
       user: data.user,
     });
   }
-  return data;
-}
-
-export async function verifyEmail(token: string): Promise<AuthResponse> {
-  const { data } = await api.post<AuthResponse>("/auth/verify-email", {
-    token: token.trim(),
-  });
-  saveSession(data);
-  return data;
-}
-
-export async function resendVerificationEmail(
-  email: string
-): Promise<{ message: string }> {
-  const { data } = await api.post<{ message: string }>(
-    "/auth/resend-verification",
-    { email }
-  );
   return data;
 }
 

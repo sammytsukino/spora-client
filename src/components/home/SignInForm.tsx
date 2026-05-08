@@ -44,12 +44,8 @@ export default function SignInForm() {
       const avoidLoop = !fromPath || DISALLOWED_REDIRECT_ROUTES.has(fromPath)
       navigate(avoidLoop ? ROUTES.GARDEN : fromPath, { replace: true })
     } catch (err: unknown) {
-      const res = err as { response?: { data?: { code?: string; error?: string } } }
-      if (res?.response?.data?.code === "EMAIL_NOT_VERIFIED") {
-        setError("Please verify your email before signing in.")
-      } else {
-        setError(res?.response?.data?.error || "Invalid credentials or server error.")
-      }
+      const res = err as { response?: { data?: { error?: string } } }
+      setError(res?.response?.data?.error || "Invalid credentials or server error.")
     } finally {
       setIsSubmitting(false)
     }
@@ -76,18 +72,9 @@ export default function SignInForm() {
               </p>
             ) : null}
             {error ? (
-              <div className={ERROR_MESSAGE_CLASS} role="alert">
-                <p>{error}</p>
-                {error.includes("verify your email") && (
-                  <button
-                    type="button"
-                    onClick={() => navigate(ROUTES.VERIFY_EMAIL)}
-                    className="mt-2 underline hover:no-underline"
-                  >
-                    Request new verification link
-                  </button>
-                )}
-              </div>
+              <p className={ERROR_MESSAGE_CLASS} role="alert">
+                {error}
+              </p>
             ) : null}
 
             <div className="flex flex-col gap-6 sm:gap-8">
