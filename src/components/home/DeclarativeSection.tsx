@@ -63,7 +63,7 @@ export default function DeclarativeSection({
               : 'px-6 sm:px-10 lg:px-20 pt-20 sm:pt-14 lg:pt-18 pb-12 sm:pb-14 lg:pb-20'
           }
         >
-          <p className="font-bizud-mincho text-stone-200 w-full max-w-full text-[clamp(2rem,1.1rem+3.9vw,11rem)] leading-[0.95] tracking-tight">
+          <p className="font-bizud-mincho text-stone-200 w-full max-w-full text-[clamp(3rem,1.1rem+3.9vw,11rem)] leading-[0.95] tracking-tighter">
             {text}
           </p>
           {imageSrc ? (

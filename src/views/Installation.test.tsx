@@ -1,12 +1,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import { render, screen } from "@testing-library/react"
+import { act, render, screen } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
+import { SPORA_IFRAME_LOADER_MIN_MS } from "@/components/shared/SporaImageLoader"
 
 const tutorial = vi.hoisted(() => ({ done: true }))
 
+vi.mock("@/lib/labTutorialStorage", () => ({
+  getLabTutorialDone: () => tutorial.done,
+  setLabTutorialDone: vi.fn(),
+}))
+
 vi.mock("@/components/laboratory/LabTutorialOverlay", () => ({
   default: () => <div data-testid="lab-tutorial">tutorial</div>,
-  getLabTutorialDone: () => tutorial.done,
 }))
 
 import Installation from "./Installation"
@@ -47,6 +52,9 @@ describe("Installation", () => {
         </Routes>
       </MemoryRouter>
     )
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SPORA_IFRAME_LOADER_MIN_MS)
+    })
     expect(await screen.findByTestId("lab-tutorial")).toBeInTheDocument()
   })
 

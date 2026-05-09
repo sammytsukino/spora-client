@@ -1,33 +1,33 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import '../index.css'
-import { ROUTES } from '@/constants/routes'
-import { useFloraThumbnails } from '@/hooks/useFloraThumbnails'
-import MarqueeAlongSvgPath from '../components/home/MarqueeAlongSvgPath'
-import VideoTextSection from '../components/home/VideoTextSection'
-import SimpleMarquee from '../components/home/SimpleMarquee'
-import MainButton from '../components/ui/MainButton'
-import FooterMain from '../components/layout/FooterMain'
-import Section from '@/components/layout/Section'
-import Navbar from '@/components/layout/Navbar'
-import HeroSection from '@/components/home/HeroSection'
-import DeclarativeSection from '@/components/home/DeclarativeSection'
-import QuoteSection from '@/components/home/QuoteSection'
+import "../index.css";
+import { ROUTES } from "@/constants/routes";
+import { useFloraThumbnails } from "@/hooks/useFloraThumbnails";
+import MarqueeAlongSvgPath from "../components/home/MarqueeAlongSvgPath";
+import VideoTextSection from "../components/home/VideoTextSection";
+import SimpleMarquee from "../components/home/SimpleMarquee";
+import MainButton from "../components/ui/MainButton";
+import FooterMain from "../components/layout/FooterMain";
+import Section from "@/components/layout/Section";
+import Navbar from "@/components/layout/Navbar";
+import HeroSection from "@/components/home/HeroSection";
+import DeclarativeSection from "@/components/home/DeclarativeSection";
+import QuoteSection from "@/components/home/QuoteSection";
 
 export default function Home() {
-  const navigate = useNavigate()
-  const { items: floraThumbnails } = useFloraThumbnails(50)
+  const navigate = useNavigate();
+  const { items: floraThumbnails } = useFloraThumbnails(50);
 
   useEffect(() => {
-    document.body.classList.add('hide-scrollbar')
-    document.documentElement.classList.add('hide-scrollbar')
+    document.body.classList.add("hide-scrollbar");
+    document.documentElement.classList.add("hide-scrollbar");
 
     return () => {
-      document.body.classList.remove('hide-scrollbar')
-      document.documentElement.classList.remove('hide-scrollbar')
-    }
-  }, [])
+      document.body.classList.remove("hide-scrollbar");
+      document.documentElement.classList.remove("hide-scrollbar");
+    };
+  }, []);
 
   return (
     <div className="w-full overflow-x-hidden ">
@@ -47,9 +47,7 @@ export default function Home() {
           containerized={false}
           className="items-stretch justify-start"
         >
-          <DeclarativeSection
-            text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique Flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil."
-          />
+          <DeclarativeSection text="SPORA is a collaborative platform where words becomes generative art. Each piece forms a unique Flora whose shape is defined by its sentiment, rhythm, and structural patterns, and can grow new derivative branches while preserving its core identity through a shared soil." />
         </Section>
 
         <Section
@@ -72,7 +70,7 @@ export default function Home() {
           <div className="w-full h-full flex flex-col">
             <div className="flex justify-between items-center px-6 md:px-12 lg:px-16 py-4 mt-8">
               <h2 className="text-xl sm:text-lg md:text-2xl font-supply-mono">
-              Featured Floras →
+                Featured Floras →
               </h2>
               <MainButton
                 variant="compact"
@@ -96,11 +94,7 @@ export default function Home() {
           className="items-stretch justify-start"
         >
           <QuoteSection
-            quote="Estoy luchando con desesperación
-contra cosas que no veo,
-cosas que proceden de otro mundo
-donde mi cuerpo parece que es la puerta...
-"
+            quote="I am fighting in desperation against things I cannot see—things that come from another world, where my body seems to be the doorway..."
             author="Fran Barreno"
             buttonText="CREATE YOUR OWN"
             onButtonClick={() => navigate(ROUTES.LABORATORY)}
@@ -127,5 +121,5 @@ donde mi cuerpo parece que es la puerta...
         </Section>
       </main>
     </div>
-  )
+  );
 }

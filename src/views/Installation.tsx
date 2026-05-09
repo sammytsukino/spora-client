@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { useRef, useEffect, useState } from "react";
-import LabTutorialOverlay, { getLabTutorialDone } from "@/components/laboratory/LabTutorialOverlay";
+import { useRef, useEffect, useState, useCallback } from "react";
+import LabTutorialOverlay from "@/components/laboratory/LabTutorialOverlay";
+import { getLabTutorialDone } from "@/lib/labTutorialStorage";
 import { API_BASE_URL } from "@/lib/api";
 import SporaImageLoader, {
   SPORA_IFRAME_LOADER_MIN_MS,
@@ -15,6 +16,9 @@ export default function Installation({ fullLab = false }: InstallationProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [canReveal, setCanReveal] = useState(false);
   const [showTutorial, setShowTutorial] = useState(() => !getLabTutorialDone());
+  const dismissTutorial = useCallback(() => {
+    setShowTutorial(false);
+  }, []);
   const params = new URLSearchParams(location.search || "");
   const floraId = params.get("floraId");
   const search = new URLSearchParams(location.search || "");
@@ -48,8 +52,8 @@ export default function Installation({ fullLab = false }: InstallationProps) {
 
   return (
     <>
-      {showTutorial && (
-        <LabTutorialOverlay onClose={() => setShowTutorial(false)} />
+      {showTutorial && canReveal && (
+        <LabTutorialOverlay onClose={dismissTutorial} />
       )}
       <div
         style={{
@@ -57,8 +61,8 @@ export default function Installation({ fullLab = false }: InstallationProps) {
           transition: "opacity 300ms",
           position: "fixed",
           inset: 0,
-          zIndex: showTutorial ? 9998 : 9999,
-          pointerEvents: showTutorial ? "none" : "auto",
+          zIndex: showTutorial && canReveal ? 9998 : 9999,
+          pointerEvents: showTutorial && canReveal ? "none" : "auto",
         }}
       >
         <iframe
