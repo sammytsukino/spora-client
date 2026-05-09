@@ -60,17 +60,19 @@ export default function LabTutorialOverlay({
       {
         title: "Publishing: Blossoming vs Sealed",
         content: (
-          <div className="space-y-10 pb-1">
-            <p className={STEP_PROSE}>
-              Under{" "}
-              <span className="font-semibold uppercase tracking-wide">
-                SYSTEM_EXPORT
-              </span>{" "}
-              you choose how your Flora ships. Hover each publish icon in the
-              Lab whenever you want a fast reminder.
-            </p>
-
-            <section className="space-y-5">
+          <div className="space-y-10 pb-4">
+            <section className="space-y-6">
+              <p className={STEP_PROSE}>
+                Under{" "}
+                <span className="font-semibold uppercase tracking-wide">
+                  SYSTEM_EXPORT
+                </span>{" "}
+                you choose how your Flora ships. Hover each publish icon in the
+                Lab whenever you want a fast reminder.
+              </p>
+            </section>
+      
+            <section className="space-y-6">
               <h3 className="m-0 font-bizud-mincho-bold text-lg leading-snug text-spora-primary">
                 Blossoming · open lineage
               </h3>
@@ -85,8 +87,8 @@ export default function LabTutorialOverlay({
                 identity does not. Cuttings stay on.
               </p>
             </section>
-
-            <section className="space-y-5 border-t border-spora-primary/20 pt-10">
+      
+            <section className="space-y-6 border-t border-spora-primary/20 pt-14">
               <h3 className="m-0 font-bizud-mincho-bold text-lg leading-snug text-spora-primary">
                 Sealed · final specimen
               </h3>
