@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import FooterAlter from "@/components/layout/FooterAlter";
 import SignUpForm from "@/components/home/SignUpForm";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
@@ -7,6 +8,13 @@ const FORM_BACKGROUND_VIDEO_URL =
   "https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4";
 
 export default function SignUp() {
+  const [videoRetry, setVideoRetry] = useState(0);
+  const videoSrc = useMemo(() => {
+    if (videoRetry === 0) return FORM_BACKGROUND_VIDEO_URL;
+    const joiner = FORM_BACKGROUND_VIDEO_URL.includes("?") ? "&" : "?";
+    return `${FORM_BACKGROUND_VIDEO_URL}${joiner}retry=${videoRetry}`;
+  }, [videoRetry]);
+
   return (
     <div className="w-full overflow-x-hidden">
       <TransparentNavbar showScrollBackground />
@@ -20,11 +28,18 @@ export default function SignUp() {
           <div className="fixed inset-0 w-full h-full z-0">
             <video
               className="fixed inset-0 h-full w-full object-cover"
-              src={FORM_BACKGROUND_VIDEO_URL}
+              src={videoSrc}
               autoPlay
               loop
               muted
               playsInline
+              preload="auto"
+              onError={() => {
+                if (videoRetry >= 2) return;
+                window.setTimeout(() => {
+                  setVideoRetry((value) => value + 1);
+                }, 250);
+              }}
               aria-hidden="true"
             />
           </div>

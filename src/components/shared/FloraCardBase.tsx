@@ -1,3 +1,6 @@
+import { useEffect, useMemo, useState } from "react";
+import { floraImages } from "@/data/flora-data";
+
 interface FloraCardBaseProps {
   id: string;
   generation: string;
@@ -23,6 +26,22 @@ export default function FloraCardBase({
   variant = 'garden',
 }: FloraCardBaseProps) {
   const isGarden = variant === 'garden';
+  const [imgSrc, setImgSrc] = useState(image);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const fallbackImage = useMemo(() => {
+    const key = `${id}:${title}`;
+    let hash = 0;
+    for (let i = 0; i < key.length; i += 1) {
+      hash = (hash << 5) - hash + key.charCodeAt(i);
+      hash |= 0;
+    }
+    return floraImages[Math.abs(hash) % floraImages.length];
+  }, [id, title]);
+
+  useEffect(() => {
+    setImgSrc(image);
+    setLoadAttempt(0);
+  }, [image]);
 
   return (
     <article
@@ -64,7 +83,7 @@ export default function FloraCardBase({
       >
         <div className="absolute inset-0 bg-spora-primary-light animate-pulse" />
         <img
-          src={image}
+          src={imgSrc}
           alt={title}
           className="absolute inset-0 w-full h-full object-cover transition-all duration-image ease-spora-out z-10"
           style={{
@@ -76,6 +95,25 @@ export default function FloraCardBase({
             if (placeholderElement) {
               placeholderElement.style.display = 'none';
             }
+          }}
+          onError={(event) => {
+            const imageElement = event.currentTarget;
+            const placeholderElement = imageElement.parentElement?.querySelector('.animate-pulse') as HTMLElement | null;
+            if (loadAttempt === 0) {
+              setLoadAttempt(1);
+              const retryJoiner = image.includes('?') ? '&' : '?';
+              setImgSrc(`${image}${retryJoiner}retry=${Date.now()}`);
+              return;
+            }
+            if (loadAttempt === 1 && fallbackImage && imgSrc !== fallbackImage) {
+              setLoadAttempt(2);
+              setImgSrc(fallbackImage);
+              return;
+            }
+            if (placeholderElement) {
+              placeholderElement.style.display = 'none';
+            }
+            imageElement.style.opacity = '0';
           }}
           onMouseEnter={(event) => {
             event.currentTarget.style.transform = 'scale(1.05)';
