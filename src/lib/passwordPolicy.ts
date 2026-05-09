@@ -1,8 +1,8 @@
-export const PASSWORD_MIN_LENGTH = 10
+export const PASSWORD_MIN_LENGTH = 8
 export const PASSWORD_MAX_LENGTH = 128
 const SPECIAL_CHAR_PATTERN = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/
 
-/** Mirrors `src/lib/passwordPolicy.js` on the server so UX errors match API errors. */
+
 export function validatePasswordClient(password: string): string | null {
   if (typeof password !== "string") return "Password is required."
   if (password.length < PASSWORD_MIN_LENGTH) {
@@ -30,4 +30,4 @@ export function validatePasswordClient(password: string): string | null {
 }
 
 export const PASSWORD_HINT =
-  "10+ chars · upper, lower, number and special character (e.g. ! @ # $)."
+  "8+ chars · upper, lower, number and special character (e.g. ! @ # $)."

@@ -97,7 +97,7 @@ describe("SignUpForm", () => {
     expect(signUp).not.toHaveBeenCalled()
   })
 
-  it("rejects passwords shorter than 10 characters", async () => {
+  it("rejects passwords shorter than 8 characters", async () => {
     const user = userEvent.setup()
     renderSignUp()
 

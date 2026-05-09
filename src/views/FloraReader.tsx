@@ -10,6 +10,8 @@ import { AudioLines, Camera, Layers, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
+import ReaderTutorialOverlay from "@/components/reader/ReaderTutorialOverlay";
+import { getReaderTutorialDone } from "@/components/reader/readerTutorialStorage";
 import SporaImageLoader, {
   SPORA_IFRAME_LOADER_MIN_MS,
 } from "@/components/shared/SporaImageLoader";
@@ -66,11 +68,16 @@ export default function FloraReader() {
   const [flora, setFlora] = useState<ApiFlora | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showReaderTutorial, setShowReaderTutorial] = useState(false);
   const [windStrength, setWindStrength] = useState(0.5);
   const [vellumOn, setVellumOn] = useState(false);
   const [, setInstallationReady] = useState(false);
   const [minLoadTimeElapsed, setMinLoadTimeElapsed] = useState(false);
   const installationRef = useRef<HTMLIFrameElement>(null);
+  const floraSectionRef = useRef<HTMLElement>(null);
+  const cuttingsRef = useRef<HTMLElement>(null);
+  const detailsRef = useRef<HTMLElement>(null);
+  const readerOptionsRef = useRef<HTMLDivElement>(null);
   const ttsAudioRef = useRef<HTMLAudioElement>(null);
   const ttsObjectUrlRef = useRef<string | null>(null);
   const [ttsPhase, setTtsPhase] = useState<
@@ -252,8 +259,10 @@ export default function FloraReader() {
 
   useEffect(() => {
     releaseTtsResources();
-    setTtsPhase("idle");
-    setTtsError(null);
+    queueMicrotask(() => {
+      setTtsPhase("idle");
+      setTtsError(null);
+    });
   }, [derived?.id, releaseTtsResources]);
 
   useEffect(() => {
@@ -265,6 +274,24 @@ export default function FloraReader() {
       document.documentElement.classList.remove("hide-scrollbar");
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isDesktopLike = window.matchMedia("(min-width: 768px)").matches;
+    if (!isDesktopLike) return;
+    if (!getReaderTutorialDone()) {
+      queueMicrotask(() => {
+        setShowReaderTutorial(true);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const detailsSummary = document.querySelector<HTMLElement>(
+      "summary.reader-details-tutorial-anchor"
+    );
+    if (detailsSummary) detailsRef.current = detailsSummary;
+  }, [minLoadTimeElapsed, derived?.id]);
 
   const sendToInstallation = (msg: { type: string; [k: string]: unknown }) => {
     installationRef.current?.contentWindow?.postMessage(msg, window.location.origin);
@@ -391,7 +418,7 @@ export default function FloraReader() {
 
   if (isLoading && !derived) {
     return (
-      <div className="fixed inset-0 z-[10050] bg-spora-primary-light">
+      <div className="fixed inset-0 z-10050 bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
         <main className="flex min-h-screen items-center justify-center pt-24 px-6">
           <SporaImageLoader />
@@ -468,7 +495,7 @@ export default function FloraReader() {
       ) : null}
 
       <div
-        className={`fixed inset-0 z-[10050] flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
+        className={`fixed inset-0 z-10050 flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
           canReveal ? "opacity-0 pointer-events-none" : ""
         }`}
         aria-hidden
@@ -494,6 +521,7 @@ export default function FloraReader() {
             </div>
 
             <article
+              ref={floraSectionRef}
               className={`flex flex-col max-w-[90vw] md:max-w-[45ch] flex-1 min-h-0 ${textColorClass}`}
             >
               <header className="mb-4">
@@ -535,6 +563,9 @@ export default function FloraReader() {
             <div className="mt-8">
               {derived.status === "blossoming" ? (
                 <button
+                  ref={(node) => {
+                    cuttingsRef.current = node;
+                  }}
                   type="button"
                   onClick={() => {
                     const labPath = isLabFullAccessible() ? "/laboratory/full" : "/laboratory";
@@ -551,6 +582,9 @@ export default function FloraReader() {
                 </button>
               ) : derived.status === "sealed" ? (
                 <span
+                  ref={(node) => {
+                    cuttingsRef.current = node;
+                  }}
                   className={`font-supply-mono text-[10px] sm:text-[11px] tracking-[0.2em] uppercase py-2 px-3 border ${
                     isLightBg
                       ? "border-spora-primary text-spora-primary"
@@ -570,7 +604,7 @@ export default function FloraReader() {
               placement="down"
               align="end"
               className={`w-full min-w-[220px] max-w-[280px] ${textColorClass}`}
-              summaryClassName="mb-0"
+              summaryClassName="mb-0 reader-details-tutorial-anchor"
               summaryStyle={textShadowStyle}
               panelClassName="flora-reader-scroll max-h-[calc(100vh-12rem)] overflow-y-auto space-y-4 text-[10px] sm:text-xs"
               panelStyle={textShadowStyle}
@@ -705,6 +739,7 @@ export default function FloraReader() {
       </main>
 
       <div
+        ref={readerOptionsRef}
         className={`fixed bottom-24 right-6 md:right-12 lg:right-16 z-20 pointer-events-auto ${textColorClass}`}
         style={textShadowStyle}
       >
@@ -862,6 +897,15 @@ export default function FloraReader() {
           }}
         />
       </div>
+      {showReaderTutorial && canReveal ? (
+        <ReaderTutorialOverlay
+          floraRef={floraSectionRef}
+          detailsRef={detailsRef}
+          cuttingsRef={cuttingsRef}
+          optionsRef={readerOptionsRef}
+          onClose={() => setShowReaderTutorial(false)}
+        />
+      ) : null}
     </div>
   );
 }
