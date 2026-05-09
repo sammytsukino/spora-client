@@ -277,7 +277,10 @@ export default function FloraReader() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const isDesktopLike = window.matchMedia("(min-width: 768px)").matches;
+    const isDesktopLike =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(min-width: 768px)").matches
+        : false;
     if (!isDesktopLike) return;
     if (!getReaderTutorialDone()) {
       queueMicrotask(() => {

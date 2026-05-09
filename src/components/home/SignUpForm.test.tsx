@@ -105,7 +105,7 @@ describe("SignUpForm", () => {
     await user.click(screen.getByRole("button", { name: /create account/i }))
 
     expect(
-      screen.getByText(/at least 10 characters/i)
+      screen.getByText(/at least 8 characters/i)
     ).toBeInTheDocument()
     expect(signUp).not.toHaveBeenCalled()
   })
