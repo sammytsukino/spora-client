@@ -93,6 +93,7 @@ export async function signUp(payload: {
   displayName: string;
   email: string;
   password: string;
+  website?: string;
 }): Promise<SignUpResponse> {
   const { data } = await api.post<SignUpResponse>("/auth/signup", payload);
   if (data.token && data.user) {

@@ -23,6 +23,7 @@ export default function SignUpForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [website, setWebsite] = useState("") // Honeypot field
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -58,6 +59,7 @@ export default function SignUpForm() {
         displayName: name,
         email,
         password,
+        website,
       })
       if (result.token && result.user) {
         navigate(ROUTES.LABORATORY)
@@ -92,6 +94,20 @@ export default function SignUpForm() {
                 {error}
               </p>
             ) : null}
+
+            {/* Honeypot field - invisible to real users but bots will fill it */}
+            <div style={{ position: 'absolute', left: '-9999px', opacity: 0 }} aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
 
             <div className="flex flex-col gap-6 sm:gap-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">

@@ -42,7 +42,7 @@ This repository holds the complete front-of-house experience:
 ### Routing and Access Model
 The application uses `react-router-dom` with intentional route boundaries:
 ▸ Public pages (`/`, `/garden`, `/greenhouse`, `/flora/:id`, `/team`, `/terms`, etc.)  
-▸ Guest-only auth pages (`/signin`, `/signup`)  
+▸ Guest-only auth pages (`/signin`, `/signup`) with invisible honeypot bot protection  
 ▸ Auth-only routes (`/laboratory`)  
 ▸ Session-unlock route for advanced lab mode (`/laboratory/full`)  
 ▸ Role-gated admin area (`/admin`)
