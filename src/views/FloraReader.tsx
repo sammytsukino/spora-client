@@ -1,4 +1,11 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import { floraImages } from "@/data/flora-data";
@@ -41,6 +48,12 @@ function formatGeneration(value?: number) {
 function ensureHandle(username: string) {
   return username.startsWith("@") ? username : `@${username}`;
 }
+
+/** Inline: avoids production CSS pass dropping unprefixed `backdrop-filter`. */
+const vellumBackdropStyle: CSSProperties = {
+  backdropFilter: "blur(5px) saturate(0.92)",
+  WebkitBackdropFilter: "blur(2.5px) saturate(0.92)",
+};
 
 export default function FloraReader() {
   const [ambiencePlaying, setAmbiencePlaying] = useState(false);
@@ -486,12 +499,15 @@ export default function FloraReader() {
             className={`flora-reader-vellum z-5 ${
               isLightBg ? "flora-reader-vellum--paper" : "flora-reader-vellum--ink"
             }`}
-            style={{ opacity: canReveal ? 1 : 0 }}
+            style={{
+              opacity: canReveal ? 1 : 0,
+              ...vellumBackdropStyle,
+            }}
             aria-hidden
           />
           <div
             className="flora-reader-grain z-6"
-            style={{ opacity: canReveal ? 0.32 : 0 }}
+            style={{ opacity: canReveal ? 0.5 : 0 }}
             aria-hidden
           />
         </>
