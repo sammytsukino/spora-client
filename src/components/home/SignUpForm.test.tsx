@@ -137,6 +137,7 @@ describe("SignUpForm", () => {
       displayName: "N",
       email: "n@e.com",
       password: STRONG_FIXTURE,
+      website: "",
     })
     expect(await screen.findByText("Laboratory")).toBeInTheDocument()
   })
