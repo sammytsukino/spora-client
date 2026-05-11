@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from "react"
+import React, { useCallback, useMemo, useRef, useEffect } from "react"
 import { motion, useAnimationControls } from "motion/react"
 import { v4 as uuidv4 } from "uuid"
 
@@ -102,6 +102,58 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
       ),
     [rows, columns]
   )
+
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!isMobile || columns === 0 || rows === 0) return;
+
+    let animationFrameId: number;
+    let col = Math.floor(columns / 2);
+    let row = Math.floor(rows / 2);
+    let angle = Math.random() * Math.PI * 2;
+    let lastTime = performance.now();
+    const speed = 15; // pixels per second
+
+    const animateAutomatedTrail = (time: number) => {
+      const delta = (time - lastTime) / 1000;
+      lastTime = time;
+
+      // slightly change direction
+      angle += (Math.random() - 0.5) * 2 * delta;
+
+      col += Math.cos(angle) * speed * delta;
+      row += Math.sin(angle) * speed * delta;
+
+      // bounce off edges
+      if (col < 0 || col >= columns) {
+        angle = Math.PI - angle;
+        col = Math.max(0, Math.min(col, columns - 1));
+      }
+      if (row < 0 || row >= rows) {
+        angle = -angle;
+        row = Math.max(0, Math.min(row, rows - 1));
+      }
+
+      const pixelElement = document.getElementById(
+        `${trailId}-pixel-${Math.floor(col)}-${Math.floor(row)}`
+      );
+      
+      if (pixelElement) {
+        mousePosition.current = {
+          x: col * pixelSize,
+          y: row * pixelSize,
+        };
+        const animatePixel = pixelAnimateMap.get(pixelElement);
+        if (animatePixel) animatePixel();
+      }
+
+      animationFrameId = requestAnimationFrame(animateAutomatedTrail);
+    };
+
+    animationFrameId = requestAnimationFrame(animateAutomatedTrail);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [columns, rows, pixelSize, trailId]);
 
   return (
     <div

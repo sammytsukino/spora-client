@@ -25,6 +25,7 @@ import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import AccentColorOnRouteChange from "../components/shared/AccentColorOnRouteChange";
 import ConsentModal, { getConsentGiven } from "../components/shared/ConsentModal";
+import DesktopExperienceBanner from "../components/shared/DesktopExperienceBanner";
 import { ROUTES } from "../constants/routes";
 
 const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
@@ -85,6 +86,7 @@ function RouterContent() {
       </a>
       <ScrollToTop />
       <AccentColorOnRouteChange />
+      <DesktopExperienceBanner />
       {!consentGiven && !isTermsPage && (
         <ConsentModal onAccept={() => setConsentGiven(true)} />
       )}
