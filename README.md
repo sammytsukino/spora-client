@@ -57,7 +57,7 @@ The application uses `react-router-dom` with intentional route boundaries:
 
 ### Visual Layer
 ▸ React + TypeScript + Vite  
-▸ Three.js ecosystem (`@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`)  
+▸ P5.js + Three.js ecosystem (`@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`)  
 ▸ Tailwind CSS v4 + utility helpers (`clsx`, `tailwind-merge`)  
 ▸ Motion-driven UI animation
 
@@ -105,6 +105,7 @@ Admins can safeguard the ecosystem by:
 ▸ Lucide icons
 
 ### Generative / 3D
+▸ P5.js
 ▸ Three.js  
 ▸ `@react-three/fiber`  
 ▸ `@react-three/drei`  
@@ -218,7 +219,7 @@ Without a reachable backend, the collaborative lifecycle cannot be completed.
 
 ## ◈ Language Support
 
-SPORA currently operates with mixed editorial/UI copy and supports usage in:
+SPORA currently supports usage in:
 ▸ **Español**  
 ▸ **Castellano**
 
