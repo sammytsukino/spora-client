@@ -32,28 +32,28 @@ const LAB_FULL_SESSION_KEY = "spora_lab_full_session";
 const DEFAULT_TITLE = "S P 0 R A";
 
 function getRouteTitle(pathname) {
-  if (pathname === ROUTES.HOME || pathname === ROUTES.HOME_LEGACY) return "SPORA - Home";
-  if (pathname === ROUTES.GARDEN) return "SPORA - Garden";
-  if (pathname.startsWith(ROUTES.GREENHOUSE)) return "SPORA - Greenhouse";
-  if (pathname.startsWith(ROUTES.FLORA)) return "SPORA - Flora";
-  if (pathname === ROUTES.LABORATORY || pathname === ROUTES.INSTALLATION) return "SPORA - Laboratory";
-  if (pathname === ROUTES.LABORATORY_FULL || pathname === ROUTES.GROW) return "SPORA - Full Laboratory";
-  if (pathname === ROUTES.TEAM) return "SPORA - Team";
-  if (pathname === ROUTES.TERMS || pathname === ROUTES.RESEARCH) return "SPORA - Terms & Conditions";
-  if (pathname === ROUTES.CONTACT) return "SPORA - Contact";
-  if (pathname === ROUTES.SIGN_IN) return "SPORA - Sign In";
-  if (pathname === ROUTES.SIGN_UP) return "SPORA - Sign Up";
-  if (pathname === ROUTES.PROFILE) return "SPORA - My Profile";
+  if (pathname === ROUTES.HOME || pathname === ROUTES.HOME_LEGACY) return "S P 0 R A";
+  if (pathname === ROUTES.GARDEN) return "S P 0 R A - Garden";
+  if (pathname.startsWith(ROUTES.GREENHOUSE)) return "S P 0 R A - Greenhouse";
+  if (pathname.startsWith(ROUTES.FLORA)) return "S P 0 R A - Flora";
+  if (pathname === ROUTES.LABORATORY || pathname === ROUTES.INSTALLATION) return "S P 0 R A - Laboratory";
+  if (pathname === ROUTES.LABORATORY_FULL || pathname === ROUTES.GROW) return "S P 0 R A - Full Laboratory";
+  if (pathname === ROUTES.TEAM) return "S P 0 R A - Team";
+  if (pathname === ROUTES.TERMS || pathname === ROUTES.RESEARCH) return "S P 0 R A - Terms & Conditions";
+  if (pathname === ROUTES.CONTACT) return "S P 0 R A - Contact";
+  if (pathname === ROUTES.SIGN_IN) return "S P 0 R A - Sign In";
+  if (pathname === ROUTES.SIGN_UP) return "S P 0 R A - Sign Up";
+  if (pathname === ROUTES.PROFILE) return "S P 0 R A - My Profile";
   if (pathname.startsWith(`${ROUTES.PROFILE}/`) && pathname.endsWith("/followers")) {
-    return "SPORA - Followers";
+    return "S P 0 R A - Followers";
   }
   if (pathname.startsWith(`${ROUTES.PROFILE}/`) && pathname.endsWith("/following")) {
-    return "SPORA - Following";
+    return "S P 0 R A - Following";
   }
-  if (pathname.startsWith(`${ROUTES.PROFILE}/`)) return "SPORA - Profile";
-  if (pathname === ROUTES.LICENSING) return "SPORA - Licensing";
-  if (pathname === ROUTES.ADMIN) return "SPORA - Admin";
-  if (pathname === ROUTES.BACKGROUND) return "SPORA - Background";
+  if (pathname.startsWith(`${ROUTES.PROFILE}/`)) return "S P 0 R A - Profile";
+  if (pathname === ROUTES.LICENSING) return "S P 0 R A - Licensing";
+  if (pathname === ROUTES.ADMIN) return "S P 0 R A - Admin";
+  if (pathname === ROUTES.BACKGROUND) return "S P 0 R A - Background";
   return DEFAULT_TITLE;
 }
 

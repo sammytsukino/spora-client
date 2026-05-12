@@ -403,11 +403,11 @@ const MarqueeItem = ({
   )
 }
 
-const MARQUEE_SVG_MAX_THUMBS = 65
+const MARQUEE_SVG_MAX_THUMBS = 90
 
 function subsampleThumbnailsForPath(items: FloraThumbnail[]): FloraThumbnail[] {
   if (items.length <= MARQUEE_SVG_MAX_THUMBS) return items
-  const stride = Math.max(1, Math.floor(items.length / MARQUEE_SVG_MAX_THUMBS))
+  const stride = Math.max(1, Math.ceil(items.length / MARQUEE_SVG_MAX_THUMBS))
   return items.filter((_, itemIndex) => itemIndex % stride === 0).slice(0, MARQUEE_SVG_MAX_THUMBS)
 }
 
