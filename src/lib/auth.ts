@@ -4,7 +4,7 @@ export const TOKEN_KEY = "spora_token";
 export const REFRESH_TOKEN_KEY = "spora_refresh_token";
 export const USER_KEY = "spora_user";
 
-export const LAB_FULL_SECRET = "grow";
+export const LAB_FULL_SECRET = "shw";
 
 const LEGACY_LAB_FULL_KEY = "spora_lab_full_unlocked";
 if (typeof localStorage !== "undefined") {

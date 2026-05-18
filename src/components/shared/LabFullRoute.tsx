@@ -15,19 +15,19 @@ export default function LabFullRoute({ children }: LabFullRouteProps) {
   const [searchParams] = useSearchParams();
   const token = getStoredToken();
   const user = getStoredUser();
-  const fromGrow = searchParams.get("from") === "grow";
+  const fromShw = searchParams.get("from") === "shw";
   const sessionFull = typeof sessionStorage !== "undefined" && sessionStorage.getItem(LAB_FULL_SESSION_KEY) === "1";
-  const cultivatorCanSeeFull = fromGrow || sessionFull;
+  const cultivatorCanSeeFull = fromShw || sessionFull;
 
   useEffect(() => {
-    if (user?.role === "cultivator" && fromGrow) {
+    if (user?.role === "cultivator" && fromShw) {
       sessionStorage.setItem(LAB_FULL_SESSION_KEY, "1");
       const next = new URLSearchParams(searchParams);
       next.delete("from");
       const queryString = next.toString() ? `?${next.toString()}` : "";
       navigate(`${location.pathname}${queryString}`, { replace: true });
     }
-  }, [user?.role, fromGrow, searchParams, navigate, location.pathname]);
+  }, [user?.role, fromShw, searchParams, navigate, location.pathname]);
 
   if (!token) {
     return <Navigate to={ROUTES.SIGN_IN} state={{ from: location }} replace />;

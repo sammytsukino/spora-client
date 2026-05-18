@@ -17,7 +17,7 @@ export const ROUTES = {
   ADMIN: "/admin",
   BACKGROUND: "/background",
   LICENSING: "/licensing",
-  GROW: "/grow",
+  SHW: "/shw",
   FLORA: "/flora",
 } as const;
 
@@ -58,6 +58,6 @@ export function greenhouseWithAuthorQuery(authorId: string, username?: string): 
 }
 
 
-export function laboratoryFullFromGrow(): string {
-  return `${ROUTES.LABORATORY_FULL}?from=grow`;
+export function laboratoryFullFromShw(): string {
+  return `${ROUTES.LABORATORY_FULL}?from=shw`;
 }

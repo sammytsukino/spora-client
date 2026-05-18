@@ -38,7 +38,7 @@ function getRouteTitle(pathname) {
   if (pathname.startsWith(ROUTES.GREENHOUSE)) return "S P 0 R A - Greenhouse";
   if (pathname.startsWith(ROUTES.FLORA)) return "S P 0 R A - Flora";
   if (pathname === ROUTES.LABORATORY || pathname === ROUTES.INSTALLATION) return "S P 0 R A - Laboratory";
-  if (pathname === ROUTES.LABORATORY_FULL || pathname === ROUTES.GROW) return "S P 0 R A - Full Laboratory";
+  if (pathname === ROUTES.LABORATORY_FULL || pathname === ROUTES.SHW) return "S P 0 R A - Full Laboratory";
   if (pathname === ROUTES.TEAM) return "S P 0 R A - Team";
   if (pathname === ROUTES.TERMS || pathname === ROUTES.RESEARCH) return "S P 0 R A - Terms & Conditions";
   if (pathname === ROUTES.CONTACT) return "S P 0 R A - Contact";
@@ -99,7 +99,7 @@ function RouterContent() {
         <Route path={ROUTES.GREENHOUSE} element={<Greenhouse />} />
         <Route path={`${ROUTES.FLORA}/:id`} element={<FloraView />} />
         <Route path={`${ROUTES.FLORA}/:id/details`} element={<FloraDetail />} />
-        <Route path={ROUTES.GROW} element={<LabFullUnlock />} />
+        <Route path={ROUTES.SHW} element={<LabFullUnlock />} />
         <Route path={ROUTES.LABORATORY_FULL} element={<LabFullRoute><Installation fullLab /></LabFullRoute>} />
         <Route path={ROUTES.LABORATORY} element={<ProtectedRoute><Installation /></ProtectedRoute>} />
         <Route path={ROUTES.INSTALLATION} element={<Navigate to={ROUTES.LABORATORY} replace />} />

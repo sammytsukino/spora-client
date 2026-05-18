@@ -7,7 +7,7 @@ import {
   profileFollowersPath,
   profileFollowingPath,
   greenhouseWithAuthorQuery,
-  laboratoryFullFromGrow,
+  laboratoryFullFromShw,
 } from "./routes"
 
 describe("routes helpers", () => {
@@ -38,9 +38,9 @@ describe("routes helpers", () => {
     )
   })
 
-  it("laboratoryFullFromGrow returns full lab path", () => {
-    expect(laboratoryFullFromGrow()).toBe(
-      `${ROUTES.LABORATORY_FULL}?from=grow`
+  it("laboratoryFullFromShw returns full lab path", () => {
+    expect(laboratoryFullFromShw()).toBe(
+      `${ROUTES.LABORATORY_FULL}?from=shw`
     )
   })
 })

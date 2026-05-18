@@ -48,10 +48,9 @@ export default function VideoTextSection() {
             <div className="w-full border-t border-stone-400/50 my-4 md:my-6" />
 
             <p className="text-stone-200 font-bizud-mincho text-xs md:text-sm lg:text-base leading-relaxed italic">
-              Growing from each seed we plant.<br />
-              Reclaimed by those who cultivate.<br />
-              Open to all.<br />
-              Where form follows word.
+              Seeds start to grow,<br />
+              hands that care shape the form,<br />
+              words are fully free.
             </p>
           </div>
         </div>
