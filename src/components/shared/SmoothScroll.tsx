@@ -21,6 +21,13 @@ function isSmoothScrollSafe(pathname: string): boolean {
   );
 }
 
+const LENIS_OPTIONS = {
+  lerp: 0.08,
+  duration: 1.6,
+  wheelMultiplier: 0.85,
+  touchMultiplier: 0.9,
+} as const;
+
 export default function SmoothScroll() {
   const { pathname } = useLocation();
 
@@ -32,6 +39,7 @@ export default function SmoothScroll() {
       anchors: true,
       stopInertiaOnNavigate: true,
       allowNestedScroll: true,
+      ...LENIS_OPTIONS,
     });
 
     return () => {
