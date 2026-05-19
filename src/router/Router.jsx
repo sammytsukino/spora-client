@@ -88,9 +88,14 @@ function RouterContent() {
       <ScrollToTop />
       <SmoothScroll />
       <AccentColorOnRouteChange />
-      <DesktopExperienceBanner />
+      <DesktopExperienceBanner
+        requiresConsent={!consentGiven}
+        onConsentAccept={() => setConsentGiven(true)}
+      />
       {!consentGiven && !isTermsPage && (
-        <ConsentModal onAccept={() => setConsentGiven(true)} />
+        <div className="hidden md:block">
+          <ConsentModal onAccept={() => setConsentGiven(true)} />
+        </div>
       )}
       <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />

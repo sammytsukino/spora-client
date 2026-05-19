@@ -32,14 +32,6 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
   const [terms, setTerms] = useState(false);
   const [visible, setVisible] = useState(true);
 
-  const dismiss = (markConsent: boolean) => {
-    if (markConsent) {
-      setConsentGiven();
-      onAccept();
-    }
-    setVisible(false);
-  };
-
   const handleAccept = () => {
     if (!terms) return;
     setConsentGiven();
@@ -58,18 +50,9 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
       aria-describedby="consent-description"
     >
       <div className="bg-spora-primary-light border-2 border-spora-primary p-6 shadow-lg relative">
-        <button
-          type="button"
-          onClick={() => dismiss(true)}
-          className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-spora-primary hover:bg-[#f0f0f0] font-supply-mono text-sm leading-none"
-          aria-label="Close"
-        >
-          ×
-        </button>
-
         <h2
           id="consent-title"
-          className="font-bizud-mincho-bold text-lg mb-2 pr-6 text-spora-primary"
+          className="font-bizud-mincho-bold text-lg mb-2 text-spora-primary"
         >
           Terms & Conditions
         </h2>
@@ -81,7 +64,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
           <Link to={ROUTES.TERMS} className="underline hover:no-underline">
             Terms & Conditions
           </Link>
-          . You can dismiss this to continue.
+          .
         </p>
 
         <label htmlFor="consent-terms" className="flex items-start gap-3 cursor-pointer group mb-4">
@@ -100,14 +83,7 @@ export default function ConsentModal({ onAccept }: ConsentModalProps) {
           </span>
         </label>
 
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={() => dismiss(true)}
-            className="px-3 py-1.5 border border-spora-primary bg-transparent text-spora-primary font-supply-mono text-[10px] uppercase tracking-[0.2em] hover:bg-spora-primary-lighter cursor-pointer"
-          >
-            Dismiss
-          </button>
+        <div className="flex justify-end">
           <button
             type="button"
             disabled={!terms}
