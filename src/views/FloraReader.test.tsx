@@ -19,9 +19,13 @@ vi.mock("@/components/layout/TransparentNavbar", () => ({
   },
 }))
 
-vi.mock("@/components/shared/SporaDetailsMenu", () => ({
-  default: () => null,
-}))
+vi.mock("@/components/shared/SporaDetailsMenu", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/components/shared/SporaDetailsMenu")>()
+  return {
+    ...actual,
+    default: () => null,
+  }
+})
 
 import FloraReader from "./FloraReader"
 
