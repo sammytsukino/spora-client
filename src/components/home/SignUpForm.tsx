@@ -23,7 +23,7 @@ export default function SignUpForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [website, setWebsite] = useState("") // Honeypot field
+  const [website, setWebsite] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -95,7 +95,6 @@ export default function SignUpForm() {
               </p>
             ) : null}
 
-            {/* Honeypot field - invisible to real users but bots will fill it */}
             <div style={{ position: 'absolute', left: '-9999px', opacity: 0 }} aria-hidden="true">
               <label htmlFor="website">Website</label>
               <input

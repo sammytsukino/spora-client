@@ -4,7 +4,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
@@ -16,7 +15,10 @@ import { extractMorphology } from "@/lib/morphology";
 import { AudioLines, Camera, Layers, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
-import SporaDetailsMenu from "@/components/shared/SporaDetailsMenu";
+import SporaDetailsMenu, {
+  readerChromeButtonClass,
+  type SporaDetailsMenuTone,
+} from "@/components/shared/SporaDetailsMenu";
 import ReaderTutorialOverlay from "@/components/reader/ReaderTutorialOverlay";
 import { getReaderTutorialDone } from "@/components/reader/readerTutorialStorage";
 import SporaImageLoader, {
@@ -49,11 +51,8 @@ function ensureHandle(username: string) {
   return username.startsWith("@") ? username : `@${username}`;
 }
 
-/** Inline: avoids production CSS pass dropping unprefixed `backdrop-filter`. */
-const vellumBackdropStyle: CSSProperties = {
-  backdropFilter: "blur(5px) saturate(0.92)",
-  WebkitBackdropFilter: "blur(2.5px) saturate(0.92)",
-};
+
+const VELLUM_HOVER_DELAY_MS = 1000;
 
 export default function FloraReader() {
   const [ambiencePlaying, setAmbiencePlaying] = useState(false);
@@ -91,6 +90,8 @@ export default function FloraReader() {
   const cuttingsRef = useRef<HTMLElement>(null);
   const detailsRef = useRef<HTMLElement>(null);
   const readerOptionsRef = useRef<HTMLDivElement>(null);
+  const vellumHoverEnterTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const vellumHoverLeaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const ttsAudioRef = useRef<HTMLAudioElement>(null);
   const ttsObjectUrlRef = useRef<string | null>(null);
   const [ttsPhase, setTtsPhase] = useState<
@@ -99,6 +100,41 @@ export default function FloraReader() {
   const [ttsError, setTtsError] = useState<string | null>(null);
 
   const [ttsSpeed, setTtsSpeed] = useState(0.8);
+
+  const clearVellumHoverTimers = useCallback(() => {
+    if (vellumHoverEnterTimerRef.current) {
+      clearTimeout(vellumHoverEnterTimerRef.current);
+      vellumHoverEnterTimerRef.current = null;
+    }
+    if (vellumHoverLeaveTimerRef.current) {
+      clearTimeout(vellumHoverLeaveTimerRef.current);
+      vellumHoverLeaveTimerRef.current = null;
+    }
+  }, []);
+
+  const handleFloraTextHoverEnter = useCallback(() => {
+    if (vellumHoverLeaveTimerRef.current) {
+      clearTimeout(vellumHoverLeaveTimerRef.current);
+      vellumHoverLeaveTimerRef.current = null;
+    }
+    if (vellumHoverEnterTimerRef.current) return;
+    vellumHoverEnterTimerRef.current = setTimeout(() => {
+      vellumHoverEnterTimerRef.current = null;
+      setVellumOn(true);
+    }, VELLUM_HOVER_DELAY_MS);
+  }, []);
+
+  const handleFloraTextHoverLeave = useCallback(() => {
+    if (vellumHoverEnterTimerRef.current) {
+      clearTimeout(vellumHoverEnterTimerRef.current);
+      vellumHoverEnterTimerRef.current = null;
+    }
+    if (vellumHoverLeaveTimerRef.current) return;
+    vellumHoverLeaveTimerRef.current = setTimeout(() => {
+      vellumHoverLeaveTimerRef.current = null;
+      setVellumOn(false);
+    }, VELLUM_HOVER_DELAY_MS);
+  }, []);
 
   const releaseTtsResources = useCallback(() => {
     const a = ttsAudioRef.current;
@@ -253,6 +289,8 @@ export default function FloraReader() {
   const theme = useImageLuminance(derived?.image);
   const isLightBg = theme === "light";
   const textColorClass = isLightBg ? "text-spora-primary" : "text-white";
+  const readerTone: SporaDetailsMenuTone = isLightBg ? "light" : "dark";
+  const readerChromeBtn = readerChromeButtonClass(readerTone);
   const textShadowStyle =
     !isLightBg ? { textShadow: "0 1px 2px rgba(0,0,0,0.5)" } : undefined;
 
@@ -269,6 +307,13 @@ export default function FloraReader() {
   } | undefined;
 
   useEffect(() => () => releaseTtsResources(), [releaseTtsResources]);
+
+  useEffect(() => {
+    clearVellumHoverTimers();
+    queueMicrotask(() => setVellumOn(false));
+  }, [derived?.id, clearVellumHoverTimers]);
+
+  useEffect(() => () => clearVellumHoverTimers(), [clearVellumHoverTimers]);
 
   useEffect(() => {
     releaseTtsResources();
@@ -493,25 +538,18 @@ export default function FloraReader() {
         />
       </div>
 
-      {vellumOn ? (
-        <>
-          <div
-            className={`flora-reader-vellum z-5 ${
-              isLightBg ? "flora-reader-vellum--paper" : "flora-reader-vellum--ink"
-            }`}
-            style={{
-              opacity: canReveal ? 1 : 0,
-              ...vellumBackdropStyle,
-            }}
-            aria-hidden
-          />
-          <div
-            className="flora-reader-grain z-6"
-            style={{ opacity: canReveal ? 0.5 : 0 }}
-            aria-hidden
-          />
-        </>
-      ) : null}
+      <div
+        className={`flora-reader-vellum z-5 ${
+          isLightBg ? "flora-reader-vellum--paper" : "flora-reader-vellum--ink"
+        }`}
+        style={{ opacity: vellumOn && canReveal ? 1 : 0 }}
+        aria-hidden
+      />
+      <div
+        className="flora-reader-grain z-6"
+        style={{ opacity: vellumOn && canReveal ? 0.5 : 0 }}
+        aria-hidden
+      />
 
       <div
         className={`fixed inset-0 z-10050 flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
@@ -572,6 +610,8 @@ export default function FloraReader() {
               <div
                 className="flora-reader-scroll font-bizud-mincho-bold text-[15px] sm:text-base leading-relaxed tracking-wide whitespace-pre-wrap flex-1 min-h-0 pr-2"
                 style={textShadowStyle}
+                onMouseEnter={handleFloraTextHoverEnter}
+                onMouseLeave={handleFloraTextHoverLeave}
               >
                 {text || (
                   <span className="opacity-70 italic">No text in this Flora.</span>
@@ -591,11 +631,7 @@ export default function FloraReader() {
                     const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
                     window.open(url, "_blank", "noopener,noreferrer");
                   }}
-                  className="font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase py-3 px-4 border cursor-pointer hover:underline"
-                  style={{
-                    borderColor: isLightBg ? "var(--spora-primary)" : "white",
-                    color: isLightBg ? "var(--spora-primary)" : "white",
-                  }}
+                  className={`font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase cursor-pointer transition-colors ${readerChromeBtn} ${textColorClass}`}
                 >
                   Make a Cutting · Cuttings allowed
                 </button>
@@ -604,11 +640,7 @@ export default function FloraReader() {
                   ref={(node) => {
                     cuttingsRef.current = node;
                   }}
-                  className={`font-supply-mono text-[10px] sm:text-[11px] tracking-[0.2em] uppercase py-2 px-3 border ${
-                    isLightBg
-                      ? "border-spora-primary text-spora-primary"
-                      : "border-white/60 text-white/90"
-                  }`}
+                  className={`font-supply-mono text-[10px] sm:text-[11px] tracking-[0.2em] uppercase ${readerChromeBtn} ${textColorClass}`}
                   style={textShadowStyle}
                 >
                   Sealed
@@ -622,6 +654,7 @@ export default function FloraReader() {
               label="Details"
               placement="down"
               align="end"
+              tone={readerTone}
               className={`w-full min-w-[220px] max-w-[280px] ${textColorClass}`}
               summaryClassName="mb-0 reader-details-tutorial-anchor"
               summaryStyle={textShadowStyle}
@@ -766,6 +799,7 @@ export default function FloraReader() {
           label="Reader options"
           placement="up"
           align="end"
+          tone={readerTone}
           className={`w-full min-w-[220px] max-w-[280px] ${textColorClass}`}
           summaryClassName="mb-0"
           summaryStyle={textShadowStyle}

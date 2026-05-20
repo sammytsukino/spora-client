@@ -112,19 +112,17 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
     let row = Math.floor(rows / 2);
     let angle = Math.random() * Math.PI * 2;
     let lastTime = performance.now();
-    const speed = 15; // pixels per second
+    const speed = 15;
 
     const animateAutomatedTrail = (time: number) => {
       const delta = (time - lastTime) / 1000;
       lastTime = time;
 
-      // slightly change direction
       angle += (Math.random() - 0.5) * 2 * delta;
 
       col += Math.cos(angle) * speed * delta;
       row += Math.sin(angle) * speed * delta;
 
-      // bounce off edges
       if (col < 0 || col >= columns) {
         angle = Math.PI - angle;
         col = Math.max(0, Math.min(col, columns - 1));
