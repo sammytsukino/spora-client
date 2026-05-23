@@ -1783,6 +1783,88 @@
             return (txt || "").trim().toLowerCase().replace(/\s+/g, " ");
         }
 
+        function normalizeTriggerText(text) {
+            return String(text || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9\s]/g, " ")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        const GRACIAS_PRESENTATION_PROFILE = {
+            title: "",
+            bloomText: "GRACIAS GRACIAS GRACIAS GRACIAS",
+            preserveInputText: true,
+            dominantMood: "gratitude",
+            flowerSet: "violet",
+            wind: { active: true, strength: 1.6 },
+            chaos: {
+                scramble: false,
+                scrambleForce: 0.35,
+                jitter: 0.6,
+                pulse: { active: false, strength: 1.1 },
+                wave: { active: false, strength: 0 }
+            },
+            colors: {
+                maskA: "#9df1ae",
+                maskB: "#aad022",
+                stem: "#00ff00",
+                text: "#000000",
+                bgA: "#ffffff",
+                bgB: "#c01f4a",
+                auto: false
+            },
+            geometry: {
+                scale: 2.5,
+                fontSize: 60,
+                font: "'Syne', sans-serif"
+            },
+            style: {
+                mask: false,
+                grad: false,
+                outline: false,
+                outlineW: 4
+            },
+            background: {
+                mode: "solid",
+                angle: "90"
+            }
+        };
+
+        const GRACIAS_FLORA_SIGNAL_GROUPS = [
+            ["empece", "empec", "comence", "comenzo", "empez", "aventura", "proyecto", "historia"],
+            ["miedo", "temor", "asust", "codigo", "codificar", "program"],
+            ["comprend", "entend", "solo", "palabras", "palabra"],
+            ["magia", "magico", "hago", "creo", "construyo"],
+            ["gracias", "agradezco", "gracia"],
+            ["papa", "padre", "mama", "madre"]
+        ];
+
+        function matchesGraciasPresentationFlora(text) {
+            const norm = normalizeTriggerText(text);
+            if (!norm || norm.length < 35) return false;
+            let groupsHit = 0;
+            for (const group of GRACIAS_FLORA_SIGNAL_GROUPS) {
+                if (group.some((tok) => norm.includes(tok))) groupsHit++;
+            }
+            const graciasHits = (norm.match(/gracias/g) || []).length;
+            if (groupsHit >= 5) return true;
+            if (groupsHit >= 4 && graciasHits >= 2) return true;
+            const hasFamily = /(papa|padre|mama|madre)/.test(norm);
+            const hasThanks = norm.includes("gracias");
+            const hasMagicOrWords = /(magia|palabras|palabra)/.test(norm);
+            return hasFamily && hasThanks && hasMagicOrWords && groupsHit >= 3;
+        }
+
+        function matchSpecialFloraProfile(text) {
+            if (matchesGraciasPresentationFlora(text)) {
+                return { ...GRACIAS_PRESENTATION_PROFILE };
+            }
+            return null;
+        }
+
         function updateHUD() {
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v != null && v !== "" ? String(v) : "-"; };
             if (currentMorph) {
@@ -2209,6 +2291,33 @@
                 return;
             }
 
+            const specialProfile = matchSpecialFloraProfile(text);
+            if (specialProfile) {
+                const morph = extractMorphology(text) || {
+                    dominantMood: specialProfile.dominantMood || "gratitude",
+                    sentimentStrength: 1,
+                    vowelDensity: 0,
+                    consonantDensity: 0,
+                    uppercaseDensity: 0,
+                    punctDensity: 0,
+                    sibilanceIndex: 0,
+                    entropy: 0,
+                    asciiSignature: 0,
+                    asciiAngle: 0,
+                    avgLengthDelta: 0,
+                    rhymeDensity: 0,
+                    contentWordRatio: 0,
+                    avgWordLength: 0,
+                    wordCount: 0
+                };
+                currentMorph = { ...morph, dominantMood: specialProfile.dominantMood || morph.dominantMood };
+                currentLabState = specialProfile;
+                lastUsedSet = specialProfile.flowerSet;
+                applyVisualState(specialProfile);
+                if (INSTALLATION_MODE) updateHUD();
+                return;
+            }
+
             const morph = extractMorphology(text);
 
             if (!morph) {
@@ -2627,6 +2736,12 @@
             return baseText + newText;
         }
 
+        function getBloomText() {
+            const bloom = currentLabState && currentLabState.bloomText;
+            if (bloom && String(bloom).trim()) return String(bloom).trim();
+            return getFullText().trim();
+        }
+
         function pastePlainText(e) {
             e.preventDefault();
             const text = (e.clipboardData || window.clipboardData).getData("text/plain") || "";
@@ -2659,7 +2774,7 @@
 
             flowers.forEach(f => { f.graphic.remove(); if (f.graphicOutline) f.graphicOutline.remove(); });
             flowers = [];
-            const txt = getFullText().trim();
+            const txt = getBloomText();
             if (!txt) {
                 maybeRenderVisualPoetry();
                 return;
@@ -2799,6 +2914,7 @@
                     geometry: currentLabState.geometry || { scale: 1.5, fontSize: 16, font: "'Inter', sans-serif" },
                     style: currentLabState.style || { mask: true, grad: true, outline: true, outlineW: 1 },
                     background: currentLabState.background || { mode: "gradient", angle: 180 },
+                    ...(currentLabState.bloomText ? { bloomText: currentLabState.bloomText, preserveInputText: !!currentLabState.preserveInputText } : {}),
                     ...vpPersist,
                 };
             }
@@ -2840,6 +2956,8 @@
                     mode: document.getElementById("selBgMode").value,
                     angle: document.getElementById("rngBgAngle").value,
                 },
+                ...(currentLabState && currentLabState.bloomText ? { bloomText: currentLabState.bloomText, preserveInputText: !!currentLabState.preserveInputText } : {}),
+                dominantMood: (currentMorph && currentMorph.dominantMood) || undefined,
                 ...vpPersist,
             };
         }
@@ -3451,7 +3569,7 @@
             }
             const ui = id => document.getElementById(id);
             if (s.title) ui("inpTitle").value = s.title;
-            if (s.text && !isBlossomingMode) {
+            if (s.text && !isBlossomingMode && !s.preserveInputText && !s.bloomText) {
                 const newTextInput = ui("newTextInput");
                 if (newTextInput) newTextInput.textContent = s.text;
             }

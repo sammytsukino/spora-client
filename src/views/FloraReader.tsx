@@ -937,7 +937,7 @@ export default function FloraReader() {
 
         <audio
           ref={ambienceRef}
-          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1775810665/spora-ambience_ml2iyp.mp3"
+          src="https://res.cloudinary.com/dqgiuadyw/video/upload/q_auto/f_auto/v1779559592/ambient_yoptg8.mp3"
           loop
           className="hidden"
         />
