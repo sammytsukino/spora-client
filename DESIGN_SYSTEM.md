@@ -1,17 +1,19 @@
 # SPORA Design System
 
+> **Source of truth:** design tokens are defined in [`src/index.css`](src/index.css) as `--spora-*` CSS variables and exposed to Tailwind as utilities (`text-spora-primary`, `bg-spora-primary-light`, etc.). This document summarizes those tokens for reference; if values diverge, prefer `index.css`.
+
 ## Color Tokens
 
 ### Primary Colors
-- `--color-primary`: #262626 (Dark text, borders, primary backgrounds)
-- `--color-primary-light`: #E9E9E9 (Main background)
-- `--color-primary-lighter`: #e3e3e3 (Secondary backgrounds, Laboratory sidebar)
-- `--color-primary-lightest`: #e6e6e6 (Hero section background)
+- `--spora-primary` / `--color-spora-primary`: #262626 (Dark text, borders, primary backgrounds)
+- `--spora-primary-light`: #E9E9E9 (Main background)
+- `--spora-primary-lighter`: #e3e3e3 (Secondary backgrounds, Laboratory sidebar)
+- `--spora-primary-lightest`: #e6e6e6 (Hero section background)
 
 ### Accent Colors
-- `--color-accent`: #ff6b4a (Hero section accent line)
-- `--color-accent-secondary`: lime-300 (Hover states, active states)
-- `--color-accent-tertiary`: stone-200 (Text on dark backgrounds)
+- `--spora-accent`: #ff6b4a (Hero section accent line)
+- `--spora-accent-secondary`: #bbf451 (Hover states, active states; Tailwind `lime-300` equivalent in legacy docs)
+- Text on dark backgrounds: `--spora-text-secondary` (#e5e7eb)
 
 ### Text Colors
 - `--color-text-primary`: #262626 (Primary text)

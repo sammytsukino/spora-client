@@ -15,7 +15,6 @@ export const ROUTES = {
   SIGN_UP: "/signup",
   PROFILE: "/profile",
   ADMIN: "/admin",
-  BACKGROUND: "/background",
   LICENSING: "/licensing",
   SHW: "/shw",
   FLORA: "/flora",

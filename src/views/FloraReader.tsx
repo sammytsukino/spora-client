@@ -7,11 +7,20 @@ import {
 } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
-import { floraImages } from "@/data/flora-data";
 import { getFlora, type ApiFlora } from "@/lib/floras";
 import { isLabFullAccessible } from "@/lib/auth";
 import { useImageLuminance } from "@/hooks/useImageLuminance";
 import { extractMorphology } from "@/lib/morphology";
+import {
+  buildLineageItems,
+  chunkLineageItems,
+  formatGeneration,
+  formatSeed,
+  getFloraDisplayImage,
+  resolveAuthorUsernameForProfile,
+  resolveAuthorUsernameFromHandle,
+  resolveFloraAuthor,
+} from "@/lib/floraPresentation";
 import { AudioLines, Camera, Layers, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
@@ -36,21 +45,6 @@ interface FloraLocationState extends FloraViewLocationState {
     seed: string;
   };
 }
-
-function formatSeed(flora: ApiFlora) {
-  const seedSource = flora.generative?.soilId || flora.generative?.soilName || flora._id;
-  return `#${seedSource.slice(-6).toUpperCase()}`;
-}
-
-function formatGeneration(value?: number) {
-  const safe = Number.isFinite(value) ? value : 0;
-  return `GEN_${safe}`;
-}
-
-function ensureHandle(username: string) {
-  return username.startsWith("@") ? username : `@${username}`;
-}
-
 
 const VELLUM_HOVER_DELAY_MS = 1000;
 
@@ -178,102 +172,34 @@ export default function FloraReader() {
 
   const derived = (() => {
     if (flora) {
-      const authorName =
-        flora.authorUsername ??
-        (typeof flora.author === "object" && flora.author && "username" in flora.author
-          ? (flora.author as { username: string }).username
-          : null);
-      const author = authorName
-        ? authorName.startsWith("@")
-          ? authorName
-          : `@${authorName}`
-        : "@Anonymous";
-
-      const coAuthorHandles = (flora.coAuthors || [])
-        .map((item) => (typeof item === "string" ? item : item.username))
-        .filter((value): value is string => Boolean(value))
-        .map(ensureHandle);
-
-      const labState = flora.generative?.labState as { lineageUsernames?: string[]; lineageFloraIds?: string[] } | undefined;
-      const lineageUsernames = labState?.lineageUsernames;
-      const lineageFloraIds = labState?.lineageFloraIds;
-      const fromLabState = Array.isArray(lineageUsernames)
-        ? lineageUsernames.map(ensureHandle)
-        : [];
-
-      let allHandles: string[];
-      if (fromLabState.length > 0) {
-        allHandles = fromLabState;
-      } else if (coAuthorHandles.length > 0) {
-        allHandles = [...coAuthorHandles, author];
-      } else {
-        allHandles = [author];
-      }
-
-      const rootFloraId = flora.lineage?.rootFloraId
-        ? String(flora.lineage.rootFloraId)
-        : undefined;
-      const parentFloraId = flora.lineage?.parentFloraId
-        ? String(flora.lineage.parentFloraId)
-        : undefined;
-      const isCutting = Boolean(flora.lineage?.parentFloraId || flora.lineage?.rootFloraId);
-
-      const lineageItems: { handle: string; floraId?: string }[] = allHandles.map(
-        (handle, i) => {
-          let floraId: string | undefined;
-          if (Array.isArray(lineageFloraIds) && i < lineageFloraIds.length) {
-            floraId = lineageFloraIds[i];
-          } else if ((isCutting || allHandles.length === 1) && i === allHandles.length - 1) {
-            floraId = flora._id;
-          } else if (i === 0 && rootFloraId) {
-            floraId = rootFloraId;
-          } else if (i === allHandles.length - 1 && parentFloraId && allHandles.length === 2) {
-            floraId = parentFloraId;
-          } else if (i === 0 && parentFloraId && !rootFloraId) {
-            floraId = parentFloraId;
-          } else if (allHandles.length > 2 && i === allHandles.length - 2 && parentFloraId) {
-            floraId = parentFloraId;
-          }
-          return { handle, floraId: floraId ? String(floraId) : undefined };
-        }
-      );
-
-      const authorUsername = authorName?.replace(/^@+/, "") ?? null;
-      const canLinkToProfile =
-        authorUsername &&
-        author !== "@Anonymous" &&
-        !authorUsername.startsWith("[forbidden_author]");
+      const { author, authorName } = resolveFloraAuthor(flora);
+      const lineageItems = buildLineageItems(flora, author);
+      const authorUsername = resolveAuthorUsernameForProfile(author, authorName);
 
       return {
         id: flora._id,
         title: flora.title,
         author,
-        authorUsername: canLinkToProfile ? authorUsername : null,
+        authorUsername,
         seed: formatSeed(flora),
         generation: formatGeneration(flora.lineage?.generation),
-        image:
-          flora.thumbnailUrl ??
-          floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
+        image: getFloraDisplayImage(flora),
         text: flora.text ?? "",
-        lineageItems: lineageItems.length ? lineageItems : [{ handle: author, floraId: flora._id }],
+        lineageItems: lineageItems.length
+          ? lineageItems
+          : [{ handle: author, floraId: flora._id }],
         status: flora.status ?? "blossoming",
       };
     }
 
     if (state?.flora) {
       const stateAuthor = state.flora.author;
-      const stateUsername = typeof stateAuthor === "string"
-        ? stateAuthor.replace(/^@+/, "")
-        : null;
-      const stateCanLink =
-        stateUsername &&
-        stateAuthor !== "@Anonymous" &&
-        !stateUsername.startsWith("[forbidden_author]");
+      const stateCanLink = resolveAuthorUsernameFromHandle(stateAuthor);
       return {
         id: state.flora.id,
         title: state.flora.title,
         author: state.flora.author,
-        authorUsername: stateCanLink ? stateUsername : null,
+        authorUsername: stateCanLink,
         seed: state.flora.seed,
         generation: state.flora.generation || "GEN_0",
         image: state.flora.image,
@@ -505,10 +431,7 @@ export default function FloraReader() {
   const installationSrc = `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1&apiBase=${encodeURIComponent(API_BASE_URL)}`;
   const canReveal = minLoadTimeElapsed;
 
-  const lineageRows: (typeof derived.lineageItems)[] = [];
-  for (let i = 0; i < derived.lineageItems.length; i += 2) {
-    lineageRows.push(derived.lineageItems.slice(i, i + 2));
-  }
+  const lineageRows = chunkLineageItems(derived.lineageItems);
 
   const lineageDash = (
     <span

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
-import TeamFooter from "@/components/team/TeamFooter";
+import TeamFooter from "@/components/layout/TeamFooter";
 import Lanyard from "@/components/laboratory/Lanyard";
 
 export default function Team() {

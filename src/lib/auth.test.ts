@@ -29,7 +29,7 @@ import type { AuthResponse, AuthUser } from "./auth"
 import {
   STRONG_FIXTURE,
   SIMPLE_LOGIN_FIXTURE,
-} from "@/test-utils/passwordFixtures"
+} from "@/test/passwordFixtures"
 
 const sampleUser: AuthUser = {
   id: "u1",

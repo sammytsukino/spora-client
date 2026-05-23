@@ -18,12 +18,10 @@ import ProfileFollowers from "../views/ProfileFollowers";
 import ProfileFollowing from "../views/ProfileFollowing";
 import Licensing from "../views/Licensing";
 import AdminPanel from "../views/AdminPanel";
-import Background from "../views/Background";
 import FloraDetail from "../views/FloraDetail";
 import FloraView from "../views/FloraView";
 import LabFullUnlock from "../views/LabFullUnlock";
 import ScrollToTop from "../components/layout/ScrollToTop";
-import AccentColorOnRouteChange from "../components/shared/AccentColorOnRouteChange";
 import ConsentModal, { getConsentGiven } from "../components/shared/ConsentModal";
 import DesktopExperienceBanner from "../components/shared/DesktopExperienceBanner";
 import SmoothScroll from "../components/shared/SmoothScroll";
@@ -54,7 +52,6 @@ function getRouteTitle(pathname) {
   if (pathname.startsWith(`${ROUTES.PROFILE}/`)) return "S P 0 R A - Profile";
   if (pathname === ROUTES.LICENSING) return "S P 0 R A - Licensing";
   if (pathname === ROUTES.ADMIN) return "S P 0 R A - Admin";
-  if (pathname === ROUTES.BACKGROUND) return "S P 0 R A - Background";
   return DEFAULT_TITLE;
 }
 
@@ -87,7 +84,6 @@ function RouterContent() {
       </a>
       <ScrollToTop />
       <SmoothScroll />
-      <AccentColorOnRouteChange />
       <DesktopExperienceBanner
         requiresConsent={!consentGiven}
         onConsentAccept={() => setConsentGiven(true)}
@@ -120,7 +116,6 @@ function RouterContent() {
         <Route path={`${ROUTES.PROFILE}/:username`} element={<PublicProfile />} />
         <Route path={ROUTES.LICENSING} element={<Licensing />} />
         <Route path={ROUTES.ADMIN} element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-        <Route path={ROUTES.BACKGROUND} element={<Background />} />
       </Routes>
     </>
   );

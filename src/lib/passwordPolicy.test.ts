@@ -8,7 +8,7 @@ import {
   NO_DIGIT_FIXTURE,
   NO_SPECIAL_FIXTURE,
   WHITESPACE_FIXTURE,
-} from "@/test-utils/passwordFixtures"
+} from "@/test/passwordFixtures"
 
 describe("validatePasswordClient", () => {
   it("accepts a password that satisfies every rule", () => {

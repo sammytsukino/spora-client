@@ -12,6 +12,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { getOptimizedThumbnailUrl } from "@/lib/cloudinary"
+import { DEFAULT_MARQUEE_THUMBNAIL_URLS } from "@/data/flora-thumbnail-urls"
 import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 
 type SpringOptions = {
@@ -127,51 +128,7 @@ export default function SimpleMarquee({
   slowDownSpringConfig = { damping: 60, stiffness: 300 },
 }: SimpleMarqueeProps) {
   const location = useLocation()
-  const defaultImages = [
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-21_dzwlna.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-20_fww5yp.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-19_haco8y.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532656/img-18_djc6db.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-17_e6uarr.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-16_gf9k7x.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-15_wpwz9h.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-14_gbx118.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532652/img-13_qncmyd.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532651/img-12_swbm8v.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-11_la2ekj.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-10_kb18zx.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-9_szhd9n.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532648/img-8_hwuplt.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532647/img-7_ib8m6b.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532645/img-6_qmsbif.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532645/img-5_vjq8n7.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532645/img-4_aqvxp1.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532644/img-3_lliaa8.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532641/img-2_nzhkha.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532641/img-1_udglua.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532640/img-0_ioib2p.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532640/img-42_xvth2k.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532640/img-41_uiqo53.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532640/img-40_igwvyl.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532635/img-39_nxcwr9.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532635/img-38_s25crl.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532635/img-37_hwxtlq.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532634/img-36_spfjwb.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532634/img-35_zeyrtn.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532634/img-34_euvf80.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532632/img-33_bnpq17.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532632/img-32_g3gqy8.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532627/img-31_xxdmdc.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532627/img-29_k7rpus.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532627/img-30_ngmjrl.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532627/img-28_ttg3cg.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532627/img-27_bzyii3.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-24_xw9s6d.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-25_riiddk.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-26_gxvw9g.png",
-    "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png"
-  ]
+  const defaultImages = DEFAULT_MARQUEE_THUMBNAIL_URLS
 
   const itemsToUse: FloraThumbnail[] =
     floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))

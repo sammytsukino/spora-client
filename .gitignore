@@ -31,3 +31,4 @@ dist-ssr
 *.sln
 *.sw?
 .cursor
+docs/ARCHITECTURE_AND_TESTING.md

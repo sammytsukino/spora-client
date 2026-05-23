@@ -17,7 +17,7 @@ import SignInForm from "@/components/home/SignInForm"
 import ProtectedRoute from "@/components/shared/ProtectedRoute"
 import { ROUTES } from "@/constants/routes"
 import { TOKEN_KEY } from "@/lib/auth"
-import { SIMPLE_LOGIN_FIXTURE } from "@/test-utils/passwordFixtures"
+import { SIMPLE_LOGIN_FIXTURE } from "@/test/passwordFixtures"
 
 beforeEach(() => {
   localStorage.clear()

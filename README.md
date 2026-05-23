@@ -56,10 +56,21 @@ The application uses `react-router-dom` with intentional route boundaries:
 ▸ Accessibility baseline across key views (main landmarks, keyboard-safe overlays, labels/ARIA updates)
 
 ### Visual Layer
-▸ React + TypeScript + Vite  
-▸ P5.js + Three.js ecosystem (`@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`)  
+▸ **Vite 7 SPA** (React + TypeScript) — not Next.js  
+▸ P5.js (loaded via CDN in `public/Installation.html`) + Three.js ecosystem (`@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`)  
 ▸ Tailwind CSS v4 + utility helpers (`clsx`, `tailwind-merge`)  
 ▸ Motion-driven UI animation
+
+### Generative iframe architecture
+The Laboratory and Flora Reader embed `public/Installation.html` (~3.6k lines of inline p5.js). React shells (`Installation.tsx`, `FloraReader.tsx`) pass query params (`floraId`, `reader=1`, `apiBase`) and communicate over `postMessage` (`spora:reader-ready`, `spora:setWind`, `spora:regenerate`, `spora:capture`).
+
+`npm run prebuild` (also runs before `build`) generates `public/installation/mood-lexicons.js` from `src/data/mood-lexicons.ts`.
+
+### Flora viewing (mobile vs desktop)
+Route `/flora/:id` renders `FloraView`:
+▸ **Desktop (`md+`)**: `FloraReader` — iframe visualization + TTS controls  
+▸ **Mobile**: `FloraDetail` — static detail layout  
+Route `/flora/:id/details` always renders `FloraDetail`.
 
 ⟡ ═════════════════════════════════════════ ⟡
 
@@ -105,7 +116,7 @@ Admins can safeguard the ecosystem by:
 ▸ Lucide icons
 
 ### Generative / 3D
-▸ P5.js
+▸ P5.js (CDN in `Installation.html`, not an npm dependency)  
 ▸ Three.js  
 ▸ `@react-three/fiber`  
 ▸ `@react-three/drei`  
@@ -175,7 +186,9 @@ npm run generate:lexicons # Generate installation lexicons
 
 ```text
 spora-client/
-├── public/                     # Static files
+├── public/
+│   ├── Installation.html       # p5 generative lab + reader iframe
+│   └── installation/           # Generated lexicons + mask URLs
 ├── scripts/                    # Build-time content scripts
 ├── src/
 │   ├── components/             # Reusable UI by domain
@@ -185,15 +198,15 @@ spora-client/
 │   │   ├── laboratory/
 │   │   ├── layout/
 │   │   ├── profile/
+│   │   ├── reader/
 │   │   ├── shared/
 │   │   └── ui/
-│   ├── constants/              # Route constants/helpers
+│   ├── constants/              # Route + media constants
 │   ├── data/                   # Static and generated datasets
 │   ├── hooks/                  # Reusable React hooks
-│   ├── integration/            # Integration tests
 │   ├── lib/                    # API clients + core frontend logic
 │   ├── router/                 # Router configuration
-│   ├── test/                   # Test setup
+│   ├── test/                   # Test setup, fixtures, integration tests
 │   ├── views/                  # Top-level pages
 │   └── main.tsx                # App bootstrap
 └── README.md
@@ -204,7 +217,7 @@ spora-client/
 ## ◉ Backend Contract (Required)
 
 This client grows on top of `spora-server` endpoints under `/api`, including:
-▸ Auth (`/auth/*`) with email verification + refresh token flow  
+▸ Auth (`/auth/*`) with JWT access tokens + refresh cookie flow  
 ▸ Floras (`/floras/*`) for browse/create/update  
 ▸ Reader (`/reader/tts`) for voice generation (optional server config)  
 ▸ Follows (`/follows/*`) for social graph  
@@ -270,6 +283,8 @@ The test suite protects both interaction quality and platform behavior:
 ▸ API wrapper unit tests  
 ▸ Auth flow integration tests  
 ▸ Route guard behavior tests
+
+**Architecture and coverage policy:** see [docs/ARCHITECTURE_AND_TESTING.md](docs/ARCHITECTURE_AND_TESTING.md) for why `public/Installation.html` is a monolithic p5 iframe and why `FloraReader.tsx` is excluded from Vitest coverage thresholds (thesis-ready rationale).
 
 For CI-like validation:
 ```bash

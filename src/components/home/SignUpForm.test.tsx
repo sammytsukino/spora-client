@@ -21,7 +21,7 @@ import {
   TOO_SHORT_FIXTURE,
   NO_UPPER_FIXTURE,
   NO_SPECIAL_FIXTURE,
-} from "@/test-utils/passwordFixtures"
+} from "@/test/passwordFixtures"
 
 function renderSignUp() {
   return render(

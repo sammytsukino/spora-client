@@ -1,16 +1,7 @@
-import path from "path"
-import tailwindcss from "@tailwindcss/vite"
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vitest/config"
+import { mergeConfig } from "vitest/config"
+import viteConfig from "./vite.config"
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  assetsInclude: ["**/*.glb"],
+export default mergeConfig(viteConfig, {
   test: {
     globals: true,
     environment: "jsdom",
@@ -43,8 +34,8 @@ export default defineConfig({
         "**/*.spec.{ts,tsx}",
         "src/lib/api.ts",
         "src/lib/admin-pdf-export.ts",
-        "src/lib/accentColorCycling.ts",
         "src/hooks/useImageLuminance.ts",
+        // Excluded from thresholds: iframe + TTS + postMessage shell — see docs/ARCHITECTURE_AND_TESTING.md
         "src/views/FloraReader.tsx",
       ],
     },
