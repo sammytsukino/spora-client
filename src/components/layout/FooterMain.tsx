@@ -10,11 +10,11 @@ export default function FooterMain() {
     <footer className="flex h-full w-full flex-col justify-between px-6 py-8 text-spora-primary md:px-12 lg:px-16">
       <div className="flex items-start justify-between text-lg sm:text-2xl font-supply-mono mb-10 sm:mb-12">
         <p className="whitespace-pre leading-tight">
-          Not{"\n"}
+          not{"\n"}
           revolutionary
         </p>
         <p className="whitespace-pre leading-tight text-right">
-          But{"\n"}
+          but{"\n"}
           evolutionary
         </p>
       </div>
