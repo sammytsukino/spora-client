@@ -222,7 +222,7 @@ export default function AdminPanel() {
                     items={flagged}
                     title="Reported Floras"
                     onViewContent={(item) =>
-                      window.open(floraPath(item.contentId), "_blank")
+                      navigate(floraPath(item.contentId), { state: floraOpenState })
                     }
                     onHideFlora={onHideFlora}
                     onDownload={(item) =>

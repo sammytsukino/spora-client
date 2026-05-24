@@ -23,6 +23,7 @@ import {
 } from "@/lib/floraPresentation";
 import { AudioLines, Camera, Layers, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
+import { ROUTES } from "@/constants/routes";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu, {
   readerChromeButtonClass,
@@ -550,9 +551,10 @@ export default function FloraReader() {
                   }}
                   type="button"
                   onClick={() => {
-                    const labPath = isLabFullAccessible() ? "/laboratory/full" : "/laboratory";
-                    const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
-                    window.open(url, "_blank", "noopener,noreferrer");
+                    const labPath = isLabFullAccessible()
+                      ? ROUTES.LABORATORY_FULL
+                      : ROUTES.LABORATORY;
+                    navigate(`${labPath}?floraId=${encodeURIComponent(derived.id)}`);
                   }}
                   className={`font-supply-mono text-[11px] sm:text-xs tracking-[0.25em] uppercase cursor-pointer transition-colors ${readerChromeBtn} ${textColorClass}`}
                 >

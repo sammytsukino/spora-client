@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/layout/FooterAlter";
@@ -69,8 +69,12 @@ export default function Greenhouse() {
   const [floras, setFloras] = useState<UiFlora[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
   const location = useLocation();
+
+  const floraLinkState = (flora: UiFlora) => ({
+    flora,
+    ...readerNavState(location.pathname, location.search),
+  });
 
   const useFollowingFilter = feedScope === "following";
 
@@ -142,12 +146,6 @@ export default function Greenhouse() {
   const sideFloras = restFloras.slice(0, 2);
   const remainingFloras = restFloras.slice(2);
 
-  const handleCardClick = (flora: UiFlora) => {
-    navigate(floraPath(flora.id), {
-      state: { flora, ...readerNavState(location.pathname, location.search) },
-    });
-  };
-
   useEffect(() => {
     document.body.classList.add('hide-scrollbar')
     document.documentElement.classList.add('hide-scrollbar')
@@ -215,7 +213,11 @@ export default function Greenhouse() {
             <div className="flex flex-col gap-6">
               {featured && (
                 <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
-                      <FeaturedFlora flora={featured} onClick={() => handleCardClick(featured)} />
+                      <FeaturedFlora
+                        flora={featured}
+                        to={floraPath(featured.id)}
+                        linkState={floraLinkState(featured)}
+                      />
 
                   <aside className="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-1 gap-6">
                     {sideFloras.map((flora) => (
@@ -223,7 +225,8 @@ export default function Greenhouse() {
                         key={flora.id}
                         flora={flora}
                         authorUsername={flora.authorUsername}
-                        onClick={() => handleCardClick(flora)}
+                        to={floraPath(flora.id)}
+                        linkState={floraLinkState(flora)}
                       />
                     ))}
                   </aside>
@@ -237,7 +240,8 @@ export default function Greenhouse() {
                       key={flora.id}
                       flora={flora}
                       authorUsername={flora.authorUsername}
-                      onClick={() => handleCardClick(flora)}
+                      to={floraPath(flora.id)}
+                      linkState={floraLinkState(flora)}
                     />
                   ))}
                 </div>

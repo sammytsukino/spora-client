@@ -9,6 +9,8 @@ interface FloraCardProps {
   author: string;
   seed: string;
   authorUsername?: string;
+  to?: string;
+  linkState?: unknown;
   onClick?: () => void;
 }
 
@@ -21,6 +23,8 @@ export default function FloraCard({
   author,
   seed,
   authorUsername,
+  to,
+  linkState,
   onClick,
 }: FloraCardProps) {
   return (
@@ -33,6 +37,8 @@ export default function FloraCard({
       author={author}
       seed={seed}
       authorUsername={authorUsername}
+      to={to}
+      linkState={linkState}
       onClick={onClick}
       variant="garden"
     />

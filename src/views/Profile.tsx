@@ -143,16 +143,6 @@ export default function Profile({
     }
   };
 
-  const handleCardClick = (floraId: string) => {
-    if (onCardClick) {
-      onCardClick();
-    } else {
-      navigate(floraPath(floraId), {
-        state: readerNavState(location.pathname, location.search),
-      });
-    }
-  };
-
   if (loading) {
     return (
       <div className="w-full overflow-x-hidden bg-spora-primary-light min-h-screen flex items-center justify-center">
@@ -236,7 +226,12 @@ export default function Profile({
                   excerpt={flora.excerpt}
                   author={flora.author}
                   seed={flora.seed}
-                  onClick={() => handleCardClick(flora.id)}
+                  {...(onCardClick
+                    ? { onClick: () => onCardClick() }
+                    : {
+                        to: floraPath(flora.id),
+                        linkState: readerNavState(location.pathname, location.search),
+                      })}
                 />
               ))}
             </div>

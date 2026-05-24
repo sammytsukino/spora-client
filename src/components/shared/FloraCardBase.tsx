@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { floraImages } from "@/data/flora-data";
 
 interface FloraCardBaseProps {
@@ -10,6 +11,8 @@ interface FloraCardBaseProps {
   author: string;
   seed: string;
   authorUsername?: string;
+  to?: string;
+  linkState?: unknown;
   onClick?: () => void;
   variant?: 'garden' | 'greenhouse';
 }
@@ -22,10 +25,15 @@ export default function FloraCardBase({
   excerpt,
   author,
   seed,
+  to,
+  linkState,
   onClick,
   variant = 'garden',
 }: FloraCardBaseProps) {
   const isGarden = variant === 'garden';
+  const cardClassName = `group bg-spora-primary-light flex flex-col relative transition-all duration-fast ease-spora-out cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 ${
+    isGarden ? 'active:scale-[0.98]' : ''
+  } border border-spora-primary no-underline text-inherit`;
   const [imgSrc, setImgSrc] = useState(image);
   const [loadAttempt, setLoadAttempt] = useState(0);
   const fallbackImage = useMemo(() => {
@@ -43,23 +51,8 @@ export default function FloraCardBase({
     setLoadAttempt(0);
   }, [image]);
 
-  return (
-    <article
-      className={`group bg-spora-primary-light flex flex-col relative transition-all duration-fast ease-spora-out cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 ${
-        isGarden ? 'active:scale-[0.98]' : ''
-      } border border-spora-primary`}
-      style={{ aspectRatio: '4/5' }}
-      onClick={onClick}
-      tabIndex={0}
-      role="button"
-      aria-label={`Open flora ${title}`}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
+  const cardContent = (
+    <>
       <div className={`flex justify-between items-start ${isGarden ? 'p-6 pb-4' : 'p-4 md:p-5 mb-4'}`}>
         <span className={`font-supply-mono ${isGarden ? 'text-xs font-medium' : 'text-[10px]'}`}>
           {id}
@@ -154,6 +147,39 @@ export default function FloraCardBase({
           <span>{isGarden ? `SEED: ${seed}` : seed}</span>
         </div>
       </div>
+    </>
+  );
+
+  if (to) {
+    return (
+      <Link
+        to={to}
+        state={linkState}
+        className={cardClassName}
+        style={{ aspectRatio: '4/5' }}
+        aria-label={`Open flora ${title}`}
+      >
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <article
+      className={cardClassName}
+      style={{ aspectRatio: '4/5' }}
+      onClick={onClick}
+      tabIndex={0}
+      role="button"
+      aria-label={`Open flora ${title}`}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
+      {cardContent}
     </article>
   );
 }

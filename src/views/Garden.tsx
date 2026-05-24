@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import PageTitle from "@/components/ui/PageTitle";
 import FooterAlter from "@/components/layout/FooterAlter";
@@ -63,7 +63,6 @@ export default function Garden() {
   const [floras, setFloras] = useState<UiFlora[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
   const location = useLocation();
 
   const useFollowingFilter = feedScope === "following";
@@ -129,11 +128,10 @@ export default function Garden() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loadMoreCards]);
 
-  const handleCardClick = (flora: UiFlora) => {
-    navigate(floraPath(flora.id), {
-      state: { flora, ...readerNavState(location.pathname, location.search) },
-    });
-  };
+  const floraLinkState = (flora: UiFlora) => ({
+    flora,
+    ...readerNavState(location.pathname, location.search),
+  });
 
   const visibleFloras = filteredFloras.slice(0, visibleCount);
 
@@ -206,7 +204,8 @@ export default function Garden() {
                   author={flora.author}
                   seed={flora.seed}
                   authorUsername={flora.authorUsername}
-                  onClick={() => handleCardClick(flora)}
+                  to={floraPath(flora.id)}
+                  linkState={floraLinkState(flora)}
                 />
               ))}
             </div>

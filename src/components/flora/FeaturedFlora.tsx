@@ -1,25 +1,19 @@
+import { Link } from "react-router-dom";
 import type { FloraItem } from "@/data/flora-data";
 
 interface FeaturedFloraProps {
   flora: FloraItem;
+  to?: string;
+  linkState?: unknown;
   onClick?: () => void;
 }
 
-export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
-  return (
-    <section 
-      className="group bg-spora-primary-light p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 border border-spora-primary"
-      onClick={onClick}
-      tabIndex={0}
-      role="button"
-      aria-label={`Open flora ${flora.title}`}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
+export default function FeaturedFlora({ flora, to, linkState, onClick }: FeaturedFloraProps) {
+  const cardClassName =
+    "group bg-spora-primary-light p-6 md:p-8 lg:p-10 flex flex-col relative transition-colors duration-300 cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 border border-spora-primary no-underline text-inherit";
+
+  const cardContent = (
+    <>
       <div className="absolute top-6 right-6 z-20 bg-spora-primary text-spora-accent-secondary font-supply-mono text-[9px] md:text-xs px-2.5 py-1 uppercase tracking-[0.18em]">
         S-TIER // FEATURED
       </div>
@@ -63,6 +57,37 @@ export default function FeaturedFlora({ flora, onClick }: FeaturedFloraProps) {
           <span>SEED: {flora.seed}</span>
         </div>
       </div>
+    </>
+  );
+
+  if (to) {
+    return (
+      <Link
+        to={to}
+        state={linkState}
+        className={cardClassName}
+        aria-label={`Open flora ${flora.title}`}
+      >
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <section
+      className={cardClassName}
+      onClick={onClick}
+      tabIndex={0}
+      role="button"
+      aria-label={`Open flora ${flora.title}`}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
+      {cardContent}
     </section>
   );
 }

@@ -103,11 +103,10 @@ export default function PublicProfile() {
       : floras.filter((f) => f.generation === activeFilter);
   const visibleFloras = filteredFloras.slice(0, visibleCount);
 
-  const handleCardClick = (flora: UiFlora) => {
-    navigate(floraPath(flora.id), {
-      state: { flora, ...readerNavState(location.pathname, location.search) },
-    });
-  };
+  const floraLinkState = (flora: UiFlora) => ({
+    flora,
+    ...readerNavState(location.pathname, location.search),
+  });
 
   if (!username) return null;
 
@@ -206,7 +205,8 @@ export default function PublicProfile() {
                   author={flora.author}
                   seed={flora.seed}
                   authorUsername={user.username}
-                  onClick={() => handleCardClick(flora)}
+                  to={floraPath(flora.id)}
+                  linkState={floraLinkState(flora)}
                 />
               ))}
             </div>

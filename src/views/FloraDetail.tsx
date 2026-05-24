@@ -17,6 +17,7 @@ import { isLabFullAccessible, getStoredToken, getStoredUser } from "@/lib/auth";
 import { createReport, type ReportCategory } from "@/lib/reports-api";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaImageLoader from "@/components/shared/SporaImageLoader";
+import { ROUTES } from "@/constants/routes";
 
 interface FloraLocationState extends FloraViewLocationState {
   flora?: {
@@ -273,9 +274,10 @@ export default function FloraDetail() {
               <button
                 type="button"
                 onClick={() => {
-                  const labPath = isLabFullAccessible() ? "/laboratory/full" : "/laboratory";
-                  const url = `${labPath}?floraId=${encodeURIComponent(derived.id)}`;
-                  window.open(url, "_blank", "noopener,noreferrer");
+                  const labPath = isLabFullAccessible()
+                    ? ROUTES.LABORATORY_FULL
+                    : ROUTES.LABORATORY;
+                  navigate(`${labPath}?floraId=${encodeURIComponent(derived.id)}`);
                 }}
                 className="absolute bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex flex-col items-center gap-1 bg-spora-primary text-spora-primary-light font-supply-mono py-3 px-4 border border-spora-primary hover:bg-[var(--spora-accent-secondary)] hover:text-spora-primary hover:border-[var(--spora-accent-secondary)] transition-colors cursor-pointer"
               >

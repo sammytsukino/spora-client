@@ -2330,7 +2330,7 @@
             if (isBlossomingMode && lockedBaseText) {
                 const baseTextDisplay = document.getElementById("baseTextDisplay");
                 const newTextInput = document.getElementById("newTextInput");
-                const baseText = baseTextDisplay ? baseTextDisplay.textContent : lockedBaseText;
+                const baseText = lockedBaseText || (baseTextDisplay ? baseTextDisplay.textContent : "");
                 const newText = newTextInput ? newTextInput.textContent : "";
                 if (newText.trim() === "" && loadedFloraLabState) {
                     lastBlossomingContentSignature = getContentSignature(baseText);
@@ -2549,12 +2549,17 @@
                 ui.classList.remove("is-locked");
 
                 ui.querySelectorAll("input, textarea, select, button, [contenteditable]").forEach((el) => {
+                    const id = el.id || "";
+                    if (isBlossomingMode && lockedBaseText && id === "baseTextDisplay") {
+                        return;
+                    }
                     el.disabled = false;
                     el.removeAttribute("disabled");
                     if (el.hasAttribute("contenteditable")) {
                         el.setAttribute("contenteditable", "true");
                     }
                 });
+                applyCuttingTextLocks();
             }
         }
 
@@ -2586,6 +2591,29 @@
             });
         }
 
+        let cuttingTextLocksBound = false;
+
+        function applyCuttingTextLocks() {
+            if (!isBlossomingMode || !lockedBaseText) return;
+            const baseTextDisplay = document.getElementById("baseTextDisplay");
+            const newTextInput = document.getElementById("newTextInput");
+            if (!baseTextDisplay || !newTextInput) return;
+
+            baseTextDisplay.textContent = lockedBaseText;
+            baseTextDisplay.setAttribute("contenteditable", "false");
+            baseTextDisplay.setAttribute("aria-readonly", "true");
+            newTextInput.setAttribute("contenteditable", "true");
+
+            if (!cuttingTextLocksBound) {
+                cuttingTextLocksBound = true;
+                baseTextDisplay.addEventListener("beforeinput", (e) => e.preventDefault());
+                baseTextDisplay.addEventListener("keydown", (e) => {
+                    if (e.key !== "Tab") e.preventDefault();
+                });
+                baseTextDisplay.addEventListener("paste", (e) => e.preventDefault());
+            }
+        }
+
         function enableAppendOnlyText(baseText, newTextToRestore) {
             const baseTextDisplay = document.getElementById("baseTextDisplay");
             const newTextInput = document.getElementById("newTextInput");
@@ -2599,6 +2627,8 @@
             newTextInput.setAttribute("contenteditable", "true");
             newTextInput.setAttribute('data-placeholder', 'Continue here to make your Flora grow...');
             newTextInput.textContent = (newTextToRestore != null && newTextToRestore !== undefined) ? String(newTextToRestore) : "";
+
+            applyCuttingTextLocks();
 
             setTimeout(() => {
                 newTextInput.focus();
@@ -2728,10 +2758,14 @@
         }
 
         function getFullText() {
-            const baseTextDisplay = document.getElementById("baseTextDisplay");
             const newTextInput = document.getElementById("newTextInput");
-            const baseText = baseTextDisplay ? baseTextDisplay.textContent : "";
             const newText = newTextInput ? newTextInput.textContent : "";
+            if (isBlossomingMode && lockedBaseText) {
+                if (lockedBaseText && newText) return lockedBaseText + "\n" + newText;
+                return lockedBaseText + newText;
+            }
+            const baseTextDisplay = document.getElementById("baseTextDisplay");
+            const baseText = baseTextDisplay ? baseTextDisplay.textContent : "";
             if (baseText && newText) return baseText + "\n" + newText;
             return baseText + newText;
         }
@@ -2905,7 +2939,7 @@
                 return {
                     title: document.getElementById("inpTitle").value,
                     text: fullText,
-                    baseText: lockedBaseText || (document.getElementById("baseTextDisplay")?.textContent ?? ""),
+                    baseText: lockedBaseText,
                     dominantMood: (currentMorph && currentMorph.dominantMood) || currentLabState.dominantMood || "neutral",
                     flowerSet: currentLabState.flowerSet || lastUsedSet,
                     wind: currentLabState.wind || { active: false, strength: 0.5 },
@@ -3133,7 +3167,8 @@
 
                 const floraId = data._id;
                 setTimeout(function () {
-                    window.open("/flora/" + floraId, "_blank");
+                    var target = window.top || window;
+                    target.location.href = "/flora/" + floraId;
                 }, 800);
             } catch (err) {
                 s.innerText = "NETWORK ERROR";
@@ -3323,6 +3358,8 @@
             const floraId = floraIdFromMsg || getQueryParam("floraId");
             if (!floraId) {
                 cuttingSourceFloraId = null;
+                lockedBaseText = "";
+                isBlossomingMode = false;
                 applyVisualState(DEFAULT_LAB_STATE);
                 return;
             }

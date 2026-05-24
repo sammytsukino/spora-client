@@ -1,26 +1,20 @@
+import { Link } from "react-router-dom";
 import type { FloraItem } from "@/data/flora-data";
 
 interface GreenhouseFloraCardProps {
   flora: FloraItem;
   authorUsername?: string;
+  to?: string;
+  linkState?: unknown;
   onClick?: () => void;
 }
 
-export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraCardProps) {
-  return (
-    <article
-      className="group bg-spora-primary-light p-4 md:p-5 flex flex-col relative transition-colors duration-fast ease-spora-out cursor-pointer hover:bg-spora-accent-secondary border border-spora-primary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2"
-      onClick={onClick}
-      tabIndex={0}
-      role="button"
-      aria-label={`Open flora ${flora.title}`}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          onClick?.();
-        }
-      }}
-    >
+export default function GreenhouseFloraCard({ flora, to, linkState, onClick }: GreenhouseFloraCardProps) {
+  const cardClassName =
+    "group bg-spora-primary-light p-4 md:p-5 flex flex-col relative transition-colors duration-fast ease-spora-out cursor-pointer hover:bg-spora-accent-secondary border border-spora-primary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 no-underline text-inherit";
+
+  const cardContent = (
+    <>
       <div className="flex justify-between items-start mb-4">
         <span className="font-supply-mono text-[10px]">{flora.id}</span>
         <span className="font-supply-mono text-[9px] border border-spora-primary px-1.5 py-0.5 uppercase">
@@ -61,6 +55,37 @@ export default function GreenhouseFloraCard({ flora, onClick }: GreenhouseFloraC
         <span>{flora.author}</span>
         <span>{flora.seed}</span>
       </div>
+    </>
+  );
+
+  if (to) {
+    return (
+      <Link
+        to={to}
+        state={linkState}
+        className={cardClassName}
+        aria-label={`Open flora ${flora.title}`}
+      >
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <article
+      className={cardClassName}
+      onClick={onClick}
+      tabIndex={0}
+      role="button"
+      aria-label={`Open flora ${flora.title}`}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick?.();
+        }
+      }}
+    >
+      {cardContent}
     </article>
   );
 }
