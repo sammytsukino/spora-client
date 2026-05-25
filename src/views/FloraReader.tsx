@@ -26,9 +26,9 @@ import { API_BASE_URL } from "@/lib/api";
 import { ROUTES } from "@/constants/routes";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
 import SporaDetailsMenu, {
-  readerChromeButtonClass,
   type SporaDetailsMenuTone,
 } from "@/components/shared/SporaDetailsMenu";
+import { readerChromeButtonClass } from "@/components/shared/sporaDetailsMenuStyles";
 import ReaderTutorialOverlay from "@/components/reader/ReaderTutorialOverlay";
 import { getReaderTutorialDone } from "@/components/reader/readerTutorialStorage";
 import SporaImageLoader, {

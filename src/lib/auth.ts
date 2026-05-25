@@ -129,6 +129,7 @@ export async function logout(): Promise<void> {
   try {
     await api.post("/auth/logout");
   } catch {
+    void 0;
   }
   clearSession();
 }

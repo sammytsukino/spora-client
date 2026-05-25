@@ -1,4 +1,3 @@
-/** Default Cloudinary thumbnail URLs for home marquee fallbacks. */
 export const DEFAULT_MARQUEE_THUMBNAIL_URLS = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-21_dzwlna.png",
@@ -45,5 +44,4 @@ export const DEFAULT_MARQUEE_THUMBNAIL_URLS = [
   "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532626/img-23_tk2fzq.png",
 ] as const;
 
-/** Subset used when the SVG-path marquee has no API thumbnails. */
 export const MARQUEE_SVG_FALLBACK_URLS = DEFAULT_MARQUEE_THUMBNAIL_URLS.slice(0, 14);

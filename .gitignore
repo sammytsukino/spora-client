@@ -16,7 +16,7 @@ dist
 dist-ssr
 *.local
 
-# Env (nunca subir)
+# Env (never commit)
 .env
 .env.local
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
-import { getConsentGiven, setConsentGiven } from "@/components/shared/ConsentModal";
+import { getConsentGiven, setConsentGiven } from "@/lib/consentStorage";
 
 const BANNER_DISMISSED_KEY = "spora_desktop_banner_dismissed";
 

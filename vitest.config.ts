@@ -35,7 +35,7 @@ export default mergeConfig(viteConfig, {
         "src/lib/api.ts",
         "src/lib/admin-pdf-export.ts",
         "src/hooks/useImageLuminance.ts",
-        // Excluded from thresholds: iframe + TTS + postMessage shell — see docs/ARCHITECTURE_AND_TESTING.md
+        // Excluded from thresholds: iframe + TTS + postMessage shell
         "src/views/FloraReader.tsx",
       ],
     },

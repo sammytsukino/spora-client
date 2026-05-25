@@ -297,7 +297,7 @@ The test suite protects both interaction quality and platform behavior:
 ▸ Auth flow integration tests  
 ▸ Route guard behavior tests
 
-**Architecture and coverage policy:** see [docs/ARCHITECTURE_AND_TESTING.md](docs/ARCHITECTURE_AND_TESTING.md) for why `public/Installation.html` is a monolithic p5 iframe and why `FloraReader.tsx` is excluded from Vitest coverage thresholds (thesis-ready rationale).
+**Architecture and coverage policy:** `public/Installation.html` is a standalone p5 iframe (~3.6k lines) embedded from React to keep the generative engine’s own lifecycle decoupled from the component tree (`postMessage` contract between `Installation.tsx` / `FloraReader.tsx` and the iframe). Vitest coverage thresholds exclude `FloraReader.tsx` (iframe + TTS + DOM coupling); focused shell tests live in `FloraReader.test.tsx`, and backend TTS validation is in `spora-server` (`reader.routes.test.js`). The ESLint rule `react-hooks/set-state-in-effect` is intentionally off for existing fetch/sync effects; a post-TFG refactor is planned.
 
 For CI-like validation:
 ```bash
@@ -311,7 +311,7 @@ npm run build
 ## ◍ License
 
 This repository is part of the SPORA project.
-Code license details should be defined in the project `LICENSE` file.
+Code license details are defined in [`LICENSE.md`](./LICENSE.md).
 
 Individual Floras published in the platform are licensed by their authors under the platform licensing rules.
 
