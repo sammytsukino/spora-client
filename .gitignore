@@ -32,3 +32,4 @@ dist-ssr
 *.sw?
 .cursor
 docs/ARCHITECTURE_AND_TESTING.md
+docs/screenshots/README.md

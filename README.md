@@ -7,6 +7,7 @@
 ## ✦ Table of Contents
 
 - [What is SPORA Client?](#-what-is-spora-client)
+- [Screenshots](#-screenshots)
 - [Frontend Architecture](#-frontend-architecture)
 - [Main User Journeys (Client Side)](#-main-user-journeys-client-side)
 - [Tech Stack](#-tech-stack)
@@ -37,6 +38,54 @@ This repository holds the complete front-of-house experience:
 
 ⟡ ═════════════════════════════════════════ ⟡
 
+## ◈ Screenshots
+
+> **Replace placeholders:** add your PNG/WebP files under [`docs/screenshots/`](./docs/screenshots/) using the filenames below. Capture guide: [`docs/screenshots/README.md`](./docs/screenshots/README.md).
+
+### Platform overview
+
+| Home | Garden |
+|:----:|:------:|
+| ![Home — hero and marquee](./docs/screenshots/home-hero.gif) | ![Garden — blossoming flora grid](./docs/screenshots/garden.png) |
+| Landing (`/`): hero, marquee, navigation | Active ecosystem with generative thumbnails |
+
+| Greenhouse | Team |
+|:----------:|:----:|
+| ![Greenhouse — sealed works](./docs/screenshots/greenhouse.png) | ![Team — project credits and 3D lanyard](./docs/screenshots/team.png) |
+| Final / sealed floras | `/team` about page |
+
+### Auth and onboarding
+
+| Sign in | Sign up |
+|:-------:|:-------:|
+| ![Sign in — guest route](./docs/screenshots/signin.png) | ![Sign up — registration and password policy](./docs/screenshots/signup.png) |
+| `/signin` (redirects if already logged in) | `/signup` with honeypot protection |
+
+### Create and read
+
+![Laboratory — generative canvas and publish flow](./docs/screenshots/laboratory.png)
+
+*Laboratory (`/laboratory`, signed in): p5 iframe, text input, and publication controls.*
+
+| Desktop reader | Mobile detail |
+|:--------------:|:-------------:|
+| ![Flora Reader — desktop visualization and audio controls](./docs/screenshots/flora-reader.png) | ![Flora detail — mobile layout](./docs/screenshots/flora-detail-mobile.png) |
+| `/flora/:id` on desktop: iframe, wind/vellum, optional TTS | Static detail on narrow viewports |
+
+### Social, contact, and stewardship
+
+| Public profile | My profile |
+|:--------------:|:----------:|
+| ![Public profile — cultivator page](./docs/screenshots/profile.png) | ![My profile — signed-in account](./docs/screenshots/my-profile.png) |
+| `/profile/:username` | `/profile` with edit modal affordances |
+
+| Contact | Admin panel |
+|:-------:|:-----------:|
+| ![Contact — form flow](./docs/screenshots/contact.png) | ![Admin — metrics and moderation](./docs/screenshots/admin-panel.png) |
+| `/contact` (delivers to admin emails via API) | `/admin` (admin role) |
+
+⟡ ═════════════════════════════════════════ ⟡
+
 ## ♢ Frontend Architecture
 
 ### Routing and Access Model
@@ -46,6 +95,11 @@ The application uses `react-router-dom` with intentional route boundaries:
 ▸ Auth-only routes (`/laboratory`)  
 ▸ Session-unlock route for advanced lab mode (`/laboratory/full`)  
 ▸ Role-gated admin area (`/admin`)
+
+| Guest auth | Protected lab |
+|:----------:|:-------------:|
+| ![Sign in](./docs/screenshots/signin.png) | ![Laboratory — auth required](./docs/screenshots/laboratory.png) |
+| `/signin`, `/signup` via `GuestRoute` | `/laboratory` via `ProtectedRoute` |
 
 ### UI and State Strategy
 ▸ Component-driven UI in `src/components`  
@@ -64,6 +118,8 @@ The application uses `react-router-dom` with intentional route boundaries:
 ### Generative iframe architecture
 The Laboratory and Flora Reader embed `public/Installation.html` (~3.6k lines of inline p5.js). React shells (`Installation.tsx`, `FloraReader.tsx`) pass query params (`floraId`, `reader=1`, `apiBase`) and communicate over `postMessage` (`spora:reader-ready`, `spora:setWind`, `spora:regenerate`, `spora:capture`).
 
+![Laboratory iframe (React shell + p5 engine)](./docs/screenshots/laboratory.png) ![Flora Reader iframe (read mode + TTS shell)](./docs/screenshots/flora-reader.png)
+
 `npm run prebuild` (also runs before `build`) generates `public/installation/mood-lexicons.js` from `src/data/mood-lexicons.ts`.
 
 ### Flora viewing (mobile vs desktop)
@@ -72,20 +128,40 @@ Route `/flora/:id` renders `FloraView`:
 ▸ **Mobile**: `FloraDetail` — static detail layout  
 Route `/flora/:id/details` always renders `FloraDetail`.
 
+| Desktop | Mobile |
+|:-------:|:------:|
+| ![Flora Reader](./docs/screenshots/flora-reader.png) | ![Flora detail — mobile](./docs/screenshots/flora-detail-mobile.png) |
+
 ⟡ ═════════════════════════════════════════ ⟡
 
 ## ❖ Main User Journeys (Client Side)
+
+### 0) Join
+Cultivators enter through guest-only auth routes:
+▸ **Sign in** for returning users  
+▸ **Sign up** with password policy and honeypot bot protection  
+▸ Successful sign-up can route directly to the Laboratory
+
+| Sign in | Sign up |
+|:-------:|:-------:|
+| ![Sign in](./docs/screenshots/signin.png) | ![Sign up](./docs/screenshots/signup.png) |
 
 ### 1) Discover
 Explore the shared ecosystem through:
 ▸ **Garden** (active/blossoming ecosystem)  
 ▸ **Greenhouse** (sealed/final works)
 
+| Garden | Greenhouse |
+|:------:|:----------:|
+| ![Garden — discovery feed](./docs/screenshots/garden.png) | ![Greenhouse — sealed floras](./docs/screenshots/greenhouse.png) |
+
 ### 2) Create
 In **Laboratory / Installation**, cultivators:
 ▸ Write text  
 ▸ Trigger generative analysis + visual preview  
 ▸ Configure publication state and output
+
+![Laboratory — write to generate to publish](./docs/screenshots/laboratory.png)
 
 ### 3) Connect
 Profiles preserve social and authorship continuity through:
@@ -94,11 +170,22 @@ Profiles preserve social and authorship continuity through:
 ▸ Followers/following lists  
 ▸ Personal metrics and editable profile fields
 
-### 4) Moderate
+| Public profile | My profile |
+|:--------------:|:----------:|
+| ![Public profile](./docs/screenshots/profile.png) | ![My profile — edit and metrics](./docs/screenshots/my-profile.png) |
+
+### 4) Reach out
+The **Contact** form posts to `POST /api/contact` and notifies active admin emails (requires server SMTP).
+
+![Contact form](./docs/screenshots/contact.png)
+
+### 5) Moderate
 Admins can safeguard the ecosystem by:
 ▸ Audit users and content  
 ▸ Review reports and flagged items  
 ▸ Track platform metrics and usage charts
+
+![Admin panel — stewardship tools](./docs/screenshots/admin-panel.png)
 
 ⟡ ═════════════════════════════════════════ ⟡
 
@@ -222,6 +309,8 @@ spora-client/
 │   ├── test/                   # Test setup, fixtures, integration tests
 │   ├── views/                  # Top-level pages
 │   └── main.tsx                # App bootstrap
+├── docs/
+│   └── screenshots/            # README screenshot assets (see README inside)
 └── README.md
 ```
 
