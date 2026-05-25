@@ -246,8 +246,8 @@ Without a reachable backend **and a correctly configured `.env` on both repos**,
 ## ◈ Language Support
 
 SPORA currently supports usage in:
-▸ **Español**  
-▸ **Castellano**
+▸ **English**  
+▸ **Spanish**
 
 ⟡ ═════════════════════════════════════════ ⟡
 
