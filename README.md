@@ -150,13 +150,26 @@ npm install
 ```
 
 ### Environment Variables
-Create a `.env` file in the project root:
 
-```env
+> **Mandatory setup:** copy [`.env.example`](./.env.example) to `.env` before running the client.  
+> **Backend setup:** copy [`spora-server/.env.example`](../spora-server/.env.example) to `spora-server/.env` and configure **both** repos. SPORA only works correctly when client and server env files are aligned.
+
+```bash
+# spora-client/.env
 VITE_API_BASE_URL=http://localhost:4000/api
 ```
 
-If your backend runs elsewhere, point this variable to that API base URL.
+| Client variable | Must match on server |
+|---------------|----------------------|
+| `VITE_API_BASE_URL` → host + `/api` | Server `PORT` / public API URL |
+| SPA origin (e.g. `http://localhost:5173`) | `CORS_ORIGIN` includes that origin |
+| — | `FRONTEND_URL` = SPA URL without `/api` |
+
+**Cloudinary (server-side only):** thumbnail and avatar uploads are configured in `spora-server/.env`, not here. If your professor or deployment skips Cloudinary, floras will still save but **Garden cards will lack generative thumbnails** — see the Cloudinary section in [`spora-server/.env.example`](../spora-server/.env.example) for why that matters for evaluation.
+
+If the backend runs elsewhere, set `VITE_API_BASE_URL` to that API base (always including `/api`). Restart Vite after any change.
+
+Full comments: [`.env.example`](./.env.example)
 
 ### Run
 ```bash
@@ -226,7 +239,7 @@ This client grows on top of `spora-server` endpoints under `/api`, including:
 ▸ Admin (`/admin/*`) for role-based moderation and metrics  
 ▸ Contact (`/contact`) for contact-form delivery to active admin recipients
 
-Without a reachable backend, the collaborative lifecycle cannot be completed.
+Without a reachable backend **and a correctly configured `.env` on both repos**, the collaborative lifecycle cannot be completed. Use [`.env.example`](./.env.example) and [`spora-server/.env.example`](../spora-server/.env.example) as the single source of truth — especially **MongoDB**, **JWT**, **CORS**, and **Cloudinary** on the server.
 
 ⟡ ═════════════════════════════════════════ ⟡
 
