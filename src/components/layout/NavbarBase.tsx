@@ -140,6 +140,14 @@ export default function NavbarBase({
     };
   }, [showScrollProgress, showScrollBackground]);
 
+  const pathname = location.pathname.toLowerCase();
+  const isHome =
+    pathname === ROUTES.HOME || pathname === ROUTES.HOME_LEGACY;
+  const isGarden = pathname.startsWith(ROUTES.GARDEN);
+  const isGreenhouse = pathname.startsWith(ROUTES.GREENHOUSE);
+  const isLaboratoryPath =
+    pathname.startsWith(ROUTES.LABORATORY) || pathname.startsWith(`${ROUTES.LABORATORY}/`);
+
   const handleClick = (
     path: typeof ROUTES.GARDEN | typeof ROUTES.GREENHOUSE | typeof ROUTES.LABORATORY | typeof ROUTES.LABORATORY_FULL
   ) => {
@@ -150,11 +158,15 @@ export default function NavbarBase({
     }
   };
 
-  const pathname = location.pathname.toLowerCase();
-  const isGarden = pathname.startsWith(ROUTES.GARDEN);
-  const isGreenhouse = pathname.startsWith(ROUTES.GREENHOUSE);
-  const isLaboratoryPath =
-    pathname.startsWith(ROUTES.LABORATORY) || pathname.startsWith(`${ROUTES.LABORATORY}/`);
+  const handleLogoClick = () => {
+    if (isHome) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate(ROUTES.HOME);
+    }
+  };
+
+  const logoAriaLabel = isHome ? "Scroll to top" : "Go to home";
 
   const textColor = isDark
     ? "text-spora-text-secondary"
@@ -192,9 +204,9 @@ export default function NavbarBase({
           {(isTeam || isDark || isTransparent) && (
             <button
               type="button"
-              onClick={() => navigate(ROUTES.HOME)}
+              onClick={handleLogoClick}
               className="md:hidden flex items-center cursor-pointer"
-              aria-label="Go to home"
+              aria-label={logoAriaLabel}
             >
               <img
                 src={
@@ -213,8 +225,8 @@ export default function NavbarBase({
               <button
                 type="button"
                 className="flex items-center cursor-pointer"
-                onClick={() => navigate(ROUTES.HOME)}
-                aria-label="Go to home"
+                onClick={handleLogoClick}
+                aria-label={logoAriaLabel}
               >
                 <img
                   src={
