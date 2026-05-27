@@ -109,7 +109,7 @@ export default function FloraReader() {
     }
   }, []);
 
-  const handleFloraTextHoverEnter = useCallback(() => {
+  const handleLeftPanelHoverEnter = useCallback(() => {
     if (vellumHoverLeaveTimerRef.current) {
       clearTimeout(vellumHoverLeaveTimerRef.current);
       vellumHoverLeaveTimerRef.current = null;
@@ -121,7 +121,7 @@ export default function FloraReader() {
     }, VELLUM_HOVER_DELAY_MS);
   }, []);
 
-  const handleFloraTextHoverLeave = useCallback(() => {
+  const handleLeftPanelHoverLeave = useCallback(() => {
     if (vellumHoverEnterTimerRef.current) {
       clearTimeout(vellumHoverEnterTimerRef.current);
       vellumHoverEnterTimerRef.current = null;
@@ -473,7 +473,11 @@ export default function FloraReader() {
 
       <main className="relative z-10 flex h-screen flex-col overflow-hidden pt-20 pb-24 px-6 md:px-12 lg:px-16">
         <div className="flex flex-1 min-h-0 gap-6 md:gap-10">
-          <div className="flex flex-col flex-1 min-w-0 min-h-0">
+          <div
+            className="flex flex-col min-h-0 max-w-[90vw] md:max-w-[45ch] shrink-0 self-stretch"
+            onMouseEnter={handleLeftPanelHoverEnter}
+            onMouseLeave={handleLeftPanelHoverLeave}
+          >
             <div className="mb-4 flex items-center justify-between gap-4">
               <button
                 type="button"
@@ -519,8 +523,6 @@ export default function FloraReader() {
               <div
                 className="flora-reader-scroll font-bizud-mincho-bold text-[15px] sm:text-base leading-relaxed tracking-wide whitespace-pre-wrap flex-1 min-h-0 pr-2"
                 style={textShadowStyle}
-                onMouseEnter={handleFloraTextHoverEnter}
-                onMouseLeave={handleFloraTextHoverLeave}
               >
                 {text || (
                   <span className="opacity-70 italic">No text in this Flora.</span>
@@ -559,7 +561,7 @@ export default function FloraReader() {
             </div>
           </div>
 
-          <div className="flex flex-col items-end shrink-0 min-w-0">
+          <div className="flex flex-col items-end shrink-0 min-w-0 ml-auto">
             <SporaDetailsMenu
               label="Details"
               placement="down"
