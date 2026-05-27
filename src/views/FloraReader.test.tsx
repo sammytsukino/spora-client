@@ -2,6 +2,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 import { render, screen, waitFor, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
+import {
+  clearFloraPreview,
+  readFloraPreview,
+  stashFloraPreview,
+  type FloraPreview,
+} from "@/lib/floraPreviewCache"
 
 const getFlora = vi.hoisted(() => vi.fn())
 
@@ -27,6 +33,18 @@ vi.mock("@/components/shared/SporaDetailsMenu", async (importOriginal) => {
   }
 })
 
+vi.mock("@/components/shared/SporaImageLoader", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/components/shared/SporaImageLoader")>()
+  return {
+    ...actual,
+    SPORA_IFRAME_LOADER_MIN_MS: 0,
+  }
+})
+
+vi.mock("@/components/reader/ReaderTutorialOverlay", () => ({
+  default: () => null,
+}))
+
 import FloraReader from "./FloraReader"
 
 const sampleFlora = {
@@ -38,7 +56,18 @@ const sampleFlora = {
   lineage: { generation: 0 },
 }
 
+const samplePreview: FloraPreview = {
+  id: "flora123",
+  generation: "GEN_0",
+  image: "https://example.com/t.png",
+  title: "Cached Bloom",
+  excerpt: "Cached excerpt",
+  author: "@grower",
+  seed: "#ABC123",
+}
+
 beforeEach(() => {
+  localStorage.clear()
   getFlora.mockReset()
   getFlora.mockResolvedValue(sampleFlora)
 })
@@ -59,6 +88,7 @@ describe("FloraReader", () => {
     renderAtFlora("flora123")
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    expect(screen.queryByTitle(/flora visualization/i)).not.toBeInTheDocument()
 
     await waitFor(() => {
       const iframe = screen.getByTitle(/flora visualization/i)
@@ -69,13 +99,44 @@ describe("FloraReader", () => {
     })
   })
 
-  it("shows error when Flora fetch fails", async () => {
+  it("renders cached preview before the API resolves", async () => {
+    stashFloraPreview(samplePreview)
+    getFlora.mockImplementation(() => new Promise(() => {}))
+
+    renderAtFlora("flora123")
+
+    expect(await screen.findByRole("heading", { name: "Cached Bloom" })).toBeInTheDocument()
+    expect(screen.getByTitle(/flora visualization/i)).toBeInTheDocument()
+    expect(getFlora).toHaveBeenCalledWith("flora123")
+  })
+
+  it("clears cached preview after a successful fetch", async () => {
+    stashFloraPreview(samplePreview)
+    renderAtFlora("flora123")
+
+    await waitFor(() => {
+      expect(readFloraPreview("flora123")).toBeNull()
+    })
+  })
+
+  it("shows error when Flora fetch fails and no preview exists", async () => {
     getFlora.mockRejectedValueOnce(new Error("nope"))
     renderAtFlora("missing")
 
     expect(
       await screen.findByText(/could not load this flora/i)
     ).toBeInTheDocument()
+  })
+
+  it("keeps cached preview visible when fetch fails", async () => {
+    stashFloraPreview({ ...samplePreview, id: "missing", title: "Still here" })
+    getFlora.mockRejectedValueOnce(new Error("nope"))
+
+    renderAtFlora("missing")
+
+    expect(await screen.findByRole("heading", { name: "Still here" })).toBeInTheDocument()
+    expect(screen.queryByText(/could not load this flora/i)).not.toBeInTheDocument()
+    clearFloraPreview("missing")
   })
 
   it("Back navigates home when history idx is 0", async () => {

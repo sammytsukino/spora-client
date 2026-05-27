@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import FloraLink from "@/components/shared/FloraLink"
 import { floraPath } from "@/constants/routes"
 import { readerNavState } from "@/lib/floraViewBack"
 import {
@@ -140,7 +141,7 @@ export default function SimpleMarquee({
   const displayItems = expandedItems.map((item, i) => (
     <MarqueeItem key={i}>
       {item.id ? (
-        <Link
+        <FloraLink
           to={floraPath(item.id)}
           state={{
             ...readerNavState(location.pathname, location.search),
@@ -172,7 +173,7 @@ export default function SimpleMarquee({
           >
             {item.id?.startsWith("flr-") ? item.id : item.id?.slice(0, 8) + "…"}
           </span>
-        </Link>
+        </FloraLink>
       ) : (
         <img
           src={item.url}

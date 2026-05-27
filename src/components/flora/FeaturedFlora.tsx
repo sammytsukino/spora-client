@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import FloraLink from "@/components/shared/FloraLink";
 import type { FloraItem } from "@/data/flora-data";
 
 interface FeaturedFloraProps {
@@ -62,14 +62,14 @@ export default function FeaturedFlora({ flora, to, linkState, onClick }: Feature
 
   if (to) {
     return (
-      <Link
+      <FloraLink
         to={to}
         state={linkState}
         className={cardClassName}
         aria-label={`Open flora ${flora.title}`}
       >
         {cardContent}
-      </Link>
+      </FloraLink>
     );
   }
 

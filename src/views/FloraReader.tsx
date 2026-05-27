@@ -2,9 +2,11 @@ import {
   Fragment,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
+import FloraLink from "@/components/shared/FloraLink";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import { getFlora, type ApiFlora } from "@/lib/floras";
@@ -25,6 +27,11 @@ import { AudioLines, Camera, Layers, Shuffle, Volume2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/api";
 import { ROUTES } from "@/constants/routes";
 import { navigateFloraViewBack, type FloraViewLocationState } from "@/lib/floraViewBack";
+import {
+  clearFloraPreview,
+  readFloraPreview,
+  type FloraPreview,
+} from "@/lib/floraPreviewCache";
 import SporaDetailsMenu, {
   type SporaDetailsMenuTone,
 } from "@/components/shared/SporaDetailsMenu";
@@ -36,15 +43,7 @@ import SporaImageLoader, {
 } from "@/components/shared/SporaImageLoader";
 
 interface FloraLocationState extends FloraViewLocationState {
-  flora?: {
-    id: string;
-    generation: string;
-    image: string;
-    title: string;
-    excerpt: string;
-    author: string;
-    seed: string;
-  };
+  flora?: FloraPreview;
 }
 
 const VELLUM_HOVER_DELAY_MS = 1000;
@@ -71,9 +70,12 @@ export default function FloraReader() {
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as FloraLocationState | null;
+  const previewFlora = useMemo(
+    () => state?.flora ?? (id ? readFloraPreview(id) : null),
+    [id, state?.flora]
+  );
 
   const [flora, setFlora] = useState<ApiFlora | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showReaderTutorial, setShowReaderTutorial] = useState(false);
   const [windStrength, setWindStrength] = useState(0.5);
@@ -147,29 +149,27 @@ export default function FloraReader() {
   useEffect(() => {
     if (!id) return;
     let isActive = true;
-    queueMicrotask(() => {
-      setIsLoading(true);
-      setError(null);
-    });
+    if (!previewFlora) {
+      queueMicrotask(() => {
+        setError(null);
+      });
+    }
 
     getFlora(id)
       .then((data) => {
         if (!isActive) return;
         setFlora(data);
+        clearFloraPreview(id);
       })
       .catch(() => {
         if (!isActive) return;
         setError("Could not load Flora.");
-      })
-      .finally(() => {
-        if (!isActive) return;
-        setIsLoading(false);
       });
 
     return () => {
       isActive = false;
     };
-  }, [id]);
+  }, [id, previewFlora]);
 
   const derived = (() => {
     if (flora) {
@@ -193,19 +193,19 @@ export default function FloraReader() {
       };
     }
 
-    if (state?.flora) {
-      const stateAuthor = state.flora.author;
-      const stateCanLink = resolveAuthorUsernameFromHandle(stateAuthor);
+    if (previewFlora) {
+      const previewAuthor = previewFlora.author;
+      const previewCanLink = resolveAuthorUsernameFromHandle(previewAuthor);
       return {
-        id: state.flora.id,
-        title: state.flora.title,
-        author: state.flora.author,
-        authorUsername: stateCanLink,
-        seed: state.flora.seed,
-        generation: state.flora.generation || "GEN_0",
-        image: state.flora.image,
-        text: state.flora.excerpt ?? "",
-        lineageItems: [{ handle: state.flora.author, floraId: state.flora.id }],
+        id: previewFlora.id,
+        title: previewFlora.title,
+        author: previewFlora.author,
+        authorUsername: previewCanLink,
+        seed: previewFlora.seed,
+        generation: previewFlora.generation || "GEN_0",
+        image: previewFlora.image,
+        text: previewFlora.excerpt ?? "",
+        lineageItems: [{ handle: previewFlora.author, floraId: previewFlora.id }],
         status: "blossoming",
       };
     }
@@ -404,18 +404,7 @@ export default function FloraReader() {
     }
   };
 
-  if (isLoading && !derived) {
-    return (
-      <div className="fixed inset-0 z-10050 bg-spora-primary-light">
-        <TransparentNavbar showScrollBackground />
-        <main className="flex min-h-screen items-center justify-center pt-24 px-6">
-          <SporaImageLoader />
-        </main>
-      </div>
-    );
-  }
-
-  if (error || !derived) {
+  if (error && !derived) {
     return (
       <div className="fixed inset-0 bg-spora-primary-light">
         <TransparentNavbar showScrollBackground />
@@ -428,11 +417,14 @@ export default function FloraReader() {
     );
   }
 
+  const showBlockingLoader = !derived || !minLoadTimeElapsed;
 
-  const installationSrc = `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1&apiBase=${encodeURIComponent(API_BASE_URL)}`;
+  const installationSrc = derived
+    ? `/Installation.html?floraId=${encodeURIComponent(derived.id)}&reader=1&apiBase=${encodeURIComponent(API_BASE_URL)}`
+    : "";
   const canReveal = minLoadTimeElapsed;
 
-  const lineageRows = chunkLineageItems(derived.lineageItems);
+  const lineageRows = derived ? chunkLineageItems(derived.lineageItems) : [];
 
   const lineageDash = (
     <span
@@ -447,6 +439,8 @@ export default function FloraReader() {
 
   return (
     <div className="fixed inset-0 overflow-hidden">
+      {derived ? (
+        <>
       <div
         className={`absolute inset-0 z-0 transition-opacity duration-300 ${
           canReveal ? "opacity-100" : "opacity-0"
@@ -474,15 +468,6 @@ export default function FloraReader() {
         style={{ opacity: vellumOn && canReveal ? 0.5 : 0 }}
         aria-hidden
       />
-
-      <div
-        className={`fixed inset-0 z-10050 flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
-          canReveal ? "opacity-0 pointer-events-none" : ""
-        }`}
-        aria-hidden
-      >
-        <SporaImageLoader />
-      </div>
 
       <TransparentNavbar showScrollBackground useLightText={!isLightBg} />
 
@@ -604,7 +589,7 @@ export default function FloraReader() {
                             <Fragment key={`${item.handle}-${i}`}>
                               <span className="flex min-w-0 shrink items-center">
                                 {item.floraId ? (
-                                  <Link
+                                  <FloraLink
                                     to={`/flora/${encodeURIComponent(item.floraId)}`}
                                     className={`max-w-full truncate px-2 py-1 border transition-colors cursor-pointer no-underline hover:opacity-80 ${
                                       isLightBg
@@ -614,7 +599,7 @@ export default function FloraReader() {
                                     title="View Flora"
                                   >
                                     {item.handle}
-                                  </Link>
+                                  </FloraLink>
                                 ) : (() => {
                                   const username = item.handle.replace(/^@+/, "");
                                   if (
@@ -884,6 +869,18 @@ export default function FloraReader() {
           onClose={() => setShowReaderTutorial(false)}
         />
       ) : null}
+        </>
+      ) : null}
+
+      <div
+        className={`fixed inset-0 z-10050 flex items-center justify-center bg-spora-primary-light transition-opacity duration-normal ${
+          showBlockingLoader ? "" : "opacity-0 pointer-events-none"
+        }`}
+        aria-hidden={!showBlockingLoader}
+        aria-busy={showBlockingLoader}
+      >
+        <SporaImageLoader />
+      </div>
     </div>
   );
 }

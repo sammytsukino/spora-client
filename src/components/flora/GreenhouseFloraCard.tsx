@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import FloraLink from "@/components/shared/FloraLink";
 import type { FloraItem } from "@/data/flora-data";
 
 interface GreenhouseFloraCardProps {
@@ -60,14 +60,14 @@ export default function GreenhouseFloraCard({ flora, to, linkState, onClick }: G
 
   if (to) {
     return (
-      <Link
+      <FloraLink
         to={to}
         state={linkState}
         className={cardClassName}
         aria-label={`Open flora ${flora.title}`}
       >
         {cardContent}
-      </Link>
+      </FloraLink>
     );
   }
 

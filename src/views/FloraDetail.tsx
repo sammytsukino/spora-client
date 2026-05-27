@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import FloraLink from "@/components/shared/FloraLink";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Flag, X } from "lucide-react";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
@@ -219,12 +220,12 @@ export default function FloraDetail() {
                 <span className="text-lg">←</span>
                 <span>Back</span>
               </button>
-              <Link
+              <FloraLink
                 to={`/flora/${encodeURIComponent(derived.id)}`}
                 className="font-supply-mono text-caption-sm sm:text-xs tracking-[0.25em] uppercase hover:underline"
               >
                 Read
-              </Link>
+              </FloraLink>
             </div>
             {canReport && (
               <button
@@ -325,13 +326,13 @@ export default function FloraDetail() {
                       <Fragment key={`${item.handle}-${i}`}>
                         <span className="flex min-w-0 shrink items-center">
                           {item.floraId ? (
-                            <Link
+                            <FloraLink
                               to={`/flora/${encodeURIComponent(item.floraId)}`}
                               className="max-w-full truncate px-3 py-1 border border-spora-primary bg-spora-primary text-spora-primary-light hover:bg-spora-primary-light hover:text-spora-primary transition-colors cursor-pointer no-underline"
                               title="View Flora"
                             >
                               {item.handle}
-                            </Link>
+                            </FloraLink>
                           ) : (() => {
                             const username = item.handle.replace(/^@+/, "");
                             if (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TransparentNavbar from "@/components/layout/TransparentNavbar";
 import FooterAlter from "@/components/layout/FooterAlter";
 import FilterTabs from "@/components/shared/FilterTabs";
@@ -25,7 +25,7 @@ import {
   exportFlaggedToPdf,
 } from "@/lib/admin-pdf-export";
 import { ROUTES, floraPath, greenhouseWithAuthorQuery } from "@/constants/routes";
-import { readerNavState } from "@/lib/floraViewBack";
+import { openFloraInNewTab } from "@/lib/openFloraInNewTab";
 
 const defaultMetrics = {
   totalUsers: 0,
@@ -42,9 +42,7 @@ const reportStatusFilters = ["Pending", "All"] as const;
 
 export default function AdminPanel() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const floraOpenState = readerNavState(location.pathname, location.search);
   const user = getStoredUser();
   const tabFromUrl = searchParams.get("tab") ?? adminSectionTabs[0];
   const isTabValid = (s: string): s is AdminSection =>
@@ -222,7 +220,7 @@ export default function AdminPanel() {
                     items={flagged}
                     title="Reported Floras"
                     onViewContent={(item) =>
-                      navigate(floraPath(item.contentId), { state: floraOpenState })
+                      openFloraInNewTab(floraPath(item.contentId))
                     }
                     onHideFlora={onHideFlora}
                     onDownload={(item) =>
@@ -252,7 +250,7 @@ export default function AdminPanel() {
                         });
                         return;
                       }
-                      navigate(floraPath(r.targetId), { state: floraOpenState });
+                      openFloraInNewTab(floraPath(r.targetId));
                     }}
                     onRemoveTarget={async (r) => {
                       if (!hasValidFloraTarget(r.targetId)) {

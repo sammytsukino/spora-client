@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import FloraLink from "@/components/shared/FloraLink";
 import { floraImages } from "@/data/flora-data";
 
 interface FloraCardBaseProps {
@@ -152,7 +152,7 @@ export default function FloraCardBase({
 
   if (to) {
     return (
-      <Link
+      <FloraLink
         to={to}
         state={linkState}
         className={cardClassName}
@@ -160,7 +160,7 @@ export default function FloraCardBase({
         aria-label={`Open flora ${title}`}
       >
         {cardContent}
-      </Link>
+      </FloraLink>
     );
   }
 
