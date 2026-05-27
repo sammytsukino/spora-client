@@ -5,6 +5,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
 } from "react";
 import FloraLink from "@/components/shared/FloraLink";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -47,6 +48,11 @@ interface FloraLocationState extends FloraViewLocationState {
 }
 
 const VELLUM_HOVER_DELAY_MS = 1000;
+
+const vellumBackdropStyle: CSSProperties = {
+  backdropFilter: "blur(5px) saturate(0.92)",
+  WebkitBackdropFilter: "blur(2.5px) saturate(0.92)",
+};
 
 export default function FloraReader() {
   const [ambiencePlaying, setAmbiencePlaying] = useState(false);
@@ -460,7 +466,10 @@ export default function FloraReader() {
         className={`flora-reader-vellum z-5 ${
           isLightBg ? "flora-reader-vellum--paper" : "flora-reader-vellum--ink"
         }`}
-        style={{ opacity: vellumOn && canReveal ? 1 : 0 }}
+        style={{
+          opacity: vellumOn && canReveal ? 1 : 0,
+          ...vellumBackdropStyle,
+        }}
         aria-hidden
       />
       <div
