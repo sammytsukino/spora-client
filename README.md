@@ -7,7 +7,6 @@
 ## ✦ Table of Contents
 
 - [What is SPORA Client?](#-what-is-spora-client)
-- [Screenshots](#-screenshots)
 - [Frontend Architecture](#-frontend-architecture)
 - [Main User Journeys (Client Side)](#-main-user-journeys-client-side)
 - [Tech Stack](#-tech-stack)
@@ -26,21 +25,6 @@
 
 ## ✿ What is SPORA Client?
 
-`spora-client` is the living interface of SPORA: the place where writing turns into visual life and collaborative creation remains traceable, layered, and non-destructive.
-
-This repository holds the complete front-of-house experience:
-♦ Discovery spaces (Garden / Greenhouse)  
-♦ Creation ritual (Laboratory / Installation)  
-♦ Identity and social continuity (profiles + follow graph)  
-♦ Stewardship tools (Admin Panel)  
-♦ Reading layer with optional voice playback (Flora Reader)  
-♦ Contact form flow that submits to backend and notifies admin emails
-
-⟡ ═════════════════════════════════════════ ⟡
-
-## ◈ Screenshots
-
-> **Replace placeholders:** add your PNG/WebP files under [`docs/screenshots/`](./docs/screenshots/) using the filenames below. Capture guide: [`docs/screenshots/README.md`](./docs/screenshots/README.md).
 
 ### Platform overview
 
@@ -84,7 +68,20 @@ This repository holds the complete front-of-house experience:
 | ![Contact — form flow](./docs/screenshots/contact.png) | ![Admin — metrics and moderation](./docs/screenshots/admin-panel.png) |
 | `/contact` (delivers to admin emails via API) | `/admin` (admin role) |
 
+`spora-client` is the living interface of SPORA: the place where writing turns into visual life and collaborative creation remains traceable, layered, and non-destructive.
+
+This repository holds the complete front-of-house experience:
+♦ Discovery spaces (Garden / Greenhouse)  
+♦ Creation ritual (Laboratory / Installation)  
+♦ Identity and social continuity (profiles + follow graph)  
+♦ Stewardship tools (Admin Panel)  
+♦ Reading layer with optional voice playback (Flora Reader)  
+♦ Contact form flow that submits to backend and notifies admin emails
+
 ⟡ ═════════════════════════════════════════ ⟡
+
+
+
 
 ## ♢ Frontend Architecture
 
