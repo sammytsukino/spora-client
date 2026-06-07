@@ -1,5 +1,8 @@
+import { cldImage, type CloudinaryPreset } from "@/lib/cloudinary";
+
 interface CyclingLogoProps {
   logos: string[]
+  imagePreset?: CloudinaryPreset
   width?: number | string
   height?: number | string
   cycleDuration?: number
@@ -14,6 +17,7 @@ interface CyclingLogoProps {
 
 export default function CyclingLogo({
   logos,
+  imagePreset = "content",
   width = 400,
   height = 120,
   cycleDuration = 0.75,
@@ -61,11 +65,12 @@ export default function CyclingLogo({
     >
       {logos.map((logo, index) => {
         const delay = -(perLogoDuration * index)
-        
+        const src = cldImage(logo, imagePreset)
+
         return (
           <img
             key={index}
-            src={logo}
+            src={src}
             alt={decorative ? "" : `Logo ${index + 1}`}
             className={`logo-cycling logo-${index + 1} block`}
             style={{

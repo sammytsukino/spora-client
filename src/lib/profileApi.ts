@@ -1,6 +1,7 @@
+import { cldImage } from "@/lib/cloudinary";
 import { api } from "./api";
 import {
-  DEFAULT_PROFILE_AVATAR_URL,
+  resolveProfileAvatarUrl,
   type ProfileUser,
   type ProfileFloraItem,
   type ProfileMetricsData,
@@ -13,8 +14,10 @@ const FLORA_EXCERPT_MAX_LENGTH = 80;
 const SEED_LABEL_LENGTH = 6;
 const RECENT_ACTIVITY_MAX_ITEMS = 15;
 const ACTIVITY_UPDATE_THRESHOLD_MS = 60 * 1000;
-const PROFILE_ITEM_FALLBACK_IMAGE_URL =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png";
+const PROFILE_ITEM_FALLBACK_IMAGE_URL = cldImage(
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1769532657/img-22_akcm8r.png",
+  "thumbnail"
+);
 
 export interface MeUser {
   id: string;
@@ -63,7 +66,7 @@ export function mapMeToProfileUser(me: MeUser, floras: ApiFlora[]): ProfileUser 
   const originals = floras.filter((f) => (f.lineage?.generation ?? 0) === 0);
   const cuttings = floras.filter((f) => (f.lineage?.generation ?? 0) > 0);
   return {
-    avatar: me.avatar || DEFAULT_PROFILE_AVATAR_URL,
+    avatar: resolveProfileAvatarUrl(me.avatar),
     username: me.username.startsWith("@") ? me.username : `@${me.username}`,
     fullName: me.displayName || me.username,
     bio: me.bio || "",
@@ -88,7 +91,9 @@ export function mapApiFloraToProfileItem(flora: ApiFlora, fallbackUsername: stri
   return {
     id: flora._id,
     generation: `GEN_${gen}`,
-    image: flora.thumbnailUrl || PROFILE_ITEM_FALLBACK_IMAGE_URL,
+    image: flora.thumbnailUrl
+      ? cldImage(flora.thumbnailUrl, "thumbnail")
+      : PROFILE_ITEM_FALLBACK_IMAGE_URL,
     title: flora.title,
     excerpt,
     author,
@@ -150,7 +155,7 @@ export async function fetchProfileData(): Promise<{
   const user = mapMeToProfileUser(me, floras);
   const profileFloras = floras.map((f) => mapApiFloraToProfileItem(f, me.username));
   const metrics = mapFlorasToMetrics(floras);
-  const userAvatar = me.avatar || DEFAULT_PROFILE_AVATAR_URL;
+  const userAvatar = resolveProfileAvatarUrl(me.avatar);
   const recentInteractions = buildRecentActivityFromFloras(floras, userAvatar);
   const social: ProfileSocialData = {
     followersCount: me.followersCount ?? 0,

@@ -42,6 +42,11 @@ import { getReaderTutorialDone } from "@/components/reader/readerTutorialStorage
 import SporaImageLoader, {
   SPORA_IFRAME_LOADER_MIN_MS,
 } from "@/components/shared/SporaImageLoader";
+import { cldVideo } from "@/lib/cloudinary";
+
+const AMBIENT_AUDIO_URL = cldVideo(
+  "https://res.cloudinary.com/dqgiuadyw/video/upload/v1779559592/ambient_yoptg8.mp3"
+);
 
 interface FloraLocationState extends FloraViewLocationState {
   flora?: FloraPreview;
@@ -858,7 +863,7 @@ export default function FloraReader() {
 
         <audio
           ref={ambienceRef}
-          src="https://res.cloudinary.com/dqgiuadyw/video/upload/q_auto/f_auto/v1779559592/ambient_yoptg8.mp3"
+          src={AMBIENT_AUDIO_URL}
           loop
           className="hidden"
         />

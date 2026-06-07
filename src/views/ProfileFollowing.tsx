@@ -6,7 +6,7 @@ import FooterAlter from "@/components/layout/FooterAlter";
 import { getFollowing, type FollowUser } from "@/lib/followApi";
 import { getUserByUsername } from "@/lib/usersApi";
 import { ROUTES, profilePath } from "@/constants/routes";
-import { DEFAULT_PROFILE_AVATAR_URL } from "@/data/profile-data";
+import { resolveProfileAvatarUrl } from "@/data/profile-data";
 
 export default function ProfileFollowing() {
   const { username } = useParams<{ username: string }>();
@@ -67,7 +67,7 @@ export default function ProfileFollowing() {
                   className="flex items-center gap-4 w-full text-left p-3 border border-spora-primary bg-transparent hover:bg-spora-primary/5 transition-colors"
                 >
                   <img
-                    src={u.avatar || DEFAULT_PROFILE_AVATAR_URL}
+                    src={resolveProfileAvatarUrl(u.avatar)}
                     alt=""
                     className="w-12 h-12 rounded-full object-cover border border-spora-primary"
                   />

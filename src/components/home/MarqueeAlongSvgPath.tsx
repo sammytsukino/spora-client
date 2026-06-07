@@ -13,7 +13,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
-import { getOptimizedThumbnailUrl } from "@/lib/cloudinary"
+import { cldImage } from "@/lib/cloudinary"
 import { MARQUEE_SVG_FALLBACK_URLS } from "@/data/flora-thumbnail-urls"
 import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 import MarqueeTextContent from "./MarqueeTextContent"
@@ -429,7 +429,7 @@ export function MarqueeBackground({
   const displayItems: FloraThumbnail[] = subsampleThumbnailsForPath(
     items && items.length > 0
       ? items
-      : imgs.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
+      : imgs.map((url) => ({ url: cldImage(url, "thumbnail") }))
   )
   return (
     <div className={className || "w-full h-full relative overflow-hidden"}>

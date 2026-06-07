@@ -12,7 +12,7 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
-import { getOptimizedThumbnailUrl } from "@/lib/cloudinary"
+import { cldImage } from "@/lib/cloudinary"
 import { DEFAULT_MARQUEE_THUMBNAIL_URLS } from "@/data/flora-thumbnail-urls"
 import type { FloraThumbnail } from "@/hooks/useFloraThumbnails"
 
@@ -132,7 +132,7 @@ export default function SimpleMarquee({
   const defaultImages = DEFAULT_MARQUEE_THUMBNAIL_URLS
 
   const itemsToUse: FloraThumbnail[] =
-    floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
+    floraItems.length > 0 ? floraItems : defaultImages.map((url) => ({ url: cldImage(url, "thumbnail") }))
   const minItemsForFill = 45
   const expandedItems =
     itemsToUse.length >= minItemsForFill

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { listFloras, type ApiFlora } from "@/lib/floras";
 import { floraImages } from "@/data/flora-data";
-import { getOptimizedThumbnailUrl } from "@/lib/cloudinary";
+import { cldImage } from "@/lib/cloudinary";
 
 const MIN_THUMBNAILS = 6;
 
@@ -35,7 +35,7 @@ export interface FloraThumbnail {
 
 export function useFloraThumbnails(limit = 40) {
   const [items, setItems] = useState<FloraThumbnail[]>(() =>
-    floraImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }))
+    floraImages.map((url) => ({ url: cldImage(url, "thumbnail") }))
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,11 +54,11 @@ export function useFloraThumbnails(limit = 40) {
               f.isHidden !== true
           )
           .map((f) => ({
-            url: getOptimizedThumbnailUrl(f.thumbnailUrl),
+            url: cldImage(f.thumbnailUrl, "thumbnail"),
             id: f.shortId ?? f._id,
             ...readerPreviewFields(f),
           }));
-        const fallback = floraImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) }));
+        const fallback = floraImages.map((url) => ({ url: cldImage(url, "thumbnail") }));
         const combined =
           withThumb.length >= MIN_THUMBNAILS
             ? withThumb
@@ -67,7 +67,7 @@ export function useFloraThumbnails(limit = 40) {
       })
       .catch(() => {
         if (!cancelled)
-          setItems(floraImages.map((url) => ({ url: getOptimizedThumbnailUrl(url) })));
+          setItems(floraImages.map((url) => ({ url: cldImage(url, "thumbnail") })));
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);

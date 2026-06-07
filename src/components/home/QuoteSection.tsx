@@ -1,4 +1,10 @@
 import MainButton from '@/components/ui/MainButton';
+import { cldVideo } from '@/lib/cloudinary';
+
+const QUOTE_SECTION_VIDEO_URL = cldVideo(
+  'https://res.cloudinary.com/dsy30p7gf/video/upload/v1770915860/Comp_1_z4w4gi.mp4',
+  { autoplay: true }
+);
 
 interface QuoteSectionProps {
   quote: string;
@@ -20,7 +26,7 @@ export default function QuoteSection({ quote, author, buttonText, onButtonClick 
         className="absolute left-0 top-0 h-full w-full md:w-3/5 object-cover"
       >
         <source
-          src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770915860/Comp_1_z4w4gi.mp4"
+          src={QUOTE_SECTION_VIDEO_URL}
           type="video/mp4"
         />
       </video>

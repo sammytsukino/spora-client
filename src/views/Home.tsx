@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "../index.css";
 import { ROUTES } from "@/constants/routes";
+import { FORM_BACKGROUND_VIDEO_URL } from "@/constants/media";
 import { useFloraThumbnails } from "@/hooks/useFloraThumbnails";
 import MarqueeAlongSvgPath from "../components/home/MarqueeAlongSvgPath";
 import VideoTextSection from "../components/home/VideoTextSection";
@@ -108,7 +109,7 @@ export default function Home() {
         >
           <video
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1770320881/BACKGROUND-GRADIENT_bejhdr.mp4"
+            src={FORM_BACKGROUND_VIDEO_URL}
             autoPlay
             loop
             muted

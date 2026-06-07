@@ -1,7 +1,18 @@
+import { cldImage } from "@/lib/cloudinary";
 import { generateFloraData, type FloraItem } from "./flora-data";
 
-export const DEFAULT_PROFILE_AVATAR_URL =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/q_auto/f_auto/v1775567135/DEFAULT_awejhp.png";
+const DEFAULT_PROFILE_AVATAR_BASE =
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1775567135/DEFAULT_awejhp.png";
+
+export const DEFAULT_PROFILE_AVATAR_URL = cldImage(
+  DEFAULT_PROFILE_AVATAR_BASE,
+  "icon"
+);
+
+export function resolveProfileAvatarUrl(avatar?: string | null): string {
+  if (!avatar) return DEFAULT_PROFILE_AVATAR_URL;
+  return cldImage(avatar, "icon");
+}
 
 export interface ProfileUser {
   avatar: string;

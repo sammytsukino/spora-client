@@ -1,9 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
+import { cldImage } from "@/lib/cloudinary";
 import { cn } from "@/lib/utils";
 import styles from "./SporaImageLoader.module.css";
 
-export const SPORA_LOADER_IMAGE_URL =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/q_auto/f_auto/v1776168111/1loader_jdkfip.png";
+const SPORA_LOADER_IMAGE_BASE =
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776168111/1loader_jdkfip.png";
+
+export const SPORA_LOADER_IMAGE_URL = cldImage(SPORA_LOADER_IMAGE_BASE, "content");
 
 export const SPORA_IFRAME_LOADER_MIN_MS = 2500;
 

@@ -3,6 +3,14 @@ import { ROUTES } from "@/constants/routes"
 import { isLabFullAccessible } from "@/lib/auth"
 import CyclingLogo from "@/components/layout/CyclingLogo"
 
+const FOOTER_CYCLING_LOGO_URLS = [
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557718/Ready5_wlhvqu.webp",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557729/Ready1_tho4wi.webp",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557729/Ready2_cxjg7b.webp",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557720/Ready3_hisekc.webp",
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557719/Ready4_b6iujg.webp",
+] as const
+
 export default function FooterMain() {
   const laboratoryRoute = isLabFullAccessible() ? ROUTES.LABORATORY_FULL : ROUTES.LABORATORY
 
@@ -30,13 +38,8 @@ export default function FooterMain() {
       <div className="flex min-h-0 flex-1 items-center justify-between">
         <div className="flex items-center">
           <CyclingLogo
-            logos={[
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557718/Ready5_wlhvqu.webp",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557729/Ready1_tho4wi.webp",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557729/Ready2_cxjg7b.webp",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557720/Ready3_hisekc.webp",
-              "https://res.cloudinary.com/dsy30p7gf/image/upload/v1770557719/Ready4_b6iujg.webp",
-            ]}
+            logos={[...FOOTER_CYCLING_LOGO_URLS]}
+            imagePreset="icon"
             width="clamp(9rem, 16vw, 16rem)"
             height="clamp(90px, 10vw, 160px)"
             cycleDuration={0.5}
