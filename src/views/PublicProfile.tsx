@@ -9,6 +9,7 @@ import { getUserByUsername, type PublicUser } from "@/lib/usersApi";
 import { listFloras, type ApiFlora } from "@/lib/floras";
 import { api } from "@/lib/api";
 import { floraFilters, floraImages, ITEMS_PER_PAGE } from "@/data/flora-data";
+import { cldAvatar } from "@/lib/cloudinary";
 import { getStoredToken } from "@/lib/auth";
 import { ROUTES, floraPath, profileFollowersPath, profileFollowingPath } from "@/constants/routes";
 import { readerNavState } from "@/lib/floraViewBack";
@@ -141,7 +142,7 @@ export default function PublicProfile() {
         <h1 className="sr-only">Profile of {user.username}</h1>
         <header className="border border-spora-primary bg-spora-primary-light p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
           <img
-            src={user.avatar || DEFAULT_PROFILE_AVATAR_URL}
+            src={cldAvatar(user.avatar || DEFAULT_PROFILE_AVATAR_URL)}
             alt={user.displayName || user.username}
             className="w-24 h-24 rounded-full object-cover border border-spora-primary shrink-0"
           />

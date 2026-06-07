@@ -1,4 +1,4 @@
-![SPORA-VISUAL](https://res.cloudinary.com/dsy30p7gf/image/upload/v1770388115/SPORA-LACE-TRANSPARENT-MINI_hzwlvt.webp)
+![SPORA-VISUAL](https://res.cloudinary.com/dsy30p7gf/image/upload/c_limit,w_1280,f_auto,q_auto/v1770388115/SPORA-LACE-TRANSPARENT-MINI_hzwlvt.webp)
 
 **Text becomes generative art. Collaboration without destruction.**
 

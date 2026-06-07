@@ -1,5 +1,6 @@
 import { Users, UserPlus } from "lucide-react";
 import type { ProfileUser } from "@/data/profile-data";
+import { cldAvatar } from "@/lib/cloudinary";
 import MainButton from "@/components/ui/MainButton";
 
 interface ProfileHeaderProps {
@@ -35,7 +36,7 @@ export default function ProfileHeader({
   return (
     <header className="border border-[var(--spora-primary)] bg-spora-primary-light p-6 flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
       <img
-        src={avatar}
+        src={cldAvatar(avatar)}
         alt={fullName}
         className="w-24 h-24 rounded-full object-cover border border-[var(--spora-primary)] shrink-0"
       />

@@ -6,6 +6,7 @@ import { updateStoredUser } from "@/lib/auth";
 import MainButton from "@/components/ui/MainButton";
 import UnderlineField from "@/components/ui/UnderlineField";
 import { DEFAULT_PROFILE_AVATAR_URL } from "@/data/profile-data";
+import { cldAvatar } from "@/lib/cloudinary";
 
 interface ProfileEditModalProps {
   user: ProfileUser;
@@ -152,7 +153,7 @@ export default function ProfileEditModal({ user, onClose, onSaved }: ProfileEdit
                 className="relative group focus:ring-2 focus:ring-spora-primary focus:ring-offset-2"
               >
                 <img
-                  src={avatarPreview}
+                  src={cldAvatar(avatarPreview)}
                   alt="Avatar"
                   className="w-24 h-24 object-cover border border-spora-primary aspect-square"
                 />

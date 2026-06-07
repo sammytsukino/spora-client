@@ -1,4 +1,5 @@
 import { floraImages } from "@/data/flora-data";
+import { cldImage } from "@/lib/cloudinary";
 import type { ApiFlora } from "@/lib/floras";
 
 export interface LineageItem {
@@ -66,9 +67,10 @@ export function resolveAuthorUsernameFromHandle(authorHandle: string): string | 
 }
 
 export function getFloraDisplayImage(flora: ApiFlora): string {
-  return (
+  return cldImage(
     flora.thumbnailUrl ??
-    floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length]
+      floraImages[Math.abs(flora._id.charCodeAt(0)) % floraImages.length],
+    "thumbnail"
   );
 }
 

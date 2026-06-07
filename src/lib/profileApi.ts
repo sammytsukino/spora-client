@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { cldAvatar, cldImage } from "./cloudinary";
 import {
   DEFAULT_PROFILE_AVATAR_URL,
   type ProfileUser,
@@ -63,7 +64,7 @@ export function mapMeToProfileUser(me: MeUser, floras: ApiFlora[]): ProfileUser 
   const originals = floras.filter((f) => (f.lineage?.generation ?? 0) === 0);
   const cuttings = floras.filter((f) => (f.lineage?.generation ?? 0) > 0);
   return {
-    avatar: me.avatar || DEFAULT_PROFILE_AVATAR_URL,
+    avatar: cldAvatar(me.avatar || DEFAULT_PROFILE_AVATAR_URL),
     username: me.username.startsWith("@") ? me.username : `@${me.username}`,
     fullName: me.displayName || me.username,
     bio: me.bio || "",
@@ -88,7 +89,10 @@ export function mapApiFloraToProfileItem(flora: ApiFlora, fallbackUsername: stri
   return {
     id: flora._id,
     generation: `GEN_${gen}`,
-    image: flora.thumbnailUrl || PROFILE_ITEM_FALLBACK_IMAGE_URL,
+    image: cldImage(
+      flora.thumbnailUrl || PROFILE_ITEM_FALLBACK_IMAGE_URL,
+      "thumbnail"
+    ),
     title: flora.title,
     excerpt,
     author,
@@ -150,7 +154,7 @@ export async function fetchProfileData(): Promise<{
   const user = mapMeToProfileUser(me, floras);
   const profileFloras = floras.map((f) => mapApiFloraToProfileItem(f, me.username));
   const metrics = mapFlorasToMetrics(floras);
-  const userAvatar = me.avatar || DEFAULT_PROFILE_AVATAR_URL;
+  const userAvatar = cldAvatar(me.avatar || DEFAULT_PROFILE_AVATAR_URL);
   const recentInteractions = buildRecentActivityFromFloras(floras, userAvatar);
   const social: ProfileSocialData = {
     followersCount: me.followersCount ?? 0,

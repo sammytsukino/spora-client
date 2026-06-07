@@ -1,7 +1,7 @@
 import { generateFloraData, type FloraItem } from "./flora-data";
 
 export const DEFAULT_PROFILE_AVATAR_URL =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/q_auto/f_auto/v1775567135/DEFAULT_awejhp.png";
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1775567135/DEFAULT_awejhp.png";
 
 export interface ProfileUser {
   avatar: string;

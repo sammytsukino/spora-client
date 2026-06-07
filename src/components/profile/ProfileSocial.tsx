@@ -1,6 +1,7 @@
 import { floraPath } from "@/constants/routes";
 import { openFloraInNewTab } from "@/lib/openFloraInNewTab";
 import type { ProfileSocialData, ProfileSocialInteraction } from "@/data/profile-data";
+import { cldAvatar } from "@/lib/cloudinary";
 
 interface ProfileSocialProps {
   social: ProfileSocialData;
@@ -74,7 +75,7 @@ export default function ProfileSocial({
               >
                 {item.avatar && (
                   <img
-                    src={item.avatar}
+                    src={cldAvatar(item.avatar)}
                     alt=""
                     className="w-8 h-8 rounded-full object-cover border border-spora-primary shrink-0"
                   />

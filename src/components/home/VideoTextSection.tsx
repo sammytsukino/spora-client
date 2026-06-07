@@ -1,3 +1,10 @@
+import { cldVideo } from '@/lib/cloudinary';
+
+const FLORA_SCAN_VIDEO_URL = cldVideo(
+  'https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4',
+  { silent: true }
+);
+
 export default function VideoTextSection() {
   return (
     <div className="w-full flex flex-col lg:flex-row md:h-full min-h-0">
@@ -12,7 +19,7 @@ export default function VideoTextSection() {
           disableRemotePlayback
           aria-hidden="true"
         >
-          <source src="https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4" type="video/mp4" />
+          <source src={FLORA_SCAN_VIDEO_URL} type="video/mp4" />
         </video>
       </div>
 
