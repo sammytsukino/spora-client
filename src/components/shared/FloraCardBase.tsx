@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import FloraLink from "@/components/shared/FloraLink";
 import { floraImages } from "@/data/flora-data";
+import { cldImage } from "@/lib/cloudinary";
 
 interface FloraCardBaseProps {
   id: string;
@@ -34,7 +35,7 @@ export default function FloraCardBase({
   const cardClassName = `group bg-spora-primary-light flex flex-col relative transition-all duration-fast ease-spora-out cursor-pointer hover:bg-spora-accent-secondary focus-visible:ring-2 focus-visible:ring-spora-primary focus-visible:ring-offset-2 ${
     isGarden ? 'active:scale-[0.98]' : ''
   } border border-spora-primary no-underline text-inherit`;
-  const [imgSrc, setImgSrc] = useState(image);
+  const [imgSrc, setImgSrc] = useState(() => cldImage(image, "thumbnail"));
   const [loadAttempt, setLoadAttempt] = useState(0);
   const fallbackImage = useMemo(() => {
     const key = `${id}:${title}`;
@@ -47,7 +48,7 @@ export default function FloraCardBase({
   }, [id, title]);
 
   useEffect(() => {
-    setImgSrc(image);
+    setImgSrc(cldImage(image, "thumbnail"));
     setLoadAttempt(0);
   }, [image]);
 
@@ -98,9 +99,9 @@ export default function FloraCardBase({
               setImgSrc(`${image}${retryJoiner}retry=${Date.now()}`);
               return;
             }
-            if (loadAttempt === 1 && fallbackImage && imgSrc !== fallbackImage) {
+            if (loadAttempt === 1 && fallbackImage && imgSrc !== cldImage(fallbackImage, "thumbnail")) {
               setLoadAttempt(2);
-              setImgSrc(fallbackImage);
+              setImgSrc(cldImage(fallbackImage, "thumbnail"));
               return;
             }
             if (placeholderElement) {

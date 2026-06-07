@@ -1,9 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
+import { cldImage } from "@/lib/cloudinary";
 import { cn } from "@/lib/utils";
 import styles from "./SporaImageLoader.module.css";
 
 export const SPORA_LOADER_IMAGE_URL =
-  "https://res.cloudinary.com/dsy30p7gf/image/upload/q_auto/f_auto/v1776168111/1loader_jdkfip.png";
+  "https://res.cloudinary.com/dsy30p7gf/image/upload/v1776168111/1loader_jdkfip.png";
+
+const OPTIMIZED_LOADER_IMAGE_URL = cldImage(SPORA_LOADER_IMAGE_URL, "icon");
 
 export const SPORA_IFRAME_LOADER_MIN_MS = 2500;
 
@@ -31,7 +34,7 @@ function SporaImageLoader({
       aria-label="Loading"
     >
       <span className="sr-only">Loading</span>
-      <img src={SPORA_LOADER_IMAGE_URL} alt="" draggable={false} />
+      <img src={OPTIMIZED_LOADER_IMAGE_URL} alt="" draggable={false} />
     </div>
   );
 }

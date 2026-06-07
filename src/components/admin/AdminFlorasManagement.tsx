@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ConfirmModal from "@/components/shared/ConfirmModal";
+import { cldImage } from "@/lib/cloudinary";
 import type { ApiFlora } from "@/lib/admin-api";
 import {
   adminButtonDanger,
@@ -203,7 +204,7 @@ export default function AdminFlorasManagement({
                 >
                   {flora.thumbnailUrl ? (
                     <img
-                      src={flora.thumbnailUrl}
+                      src={cldImage(flora.thumbnailUrl, "thumbnail")}
                       alt=""
                       className="w-full h-full object-cover"
                     />

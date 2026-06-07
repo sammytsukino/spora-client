@@ -8,7 +8,7 @@ vi.mock("@/lib/floras", () => ({
 }))
 
 vi.mock("@/lib/cloudinary", () => ({
-  getOptimizedThumbnailUrl: (u: string) => u,
+  cldImage: (u: string | undefined) => u ?? "",
 }))
 
 import { useFloraThumbnails } from "./useFloraThumbnails"

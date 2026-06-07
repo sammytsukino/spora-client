@@ -1,8 +1,11 @@
 import CyclingLogo from '@/components/layout/CyclingLogo';
 import { sporaLogos } from '@/data/logo-data';
+import { cldVideo } from '@/lib/cloudinary';
 
-const HERO_BACKGROUND_VIDEO_URL =
-  'https://res.cloudinary.com/dsy30p7gf/video/upload/v1777649128/lumencolor5_4_prob4_5_uae4op.mp4';
+const HERO_BACKGROUND_VIDEO_URL = cldVideo(
+  'https://res.cloudinary.com/dsy30p7gf/video/upload/v1777649128/lumencolor5_4_prob4_5_uae4op.mp4',
+  { silent: true }
+);
 
 export default function HeroSection() {
   return (

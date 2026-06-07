@@ -1,3 +1,9 @@
+import { cldImage, detectCloudinaryAssetType } from "@/lib/cloudinary";
+
+function optimizeLogoUrl(url: string): string {
+  return detectCloudinaryAssetType(url) === "svg" ? url : cldImage(url, "content");
+}
+
 interface CyclingLogoProps {
   logos: string[]
   width?: number | string
@@ -65,7 +71,7 @@ export default function CyclingLogo({
         return (
           <img
             key={index}
-            src={logo}
+            src={optimizeLogoUrl(logo)}
             alt={decorative ? "" : `Logo ${index + 1}`}
             className={`logo-cycling logo-${index + 1} block`}
             style={{
